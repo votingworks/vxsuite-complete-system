@@ -20,5 +20,6 @@ Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/b
 root	ALL=(ALL:ALL) ALL
 
 # Allow vx-admin to set hostname and time
-vx-admin ALL=(root:ALL) /usr/bin/hostnamectl
-vx-admin ALL=(root:ALL) /usr/bin/timedatectl
+vx-admin ALL=(root:ALL) NOPASSWD: /usr/bin/hostnamectl
+vx-admin ALL=(root:ALL) NOPASSWD: /usr/bin/timedatectl
+vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/timedatectl
