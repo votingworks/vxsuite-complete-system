@@ -6,7 +6,7 @@
 # save current directory
 INSTALL_DIR=$(pwd)
 
-sudo apt install -y make unclutter mingetty emacs curl pmount
+sudo apt install -y make unclutter mingetty emacs curl pmount python3-pip
 
 source ./setup-node.sh
 
