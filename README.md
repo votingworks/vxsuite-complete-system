@@ -18,6 +18,14 @@ make node
 make build
 ```
 
+Then, it's time to configure the machine with all the users, permissions, etc.
+
+```
+bash setup-machine.sh
+bash setup-election-manager.sh
+bash setup-lockdown.sh
+```
+
 ## High-level Contracts
 
 Each front-end system, `bms`, `bas`, `ems`, and `bsd`, and each
