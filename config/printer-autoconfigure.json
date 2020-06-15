@@ -1,0 +1,23 @@
+{
+  "printerName": "VxPrinter",
+  "printers": [
+    {
+      "label": "Brother HL-L5100DN",
+      "vendorId": 1273,
+      "productId": 127,
+      "baseDeviceURI": "usb://Brother/HL-L5100DN%20series",
+      "ppd": {
+        "model": "foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Generic-PCL_6_PCL_XL_Printer-pxlcolor.ppd"
+      }
+    },
+    {
+      "label": "HP LaserJet Pro M404n",
+      "vendorId": 1008,
+      "productId": 49450,
+      "baseDeviceURI": "usb://HP/LaserJet%20Pro%20M404-M405",
+      "ppd": {
+        "path": "hp-laserjet_pro_m404-m405-ps.ppd"
+      }
+    }
+  ]
+}

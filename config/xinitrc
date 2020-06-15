@@ -1,0 +1,24 @@
+xset -dpms
+xset s off
+xset s noblank
+
+# need to figure out brightness
+
+unclutter -idle 0.01 -root &
+
+if [ "${VX_MACHINE_TYPE}" = bmd ]; then
+    URL=http://localhost:3000/speech-loader.html
+else
+    URL=http://localhost:3000/
+fi
+
+exec sh <<SHELL
+    export DEBUG=kiosk-browser:* 
+
+    while true; do
+        kiosk-browser \
+            --url '${URL}' \
+            --autoconfigure-print-config /vx-ui/printer-autoconfigure.json
+    done 2>&1 | logger --tag kiosk-browser
+SHELL
+

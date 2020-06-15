@@ -1,0 +1,9 @@
+[Unit]
+Description=VotingWorks Election Manager
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /vx-services/run-election-manager.sh
+
+[Install]
+WantedBy=multi-user.target
