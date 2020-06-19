@@ -27,7 +27,7 @@ Make sure to mention:
 * COTS & OSS operating system & application environment
 ** Linux
 ** Chromium
-** Node.js + Typescript
+** Node.js + TypeScript
 ** Python
 
 ## Software Standards & Conventions
