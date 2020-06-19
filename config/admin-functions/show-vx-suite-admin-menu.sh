@@ -3,6 +3,7 @@
 set -euo pipefail
 
 : "${VX_ROOT:="/vx-admin"}"
+: "${VX_FUNCTIONS_ROOT:="${VX_ROOT}/admin-functions"}"
 : "${VX_CONFIG_ROOT:="${HOME}/.config"}"
 
 prompt-to-restart() {
@@ -13,7 +14,7 @@ prompt-to-restart() {
 }
 
 while true; do
-  source "${VX_ROOT}/config/admin-functions/read-vx-machine-config.sh"
+  source "${VX_FUNCTIONS_ROOT}/read-vx-machine-config.sh"
   clear
 
   echo -e "\e[1mVxSuite Admin\e[0m"
@@ -49,13 +50,13 @@ while true; do
     ;;
 
     set-machine-id)
-      "${VX_ROOT}/config/admin-functions/choose-vx-machine-id.sh"
+      "${VX_FUNCTIONS_ROOT}/choose-vx-machine-id.sh"
       prompt-to-restart
     ;;
 
     set-app-mode)
       if [ "${VX_MACHINE_TYPE}" = bmd ]; then
-        "${VX_ROOT}/config/admin-functions/choose-vx-mark-app-mode.sh"
+        "${VX_FUNCTIONS_ROOT}/choose-vx-mark-app-mode.sh"
         prompt-to-restart
       fi
     ;;
