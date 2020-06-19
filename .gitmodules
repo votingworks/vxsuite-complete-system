@@ -7,9 +7,6 @@
 [submodule "frontends/bas"]
 	path = frontends/bas
 	url = https://github.com/votingworks/bas
-[submodule "frontends/ems"]
-	path = frontends/ems
-	url = https://github.com/votingworks/ems
 [submodule "frontends/election-manager"]
 	path = frontends/election-manager
 	url = https://github.com/votingworks/election-manager

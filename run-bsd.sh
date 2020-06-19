@@ -4,4 +4,4 @@
 cd "$(dirname "$0")"
 
 export PIPENV_VENV_IN_PROJECT=1
-(trap 'kill 0' SIGINT SIGHUP; make -C components/module-smartcards run & make -C components/module-scan run & make -C components/module-usbstick run & make -C frontends/bsd run)
+(trap 'kill 0' SIGINT SIGHUP; make -C components/module-scan run & make -C frontends/bsd run)

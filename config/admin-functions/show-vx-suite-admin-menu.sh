@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-: "${VX_ROOT:="/vx-admin"}"
-: "${VX_CONFIG_ROOT:="${HOME}/.config"}"
+: "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
+: "${VX_CONFIG_ROOT:="/vx-config"}"
 
 prompt-to-restart() {
   read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? [Yn] "
@@ -13,12 +13,14 @@ prompt-to-restart() {
 }
 
 while true; do
-  source "${VX_ROOT}/config/admin-functions/read-vx-machine-config.sh"
+  source "${VX_CONFIG_ROOT}/read-vx-machine-config.sh"
   clear
 
   echo -e "\e[1mVxSuite Admin\e[0m"
+  echo -e "Code Version: \e[32m${VX_CODE_VERSION}\e[0m"
   echo -e "Machine ID: \e[32m${VX_MACHINE_ID}\e[0m"
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
+  timedatectl status | grep "Local time" | sed 's/^ *//g'
 
   if [ "${VX_MACHINE_TYPE}" = bmd ]; then
     echo -e "App Mode: \e[32m${VX_APP_MODE}\e[0m"
@@ -35,9 +37,15 @@ while true; do
     CHOICES+=('set-app-mode')
   fi
 
-  echo "${#CHOICES[@]}. View system logs"
-  CHOICES+=('view-system-logs')
+  echo "${#CHOICES[@]}. Copy system logs to USB"
+  CHOICES+=('copy-system-logs')
 
+  echo "${#CHOICES[@]}. Set Clock"
+  CHOICES+=('set-clock')
+  
+  echo "${#CHOICES[@]}. Change Password"
+  CHOICES+=('change-password')
+  
   echo "0. Reboot"
   echo
   read -p "Select menu item: " CHOICE_INDEX
@@ -45,25 +53,34 @@ while true; do
   CHOICE=${CHOICES[$CHOICE_INDEX]}
   case "${CHOICE}" in
     reboot)
-      sudo reboot
+	# this doesn't need root
+	systemctl reboot -i
     ;;
 
     set-machine-id)
-      "${VX_ROOT}/config/admin-functions/choose-vx-machine-id.sh"
+      "${VX_FUNCTIONS_ROOT}/choose-vx-machine-id.sh"
       prompt-to-restart
     ;;
 
     set-app-mode)
       if [ "${VX_MACHINE_TYPE}" = bmd ]; then
-        "${VX_ROOT}/config/admin-functions/choose-vx-mark-app-mode.sh"
+        "${VX_FUNCTIONS_ROOT}/choose-vx-mark-app-mode.sh"
         prompt-to-restart
       fi
     ;;
 
-    view-system-logs)
-      less +F /var/log/syslog
+    copy-system-logs)
+      "${VX_FUNCTIONS_ROOT}/copy-logs.sh"      
     ;;
 
+    set-clock)
+      "${VX_FUNCTIONS_ROOT}/set-clock.sh"
+    ;;
+
+    change-password)
+      passwd
+    ;;
+    
     *)
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2
       read -s -n 1

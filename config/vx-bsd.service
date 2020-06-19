@@ -1,9 +1,0 @@
-[Unit]
-Description=VotingWorks BSD
-
-[Service]
-Type=simple
-ExecStart=/bin/bash /vx-services/run-bsd.sh
-
-[Install]
-WantedBy=multi-user.target
