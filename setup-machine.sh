@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 sudo apt install -y unclutter mingetty
 
 # turn off automatic updates
