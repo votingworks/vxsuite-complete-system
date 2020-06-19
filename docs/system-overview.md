@@ -53,7 +53,7 @@ Make sure to mention:
 
 * Ubuntu Linux 18.04.4 LTS -- Desktop Edition, Minimal Install
 * Node.js v12
-* Typescript
+* TypeScript
 * Python 3.7
 * React 16.13.1
 
