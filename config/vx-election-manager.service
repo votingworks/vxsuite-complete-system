@@ -3,7 +3,11 @@ Description=VotingWorks Election Manager
 
 [Service]
 Type=simple
+User=vx-services
 ExecStart=/bin/bash /vx-services/run-election-manager.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=election-manager
 
 [Install]
 WantedBy=multi-user.target

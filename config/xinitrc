@@ -2,23 +2,10 @@ xset -dpms
 xset s off
 xset s noblank
 
-# need to figure out brightness
+export CONFIG_DIR="/vx-ui/.vx"
 
-unclutter -idle 0.01 -root &
+bash ${CONFIG_DIR}/run-kiosk-browser-forever-and-log.sh &
 
-if [ "${VX_MACHINE_TYPE}" = bmd ]; then
-    URL=http://localhost:3000/speech-loader.html
-else
-    URL=http://localhost:3000/
-fi
+exec /usr/bin/openbox-session
 
-exec sh <<SHELL
-    export DEBUG=kiosk-browser:* 
-
-    while true; do
-        kiosk-browser \
-            --url '${URL}' \
-            --autoconfigure-print-config /vx-ui/printer-autoconfigure.json
-    done 2>&1 | logger --tag kiosk-browser
-SHELL
 

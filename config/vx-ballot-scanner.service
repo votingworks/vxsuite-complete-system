@@ -1,0 +1,13 @@
+[Unit]
+Description=VotingWorks Ballot Scanner
+
+[Service]
+Type=simple
+User=vx-services
+ExecStart=/bin/bash /vx-services/run-bsd.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=ballot-scanner
+
+[Install]
+WantedBy=multi-user.target

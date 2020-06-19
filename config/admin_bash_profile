@@ -1,4 +1,6 @@
 if [[ $(tty) = /dev/tty2 ]]; then
-   bash /vx-admin/admin-functions/show-vx-suite-admin-menu.sh
+    while true; do
+   	bash /vx-admin/admin-functions/show-vx-suite-admin-menu.sh
+    done 2>&1 | logger --tag admin-functions
 fi
 

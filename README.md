@@ -22,8 +22,6 @@ Then, it's time to configure the machine with all the users, permissions, etc.
 
 ```
 bash setup-machine.sh
-bash setup-election-manager.sh
-bash setup-lockdown.sh
 ```
 
 ## High-level Contracts

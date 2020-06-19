@@ -1,2 +1,6 @@
+#!/bin/bash
 
-kiosk-browser --allowed-save-as-hostname-pattern localhost --allowed-save-as-destination-pattern "/media/**/*" http://localhost:3000 --allow-devtools
+URL=$1
+
+kiosk-browser --allowed-save-as-hostname-pattern localhost --allowed-save-as-destination-pattern "/media/**/*" --autoconfigure-print-config ${CONFIG_DIR:-./printing}/printer-autoconfigure.json --url ${URL:-http://localhost:3000}
+
