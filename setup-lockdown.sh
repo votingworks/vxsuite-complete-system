@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 # disable all passwords
 sudo passwd -l root
 sudo passwd -l $(whoami)
