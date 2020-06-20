@@ -19,7 +19,7 @@ sudo useradd -u 752 -m -d /vx-admin -s /bin/bash vx-admin
 sudo cp -rp run-*.sh frontends components /vx-services
 
 # make sure vx-services has pipenv
-su - vx-service -c "pip3 install pipenv"
+su - vx-services -c "pip3 install pipenv"
 
 # copy the printer configuration so frontend can use it in kiosk browser
 sudo cp config/printer-autoconfigure.json /vx-ui/
@@ -65,3 +65,4 @@ sudo nmcli networking off
 # delete any remembered existing network connections (e.g. wifi passwords)
 sudo rm -f /etc/NetworkManager/system-connections/*
 
+echo "Successfully setup machine."
