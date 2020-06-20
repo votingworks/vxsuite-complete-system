@@ -2,8 +2,7 @@
 
 set -euo pipefail
 
-: "${VX_ROOT:="/vx-admin"}"
-: "${VX_FUNCTIONS_ROOT:="${VX_ROOT}/admin-functions"}"
+: "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
 : "${VX_CONFIG_ROOT:="${HOME}/.config"}"
 
 prompt-to-restart() {
