@@ -20,6 +20,7 @@ while true; do
   echo -e "\e[1mVxSuite Admin\e[0m"
   echo -e "Machine ID: \e[32m${VX_MACHINE_ID}\e[0m"
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
+  timedatectl status | grep "Local time"
 
   if [ "${VX_MACHINE_TYPE}" = bmd ]; then
     echo -e "App Mode: \e[32m${VX_APP_MODE}\e[0m"
@@ -39,6 +40,9 @@ while true; do
   echo "${#CHOICES[@]}. View system logs"
   CHOICES+=('view-system-logs')
 
+  echo "${#CHOICES[@]}. Set Clock"
+  CHOICES+=('set-clock')
+  
   echo "0. Reboot"
   echo
   read -p "Select menu item: " CHOICE_INDEX
@@ -46,7 +50,8 @@ while true; do
   CHOICE=${CHOICES[$CHOICE_INDEX]}
   case "${CHOICE}" in
     reboot)
-      sudo reboot
+	# this doesn't need root
+	systemctl reboot -i
     ;;
 
     set-machine-id)
@@ -65,6 +70,10 @@ while true; do
       less +F /var/log/syslog
     ;;
 
+    set-clock)
+      "${VX_FUNCTIONS_ROOT}/set-clock.sh"
+    ;;
+    
     *)
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2
       read -s -n 1
