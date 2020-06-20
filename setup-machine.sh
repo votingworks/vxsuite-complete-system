@@ -19,7 +19,7 @@ sudo useradd -u 752 -m -d /vx-admin -s /bin/bash vx-admin
 sudo cp -rp run-*.sh frontends components /vx-services
 
 # make sure vx-services has pipenv
-su - vx-services -c "pip3 install pipenv"
+sudo -u vx-services -i pip3 install pipenv
 
 # copy the printer configuration so frontend can use it in kiosk browser
 sudo cp config/printer-autoconfigure.json /vx-ui/
