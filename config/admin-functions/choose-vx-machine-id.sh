@@ -2,8 +2,7 @@
 
 set -euo pipefail
 
-: "${VX_CONFIG_ROOT:="${HOME}/.config"}"
-mkdir -p "${VX_CONFIG_ROOT}"
+: "${VX_CONFIG_ROOT:="/vx-config"}"
 
 while true; do
   read -p "${VX_MACHINE_TYPE} Machine ID (e.g. 0012): " MACHINE_ID

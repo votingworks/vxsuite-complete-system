@@ -15,7 +15,7 @@ sudo useradd -u 750 -m -d /vx-services vx-services
 sudo useradd -u 751 -m -d /vx-ui -s /bin/bash vx-ui
 sudo useradd -u 752 -m -d /vx-admin -s /bin/bash vx-admin
 
-# copy code
+# copy service code
 sudo cp -rp run-*.sh frontends components /vx-services
 
 # make sure vx-services has pipenv
@@ -33,6 +33,10 @@ sudo cp config/xinitrc /vx-ui/.xinitrc
 sudo cp config/admin_bash_profile /vx-admin/.bash_profile
 sudo cp -rp config/admin-functions /vx-admin/admin-functions
 
+# machine configuration
+sudo mkdir -p /vx-config
+sudo cp config/read-vx-machine-config.sh /vx-config/
+
 # permissions on directories
 sudo chown -R vx-services:vx-services /vx-services
 sudo chmod -R u=rwX /vx-services
@@ -45,6 +49,12 @@ sudo chmod -R go-rwX /vx-ui
 sudo chown -R vx-admin:vx-admin /vx-admin
 sudo chmod -R u=rwX /vx-admin
 sudo chmod -R go-rwX /vx-admin
+
+# config readable by services, writable by admin, nothing by anyone else
+sudo chown -R vx-admin:vx-services /vx-config
+sudo chmod -R u=rwX /vx-config
+sudo chmod -R g=rX /vx-config
+sudo chmod -R o-rwX /vx-config
 
 # non-graphical login
 sudo systemctl set-default multi-user.target

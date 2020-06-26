@@ -4,7 +4,7 @@ set -euo pipefail
 
 : "${VX_ROOT:="/vx-admin"}"
 : "${VX_FUNCTIONS_ROOT:="${VX_ROOT}/admin-functions"}"
-: "${VX_CONFIG_ROOT:="${HOME}/.config"}"
+: "${VX_CONFIG_ROOT:="/vx-config"}"
 
 MACHINE_TYPE="${1:-}"
 

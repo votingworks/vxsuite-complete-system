@@ -2,8 +2,7 @@
 
 set -euo pipefail
 
-: "${VX_CONFIG_ROOT:="${HOME}/.config"}"
-mkdir -p "${VX_CONFIG_ROOT}"
+: "${VX_CONFIG_ROOT:="/vx-config"}"
 
 MACHINE_TYPE="${1:-}"
 
