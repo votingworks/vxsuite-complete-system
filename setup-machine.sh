@@ -56,6 +56,13 @@ sudo chmod -R u=rwX /vx-config
 sudo chmod -R g=rX /vx-config
 sudo chmod -R o-rwX /vx-config
 
+# move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
+sudo cp config/sudoers /etc/sudoers
+sudo chown root:root /etc/sudoers
+sudo chmod u=r /etc/sudoers
+sudo chmod g=r /etc/sudoers
+sudo chmod o-rwX /etc/sudoers
+
 # non-graphical login
 sudo systemctl set-default multi-user.target
 
