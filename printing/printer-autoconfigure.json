@@ -18,6 +18,24 @@
       "ppd": {
         "path": "hp-laserjet_pro_m404-m405-ps.ppd"
       }
+    },
+    {
+      "label": "HP Color LaserJet Pro M454dw",
+      "vendorId": 1008,
+      "productId": 50218,
+      "baseDeviceURI": "usb://HP/Color%20LaserJet%20Pro%20M453-4",
+      "ppd": {
+        "path": "hp-color_laserjet_pro_m453-4-ps.ppd"
+      }
+    },
+    {
+      "label": "HP Color LaserJet Pro M454dn",
+      "vendorId": 1008,
+      "productId": 50217,
+      "baseDeviceURI": "usb://HP/Color%20LaserJet%20Pro%20M453-4",
+      "ppd": {
+        "path": "hp-color_laserjet_pro_m453-4-ps.ppd"
+      }
     }
   ]
 }
