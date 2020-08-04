@@ -22,3 +22,6 @@
 [submodule "kiosk-browser"]
 	path = kiosk-browser
 	url = https://github.com/votingworks/kiosk-browser
+[submodule "components/module-converter-sems"]
+	path = components/module-converter-sems
+	url = https://github.com/votingworks/module-converter-sems
