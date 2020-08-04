@@ -3,6 +3,11 @@ FRONTENDS := $(wildcard frontends/*)
 COMPONENTS := $(wildcard components/*)
 CWD := $(shell pwd)
 
+force-update-ms:
+	git fetch --all
+	git reset --hard origin/state-ms
+	git submodule update --init
+
 checkout:
 	git pull
 	git submodule update --init
