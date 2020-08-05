@@ -68,8 +68,7 @@ fi
 sudo cp -rp run-*.sh frontends components /vx-services
 
 # make sure vx-services has pipenv
-## Not necessary as we no longer have a python backend service right now
-# sudo -u vx-services -i pip3 install pipenv
+sudo -u vx-services -i pip3 install pipenv
 
 # copy the printer configuration so frontend can use it in kiosk browser
 sudo mkdir -p /vx-ui/.vx
