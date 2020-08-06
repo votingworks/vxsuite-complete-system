@@ -73,7 +73,7 @@ sudo -u vx-services -i pip3 install pipenv
 # copy the printer configuration so frontend can use it in kiosk browser
 sudo mkdir -p /vx-ui/.vx
 sudo cp printing/printer-autoconfigure.json /vx-ui/.vx/
-sudo cp printing/hp-laserjet_pro_m404-m405-ps.ppd /vx-ui/.vx/
+sudo cp printing/*.ppd /vx-ui/.vx/
 sudo cp run-kiosk-browser.sh /vx-ui/.vx/
 sudo cp run-kiosk-browser-forever-and-log.sh /vx-ui/.vx/
 
