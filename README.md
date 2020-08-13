@@ -7,7 +7,7 @@ and scripts to run each machine (BMD, BAS, BSD, EMS).
 
 ## Hardware and OS
 
-Pick a machine with FHD resolution and the ability to install Linux.
+Pick a machine with FHD (1920x1080) resolution and the ability to install Linux.
 Install Ubuntu 18.04.4+ Desktop, minimal installation. Software update.
 
 ## Install VotingWorks Software
@@ -19,7 +19,7 @@ cd vxsuite-complete-system
 make node
 ```
 
-Then pull down all of the code. You can rerun these commands to pull
+Then pull down all of the code. You can re-run these commands to pull
 the latest version of the code.
 
 ```
@@ -57,7 +57,7 @@ You're good to go. You can exit the Kiosk Browser with Ctrl-W.
 
 ## Configuring for Production
 
-To configure and lock down the machine for production use, nothing
+To configure and lock down the machine for production use, noting
 this is an irreversible process:
 
 ```
@@ -81,4 +81,3 @@ the combined repositories.
 We use git submodules here for the components, for the express purpose
 that we never want to update one of the components without explicitly
 checking that all the modules work well together.
-
