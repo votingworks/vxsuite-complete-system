@@ -4,6 +4,7 @@ COMPONENTS := $(wildcard components/*)
 CWD := $(shell pwd)
 
 checkout:
+	git pull
 	git submodule update --init
 
 node:
