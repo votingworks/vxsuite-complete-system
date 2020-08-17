@@ -8,11 +8,13 @@ and scripts to run each machine (BMD, BAS, BSD, EMS).
 ## Hardware and OS
 
 Pick a machine with FHD (1920x1080) resolution and the ability to install Linux.
-Install Ubuntu 18.04.4+ Desktop, minimal installation. Software update.
+Install [Ubuntu 18.04.4+ Desktop](https://releases.ubuntu.com/18.04.5/), minimal
+installation. Software update.
 
 ## Install VotingWorks Software
 
 ```
+sudo apt update
 sudo apt install git make
 git clone https://github.com/votingworks/vxsuite-complete-system
 cd vxsuite-complete-system
