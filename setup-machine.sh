@@ -57,6 +57,10 @@ sudo usermod -aG plugdev vx-admin
 # let vx-ui manage printers
 sudo usermod -aG lpadmin vx-ui
 
+# let vx-services scan
+sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
+sudo usermod -aG scanner vx-services
+
 # remove components we don't need
 if [ "${CHOICE}" = "election-manager" ]
 then
