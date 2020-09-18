@@ -7,9 +7,6 @@
 [submodule "frontends/bas"]
 	path = frontends/bas
 	url = https://github.com/votingworks/bas
-[submodule "frontends/election-manager"]
-	path = frontends/election-manager
-	url = https://github.com/votingworks/election-manager
 [submodule "components/module-smartcards"]
 	path = components/module-smartcards
 	url = https://github.com/votingworks/module-smartcards
@@ -22,3 +19,6 @@
 [submodule "kiosk-browser"]
 	path = kiosk-browser
 	url = https://github.com/votingworks/kiosk-browser
+[submodule "vxsuite"]
+	path = vxsuite
+	url = https://github.com/votingworks/vxsuite.git
