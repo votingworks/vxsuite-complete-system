@@ -2,11 +2,12 @@
 
 set -euo pipefail
 
+# load configuration
+source /vx-config/read-vx-machine-config.sh
+
 # go to directory where this file is located
 cd "$(dirname "$0")"
 
-# FIXME: this environment variable is never set up properly
-# so this won't work for BMD
 if [ "${VX_MACHINE_TYPE:-}" = bmd ]; then
     URL=http://localhost:3000/speech-loader.html
 else

@@ -2,9 +2,7 @@ xset -dpms
 xset s off
 xset s noblank
 
-export CONFIG_DIR="/vx-ui/.vx"
-
-bash ${CONFIG_DIR}/run-kiosk-browser-forever-and-log.sh &
+bash /vx-ui/.vx/run-kiosk-browser-forever-and-log.sh &
 
 exec /usr/bin/openbox-session
 
