@@ -1,0 +1,9 @@
+[Unit]
+Description=Festival Speech Synthesis
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/festival --server
+
+[Install]
+WantedBy=multi-user.target

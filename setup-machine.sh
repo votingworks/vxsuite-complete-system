@@ -15,6 +15,12 @@ CHOICES+=('election-manager')
 echo "${#CHOICES[@]}. Ballot Scanner"
 CHOICES+=('ballot-scanner')
 
+echo "${#CHOICES[@]}. Ballot Marking Device (BMD)"
+CHOICES+=('bmd')
+
+echo "${#CHOICES[@]}. Ballot Activation System (BAS)"
+CHOICES+=('bas')
+
 echo
 read -p "Select machine: " CHOICE_INDEX
 
@@ -44,6 +50,12 @@ sudo useradd -u 750 -m -d /vx-services vx-services
 sudo useradd -u 751 -m -d /vx-ui -s /bin/bash vx-ui
 sudo useradd -u 752 -m -d /vx-admin -s /bin/bash vx-admin
 
+# a vx group for all vx users
+sudo groupadd -g 800 vx-group
+sudo usermod -aG vx-group vx-ui
+sudo usermod -aG vx-group vx-services
+sudo usermod -aG vx-group vx-admin
+
 # remove all files created by default
 sudo rm -rf /vx-services/* /vx-ui/* /vx-admin/*
 
@@ -51,21 +63,34 @@ sudo rm -rf /vx-services/* /vx-ui/* /vx-admin/*
 sudo usermod -aG adm vx-admin
 
 # Let some users mount/unmount usb disks
-sudo usermod -aG plugdev vx-ui
+if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
+then
+    sudo usermod -aG plugdev vx-ui
+fi
 sudo usermod -aG plugdev vx-admin
 
 # let vx-ui manage printers
 sudo usermod -aG lpadmin vx-ui
 
 # let vx-services scan
-sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
-sudo usermod -aG scanner vx-services
+if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
+then
+    sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
+    sudo usermod -aG scanner vx-services
+fi
 
 # remove components we don't need
 if [ "${CHOICE}" = "election-manager" ]
 then
     echo "removing unnecessary code for Election Manager."
     rm -rf components/module-smartcards components/module-scan components/module-usbstick
+fi
+
+if [ "${CHOICE}" = "bmd" ] || [ "${CHOICE}" = "bas" ]
+then
+    echo "removing unnecessary code for BMD/BAS."
+    rm -rf components/module-scan
+    rm -rf frontends/bsd frontends/election-manager
 fi
 
 # copy service code
@@ -76,13 +101,14 @@ sudo -u vx-services -i pip3 install pipenv
 
 # copy the printer configuration so frontend can use it in kiosk browser
 sudo mkdir -p /vx-ui/.vx
-sudo cp printing/printer-autoconfigure.json /vx-ui/.vx/
-sudo cp printing/*.ppd /vx-ui/.vx/
+sudo cp -r printing /vx-ui/.vx/
+
 sudo cp run-kiosk-browser.sh /vx-ui/.vx/
 sudo cp run-kiosk-browser-forever-and-log.sh /vx-ui/.vx/
 
 # copy the .bash_profile and .xinitrc for vx-ui auto start
 sudo cp config/ui_bash_profile /vx-ui/.bash_profile
+
 sudo cp config/xinitrc /vx-ui/.xinitrc
 
 # admin function scripts
@@ -101,6 +127,14 @@ sudo sh -c 'git rev-parse HEAD > /vx-config/code-version'
 
 # machine ID
 sudo sh -c 'echo "0000" > /vx-config/machine-id'
+
+# app mode & speech synthesis
+if [ "${CHOICE}" = "bmd" ]
+then
+    sudo sh -c 'echo "VxMark" > /vx-config/app-mode'
+
+    bash setup-speech-synthesis.sh
+fi
 
 # vx-ui OpenBox configuration
 sudo mkdir -p /vx-ui/.config/openbox
@@ -124,8 +158,8 @@ sudo chown -R vx-admin:vx-admin /vx-admin
 sudo chmod -R u=rwX /vx-admin
 sudo chmod -R go-rwX /vx-admin
 
-# config readable by services, writable by admin, nothing by anyone else
-sudo chown -R vx-admin:vx-services /vx-config
+# config readable & executable by all vx users, writable by admin.
+sudo chown -R vx-admin:vx-group /vx-config
 sudo chmod -R u=rwX /vx-config
 sudo chmod -R g=rX /vx-config
 sudo chmod -R o-rwX /vx-config
