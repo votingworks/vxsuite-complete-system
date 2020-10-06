@@ -141,6 +141,14 @@ sudo mkdir -p /vx-ui/.config/openbox
 sudo cp config/openbox-menu.xml /vx-ui/.config/openbox/menu.xml
 sudo cp config/openbox-rc.xml /vx-ui/.config/openbox/rc.xml
 
+# If surface go, set proper resolution (1x not 2x)
+PRODUCT_NAME=`sudo dmidecode -s system-product-name`
+if [ "$PRODUCT_NAME" == "Surface Go" ]
+then
+    sudo cp config/surface-go-monitors.xml /vx-ui/.config/monitors.xml
+fi
+
+
 # permissions on directories
 sudo chown -R vx-services:vx-services /vx-services
 sudo chmod -R u=rwX /vx-services
@@ -192,6 +200,7 @@ sudo cp config/vx-${CHOICE}.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/vx-${CHOICE}.service
 sudo systemctl enable vx-${CHOICE}.service
 sudo systemctl start vx-${CHOICE}.service
+
 
 echo "Successfully setup machine."
 
