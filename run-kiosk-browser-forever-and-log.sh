@@ -8,7 +8,16 @@ source /vx-config/read-vx-machine-config.sh
 # go to directory where this file is located
 cd "$(dirname "$0")"
 
-if [ "${VX_MACHINE_TYPE:-}" = bmd ]; then
+: "${VX_MACHINE_TYPE:=""}"
+
+# remove pointer on screen
+if [ "${VX_MACHINE_TYPE}" = "bmd" ] || [ "${VX_MACHINE_TYPE}" = "bas" ]; then
+    unclutter -idle 0.01 -root &
+fi
+    
+
+if [ "${VX_MACHINE_TYPE}" = "bmd" ]; then
+    amixer set Master 75%
     URL=http://localhost:3000/speech-loader.html
 else
     URL=http://localhost:3000/
