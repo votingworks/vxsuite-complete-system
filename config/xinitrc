@@ -4,6 +4,9 @@ xset s noblank
 
 bash /vx-ui/.vx/run-kiosk-browser-forever-and-log.sh &
 
+# brightness all the way
+sudo brightnessctl s 100%
+
 exec /usr/bin/openbox-session
 
 

@@ -34,7 +34,7 @@ CHOICE=${CHOICES[$CHOICE_INDEX]}
 
 echo "Excellent, let's set up ${CHOICE}."
 
-sudo apt install -y unclutter mingetty pmount
+sudo apt install -y unclutter mingetty pmount brightnessctl
 
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
