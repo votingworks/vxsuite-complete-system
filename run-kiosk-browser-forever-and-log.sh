@@ -17,7 +17,8 @@ fi
     
 
 if [ "${VX_MACHINE_TYPE}" = "bmd" ]; then
-    amixer set Master 75%
+    amixer -D pulse set Master 80% || true
+    
     URL=http://localhost:3000/speech-loader.html
 else
     URL=http://localhost:3000/
