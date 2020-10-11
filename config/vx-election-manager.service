@@ -4,6 +4,7 @@ Description=VotingWorks Election Manager
 [Service]
 Type=simple
 User=vx-services
+Environment=VX_CONFIG_ROOT=/vx-config
 ExecStart=/bin/bash /vx-services/run-election-manager.sh
 StandardOutput=syslog
 StandardError=syslog
