@@ -29,7 +29,7 @@ The Surface Go's come with Windows. The simplest way to boot from USB is as foll
   stick.
 
 * *Force into recovery mode*: power up the tablet, then, as soon as
-  the windows logo appears, force shut it down by holding down the
+  the Windows logo appears, force shut it down by holding down the
   power button continuously until the tablet shuts down. Do this 2 or
   3 times until the booting process says "starting recovery" or a
   similar message (it varies by exact model.)
@@ -76,4 +76,3 @@ boot
 ```
 
 you should now be booting off USB.
-
