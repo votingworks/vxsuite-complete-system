@@ -1,6 +1,7 @@
 xset -dpms
 xset s off
 xset s noblank
+xrdb ~/.Xresources
 
 bash /vx-ui/.vx/run-kiosk-browser-forever-and-log.sh &
 

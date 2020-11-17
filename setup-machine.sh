@@ -109,6 +109,7 @@ sudo cp run-kiosk-browser-forever-and-log.sh /vx-ui/.vx/
 # copy the .bash_profile and .xinitrc for vx-ui auto start
 sudo cp config/ui_bash_profile /vx-ui/.bash_profile
 
+sudo cp config/Xresources /vx-ui/.Xresources
 sudo cp config/xinitrc /vx-ui/.xinitrc
 
 # admin function scripts
