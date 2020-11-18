@@ -112,6 +112,10 @@ sudo cp config/ui_bash_profile /vx-ui/.bash_profile
 sudo cp config/Xresources /vx-ui/.Xresources
 sudo cp config/xinitrc /vx-ui/.xinitrc
 
+# copy the GTK .settings.ini
+sudo mkdir -p /vx-ui/.config/gtk-3.0
+sudo cp config/gtksettings.ini /vx-ui/.config/gtk-3.0/settings.ini
+
 # admin function scripts
 sudo cp config/admin_bash_profile /vx-admin/.bash_profile
 sudo cp -rp config/admin-functions /vx-admin/admin-functions
