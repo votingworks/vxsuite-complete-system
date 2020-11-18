@@ -228,6 +228,14 @@
 </menu>
 
 <applications>
+  <!-- VotingWorks added custom styling to the GTKFileChooserDialog -->
+  <application role="GtkFileChooserDialog">
+    <decor>no</decor>
+    <size>
+      <height>80%</height>
+      <width>70%</width>
+    </size>
+  </application>
 </applications>
 
 </openbox_config>
