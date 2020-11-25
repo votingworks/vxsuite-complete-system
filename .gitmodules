@@ -1,24 +1,3 @@
-[submodule "frontends/bmd"]
-	path = frontends/bmd
-	url = https://github.com/votingworks/bmd
-[submodule "frontends/bsd"]
-	path = frontends/bsd
-	url = https://github.com/votingworks/bsd
-[submodule "frontends/bas"]
-	path = frontends/bas
-	url = https://github.com/votingworks/bas
-[submodule "frontends/election-manager"]
-	path = frontends/election-manager
-	url = https://github.com/votingworks/election-manager
-[submodule "components/module-smartcards"]
-	path = components/module-smartcards
-	url = https://github.com/votingworks/module-smartcards
-[submodule "components/module-scan"]
-	path = components/module-scan
-	url = https://github.com/votingworks/module-scan
-[submodule "components/module-usbstick"]
-	path = components/module-usbstick
-	url = https://github.com/votingworks/module-usbstick
 [submodule "kiosk-browser"]
 	path = kiosk-browser
 	url = https://github.com/votingworks/kiosk-browser
