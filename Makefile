@@ -1,6 +1,6 @@
 
-FRONTENDS := $(wildcard frontends/*)
-COMPONENTS := $(wildcard components/*)
+FRONTENDS := vxsuite/apps/bmd vxsuite/apps/bsd vxsuite/apps/election-manager vxsuite/apps/bas
+COMPONENTS := vxsuite/apps/module-scan vxsuite/apps/module-smartcards
 CWD := $(shell pwd)
 
 checkout:

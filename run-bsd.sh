@@ -9,4 +9,4 @@ cd "$(dirname "$0")"
 source ${VX_CONFIG_ROOT}/read-vx-machine-config.sh
 
 export PIPENV_VENV_IN_PROJECT=1
-(trap 'kill 0' SIGINT SIGHUP; make -C components/module-scan run & make -C frontends/bsd run)
+(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/module-scan run & make -C vxsuite/apps/bsd run)
