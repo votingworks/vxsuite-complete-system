@@ -11,4 +11,4 @@ cd "$(dirname "$0")"
 source ${VX_CONFIG_ROOT}/read-vx-machine-config.sh
 
 export PIPENV_VENV_IN_PROJECT=1
-(trap 'kill 0' SIGINT SIGHUP; make -C frontends/election-manager run)
+(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/election-manager run)

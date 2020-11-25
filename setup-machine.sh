@@ -83,18 +83,18 @@ fi
 if [ "${CHOICE}" = "election-manager" ]
 then
     echo "removing unnecessary code for Election Manager."
-    rm -rf components/module-smartcards components/module-scan components/module-usbstick
+    rm -rf vxsuite/apps/module-smartcards vxsuite/apps/module-scan
 fi
 
 if [ "${CHOICE}" = "bmd" ] || [ "${CHOICE}" = "bas" ]
 then
     echo "removing unnecessary code for BMD/BAS."
-    rm -rf components/module-scan
-    rm -rf frontends/bsd frontends/election-manager
+    rm -rf vxsuite/apps/module-scan
+    rm -rf vxsuite/apps/bsd vxsuite/apps/election-manager
 fi
 
 # copy service code
-sudo cp -rp run-*.sh frontends components /vx-services
+sudo cp -rp run-*.sh vxsuite /vx-services
 
 # make sure vx-services has pipenv
 sudo -u vx-services -i pip3 install pipenv
