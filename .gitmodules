@@ -1,3 +1,6 @@
 [submodule "kiosk-browser"]
 	path = kiosk-browser
 	url = https://github.com/votingworks/kiosk-browser
+[submodule "vxsuite"]
+	path = vxsuite
+	url = https://github.com/votingworks/vxsuite
