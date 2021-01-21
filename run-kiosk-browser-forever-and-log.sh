@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-# load configuration
-source /vx-config/read-vx-machine-config.sh
-
 # go to directory where this file is located
 cd "$(dirname "$0")"
+
+# configuration information
+source config/read-vx-machine-config.sh
 
 : "${VX_MACHINE_TYPE:=""}"
 

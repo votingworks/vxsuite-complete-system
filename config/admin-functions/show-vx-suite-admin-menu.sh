@@ -3,7 +3,6 @@
 set -euo pipefail
 
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
-: "${VX_CONFIG_ROOT:="/vx-config"}"
 
 prompt-to-restart() {
   read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? [Yn] "
@@ -13,7 +12,7 @@ prompt-to-restart() {
 }
 
 while true; do
-  source "${VX_CONFIG_ROOT}/read-vx-machine-config.sh"
+  source "${VX_FUNCTIONS_ROOT}/../read-vx-machine-config.sh"
   clear
 
   echo -e "\e[1mVxSuite Admin\e[0m"
