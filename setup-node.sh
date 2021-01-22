@@ -1,4 +1,4 @@
-# node and npm and yarn
+# node and npm and yarn and pnpm
 # https://github.com/nodesource/distributions/blob/master/README.md#debmanual
 NODE_VERSION=node_12.x
 
@@ -10,5 +10,5 @@ echo "deb-src https://deb.nodesource.com/${NODE_VERSION} ${DISTRO} main" | sudo 
 sudo apt update
 sudo apt install -y nodejs
 
-sudo npm install -g yarn
+sudo npm install -g yarn pnpm
 
