@@ -4,8 +4,8 @@ Description=VotingWorks BAS
 [Service]
 Type=simple
 User=vx-services
-Environment=VX_CONFIG_ROOT=/vx-config
-ExecStart=/bin/bash /vx-services/run-bas.sh
+Environment=VX_CONFIG_ROOT=/vx/config
+ExecStart=/bin/bash /vx/services/run-bas.sh
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=bas

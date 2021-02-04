@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# /vx/ui --> home directory for the vx-ui user (rw with symlink for ro files)
+# /vx/services --> home directory for the vx-services user (rw with symlink for ro files)
+# /vx/admin --> home directory for the vx-admin user (rw with symlink for ro files)
+# /vx/code --> all the executable code (ro)
+# /vx/data --> all the scans and sqlite database for services
+# /vx/config --> machine configuration that spans all the users.
+
 set -euo pipefail
 
 # which kind of machine are we setting up?
@@ -45,10 +52,15 @@ sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
 # make sure machine never shuts down on idle, and does shut down on power key (no hibernate or anything.)
 sudo cp config/logind.conf /etc/systemd/
 
+# directory structure
+sudo mkdir /vx
+sudo mkdir /vx/code
+sudo mkdir -p /vx/data/module-scan
+
 # create users, no common group, specified uids.
-sudo useradd -u 750 -m -d /vx-services vx-services
-sudo useradd -u 751 -m -d /vx-ui -s /bin/bash vx-ui
-sudo useradd -u 752 -m -d /vx-admin -s /bin/bash vx-admin
+sudo useradd -u 750 -m -d /vx/services vx-services
+sudo useradd -u 751 -m -d /vx/ui -s /bin/bash vx-ui
+sudo useradd -u 752 -m -d /vx/admin -s /bin/bash vx-admin
 
 # a vx group for all vx users
 sudo groupadd -g 800 vx-group
@@ -57,7 +69,7 @@ sudo usermod -aG vx-group vx-services
 sudo usermod -aG vx-group vx-admin
 
 # remove all files created by default
-sudo rm -rf /vx-services/* /vx-ui/* /vx-admin/*
+sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 
 # Let vx-admin read logs
 sudo usermod -aG adm vx-admin
@@ -93,89 +105,94 @@ then
     rm -rf vxsuite/apps/bsd vxsuite/apps/election-manager
 fi
 
-# copy service code
-sudo cp -rp run-*.sh vxsuite /vx-services
+# copy code into the right place
+sudo cp -rp run-*.sh vxsuite printing config /vx/code
+
+# symlink the code and run-*.sh in /vx/services
+sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
+sudo ln -s /vx/code/run-bmd.sh /vx/services/run-bmd.sh
+sudo ln -s /vx/code/run-bas.sh /vx/services/run-bas.sh
+sudo ln -s /vx/code/run-election-manager.sh /vx/services/run-election-manager.sh
+sudo ln -s /vx/code/run-bsd.sh /vx/services/run-bsd.sh
 
 # make sure vx-services has pipenv
 sudo -u vx-services -i pip3 install pipenv
 
-# copy the printer configuration so frontend can use it in kiosk browser
-sudo mkdir -p /vx-ui/.vx
-sudo cp -r printing /vx-ui/.vx/
+# symlink printer config and run scripts for vx-ui
+sudo mkdir -p /vx/ui/.vx
+sudo ln -s /vx/code/printing /vx/ui/.vx/printing
+sudo ln -s /vx/code/run-kiosk-browser.sh /vx/ui/.vx/run-kiosk-browser.sh
+sudo ln -s /vx/code/run-kiosk-browser-forever-and-log.sh /vx/ui/.vx/run-kiosk-browser-forever-and-log.sh
 
-sudo cp run-kiosk-browser.sh /vx-ui/.vx/
-sudo cp run-kiosk-browser-forever-and-log.sh /vx-ui/.vx/
+# symlink appropriate vx/ui files
+sudo ln -s /vx/code/config/ui_bash_profile /vx/ui/.bash_profile
+sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
+sudo ln -s /vx/code/config/xinitrc /vx/ui/.xinitrc
 
-# copy the .bash_profile and .xinitrc for vx-ui auto start
-sudo cp config/ui_bash_profile /vx-ui/.bash_profile
-
-sudo cp config/Xresources /vx-ui/.Xresources
-sudo cp config/xinitrc /vx-ui/.xinitrc
-
-# copy the GTK .settings.ini
-sudo mkdir -p /vx-ui/.config/gtk-3.0
-sudo cp config/gtksettings.ini /vx-ui/.config/gtk-3.0/settings.ini
+# symlink the GTK .settings.ini
+sudo mkdir -p /vx/ui/.config/gtk-3.0
+sudo ln -s /vx/code/config/gtksettings.ini /vx/ui/.config/gtk-3.0/settings.ini
 
 # admin function scripts
-sudo cp config/admin_bash_profile /vx-admin/.bash_profile
-sudo cp -rp config/admin-functions /vx-admin/admin-functions
+sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
+sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
 
 # machine configuration
-sudo mkdir -p /vx-config
-sudo cp config/read-vx-machine-config.sh /vx-config/
+sudo mkdir -p /vx/config
+sudo ln -s /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-config.sh
 
 # record the machine type in the configuration (-E keeps the environment variable around, CHOICE prefix sends it in)
-CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx-config/machine-type'
+CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx/config/machine-type'
 
 # code version
-sudo sh -c 'git rev-parse HEAD > /vx-config/code-version'
+sudo sh -c 'git rev-parse HEAD > /vx/config/code-version'
 
 # machine ID
-sudo sh -c 'echo "0000" > /vx-config/machine-id'
+sudo sh -c 'echo "0000" > /vx/config/machine-id'
 
 # app mode & speech synthesis
 if [ "${CHOICE}" = "bmd" ]
 then
-    sudo sh -c 'echo "VxMark" > /vx-config/app-mode'
+    sudo sh -c 'echo "VxMark" > /vx/config/app-mode'
 
     bash setup-speech-synthesis.sh
 fi
 
 # vx-ui OpenBox configuration
-sudo mkdir -p /vx-ui/.config/openbox
-sudo cp config/openbox-menu.xml /vx-ui/.config/openbox/menu.xml
-sudo cp config/openbox-rc.xml /vx-ui/.config/openbox/rc.xml
+sudo mkdir -p /vx/ui/.config/openbox
+sudo ln -s /vx/code/config/openbox-menu.xml /vx/ui/.config/openbox/menu.xml
+sudo ln -s /vx/code/config/openbox-rc.xml /vx/ui/.config/openbox/rc.xml
 
 # If surface go, set proper resolution (1x not 2x)
 PRODUCT_NAME=`sudo dmidecode -s system-product-name`
 if [ "$PRODUCT_NAME" == "Surface Go" ]
 then
-    sudo cp config/surface-go-monitors.xml /vx-ui/.config/monitors.xml
+    sudo ln -s /vx/code/config/surface-go-monitors.xml /vx/ui/.config/monitors.xml
 fi
 
 
 # permissions on directories
-sudo chown -R vx-services:vx-services /vx-services
-sudo chmod -R u=rwX /vx-services
-sudo chmod -R go-rwX /vx-services
+sudo chown -R vx-services:vx-services /vx/services
+sudo chmod -R u=rwX /vx/services
+sudo chmod -R go-rwX /vx/services
 
-sudo chown -R vx-ui:vx-ui /vx-ui
-sudo chmod -R u=rwX /vx-ui
-sudo chmod -R go-rwX /vx-ui
+sudo chown -R vx-ui:vx-ui /vx/ui
+sudo chmod -R u=rwX /vx/ui
+sudo chmod -R go-rwX /vx/ui
 
-# make the run scripts and configuration not modifiable by vx-ui
-sudo chown -R vx-services:vx-ui /vx-ui/.vx
-sudo chmod -R g+rX /vx-ui/.vx
+sudo chown -R vx-admin:vx-admin /vx/admin
+sudo chmod -R u=rwX /vx/admin
+sudo chmod -R go-rwX /vx/admin
 
-sudo chown -R vx-admin:vx-admin /vx-admin
-sudo chmod -R u=rwX /vx-admin
-sudo chmod -R go-rwX /vx-admin
+sudo chown -R vx-services:vx-services /vx/data
+sudo chmod -R u=rwX /vx/data
+sudo chmod -R go-rwX /vx/data
 
 # config readable & executable by all vx users, writable by admin.
-sudo chown -R vx-admin:vx-group /vx-config
-sudo chmod -R u=rwX /vx-config
-sudo chmod -R g=rX /vx-config
-sudo chmod -R o-rwX /vx-config
+sudo chown -R vx-admin:vx-group /vx/config
+sudo chmod -R u=rwX /vx/config
+sudo chmod -R g=rX /vx/config
+sudo chmod -R o-rwX /vx/config
 
 # non-graphical login
 sudo systemctl set-default multi-user.target

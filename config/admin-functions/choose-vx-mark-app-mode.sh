@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-: "${VX_CONFIG_ROOT:="/vx-config"}"
+: "${VX_CONFIG_ROOT:="/vx/config"}"
 
 while true; do
   echo 'VxMark App Mode:'

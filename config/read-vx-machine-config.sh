@@ -1,6 +1,6 @@
 # This file only makes sense as a `source` target, so it isn't executable.
 
-: "${VX_CONFIG_ROOT:="/vx-config"}"
+: "${VX_CONFIG_ROOT:="/vx/config"}"
 
 export VX_MACHINE_ID="$(< "${VX_CONFIG_ROOT}/machine-id")"
 export VX_MACHINE_TYPE="$(< "${VX_CONFIG_ROOT}/machine-type")"
