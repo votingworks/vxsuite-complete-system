@@ -6,7 +6,8 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 # configuration information
-source config/read-vx-machine-config.sh
+CONFIG=${VX_CONFIG_ROOT:-./config}
+source ${CONFIG}/read-vx-machine-config.sh
 
 export PIPENV_VENV_IN_PROJECT=1
 export NODE_ENV=production

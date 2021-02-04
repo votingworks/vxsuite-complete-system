@@ -3,7 +3,8 @@ xset s off
 xset s noblank
 xrdb ~/.Xresources
 
-bash /vx-ui/.vx/run-kiosk-browser-forever-and-log.sh &
+export VX_CONFIG_ROOT="/vx/config"
+bash /vx/ui/.vx/run-kiosk-browser-forever-and-log.sh &
 
 # brightness all the way
 sudo brightnessctl s 100%
