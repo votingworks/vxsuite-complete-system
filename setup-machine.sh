@@ -56,6 +56,7 @@ sudo cp config/logind.conf /etc/systemd/
 sudo mkdir /vx
 sudo mkdir /vx/code
 sudo mkdir -p /vx/data/module-scan
+sudo mkdir -p /vx/data/module-sems-converter
 
 # create users, no common group, specified uids.
 sudo useradd -u 750 -m -d /vx/services vx-services
@@ -106,10 +107,11 @@ then
 fi
 
 # copy code into the right place
-sudo cp -rp run-*.sh vxsuite printing config /vx/code
+sudo cp -rp run-*.sh vxsuite converters printing config /vx/code
 
 # symlink the code and run-*.sh in /vx/services
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
+sudo ln -s /vx/code/converters /vx/services/converters
 sudo ln -s /vx/code/run-bmd.sh /vx/services/run-bmd.sh
 sudo ln -s /vx/code/run-bas.sh /vx/services/run-bas.sh
 sudo ln -s /vx/code/run-election-manager.sh /vx/services/run-election-manager.sh
