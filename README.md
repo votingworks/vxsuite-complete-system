@@ -29,25 +29,57 @@ make checkout
 make build
 ```
 
-## Run in Development
+## Run in Test Mode
 
-You can now run the services needed for any of the systems as follows:
+You now have a test machine that can run any of the VxSuite components
+(election manager, ballot scanner, BMD, or encoder). *You can only run
+one component at a time*.
+
+To run a VxSuite component, you need to run
+* all the services needed for that component
+* Kiosk Browser, the front-end Kiosk system that displays the user interface
+
+### Election Manager
+
+This command will run all software services needed for election manager:
 
 ```
 bash run-election-manager.sh
 ```
 
+### Ballot Scanner
+
+This command will run all software services needed for ballot scanner:
+
 ```
 bash run-bsd.sh
 ```
+### Ballot Marking Device
+
+There are 3 modes:
+* `VxMark`: the BMD is used just for electronic marking and stores the ballot on the smart card
+* `VxPrint`: this is the print station that takes a smart card with a ballot on it and prints it
+* `VxMark + VxPrint`: the more classic BMD, mark on the screen and immediately print the ballot.
+
+The default mode is Mark.
+
+This command will run all software services needed for the
+ballot-marking device, in the given mode. Make sure to substitute your
+chosen mode (`VxMark`, `VxPrint`, `VxMark + VxPrint`) in the command:
 
 ```
-bash run-bmd.sh
+VX_APP_MODE="<mode>" bash run-bmd.sh
 ```
+
+### Encoder
+
+This command will run all software services needed for the smart-card encoder:
 
 ```
 bash run-bas.sh
 ```
+
+### Kiosk Browser
 
 Once the services are running, start the Kiosk Browser:
 
@@ -56,6 +88,7 @@ bash run-kiosk-browser.sh
 ```
 
 You're good to go. You can exit the Kiosk Browser with Ctrl-W.
+
 
 ## Configuring for Production
 
