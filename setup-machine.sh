@@ -149,6 +149,9 @@ CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx/config/machine-type'
 # code version, e.g. "2021.03.29-d34db33fcd"
 sudo sh -c 'echo "$(date +%Y.%m.%d)-$(git rev-parse HEAD | cut -c -10)" > /vx/config/code-version'
 
+# code tag, e.g. "m11c-rc3"
+sudo sh -c 'git tag --points-at HEAD > /vx/config/code-tag'
+
 # machine ID
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
 
