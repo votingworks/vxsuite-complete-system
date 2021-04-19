@@ -5,6 +5,7 @@
 export VX_MACHINE_ID="$(< "${VX_CONFIG_ROOT}/machine-id")"
 export VX_MACHINE_TYPE="$(< "${VX_CONFIG_ROOT}/machine-type")"
 export VX_CODE_VERSION="$(< "${VX_CONFIG_ROOT}/code-version")"
+export VX_CODE_TAG="$(< "${VX_CONFIG_ROOT}/code-tag")"
 
 if [ -f "${VX_CONFIG_ROOT}/app-mode" ]; then
   export VX_APP_MODE="$(< "${VX_CONFIG_ROOT}/app-mode")"
