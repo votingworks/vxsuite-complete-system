@@ -96,7 +96,7 @@ fi
 if [ "${CHOICE}" = "election-manager" ]
 then
     echo "removing unnecessary code for Election Manager."
-    rm -rf vxsuite/apps/module-smartcards vxsuite/apps/module-scan
+    rm -rf vxsuite/apps/module-scan
 fi
 
 if [ "${CHOICE}" = "bmd" ] || [ "${CHOICE}" = "bas" ]
