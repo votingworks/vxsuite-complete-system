@@ -1,5 +1,5 @@
 
-FRONTENDS := vxsuite/apps/bmd vxsuite/apps/bsd vxsuite/apps/election-manager vxsuite/apps/bas
+FRONTENDS := vxsuite/apps/bmd vxsuite/apps/bsd vxsuite/apps/precinct-scanner vxsuite/apps/election-manager vxsuite/apps/bas
 COMPONENTS := vxsuite/apps/module-scan vxsuite/apps/module-smartcards
 CONVERTERS := converters/module-converter-sems
 CWD := $(shell pwd)

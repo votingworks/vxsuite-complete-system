@@ -1,9 +1,6 @@
 # Vx Complete System
 
-This repository is used to download a set of components (bms, bas,
-ems, bsd, module-\*) that are consistent with each other in terms of
-compatibility and versioning. This repository has all the components
-and scripts to run each machine (BMD, BAS, BSD, EMS).
+This repository is used to download a set of components that are consistent with each other in terms of compatibility and versioning. This repository has all the components and scripts to run each machine (BMD, BAS, BSD, EMS).
 
 ## Hardware and OS
 
@@ -32,12 +29,13 @@ make build
 ## Run in Test Mode
 
 You now have a test machine that can run any of the VxSuite components
-(election manager, ballot scanner, BMD, or encoder). *You can only run
-one component at a time*.
+(election manager, ballot scanner, BMD, or encoder). _You can only run
+one component at a time_.
 
 To run a VxSuite component, you need to run
-* all the services needed for that component
-* Kiosk Browser, the front-end Kiosk system that displays the user interface
+
+- all the services needed for that component
+- Kiosk Browser, the front-end Kiosk system that displays the user interface
 
 ### Election Manager
 
@@ -54,12 +52,22 @@ This command will run all software services needed for ballot scanner:
 ```
 bash run-bsd.sh
 ```
+
+### Precinct Scanner
+
+This command will run all software services needed for precinct scanner:
+
+```
+bash run-precinct-scanner.sh
+```
+
 ### Ballot Marking Device
 
 There are 3 modes:
-* `VxMark`: the BMD is used just for electronic marking and stores the ballot on the smart card
-* `VxPrint`: this is the print station that takes a smart card with a ballot on it and prints it
-* `VxMark + VxPrint`: the more classic BMD, mark on the screen and immediately print the ballot.
+
+- `VxMark`: the BMD is used just for electronic marking and stores the ballot on the smart card
+- `VxPrint`: this is the print station that takes a smart card with a ballot on it and prints it
+- `VxMark + VxPrint`: the more classic BMD, mark on the screen and immediately print the ballot.
 
 The default mode is Mark.
 
@@ -89,7 +97,6 @@ bash run-kiosk-browser.sh
 
 You're good to go. You can exit the Kiosk Browser with Ctrl-W.
 
-
 ## Configuring for Production
 
 To configure and lock down the machine for production use, noting
@@ -102,7 +109,7 @@ bash setup-machine.sh
 
 ## High-level Contracts
 
-Each front-end system, `bms`, `bas`, `ems`, and `bsd`, and each
+Each front-end system, e.g. `bms`, `bas`, etc., and each
 module, e.g. `module-smartcards`, `module-scan`, etc., should be an
 application that can be built using `make build`, and then run using
 `make run`.

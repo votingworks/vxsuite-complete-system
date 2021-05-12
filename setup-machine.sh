@@ -28,6 +28,9 @@ CHOICES+=('bmd')
 echo "${#CHOICES[@]}. Ballot Activation System (BAS)"
 CHOICES+=('bas')
 
+echo "${#CHOICES[@]}. Precinct Scanner"
+CHOICES+=('precinct-scanner')
+
 echo
 read -p "Select machine: " CHOICE_INDEX
 
@@ -102,8 +105,10 @@ fi
 if [ "${CHOICE}" = "bmd" ] || [ "${CHOICE}" = "bas" ]
 then
     echo "removing unnecessary code for BMD/BAS."
-    rm -rf vxsuite/apps/module-scan
-    rm -rf vxsuite/apps/bsd vxsuite/apps/election-manager
+    rm -rf vxsuite/apps/module-scan \
+           vxsuite/apps/bsd \
+           vxsuite/apps/precinct-scanner \
+           vxsuite/apps/election-manager
 fi
 
 # copy code into the right place
@@ -116,6 +121,7 @@ sudo ln -s /vx/code/run-bmd.sh /vx/services/run-bmd.sh
 sudo ln -s /vx/code/run-bas.sh /vx/services/run-bas.sh
 sudo ln -s /vx/code/run-election-manager.sh /vx/services/run-election-manager.sh
 sudo ln -s /vx/code/run-bsd.sh /vx/services/run-bsd.sh
+sudo ln -s /vx/code/run-precinct-scanner.sh /vx/services/run-precinct-scanner.sh
 
 # make sure vx-services has pipenv
 sudo -u vx-services -i pip3 install pipenv

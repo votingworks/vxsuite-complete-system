@@ -1,0 +1,15 @@
+[Unit]
+Description=VotingWorks Precinct Scanner
+
+[Service]
+Type=simple
+User=vx-services
+Environment=VX_CONFIG_ROOT=/vx/config
+Environment=MODULE_SCAN_WORKSPACE=/vx/data/module-scan
+ExecStart=/bin/bash /vx/services/run-bsd.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=precinct-scanner
+
+[Install]
+WantedBy=multi-user.target
