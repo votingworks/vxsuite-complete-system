@@ -55,7 +55,10 @@ bash run-bsd.sh
 
 ### Precinct Scanner
 
-This command will run all software services needed for precinct scanner:
+This requires some other packages to be installed that, unfortunately, are not
+public. If you have access, go to https://github.com/votingworks/plustekctl and
+follow the install instructions. Once you've done that, this command will run
+all software services needed for precinct scanner:
 
 ```
 bash run-precinct-scanner.sh
