@@ -1,6 +1,6 @@
 
 COMPONENTS := vxsuite/apps/module-scan vxsuite/apps/module-smartcards
-CONVERTERS := converters/module-converter-sems
+CONVERTERS := vxsuite/apps/module-converter-ms-sems
 
 checkout:
 	git pull --rebase
