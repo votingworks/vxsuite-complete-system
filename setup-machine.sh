@@ -101,7 +101,6 @@ sudo mv build /vx/code
 
 # symlink the code and run-*.sh in /vx/services
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
-sudo ln -s /vx/code/converters /vx/services/converters
 sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 
 # make sure vx-services has pipenv

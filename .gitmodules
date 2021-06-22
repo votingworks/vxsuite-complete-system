@@ -4,6 +4,3 @@
 [submodule "vxsuite"]
 	path = vxsuite
 	url = https://github.com/votingworks/vxsuite
-[submodule "converters/module-converter-sems"]
-	path = converters/module-converter-sems
-	url = https://github.com/votingworks/module-converter-sems
