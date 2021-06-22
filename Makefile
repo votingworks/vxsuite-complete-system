@@ -1,8 +1,6 @@
 
-FRONTENDS := vxsuite/apps/bmd vxsuite/apps/bsd vxsuite/apps/precinct-scanner vxsuite/apps/election-manager vxsuite/apps/bas
 COMPONENTS := vxsuite/apps/module-scan vxsuite/apps/module-smartcards
 CONVERTERS := converters/module-converter-sems
-CWD := $(shell pwd)
 
 checkout:
 	git pull --rebase
@@ -29,7 +27,4 @@ build: build-kiosk-browser patch
 	$(foreach converter, $(CONVERTERS), \
 		PIPENV_VENV_IN_PROJECT=1 make -C $(converter) build; \
 	)
-	$(foreach frontend, $(FRONTENDS), \
-		PIPENV_VENV_IN_PROJECT=1 make -C $(frontend) build; \
-	)
-
+	cd vxsuite; ./script/prod-build

@@ -20,7 +20,7 @@ echo "${#CHOICES[@]}. Election Manager"
 CHOICES+=('election-manager')
 
 echo "${#CHOICES[@]}. Ballot Scanner"
-CHOICES+=('ballot-scanner')
+CHOICES+=('bsd')
 
 echo "${#CHOICES[@]}. Ballot Marking Device (BMD)"
 CHOICES+=('bmd')
@@ -57,7 +57,6 @@ sudo cp config/logind.conf /etc/systemd/
 
 # directory structure
 sudo mkdir /vx
-sudo mkdir /vx/code
 sudo mkdir -p /vx/data/module-scan
 sudo mkdir -p /vx/data/module-sems-converter
 
@@ -95,33 +94,15 @@ then
     sudo usermod -aG scanner vx-services
 fi
 
-# remove components we don't need
-if [ "${CHOICE}" = "election-manager" ]
-then
-    echo "removing unnecessary code for Election Manager."
-    rm -rf vxsuite/apps/module-scan
-fi
-
-if [ "${CHOICE}" = "bmd" ] || [ "${CHOICE}" = "bas" ]
-then
-    echo "removing unnecessary code for BMD/BAS."
-    rm -rf vxsuite/apps/module-scan \
-           vxsuite/apps/bsd \
-           vxsuite/apps/precinct-scanner \
-           vxsuite/apps/election-manager
-fi
-
 # copy code into the right place
-sudo cp -rp run-*.sh vxsuite converters printing config /vx/code
+rm -rf build
+./setup-app.sh "${CHOICE}" --output build
+sudo mv build /vx/code
 
 # symlink the code and run-*.sh in /vx/services
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
 sudo ln -s /vx/code/converters /vx/services/converters
-sudo ln -s /vx/code/run-bmd.sh /vx/services/run-bmd.sh
-sudo ln -s /vx/code/run-bas.sh /vx/services/run-bas.sh
-sudo ln -s /vx/code/run-election-manager.sh /vx/services/run-election-manager.sh
-sudo ln -s /vx/code/run-bsd.sh /vx/services/run-bsd.sh
-sudo ln -s /vx/code/run-precinct-scanner.sh /vx/services/run-precinct-scanner.sh
+sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 
 # make sure vx-services has pipenv
 sudo -u vx-services -i pip3 install pipenv
@@ -248,7 +229,8 @@ sudo apt remove -y git firefox snapd
 sudo apt autoremove -y
 
 # set password for vx-admin
-echo "Setting password for the admin account:\n"
+echo "Setting password for the admin account:"
+echo
 while true; do
     sudo passwd vx-admin && break
 done
