@@ -1,7 +1,3 @@
-
-COMPONENTS := vxsuite/apps/module-scan vxsuite/apps/module-smartcards
-CONVERTERS := vxsuite/apps/module-converter-ms-sems
-
 checkout:
 	git pull --rebase
 	git submodule update --init
@@ -20,11 +16,7 @@ build-kiosk-browser:
 	sudo dpkg -i kiosk-browser/out/make/deb/x64/kiosk-browser_*_amd64.deb
 
 build: build-kiosk-browser patch
-	$(foreach component, $(COMPONENTS), \
-		make -C $(component) install; \
-		PIPENV_VENV_IN_PROJECT=1 make -C $(component) build; \
-	)
-	$(foreach converter, $(CONVERTERS), \
-		PIPENV_VENV_IN_PROJECT=1 make -C $(converter) build; \
-	)
-	cd vxsuite; ./script/prod-build
+	bash ./build.sh all
+
+clean:
+	rm -rf build

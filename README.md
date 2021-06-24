@@ -32,17 +32,12 @@ You now have a test machine that can run any of the VxSuite components
 (election manager, ballot scanner, BMD, or encoder). _You can only run
 one component at a time_.
 
-To run a VxSuite component, you need to run
-
-- all the services needed for that component
-- Kiosk Browser, the front-end Kiosk system that displays the user interface
-
 ### Election Manager
 
 This command will run all software services needed for election manager:
 
 ```
-bash run-election-manager.sh
+./run.sh election-manager
 ```
 
 ### Ballot Scanner
@@ -50,7 +45,7 @@ bash run-election-manager.sh
 This command will run all software services needed for ballot scanner:
 
 ```
-bash run-bsd.sh
+./run.sh bsd
 ```
 
 ### Precinct Scanner
@@ -61,7 +56,7 @@ follow the install instructions. Once you've done that, this command will run
 all software services needed for precinct scanner:
 
 ```
-bash run-precinct-scanner.sh
+./run.sh precinct-scanner
 ```
 
 ### Ballot Marking Device
@@ -72,14 +67,14 @@ There are 3 modes:
 - `VxPrint`: this is the print station that takes a smart card with a ballot on it and prints it
 - `VxMark + VxPrint`: the more classic BMD, mark on the screen and immediately print the ballot.
 
-The default mode is Mark.
+The default mode is `VxMark`.
 
 This command will run all software services needed for the
 ballot-marking device, in the given mode. Make sure to substitute your
 chosen mode (`VxMark`, `VxPrint`, `VxMark + VxPrint`) in the command:
 
 ```
-VX_APP_MODE="<mode>" bash run-bmd.sh
+VX_APP_MODE="<mode>" ./run.sh bmd
 ```
 
 ### Encoder
@@ -87,18 +82,8 @@ VX_APP_MODE="<mode>" bash run-bmd.sh
 This command will run all software services needed for the smart-card encoder:
 
 ```
-bash run-bas.sh
+./run.sh bas
 ```
-
-### Kiosk Browser
-
-Once the services are running, start the Kiosk Browser:
-
-```
-bash run-kiosk-browser.sh
-```
-
-You're good to go. You can exit the Kiosk Browser with Ctrl-W.
 
 ## Configuring for Production
 
@@ -112,7 +97,7 @@ bash setup-machine.sh
 
 ## High-level Contracts
 
-Each front-end system, e.g. `bms`, `bas`, etc., and each
+Each front-end system, e.g. `bmd`, `bas`, etc., and each
 module, e.g. `module-smartcards`, `module-scan`, etc., should be an
 application that can be built using `make build`, and then run using
 `make run`.

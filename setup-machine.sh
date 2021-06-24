@@ -95,9 +95,8 @@ then
 fi
 
 # copy code into the right place
-rm -rf build
-./setup-app.sh "${CHOICE}" --output build
-sudo mv build /vx/code
+./build.sh "${CHOICE}"
+sudo mv build/${CHOICE} /vx/code
 
 # symlink the code and run-*.sh in /vx/services
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
