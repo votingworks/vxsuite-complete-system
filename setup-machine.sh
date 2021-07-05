@@ -188,9 +188,10 @@ sudo chmod -R o-rwX /vx/config
 sudo systemctl set-default multi-user.target
 
 # setup auto login
-sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
-sudo cp config/override.conf /etc/systemd/system/getty@tty1.service.d/override.conf
-sudo systemctl daemon-reload
+## DISABLED for forced login on first screen
+#sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
+#sudo cp config/override.conf /etc/systemd/system/getty@tty1.service.d/override.conf
+#sudo systemctl daemon-reload
 
 # turn off grub
 sudo cp config/grub /etc/default/grub
@@ -233,10 +234,16 @@ while true; do
     sudo passwd vx-admin && break
 done
 
+# set password for vx-ui
+echo "Setting password for the UI account:\n"
+while true; do
+    sudo passwd vx-ui && break
+done
+
 # disable all passwords
 sudo passwd -l root
 sudo passwd -l ${USER}
-sudo passwd -l vx-ui
+#sudo passwd -l vx-ui
 sudo passwd -l vx-services
 
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
