@@ -4,3 +4,9 @@
 [submodule "vxsuite"]
 	path = vxsuite
 	url = https://github.com/votingworks/vxsuite
+[submodule "tpm2-software/tpm2-tss"]
+	path = tpm2-software/tpm2-tss
+	url = https://github.com/tpm2-software/tpm2-tss
+[submodule "tpm2-software/tpm2-totp"]
+	path = tpm2-software/tpm2-totp
+	url = https://github.com/tpm2-software/tpm2-totp
