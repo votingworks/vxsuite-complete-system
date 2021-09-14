@@ -1,21 +1,22 @@
 #!/bin/bash
 set -euo pipefail 
 
-if [ $# -eq 1 ]; then
-    wd=$1
-
-    sudo apt -y install signify-openbsd qrencode
-
-    # clear out old keys
-    rm -f $wd/key.pub $wd/key.sec
-
-    # Generate the keypair
-    signify-openbsd -G -n -p $wd/key.pub -s $wd/key.sec
-
-    # Output the public key for enrollment into another device
-    qrencode -t UTF8 -r $wd/key.pub -o -
-else 
+if [ $# -ne 1 ]; then
     echo "Usage: ./setup-signify [directory]"
-    exit;
+    exit 1
 fi
+
+public_path="${1}/key.pub"
+secret_path="${1}/key.sec"
+
+
+sudo apt -y install signify-openbsd qrencode
+
+# clear out old keys
+rm -f "${public_path}" "${secret_path}"
+
+# Generate the keypair
+signify-openbsd -G -n -p "${public_path}" -s "${secret_path}"
+# Output the public key for enrollment into another device
+qrencode -t UTF8 -r "${public_path}"  -o -
 
