@@ -19,4 +19,5 @@ build: build-kiosk-browser patch
 	bash ./build.sh all
 
 clean:
-	rm -rf build
+	git clean -dfx
+	git submodule foreach git clean -dfx
