@@ -95,7 +95,7 @@ while true; do
     ;;
 
     keyshow)
-        cat ${VX_CONFIG_ROOT}/key.pub | qrencode -t UTF8 -o -
+        cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t UTF8 -o -
         read -s -n 1
     ;;
     
