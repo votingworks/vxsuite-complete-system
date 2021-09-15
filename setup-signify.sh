@@ -18,5 +18,5 @@ rm -f "${public_path}" "${secret_path}"
 # Generate the keypair
 signify-openbsd -G -n -p "${public_path}" -s "${secret_path}"
 # Output the public key for enrollment into another device
-qrencode -t UTF8 -r "${public_path}"  -o -
+cat "${public_path}" | qrencode -t UTF8  -o -
 
