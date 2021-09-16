@@ -22,8 +22,8 @@ sudo apt -y install build-essential autoconf autoconf-archive automake m4 libtoo
 # reindex shared objects
 sudo ldconfig
 
-# clear out any preexisting TPM-bound TOTP
-sudo tpm2-totp clean
+# clear out any preexisting TPM-bound TOTP if there is one
+sudo tpm2-totp clean || true
 
 # initialize the TOTP code, which will display the QR code with the secret.
 sudo tpm2-totp --pcrs=0,7 init
