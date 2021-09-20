@@ -25,3 +25,4 @@ vx-admin ALL=(root:ALL) NOPASSWD: /usr/bin/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
+vx-admin ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
