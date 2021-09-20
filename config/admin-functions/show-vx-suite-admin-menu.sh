@@ -51,6 +51,9 @@ while true; do
 
   echo "${#CHOICES[@]}. Show current public signing key"
   CHOICES+=('keyshow')
+
+  echo "${#CHOICES[@]}. Reset System Authentication Code"
+  CHOICES+=('resettotp')
   
   echo "0. Reboot"
   echo
@@ -103,5 +106,9 @@ while true; do
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2
       read -s -n 1
     ;;
+
+    resettotp)
+        sudo tpm2-totp clean || true
+        sudo tpm2-totp --pcrs=0,7 init
   esac
 done
