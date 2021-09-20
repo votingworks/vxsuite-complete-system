@@ -102,13 +102,14 @@ while true; do
         read -s -n 1
     ;;
     
+    resettotp)
+        sudo tpm2-totp clean || true
+        sudo tpm2-totp --pcrs=0,7 init
+
     *)
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2
       read -s -n 1
     ;;
 
-    resettotp)
-        sudo tpm2-totp clean || true
-        sudo tpm2-totp --pcrs=0,7 init
   esac
 done
