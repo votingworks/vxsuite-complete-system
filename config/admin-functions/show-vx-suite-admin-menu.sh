@@ -93,12 +93,12 @@ while true; do
     keygen)
         rm -f "${VX_CONFIG_ROOT}/key.pub" "${VX_CONFIG_ROOT}/key.sec"
         signify-openbsd -G -n -p "${VX_CONFIG_ROOT}/key.pub" -s "${VX_CONFIG_ROOT}/key.sec"
-        cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t UTF8 -o -
+        cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ASCII -o -
         read -s -n 1
     ;;
 
     keyshow)
-        cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t UTF8 -o -
+        cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ASCII -o -
         read -s -n 1
     ;;
     
