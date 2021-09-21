@@ -93,6 +93,9 @@ while true; do
     keygen)
         rm -f "${VX_CONFIG_ROOT}/key.pub" "${VX_CONFIG_ROOT}/key.sec"
         signify-openbsd -G -n -p "${VX_CONFIG_ROOT}/key.pub" -s "${VX_CONFIG_ROOT}/key.sec"
+        # Make the signing key readable by all users on the device
+        # TODO This needs to be fixed. 
+        sudo chmod 777 "${VX_CONFIG_ROOT}/key.sec"
         cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ASCII -o -
         read -s -n 1
     ;;
@@ -105,6 +108,7 @@ while true; do
     resettotp)
         sudo tpm2-totp clean || true
         sudo tpm2-totp --pcrs=0,7 init
+    ;;
 
     *)
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2
