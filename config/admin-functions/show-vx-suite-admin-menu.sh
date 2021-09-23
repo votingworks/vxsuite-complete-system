@@ -108,6 +108,7 @@ while true; do
     resettotp)
         sudo tpm2-totp clean || true
         sudo tpm2-totp --pcrs=0,7 init
+        read -s -n 1
     ;;
 
     *)
