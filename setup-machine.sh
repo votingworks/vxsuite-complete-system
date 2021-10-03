@@ -98,6 +98,10 @@ fi
 ./build.sh "${CHOICE}"
 sudo mv build/${CHOICE} /vx/code
 
+# temporary hack cause of precinct-scanner runtime issue
+sudo rm /vx/code/vxsuite # it's a symlink
+sudo cp -rp vxsuite /vx/code/
+
 # symlink the code and run-*.sh in /vx/services
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
 sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh

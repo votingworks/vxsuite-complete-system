@@ -54,6 +54,7 @@ build() {
     cd "${DIR}/vxsuite/apps/${APP}"
     pnpm install
     BUILD_ROOT="${BUILD_ROOT}/vxsuite" ./script/prod-build
+
     cp -rp \
       "${DIR}/run-scripts/run-${APP}.sh" \
       "${DIR}/run-scripts/run-kiosk-browser.sh" \
@@ -61,6 +62,11 @@ build() {
       "${DIR}/config" \
       "${DIR}/printing" \
       "${BUILD_ROOT}"
+
+    # temporary hack because the symlink works but somehow the copy doesn't for precinct-scanner
+    cd ${BUILD_ROOT}
+    rm -rf vxsuite # this is the built version
+    ln -s ../../vxsuite ./vxsuite
   ) && \
   echo "✅${APP} built!" || \
   (echo "✘ ${APP} build failed! check the logs above" >&2 && exit 1)
