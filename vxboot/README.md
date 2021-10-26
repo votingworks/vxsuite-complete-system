@@ -10,7 +10,7 @@ Note: All of the below instructions assume you're in the same directory (I used 
 - 80GB for `/var`
 - 1GB for a partition called `/hashes`, where the dm-verty hashes will live
 - The rest of the disk for `/home`
-2. Install all the dependencies (script forthcoming)
+2. Install all the dependencies TODO: script forthcoming
 3. Run `keys-init.sh` to generate the signing key used to generate Secure Boot keys and sign kernel images
 4. Run `install-keys.sh` to generate new Secure Boot keys and persist them in firmware
 5. Run `mkrecovery.sh` to create a recovery image that will be necessary to setup dm-verity
