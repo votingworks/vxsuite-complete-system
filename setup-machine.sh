@@ -88,6 +88,9 @@ sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 # Let vx-admin read logs
 sudo usermod -aG adm vx-admin
 
+# Set up log config
+sudo cp config/30-votingworks.conf /etc/rsyslog.d/30-votingworks.conf
+
 # Let some users mount/unmount usb disks
 if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
 then

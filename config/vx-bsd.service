@@ -9,7 +9,7 @@ Environment=MODULE_SCAN_WORKSPACE=/vx/data/module-scan
 ExecStart=/bin/bash /vx/services/run-bsd.sh
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=bsd
+SyslogIdentifier=votingworksapp
 
 [Install]
 WantedBy=multi-user.target

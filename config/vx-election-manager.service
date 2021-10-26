@@ -9,7 +9,7 @@ Environment=MODULE_SEMS_CONVERTER_WORKSPACE=/vx/data/module-sems-converter
 ExecStart=/bin/bash /vx/services/run-election-manager.sh
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=election-manager
+SyslogIdentifier=votingworksapp
 
 [Install]
 WantedBy=multi-user.target
