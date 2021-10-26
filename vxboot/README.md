@@ -2,7 +2,7 @@ The scripts in this folder help setup a secure booting environment for VotingWor
 
 Instructions:
 
-Note: All of the below instructions assume you're in the same directory (I used /home/vxadmin)
+Note: All of the below instructions assume you're in the same directory (I used `/home/vxadmin`)
 
 1. Install Ubuntu with the following partitioning scheme (no LVM or LUKS!)
 - 512MB for the EFI system partition
