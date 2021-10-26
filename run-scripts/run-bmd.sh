@@ -11,4 +11,4 @@ source ${CONFIG}/read-vx-machine-config.sh
 
 export PIPENV_VENV_IN_PROJECT=1
 export NODE_ENV=production
-(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/module-smartcards run & make -C vxsuite/apps/bmd run)
+(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/module-smartcards run & make -C vxsuite/apps/bmd run) | logger --tag votingworksapp

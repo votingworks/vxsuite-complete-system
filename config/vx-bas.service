@@ -8,7 +8,7 @@ Environment=VX_CONFIG_ROOT=/vx/config
 ExecStart=/bin/bash /vx/services/run-bas.sh
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=bas
+SyslogIdentifier=votingworksapp
 
 [Install]
 WantedBy=multi-user.target

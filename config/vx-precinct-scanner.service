@@ -9,7 +9,7 @@ Environment=MODULE_SCAN_WORKSPACE=/vx/data/module-scan
 ExecStart=/bin/bash /vx/services/run-precinct-scanner.sh
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=precinct-scanner
+SyslogIdentifier=votingworksapp
 
 [Install]
 WantedBy=multi-user.target

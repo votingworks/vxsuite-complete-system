@@ -16,4 +16,4 @@ fi
 
 export PIPENV_VENV_IN_PROJECT=1
 export NODE_ENV=production
-(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/module-smartcards run & make -C vxsuite/apps/module-scan run & make -C vxsuite/apps/bsd run)
+(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/module-smartcards run & make -C vxsuite/apps/module-scan run & make -C vxsuite/apps/bsd run) | logger --tag votingworksapp

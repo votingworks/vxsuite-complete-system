@@ -31,6 +31,7 @@ mkdir -p "$DIRECTORY"
 # copy logs
 cp -rp /var/log/syslog* "$DIRECTORY"
 cp -rp /var/log/auth.log* "$DIRECTORY"
+cp -rp /var/log/vx-logs.log* "$DIRECTORY"
 
 # unmount the USB stick to make sure it's all written to disk
 pumount "$DEVICES"

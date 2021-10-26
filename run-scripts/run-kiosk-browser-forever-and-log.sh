@@ -28,4 +28,4 @@ fi
 while true; do
     echo "starting kiosk-browser"
     ./run-kiosk-browser.sh "$URL"
-done 2>&1 | logger --tag kiosk-browser
+done 2>&1 | logger --tag votingworksapp
