@@ -15,7 +15,7 @@ Note: All of the below instructions assume you're in the same directory (I used 
 4. Run `install-keys.sh` to generate new Secure Boot keys and persist them in firmware
 5. Run `mkrecovery.sh` to create a recovery image that will be necessary to setup dm-verity
 6. Modify `/etc/fstab` to mark root partition readonly and set secure options on the other partitions TODO: script this
-7. Remove /tmp and recreate it as a symbolic link to `/var/tmp`
+7. Remove /tmp (`rm -rf /tmp`) and recreate it as a symbolic link `ln -sf /var/tmp /tmp`
 8. Reboot into the recovery kernel and choose "root" on the menu
 9. Run `mklinux.sh` to compute a dmverity hash and generate a unified EFI boot executable that is signed by the keys
 10. Reboot, now you should be in a secure state! Setup TPM-TOTP: `sudo tpm2-totp --pcrs=0,2,4,5,7 init`
