@@ -47,7 +47,7 @@ if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
 
   export DISPLAY=:0
   cd "${DIR}/build/${APP}"
-  (trap 'kill 0' SIGINT SIGHUP; "./run-${APP}.sh" & ("./run-kiosk-browser.sh"; kill 0))
+  (trap 'kill 0' SIGINT SIGHUP; "./run-${APP}.sh" & ("./run-kiosk-browser.sh"; kill 0)) | logger --tag votingworksapp
 elif [[ "${APP}" = -h || "${APP}" = --help ]]; then
   usage
   exit 0
