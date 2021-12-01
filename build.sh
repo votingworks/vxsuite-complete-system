@@ -22,23 +22,25 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-ALL_APPS=()
-ALL_MODULES=()
+ALL_FRONTENDS=()
+ALL_SERVICES=()
 
-for app in ${DIR}/vxsuite/apps/*; do
+for app in ${DIR}/vxsuite/frontends/*; do
   if [ -d "${app}" ]; then
-    if [[ "${app}" = */module-* ]]; then
-      ALL_MODULES+=("$(basename "${app}")")
-    else
-      ALL_APPS+=("$(basename "${app}")")
-    fi
+    ALL_FRONTENDS+=("$(basename "${app}")")
+  fi
+done
+
+for app in ${DIR}/vxsuite/services/*; do
+  if [ -d "${app}" ]; then
+    ALL_SERVICES+=("$(basename "${app}")")
   fi
 done
 
 usage() {
-  echo "usage: ./build.sh [all|$(IFS=\| ; echo "${ALL_APPS[*]}")] …"
+  echo "usage: ./build.sh [all|$(IFS=\| ; echo "${ALL_FRONTENDS[*]}")] …"
   echo
-  echo "Build all or some of the VxSuite applications."
+  echo "Build all or some of the VxSuite frontends."
 }
 
 build() {
@@ -47,11 +49,14 @@ build() {
   export BUILD_ROOT="${DIR}/build/${APP}"
   rm -rf "${BUILD_ROOT}"
   (
-    for app in "${ALL_APPS[@]}" "${ALL_MODULES[@]}"; do
-      make -C "${DIR}/vxsuite/apps/${app}" install
+    for service in "${ALL_SERVICES[@]}"; do
+      make -C "${DIR}/vxsuite/services/${service}" install
+    done
+    for frontend in "${ALL_FRONTENDS[@]}"; do
+      make -C "${DIR}/vxsuite/frontends/${frontend}" install
     done
 
-    cd "${DIR}/vxsuite/apps/${APP}"
+    cd "${DIR}/vxsuite/frontends/${APP}"
     pnpm install
     BUILD_ROOT="${BUILD_ROOT}/vxsuite" ./script/prod-build
 
@@ -75,15 +80,15 @@ build() {
 APPS=()
 
 if [ $# = 0 ]; then
-  APPS+=(${ALL_APPS[@]})
+  APPS+=(${ALL_FRONTENDS[@]})
 else
   for arg in $@; do
-    if [[ " ${ALL_APPS[@]} " =~ " ${arg} " ]]; then
+    if [[ " ${ALL_FRONTENDS[@]} " =~ " ${arg} " ]]; then
       if [[ ! " ${APPS[@]} " =~ " ${arg} " ]]; then
         APPS+=($arg)
       fi
     elif [[ "${arg}" = all ]]; then
-      APPS=(${ALL_APPS[@]})
+      APPS=(${ALL_FRONTENDS[@]})
     elif [[ "${arg}" = -h || "${arg}" = --help ]]; then
       usage
       exit 0

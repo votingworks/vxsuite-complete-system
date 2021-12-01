@@ -16,4 +16,4 @@ fi
 
 export PIPENV_VENV_IN_PROJECT=1
 export NODE_ENV=production
-(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/module-scan run & make -C vxsuite/apps/module-smartcards run & make -C vxsuite/apps/precinct-scanner run) | logger --tag votingworksapp
+(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/services/scan run & make -C vxsuite/services/smartcards run & make -C vxsuite/frontends/precinct-scanner run) | logger --tag votingworksapp
