@@ -9,8 +9,8 @@ cd "$(dirname "$0")"
 CONFIG=${VX_CONFIG_ROOT:-./config}
 source ${CONFIG}/read-vx-machine-config.sh
 
-if [ -z "${MODULE_SCAN_WORKSPACE:-}" ]; then
-  echo "error: please set MODULE_SCAN_WORKSPACE and try again" >&2
+if [ -z "${SCAN_WORKSPACE:-}" ]; then
+  echo "error: please set SCAN_WORKSPACE and try again" >&2
   exit 1
 fi
 

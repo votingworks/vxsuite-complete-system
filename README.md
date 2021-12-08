@@ -45,7 +45,7 @@ This command will run all software services needed for election manager:
 This command will run all software services needed for ballot scanner:
 
 ```
-MODULE_SCAN_WORKSPACE=/tmp ./run.sh bsd
+SCAN_WORKSPACE=/tmp ./run.sh bsd
 ```
 
 You may replace `/tmp` with any persistent path you like.
@@ -58,7 +58,7 @@ follow the install instructions. Once you've done that, this command will run
 all software services needed for precinct scanner:
 
 ```
-MODULE_SCAN_WORKSPACE=/tmp ./run.sh precinct-scanner
+SCAN_WORKSPACE=/tmp ./run.sh precinct-scanner
 ```
 
 You may replace `/tmp` with any persistent path you like.
