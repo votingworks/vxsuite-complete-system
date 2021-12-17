@@ -42,6 +42,8 @@ if [[ " ${ALL_FRONTENDS[@]} " =~ " ${FRONTEND} " ]]; then
   export VX_CONFIG_ROOT="${DIR}/config"
   [ -f "${VX_CONFIG_ROOT}/machine-id" ] || echo 0000 > "${VX_CONFIG_ROOT}/machine-id" 
   echo "${FRONTEND}" > "${VX_CONFIG_ROOT}/machine-type" 
+  echo "VotingWorks" > "${VX_CONFIG_ROOT}/machine-manufacturer"
+  [ -f "${VX_CONFIG_ROOT}/machine-model-name" ] || echo dev > "${VX_CONFIG_ROOT}/machine-model-name" 
   [ -f "${VX_CONFIG_ROOT}/code-version" ] || echo dev > "${VX_CONFIG_ROOT}/code-version" 
   [ -f "${VX_CONFIG_ROOT}/code-tag" ] || echo dev > "${VX_CONFIG_ROOT}/code-tag" 
 
