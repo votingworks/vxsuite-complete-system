@@ -20,6 +20,8 @@ while true; do
   echo -e "Code Version: \e[32m${VX_CODE_VERSION}\e[0m"
   echo -e "Machine ID: \e[32m${VX_MACHINE_ID}\e[0m"
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
+  echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
+  echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
   timedatectl status | grep "Local time" | sed 's/^ *//g'
 
   if [ "${VX_MACHINE_TYPE}" = bmd ]; then
@@ -31,6 +33,9 @@ while true; do
   echo
   echo "${#CHOICES[@]}. Set Machine ID"
   CHOICES+=('set-machine-id')
+
+  echo "${#CHOICES[@]}. Set Machine Model Name"
+  CHOICES+=('set-machine-model-name')
 
   if [ "${VX_MACHINE_TYPE}" = bmd ]; then
     echo "${#CHOICES[@]}. Set app mode"
@@ -68,6 +73,11 @@ while true; do
 
     set-machine-id)
       "${VX_FUNCTIONS_ROOT}/choose-vx-machine-id.sh"
+      prompt-to-restart
+    ;;
+
+    set-machine-model-name)
+      "${VX_FUNCTIONS_ROOT}/choose-vx-machine-model-name.sh"
       prompt-to-restart
     ;;
 

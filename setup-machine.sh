@@ -14,22 +14,28 @@ echo "Welcome to VxSuite. THIS IS A DESTRUCTIVE SCRIPT. Ctrl-C right now if you 
 echo "Which machine are we building today?"
 
 CHOICES=('')
+MODEL_NAMES=('')
 
 echo
 echo "${#CHOICES[@]}. Election Manager"
 CHOICES+=('election-manager')
+MODEL_NAMES+=('VxAdmin')
 
 echo "${#CHOICES[@]}. Ballot Scanner"
 CHOICES+=('bsd')
+MODEL_NAMES+=('VxScan')
 
 echo "${#CHOICES[@]}. Ballot Marking Device (BMD)"
 CHOICES+=('bmd')
+MODEL_NAMES+=('VxMark')
 
 echo "${#CHOICES[@]}. Ballot Activation System (BAS)"
 CHOICES+=('bas')
+MODEL_NAMES+=('VxEncode')
 
 echo "${#CHOICES[@]}. Precinct Scanner"
 CHOICES+=('precinct-scanner')
+MODEL_NAMES+=('VxPrecinctScan')
 
 echo
 read -p "Select machine: " CHOICE_INDEX
@@ -41,6 +47,7 @@ then
 fi
 
 CHOICE=${CHOICES[$CHOICE_INDEX]}
+MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 
 echo "Excellent, let's set up ${CHOICE}."
 
@@ -155,6 +162,12 @@ sudo ln -s /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-
 
 # record the machine type in the configuration (-E keeps the environment variable around, CHOICE prefix sends it in)
 CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx/config/machine-type'
+
+# machine manufacturer
+sudo sh -c 'echo "VotingWorks" > /vx/config/machine-manufacturer'
+
+# machine model name i.e. "VxScan"
+MODEL_NAME="${MODEL_NAME}" sudo -E sh -c 'echo "${MODEL_NAME}" > /vx/config/machine-model-name'
 
 # code version, e.g. "2021.03.29-d34db33fcd"
 sudo sh -c 'echo "$(date +%Y.%m.%d)-$(git rev-parse HEAD | cut -c -10)" > /vx/config/code-version'
