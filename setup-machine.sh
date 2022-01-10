@@ -67,11 +67,6 @@ sudo apt install -y unclutter mingetty pmount brightnessctl
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
 
-# update version of rsyslog
-sudo add-apt-repository -y ppa:adiscon/v8-devel
-sudo apt-get update
-sudo apt-get install -y rsyslog
-
 # turn off automatic updates
 sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
 
@@ -99,11 +94,10 @@ sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 
 # Let vx-admin read logs
 sudo usermod -aG adm vx-admin
+sudo usermod -aG adm vx-ui
 
 # Set up log config
-sudo cp config/30-votingworks.conf /etc/rsyslog.d/30-votingworks.conf
-sudo cp config/rsyslog.conf /etc/rsyslog.conf
-sudo cp config/journald.conf /etc/systemd/journald.conf
+sudo bash setup-scripts/setup-logging.sh
 
 # Let some users mount/unmount usb disks
 if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
@@ -183,7 +177,7 @@ if [ "${CHOICE}" = "bmd" ]
 then
     sudo sh -c 'echo "VxMark" > /vx/config/app-mode'
 
-    bash setup-speech-synthesis.sh
+    bash setup-scripts/setup-speech-synthesis.sh
 fi
 
 # vx-ui OpenBox configuration
