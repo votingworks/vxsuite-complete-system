@@ -263,7 +263,7 @@ echo "Successfully setup machine."
 USER=$(whoami)
 
 # remove all unnecessary packages
-sudo apt remove -y ubuntu-desktop
+sudo apt remove -y gnome
 sudo apt remove -y git firefox snapd
 sudo apt autoremove -y
 
