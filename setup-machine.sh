@@ -73,18 +73,20 @@ sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
 # make sure machine never shuts down on idle, and does shut down on power key (no hibernate or anything.)
 sudo cp config/logind.conf /etc/systemd/
 
+echo "Creating necessary directories"
 # directory structure
-sudo mkdir /vx
-sudo mkdir /var/vx
+sudo mkdir -p /vx
+sudo mkdir -p /var/vx
 sudo mkdir -p /var/vx/data/module-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
 
 sudo ln -sf /var/vx/data /vx/data
 
+echo "Creating users"
 # create users, no common group, specified uids.
-sudo useradd -u 750 -m -d /var/vx/services vx-services
-sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
-sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
+id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-services
+id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
+id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
 
 # These user folders were created on the /var directory so they can
 # be mutable. Link them to the old path on the readonly root. 
@@ -93,7 +95,7 @@ sudo ln -sf /var/vx/ui /vx/ui
 sudo ln -sf /var/vx/admin /vx/admin
 
 # a vx group for all vx users
-sudo groupadd -g 800 vx-group
+getent group vx-group || sudo groupadd -g 800 vx-group
 sudo usermod -aG vx-group vx-ui
 sudo usermod -aG vx-group vx-services
 sudo usermod -aG vx-group vx-admin
@@ -105,8 +107,9 @@ sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 sudo usermod -aG adm vx-admin
 sudo usermod -aG adm vx-ui
 
-# Set up log config
-sudo bash setup-scripts/setup-logging.sh
+#echo "Setting up logging"
+## Set up log config
+#sudo bash setup-scripts/setup-logging.sh
 
 # Let some users mount/unmount usb disks
 if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
