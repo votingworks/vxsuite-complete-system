@@ -75,13 +75,22 @@ sudo cp config/logind.conf /etc/systemd/
 
 # directory structure
 sudo mkdir /vx
-sudo mkdir -p /vx/data/module-scan
-sudo mkdir -p /vx/data/module-sems-converter
+sudo mkdir /var/vx
+sudo mkdir -p /var/vx/data/module-scan
+sudo mkdir -p /var/vx/data/module-sems-converter
+
+sudo ln -sf /var/vx/data /vx/data
 
 # create users, no common group, specified uids.
-sudo useradd -u 750 -m -d /vx/services vx-services
-sudo useradd -u 751 -m -d /vx/ui -s /bin/bash vx-ui
-sudo useradd -u 752 -m -d /vx/admin -s /bin/bash vx-admin
+sudo useradd -u 750 -m -d /var/vx/services vx-services
+sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
+sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
+
+# These user folders were created on the /var directory so they can
+# be mutable. Link them to the old path on the readonly root. 
+sudo ln -sf /var/vx/services /vx/services
+sudo ln -sf /var/vx/ui /vx/ui
+sudo ln -sf /var/vx/admin /vx/admin
 
 # a vx group for all vx users
 sudo groupadd -g 800 vx-group
@@ -277,6 +286,40 @@ sudo cp config/sudoers /etc/sudoers
 # FIXME: clean up source code
 cd
 rm -rf *
+
+# Now do the dm-verity setup
+su
+sudo veritysetup format --debug /dev/mapper/VxMark--vg-root /dev/mapper/VxMark--vg-hashes
+
+# Find the root hash and append it to our cmdline
+HASH="$(awk '/Root hash:/ { print $3 }' "/tmp/verity.log")"
+echo "$(cat config/cmdline)${HASH}" > cmdline
+
+# Now package up ouer kernel, cmdline, etc
+objcopy \
+    --add-section .osrel="/usr/lib/os-release" --change-section-vma .osrel=0x20000 \
+    --add-section .cmdline="cmdline" --change-section-vma .cmdline=0x30000 \
+    --add-section .splash="config/logo.bmp" --change-section-vma .splash=0x40000 \
+    --add-section .linux="/boot/vmlinuz-5.10.0-10-amd64" --change-section-vma .linux=0x2000000 \
+    --add-section .initrd="/boot/initrd.img-5.10.0-10-amd64" --change-section-vma .initrd=0x3000000 \
+    "/usr/lib/systemd/boot/efi/linuxx64.efi.stub" "linux.efi"
+
+# Sign the resulting binary
+sbsign --key=KEK.key --cert KEK.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi linux.efi
+
+# Now install it 
+DEV="$(df "$OUTDIR" | tail -1 | cut -d' ' -f1)"
+part=$(cat /sys/class/block/$(basename $DEV)/partition)
+
+efibootmgr \
+	--quiet \
+	--create \
+	--disk "$DEV" \
+	--part $part \
+	--label "VxLinux" \
+	--loader "\\EFI\\debian\\VxLinux-signed.efi" \
+
+exit
 
 echo "Done, rebooting in 5s."
 
