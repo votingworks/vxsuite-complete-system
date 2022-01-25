@@ -88,6 +88,11 @@ id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-
 id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
 id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
 
+echo "Sym-linking folders that need to be mutable"
+sudo mkdir -p /vx/services
+sudo mkdir -p /vx/ui
+sudo mkdir -p /vx/admin
+
 # These user folders were created on the /var directory so they can
 # be mutable. Link them to the old path on the readonly root. 
 sudo ln -sf /var/vx/services /vx/services
@@ -128,6 +133,7 @@ then
     sudo usermod -aG scanner vx-services
 fi
 
+echo "Setting up the code"
 # copy code into the right place
 ./build.sh "${CHOICE}"
 sudo mv build/${CHOICE} /vx/code
@@ -290,39 +296,6 @@ sudo cp config/sudoers /etc/sudoers
 cd
 rm -rf *
 
-# Now do the dm-verity setup
-su
-sudo veritysetup format --debug /dev/mapper/VxMark--vg-root /dev/mapper/VxMark--vg-hashes
-
-# Find the root hash and append it to our cmdline
-HASH="$(awk '/Root hash:/ { print $3 }' "/tmp/verity.log")"
-echo "$(cat config/cmdline)${HASH}" > cmdline
-
-# Now package up ouer kernel, cmdline, etc
-objcopy \
-    --add-section .osrel="/usr/lib/os-release" --change-section-vma .osrel=0x20000 \
-    --add-section .cmdline="cmdline" --change-section-vma .cmdline=0x30000 \
-    --add-section .splash="config/logo.bmp" --change-section-vma .splash=0x40000 \
-    --add-section .linux="/boot/vmlinuz-5.10.0-10-amd64" --change-section-vma .linux=0x2000000 \
-    --add-section .initrd="/boot/initrd.img-5.10.0-10-amd64" --change-section-vma .initrd=0x3000000 \
-    "/usr/lib/systemd/boot/efi/linuxx64.efi.stub" "linux.efi"
-
-# Sign the resulting binary
-sbsign --key=KEK.key --cert KEK.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi linux.efi
-
-# Now install it 
-DEV="$(df "$OUTDIR" | tail -1 | cut -d' ' -f1)"
-part=$(cat /sys/class/block/$(basename $DEV)/partition)
-
-efibootmgr \
-	--quiet \
-	--create \
-	--disk "$DEV" \
-	--part $part \
-	--label "VxLinux" \
-	--loader "\\EFI\\debian\\VxLinux-signed.efi" \
-
-exit
 
 echo "Done, rebooting in 5s."
 
