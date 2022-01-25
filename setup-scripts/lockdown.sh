@@ -1,5 +1,8 @@
 set -euo pipefail 
 
+# Remount / so it can't change while we're doing the veritysetup
+sudo mount -o ro,remount /
+
 # Now do the dm-verity setup
 sudo veritysetup format --debug /dev/mapper/VxMark--vg-root /dev/mapper/VxMark--vg-hashes| tee "/tmp/verity.log"
 
