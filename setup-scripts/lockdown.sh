@@ -1,6 +1,5 @@
 set -euo pipefail 
 
-# TODO copy safeboot dmverity initramfs scripts and regenerate initramfs
 sudo cp config/dmverity-root.hook /etc/initramfs-tools/hooks/dmverity-root
 sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/dmverity-root
 

@@ -292,6 +292,8 @@ sudo passwd -l vx-services
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 sudo cp config/sudoers /etc/sudoers
 
+. setup-scripts/lockdown.sh
+
 # FIXME: clean up source code
 cd
 rm -rf *
