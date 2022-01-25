@@ -1,0 +1,29 @@
+#!/bin/sh
+# goes in /etc/initramfs-tools/hooks/dmverity-root
+# Ensure that dm_verity and tools are in the initrd
+#
+# turn off "expressions don't expand in single quotes" and "can't follow non-constant sources"
+# shellcheck disable=SC2016,SC1090,SC1091
+
+PREREQ=""
+prereqs()
+{
+    echo "$PREREQ"
+}
+
+case "$1" in
+    prereqs)
+        prereqs
+        exit 0
+        ;;
+esac
+
+. /usr/share/initramfs-tools/hook-functions
+
+manual_add_modules dm_verity
+copy_exec /usr/sbin/veritysetup
+copy_exec /usr/sbin/blockdev
+
+# add some filesystem maintenance tools
+copy_exec /usr/sbin/lvm
+copy_exec /usr/sbin/resize2fs
