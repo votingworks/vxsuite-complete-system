@@ -1,1 +1,1 @@
-BOOT_IMAGE=/vmlinuz-5.10.0-11-amd64 root=/dev/mapper/vroot ro quiet splassh vt.handoff=7 fsck.mode=skip verity.hashdev=/dev/mapper/VxMark--vg-hashes verity.rootdev=/dev/mapper/VxMark--vg-root verity.hash=
+BOOT_IMAGE=/vmlinuz-5.10.0-11-amd64 root=/dev/mapper/vroot ro quiet splash vt.handoff=7 fsck.mode=skip verity.hashdev=/dev/mapper/VxMark--vg-hashes verity.rootdev=/dev/mapper/VxMark--vg-root verity.hash=
