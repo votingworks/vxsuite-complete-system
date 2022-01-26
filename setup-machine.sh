@@ -112,8 +112,8 @@ sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 sudo usermod -aG adm vx-admin
 sudo usermod -aG adm vx-ui
 
-#echo "Setting up logging"
 ## Set up log config
+# TODO fix for Debian
 #sudo bash setup-scripts/setup-logging.sh
 
 # Let some users mount/unmount usb disks
@@ -195,7 +195,8 @@ if [ "${CHOICE}" = "bmd" ]
 then
     sudo sh -c 'echo "VxMark" > /vx/config/app-mode'
 
-    bash setup-scripts/setup-speech-synthesis.sh
+    # TODO: Fix this for Debian compat
+#    bash setup-scripts/setup-speech-synthesis.sh
 fi
 
 # vx-ui OpenBox configuration
@@ -292,6 +293,7 @@ sudo passwd -l vx-services
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 sudo cp config/sudoers /etc/sudoers
 
+su vx-admin
 . setup-scripts/lockdown.sh
 
 # FIXME: clean up source code
