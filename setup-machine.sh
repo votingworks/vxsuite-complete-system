@@ -293,8 +293,10 @@ sudo passwd -l vx-services
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 sudo cp config/sudoers /etc/sudoers
 
-su vx-admin
-. setup-scripts/lockdown.sh
+# TODO: this doesn't work, it just kicks us into a vx-admin shell. 
+# lockdown may have to be run from the admin screen?
+#su vx-admin
+#. setup-scripts/lockdown.sh
 
 # FIXME: clean up source code
 cd
