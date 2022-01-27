@@ -89,9 +89,6 @@ id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx
 id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
 
 echo "Sym-linking folders that need to be mutable"
-sudo mkdir -p /vx/services
-sudo mkdir -p /vx/ui
-sudo mkdir -p /vx/admin
 
 # These user folders were created on the /var directory so they can
 # be mutable. Link them to the old path on the readonly root. 
