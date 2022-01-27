@@ -71,7 +71,7 @@ There are 3 modes:
 - `PrintOnly`: this is the print station that takes a smart card with a ballot on it and prints it
 - `MarkAndPrint`: the more classic BMD, mark on the screen and immediately print the ballot.
 
-The default mode is `MarkOnly`.
+The default mode is `MarkAndPrint`.
 
 This command will run all software services needed for the
 ballot-marking device, in the given mode. Make sure to substitute your

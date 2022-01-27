@@ -175,7 +175,7 @@ sudo sh -c 'echo "0000" > /vx/config/machine-id'
 # app mode & speech synthesis
 if [ "${CHOICE}" = "bmd" ]
 then
-    sudo sh -c 'echo "MarkOnly" > /vx/config/app-mode'
+    sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
 
     bash setup-scripts/setup-speech-synthesis.sh
 fi
