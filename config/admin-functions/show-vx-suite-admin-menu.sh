@@ -16,13 +16,19 @@ while true; do
   source "${VX_FUNCTIONS_ROOT}/../read-vx-machine-config.sh"
   clear
 
-  # TODO: add lockdown status indicator here
   echo -e "\e[1mVxSuite Admin\e[0m"
   echo -e "Code Version: \e[32m${VX_CODE_VERSION}\e[0m"
   echo -e "Machine ID: \e[32m${VX_MACHINE_ID}\e[0m"
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
+
+  if [[ $(lsblk | grep "vroot") ]]; then
+	  echo -e "Lockdown state: \e[32mLocked Down\e[0m"
+  else
+	  echo -e "Lockdown state: \e[31mNot locked down\e0m"
+  fi
+
   timedatectl status | grep "Local time" | sed 's/^ *//g'
 
   if [ "${VX_MACHINE_TYPE}" = bmd ]; then
