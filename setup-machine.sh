@@ -292,7 +292,7 @@ sudo cp config/sudoers /etc/sudoers
 
 # TODO: this doesn't work, it just kicks us into a vx-admin shell. 
 # lockdown may have to be run from the admin screen?
-su vx-admin -c "sudo setup-scripts/lockdown.sh"
+#su vx-admin -c "sudo setup-scripts/lockdown.sh"
 
 # FIXME: clean up source code
 cd
