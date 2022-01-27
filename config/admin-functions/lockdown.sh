@@ -1,9 +1,6 @@
 #!/bin/bash
 set -euo pipefail 
 
-cp config/dmverity-root.hook /etc/initramfs-tools/hooks/dmverity-root
-cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/dmverity-root
-
 update-initramfs -u
 
 # Remount / so it can't change while we're doing the veritysetup
@@ -14,7 +11,7 @@ veritysetup format --debug /dev/mapper/VxMark--vg-root /dev/mapper/VxMark--vg-ha
 
 # Find the root hash and append it to our cmdline
 HASH="$(awk '/Root hash:/ { print $3 }' "/tmp/verity.log")"
-echo "$(cat config/cmdline)${HASH}" > /tmp/cmdline
+echo "$(cat /vx/admin/config/cmdline)${HASH}" > /tmp/cmdline
 
 # TODO: Make sure the output initramfs/kernel file names are correct!
 # Now package up ouer kernel, cmdline, etc

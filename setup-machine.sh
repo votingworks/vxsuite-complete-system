@@ -161,9 +161,18 @@ sudo ln -s /vx/code/config/xinitrc /vx/ui/.xinitrc
 sudo mkdir -p /vx/ui/.config/gtk-3.0
 sudo ln -s /vx/code/config/gtksettings.ini /vx/ui/.config/gtk-3.0/settings.ini
 
+# Hooks for dm-verity
+cp config/dmverity-root.hook /etc/initramfs-tools/hooks/dmverity-root
+cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/dmverity-root
+
 # admin function scripts
 sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
 sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
+
+# Make sure our cmdline file is readable by vx-admin
+mkdir /vx/admin/config
+cp config/cmdline /vx/code/config/cmdline
+sudo ln -s /vx/code/config/cmdline /vx/admin/config/cmdline
 
 # machine configuration
 sudo mkdir -p /vx/config
