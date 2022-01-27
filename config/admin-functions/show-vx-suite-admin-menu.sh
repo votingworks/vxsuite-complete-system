@@ -26,7 +26,7 @@ while true; do
   if [[ $(lsblk | grep "vroot") ]]; then
 	  echo -e "Lockdown state: \e[32mLocked Down\e[0m"
   else
-	  echo -e "Lockdown state: \e[31mNot locked down\e0m"
+	  echo -e "Lockdown state: \e[31mNot locked down\e[0m"
   fi
 
   timedatectl status | grep "Local time" | sed 's/^ *//g'
