@@ -32,7 +32,7 @@ You now have a test machine that can run any of the VxSuite components
 (election manager, ballot scanner, BMD, or encoder). _You can only run
 one component at a time_.
 
-### Election Manager
+### Election Manager (VxAdmin)
 
 This command will run all software services needed for election manager:
 
@@ -40,7 +40,7 @@ This command will run all software services needed for election manager:
 ./run.sh election-manager
 ```
 
-### Ballot Scanner
+### Ballot Scanner (VxCentralScan)
 
 This command will run all software services needed for ballot scanner:
 
@@ -50,7 +50,7 @@ SCAN_WORKSPACE=/tmp ./run.sh bsd
 
 You may replace `/tmp` with any persistent path you like.
 
-### Precinct Scanner
+### Precinct Scanner (VxScan)
 
 This requires some other packages to be installed that, unfortunately, are not
 public. If you have access, go to https://github.com/votingworks/plustekctl and
@@ -63,25 +63,25 @@ SCAN_WORKSPACE=/tmp ./run.sh precinct-scanner
 
 You may replace `/tmp` with any persistent path you like.
 
-### Ballot Marking Device
+### Ballot Marking Device (VxMark/VxPrint)
 
 There are 3 modes:
 
-- `VxMark`: the BMD is used just for electronic marking and stores the ballot on the smart card
-- `VxPrint`: this is the print station that takes a smart card with a ballot on it and prints it
-- `VxMark + VxPrint`: the more classic BMD, mark on the screen and immediately print the ballot.
+- `MarkOnly`: the BMD is used just for electronic marking and stores the ballot on the smart card
+- `PrintOnly`: this is the print station that takes a smart card with a ballot on it and prints it
+- `MarkAndPrint`: the more classic BMD, mark on the screen and immediately print the ballot.
 
-The default mode is `VxMark`.
+The default mode is `MarkOnly`.
 
 This command will run all software services needed for the
 ballot-marking device, in the given mode. Make sure to substitute your
-chosen mode (`VxMark`, `VxPrint`, `VxMark + VxPrint`) in the command:
+chosen mode (`MarkOnly`, `PrintOnly`, `MarkAndPrint`) in the command:
 
 ```
 VX_APP_MODE="<mode>" ./run.sh bmd
 ```
 
-### Encoder
+### Encoder (VxEncode)
 
 This command will run all software services needed for the smart-card encoder:
 
