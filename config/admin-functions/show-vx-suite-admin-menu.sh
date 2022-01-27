@@ -16,6 +16,7 @@ while true; do
   source "${VX_FUNCTIONS_ROOT}/../read-vx-machine-config.sh"
   clear
 
+  # TODO: add lockdown status indicator here
   echo -e "\e[1mVxSuite Admin\e[0m"
   echo -e "Code Version: \e[32m${VX_CODE_VERSION}\e[0m"
   echo -e "Machine ID: \e[32m${VX_MACHINE_ID}\e[0m"
@@ -59,6 +60,9 @@ while true; do
 
   echo "${#CHOICES[@]}. Reset System Authentication Code"
   CHOICES+=('resettotp')
+
+  echo "${#CHOICES[@]}. Lock the system down."
+  CHOICES+=('lockdown')
   
   echo "0. Reboot"
   echo
@@ -121,6 +125,12 @@ while true; do
         sudo tpm2-totp --pcrs=0,7 init
         read -s -n 1
     ;;
+    
+    lockdown)
+        sudo "${VX_FUNCTIONS_ROOT}/lockdown.sh"
+        read -s -n 1
+    ;;
+    
 
     *)
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2

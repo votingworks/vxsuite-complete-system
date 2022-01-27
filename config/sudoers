@@ -22,7 +22,7 @@ root	ALL=(ALL:ALL) ALL
 # fine-grained sudo permissions for certain users & actions
 vx-admin ALL=(root:ALL) NOPASSWD: /usr/bin/hostnamectl
 vx-admin ALL=(root:ALL) NOPASSWD: /usr/bin/timedatectl
-vx-admin ALL=(root:ALL) NOPASSWD: /home/matt/vxsuite-complete-system/setup-scripts/lockdown.sh
+vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/setup-scripts/lockdown.sh
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
