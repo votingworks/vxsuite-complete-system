@@ -41,3 +41,6 @@ efibootmgr \
 	--label "VxLinux" \
 	--loader "\\EFI\\debian\\VxLinux-signed.efi" \
 
+
+# Reboot into the locked down system
+systemctl reboot -i
