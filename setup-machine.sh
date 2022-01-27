@@ -170,8 +170,8 @@ sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
 sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
 
 # Make sure our cmdline file is readable by vx-admin
-mkdir /vx/admin/config
-cp config/cmdline /vx/code/config/cmdline
+sudo mkdir -p /vx/admin/config
+sudo cp config/cmdline /vx/code/config/cmdline
 sudo ln -s /vx/code/config/cmdline /vx/admin/config/cmdline
 
 # machine configuration
