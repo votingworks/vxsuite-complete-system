@@ -162,8 +162,8 @@ sudo mkdir -p /vx/ui/.config/gtk-3.0
 sudo ln -s /vx/code/config/gtksettings.ini /vx/ui/.config/gtk-3.0/settings.ini
 
 # Hooks for dm-verity
-cp config/dmverity-root.hook /etc/initramfs-tools/hooks/dmverity-root
-cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/dmverity-root
+sudo cp config/dmverity-root.hook /etc/initramfs-tools/hooks/dmverity-root
+sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/dmverity-root
 
 # admin function scripts
 sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
