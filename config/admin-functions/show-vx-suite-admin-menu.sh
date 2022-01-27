@@ -64,11 +64,12 @@ while true; do
   echo "${#CHOICES[@]}. Show current public signing key"
   CHOICES+=('keyshow')
 
+  echo "${#CHOICES[@]}. Lock the system down."
+  CHOICES+=('lockdown')
+
   echo "${#CHOICES[@]}. Reset System Authentication Code"
   CHOICES+=('resettotp')
 
-  echo "${#CHOICES[@]}. Lock the system down."
-  CHOICES+=('lockdown')
   
   echo "0. Reboot"
   echo
