@@ -177,7 +177,10 @@ sudo ln -s /vx/code/config/cmdline /vx/admin/config/cmdline
 sudo ln -s /vx/code/config/logo.bmp /vx/admin/config/logo.bmp
 
 # machine configuration
-sudo mkdir -p /vx/config
+# TODO: This should be writeable right?
+sudo mkdir -p /var/vx/config
+sudo ln -sf /var/vx/config /vx/config
+
 sudo ln -s /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-config.sh
 
 # record the machine type in the configuration (-E keeps the environment variable around, CHOICE prefix sends it in)
@@ -221,27 +224,49 @@ fi
 
 
 # permissions on directories
+# TODO: this doesn't fix up the symlinks
 sudo chown -R vx-services:vx-services /vx/services
 sudo chmod -R u=rwX /vx/services
 sudo chmod -R go-rwX /vx/services
+
+sudo chown -R vx-services:vx-services /var/vx/services
+sudo chmod -R u=rwX /var/vx/services
+sudo chmod -R go-rwX /var/vx/services
 
 sudo chown -R vx-ui:vx-ui /vx/ui
 sudo chmod -R u=rwX /vx/ui
 sudo chmod -R go-rwX /vx/ui
 
+sudo chown -R vx-ui:vx-ui /var/vx/ui
+sudo chmod -R u=rwX /var/vx/ui
+sudo chmod -R go-rwX /var/vx/ui
+
 sudo chown -R vx-admin:vx-admin /vx/admin
 sudo chmod -R u=rwX /vx/admin
 sudo chmod -R go-rwX /vx/admin
 
+sudo chown -R vx-admin:vx-admin /var/vx/admin
+sudo chmod -R u=rwX /var/vx/admin
+sudo chmod -R go-rwX /var/vx/admin
+
 sudo chown -R vx-services:vx-services /vx/data
 sudo chmod -R u=rwX /vx/data
 sudo chmod -R go-rwX /vx/data
+
+sudo chown -R vx-services:vx-services /var/vx/data
+sudo chmod -R u=rwX /var/vx/data
+sudo chmod -R go-rwX /var/vx/data
 
 # config readable & executable by all vx users, writable by admin.
 sudo chown -R vx-admin:vx-group /vx/config
 sudo chmod -R u=rwX /vx/config
 sudo chmod -R g=rX /vx/config
 sudo chmod -R o-rwX /vx/config
+
+sudo chown -R vx-admin:vx-group /var/vx/config
+sudo chmod -R u=rwX /var/vx/config
+sudo chmod -R g=rX /var/vx/config
+sudo chmod -R o-rwX /var/vx/config
 
 # non-graphical login
 sudo systemctl set-default multi-user.target
