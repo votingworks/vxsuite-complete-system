@@ -224,7 +224,7 @@ fi
 
 
 # permissions on directories
-# TODO: this doesn't fix up the symlinks
+# TODO: I think we only need to change the permissions for stuff in /var/ 
 sudo chown -R vx-services:vx-services /vx/services
 sudo chmod -R u=rwX /vx/services
 sudo chmod -R go-rwX /vx/services
