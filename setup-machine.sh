@@ -11,7 +11,7 @@ set -euo pipefail
 
 if uname -a | grep Debian; then
 	DISTRO="Debian"
-else;
+else
 	DISTRO="Ubuntu"
 fi
 
@@ -311,7 +311,7 @@ echo "Successfully setup machine."
 USER=$(whoami)
 
 # remove all unnecessary packages
-if DISTRO == "Debian"; then
+if [[ $DISTRO == "Debian" ]] ; then
 	sudo apt remove -y gnome
 else 
 	sudo apt remove -y ubuntu-deskop
