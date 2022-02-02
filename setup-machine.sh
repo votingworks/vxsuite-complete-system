@@ -110,8 +110,7 @@ sudo usermod -aG adm vx-admin
 sudo usermod -aG adm vx-ui
 
 ## Set up log config
-# TODO fix for Debian
-#sudo bash setup-scripts/setup-logging.sh
+sudo bash setup-scripts/setup-logging.sh
 
 # Let some users mount/unmount usb disks
 if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
