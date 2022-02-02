@@ -9,6 +9,12 @@
 
 set -euo pipefail
 
+if uname -a | grep Debian; then
+	DISTRO="Debian"
+else;
+	DISTRO="Ubuntu"
+fi
+
 # which kind of machine are we setting up?
 echo "Welcome to VxSuite. THIS IS A DESTRUCTIVE SCRIPT. Ctrl-C right now if you don't know for sure what you're doing."
 echo "Which machine are we building today?"
@@ -305,7 +311,12 @@ echo "Successfully setup machine."
 USER=$(whoami)
 
 # remove all unnecessary packages
-sudo apt remove -y gnome
+if DISTRO == "Debian"; then
+	sudo apt remove -y gnome
+else 
+	sudo apt remove -y ubuntu-deskop
+fi
+
 sudo apt remove -y git firefox snapd
 sudo apt autoremove -y
 
@@ -325,14 +336,10 @@ sudo passwd -l vx-services
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 sudo cp config/sudoers /etc/sudoers
 
-# TODO: this doesn't work, it just kicks us into a vx-admin shell. 
-# lockdown may have to be run from the admin screen?
-#su vx-admin -c "sudo setup-scripts/lockdown.sh"
 
 # FIXME: clean up source code
 cd
 rm -rf *
-
 
 echo "Done, rebooting in 5s."
 
