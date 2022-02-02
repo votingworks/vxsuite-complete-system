@@ -6,24 +6,24 @@ set -euo pipefail
 
 while true; do
   echo 'VxMark App Mode:'
-  echo '1. VxMark'
-  echo '2. VxPrint'
-  echo '3. VxMark + VxPrint'
+  echo '1. MarkOnly'
+  echo '2. PrintOnly'
+  echo '3. MarkAndPrint'
   read -p 'Choose one: ' APP_MODE
 
   case "${APP_MODE}" in
     1)
-      echo 'VxMark' > "${VX_CONFIG_ROOT}/app-mode"
+      echo 'MarkOnly' > "${VX_CONFIG_ROOT}/app-mode"
       break
     ;;
 
     2)
-      echo 'VxPrint' > "${VX_CONFIG_ROOT}/app-mode"
+      echo 'PrintOnly' > "${VX_CONFIG_ROOT}/app-mode"
       break
     ;;
 
     3)
-      echo 'VxMark + VxPrint' > "${VX_CONFIG_ROOT}/app-mode"
+      echo 'MarkAndPrint' > "${VX_CONFIG_ROOT}/app-mode"
       break
     ;;
 
