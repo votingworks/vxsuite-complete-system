@@ -314,7 +314,7 @@ USER=$(whoami)
 if [[ $DISTRO == "Debian" ]] ; then
 	sudo apt remove -y gnome
 else 
-	sudo apt remove -y ubuntu-deskop
+	sudo apt remove -y ubuntu-desktop
 fi
 
 sudo apt remove -y git firefox snapd
