@@ -4,6 +4,7 @@ if ! id syslog &> /dev/null; then
 	sudo chown syslog:adm /var/spool/rsyslog
 	sudo chown syslog:adm /var/log/syslog
 	sudo chown :adm /var/log
+	sudo chmod 775 /var/log
 fi
 
 
