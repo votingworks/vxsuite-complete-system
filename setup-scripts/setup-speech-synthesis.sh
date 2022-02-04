@@ -22,7 +22,7 @@ rm -rf /tmp/vx
 
 # set up festival voice
 sudo cp config/speechd.conf /etc/speech-dispatcher/
-sudo systemctl restart speech-dispatcher
+#sudo systemctl restart speech-dispatcher
 
 # festival auto-start
 sudo cp config/vx-festival.service /etc/systemd/system/
