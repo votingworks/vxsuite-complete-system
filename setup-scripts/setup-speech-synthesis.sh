@@ -13,8 +13,14 @@ sudo apt install -y festival speech-dispatcher speech-dispatcher-festival festvo
 wget http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_slt_arctic-0.95-release.tar.bz2
 bunzip2 cmu_us_slt_arctic-0.95-release.tar.bz2
 tar xf cmu_us_slt_arctic-0.95-release.tar
-sudo mkdir -p /usr/share/festival/voices/english/
-sudo mv cmu_us_slt_arctic /usr/share/festival/voices/english/cmu_us_slt_arctic_clunits
+
+if [[ $DISTRO == "Debian" ]]; then
+	sudo mkdir -p /usr/share/festival/voices/us/
+	sudo mv cmu_us_slt_arctic /usr/share/festival/voices/us/cmu_us_slt_arctic_hts
+else
+	sudo mkdir -p /usr/share/festival/voices/english/
+	sudo mv cmu_us_slt_arctic /usr/share/festival/voices/english/cmu_us_slt_arctic_clunits
+fi
 
 # done with downloaded files
 cd "$INSTALL_DIR"
