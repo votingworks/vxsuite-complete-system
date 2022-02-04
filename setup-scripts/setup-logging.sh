@@ -3,6 +3,7 @@ if ! id syslog &> /dev/null; then
 	sudo useradd -U -G adm,tty syslog
 	sudo chown syslog:adm /var/spool/rsyslog
 	sudo chown syslog:adm /var/log/syslog
+	sudo chown :adm /var/log
 fi
 
 
