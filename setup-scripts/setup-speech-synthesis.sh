@@ -16,7 +16,7 @@ tar xf cmu_us_slt_arctic-0.95-release.tar
 
 if [[ $DISTRO == "Debian" ]]; then
 	sudo mkdir -p /usr/share/festival/voices/us/
-	sudo mv cmu_us_slt_arctic /usr/share/festival/voices/us/cmu_us_slt_arctic_hts
+	sudo mv cmu_us_slt_arctic /usr/share/festival/voices/us/cmu_us_slt_arctic_clunits
 else
 	sudo mkdir -p /usr/share/festival/voices/english/
 	sudo mv cmu_us_slt_arctic /usr/share/festival/voices/english/cmu_us_slt_arctic_clunits
