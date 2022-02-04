@@ -10,9 +10,9 @@
 set -euo pipefail
 
 if uname -a | grep Debian; then
-	DISTRO="Debian"
+	export DISTRO="Debian"
 else
-	DISTRO="Ubuntu"
+	export DISTRO="Ubuntu"
 fi
 
 # which kind of machine are we setting up?
