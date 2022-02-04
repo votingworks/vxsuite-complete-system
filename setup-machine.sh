@@ -212,7 +212,7 @@ then
     sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
 
     # TODO: Fix this for Debian compat
-#    bash setup-scripts/setup-speech-synthesis.sh
+    bash setup-scripts/setup-speech-synthesis.sh
 fi
 
 # vx-ui OpenBox configuration
