@@ -287,7 +287,10 @@ sudo update-grub
 
 # turn off network
 timedatectl set-ntp no
-sudo nmcli networking off
+
+if [[ -z $DISTRO "Debian" ]]; then
+	sudo nmcli networking off
+fi
 
 # remove all network drivers. Buh bye.
 sudo apt purge -y network-manager
