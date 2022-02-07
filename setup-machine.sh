@@ -73,6 +73,11 @@ sudo apt install -y unclutter mingetty pmount brightnessctl
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
 
+# Get some extras for Debian lockdown
+if [[ $DISTRO == "Debian" ]]; then
+	sudo apt install -y rsync cups cryptsetup
+fi
+
 # turn off automatic updates
 sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
 
