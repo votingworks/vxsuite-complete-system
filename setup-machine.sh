@@ -75,7 +75,7 @@ sudo apt install -y openbox
 
 # Get some extras for Debian lockdown
 if [[ $DISTRO == "Debian" ]]; then
-	sudo apt install -y rsync cups cryptsetup nodm 
+	sudo apt install -y rsync cups cryptsetup nodm xinit 
 fi
 
 # turn off automatic updates
