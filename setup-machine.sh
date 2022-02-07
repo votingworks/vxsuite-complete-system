@@ -293,7 +293,7 @@ sudo update-grub
 # turn off network
 timedatectl set-ntp no
 
-if [[ -z $DISTRO "Debian" ]]; then
+if [[  $DISTRO == "Ubuntu" ]]; then
 	sudo nmcli networking off
 fi
 
