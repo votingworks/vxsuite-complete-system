@@ -312,6 +312,7 @@ USER=$(whoami)
 
 # remove all unnecessary packages
 if [[ $DISTRO == "Debian" ]] ; then
+	# TODO maybe just try Debian with no DE?
 	sudo apt remove -y gnome
 else 
 	sudo apt remove -y ubuntu-desktop
