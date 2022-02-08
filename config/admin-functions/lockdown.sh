@@ -34,7 +34,6 @@ DEV="$(df "$OUTDIR" | tail -1 | cut -d' ' -f1)"
 part=$(cat /sys/class/block/$(basename $DEV)/partition)
 
 efibootmgr \
-	--quiet \
 	--create \
 	--disk "$DEV" \
 	--part $part \
