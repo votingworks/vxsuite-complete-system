@@ -43,4 +43,6 @@ efibootmgr \
 
 
 # Reboot into the locked down system
+echo "Rebooting in 5s"
+sleep 5
 systemctl reboot -i
