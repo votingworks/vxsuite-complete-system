@@ -77,8 +77,7 @@ sudo apt install -y openbox
 if [[ $DISTRO == "Debian" ]]; then
 	sudo apt install -y rsync cups cryptsetup xserver-xorg-core x11-common xinit 
 	sudo chown :lpadmin /sbin/lpinfo
-	# TODO this may not be necessary if nodm isn't installed
-	# echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
+	echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 fi
 
 # turn off automatic updates
