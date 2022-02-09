@@ -1,3 +1,12 @@
+# Check if syslog is a user. If not, add it
+if ! id syslog &> /dev/null; then
+	sudo useradd -U -G adm,tty syslog
+	sudo chown syslog:adm /var/spool/rsyslog
+	sudo chown syslog:adm /var/log/syslog
+	sudo chown :adm /var/log
+	sudo chmod 775 /var/log
+fi
+
 ver="$(lsb_release -sr)"
 if [[ $ver == 18* ]] ;
 then
