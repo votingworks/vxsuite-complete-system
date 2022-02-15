@@ -234,6 +234,9 @@ then
     sudo ln -s /vx/code/config/surface-go-monitors.xml /vx/ui/.config/monitors.xml
 fi
 
+# setup tpm2-totp
+bash setup-scripts/setup-tpm2-totp.sh
+
 
 # permissions on directories
 # TODO: I think we only need to change the permissions for stuff in /var/ 
@@ -321,10 +324,7 @@ echo "Successfully setup machine."
 USER=$(whoami)
 
 # remove all unnecessary packages
-if [[ $DISTRO == "Debian" ]] ; then
-	# TODO maybe just try Debian with no DE?
-	sudo apt remove -y gnome
-else 
+if [[ $DISTRO == "Ubuntu" ]] ; then
 	sudo apt remove -y ubuntu-desktop
 fi
 
