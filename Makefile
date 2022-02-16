@@ -13,7 +13,7 @@ patch:
 build-kiosk-browser:
 	make -C kiosk-browser install
 	make -C kiosk-browser build
-	sudo dpkg -i kiosk-browser/out/make/deb/x64/kiosk-browser_*_amd64.deb
+	bash ./package-kiosk-browser.sh
 
 build: build-kiosk-browser patch
 	bash ./build.sh all
