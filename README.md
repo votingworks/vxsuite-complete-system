@@ -2,6 +2,20 @@
 
 This repository is used to download a set of components that are consistent with each other in terms of compatibility and versioning. This repository has all the components and scripts to run each machine (BMD, BAS, BSD, EMS).
 
+## Developing vxsuite through kiosk-browser
+If you are developing a change in [vxsuite](https://github.com/votingworks/vxsuite) and want to test it through kiosk-browser to mimic production, follow the steps below. Only do this *after* you have run the `setup-dev` script in vxsuite, which will install node and other dependencies.
+
+```sh
+make checkout
+make build-kiosk-browser
+# If you are using debian bullseye add your user to the lpadmin group
+sudo usermod -aG lpadmin $USER
+# run whatever apps and services you are testing in vxsuite
+KIOSK_BROWSER_ALLOW_DEVTOOLS=true ./run-scripts/run-kiosk-browser.sh
+```
+When kiosk-browser is running, you can type `Ctrl+Shift+I` in order to open developer tools, and `Ctrl+W` to close the window. You can also `Alt+Tab` to navigate back to the terminal and `Ctrl+C` to quit kiosk-browser.
+
+
 ## Hardware and OS
 
 Pick a machine with FHD (1920x1080) resolution and the ability to install Linux.
