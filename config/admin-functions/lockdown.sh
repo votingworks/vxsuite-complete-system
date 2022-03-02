@@ -24,7 +24,10 @@ objcopy \
     "/usr/lib/systemd/boot/efi/linuxx64.efi.stub" "/tmp/linux.efi"
 
 # Sign the resulting binary
-sbsign --key=/etc/efi-keys/DB.key --cert=/etc/efi-keys/DB.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi /tmp/linux.efi
+# First make sure the drive is mounted
+mount /dev/sda /mnt
+
+sbsign --key=/mnt/DB.key --cert=/mnt/DB.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi /tmp/linux.efi
 
 # Now install it 
 EFIDIR="/boot/efi/EFI/debian"
