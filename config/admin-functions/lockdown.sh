@@ -36,13 +36,7 @@ OUTDIR="${EFIDIR}/${TARGET}"
 DEV="$(df "$OUTDIR" | tail -1 | cut -d' ' -f1)"
 part=$(cat /sys/class/block/$(basename $DEV)/partition)
 
-efibootmgr \
-	--create \
-	--disk "$DEV" \
-	--part $part \
-	--label "VxLinux" \
-	--loader "\\EFI\\debian\\VxLinux-signed.efi" \
-
+bash setup-boot-entry.sh
 
 # Reboot into the locked down system
 echo "Rebooting in 5s"
