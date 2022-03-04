@@ -7,7 +7,7 @@ update-initramfs -u
 mount -o ro,remount /
 
 # Now do the dm-verity setup
-veritysetup format /dev/mapper/VxMark--vg-root /dev/mapper/VxMark--vg-hashes| tee "/tmp/verity.log"
+veritysetup format /dev/mapper/Vx--vg-root /dev/mapper/Vx--vg-hashes| tee "/tmp/verity.log"
 
 # Find the root hash and append it to our cmdline
 HASH="$(awk '/Root hash:/ { print $3 }' "/tmp/verity.log")"
