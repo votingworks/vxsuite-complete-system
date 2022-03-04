@@ -25,7 +25,7 @@
       "productId": 50218,
       "baseDeviceURI": "usb://HP/Color%20LaserJet%20Pro%20M453-4",
       "ppd": {
-        "path": "hp-color_laserjet_pro_m453-4-ps.ppd"
+        "path": "generic-postscript-driver.ppd"
       }
     }
   ]
