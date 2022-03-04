@@ -4,6 +4,7 @@
 #
 # turn off "expressions don't expand in single quotes" and "can't follow non-constant sources"
 # shellcheck disable=SC2016,SC1090,SC1091
+# This file was borrowed from safeboot: https://github.com/osresearch/safeboot/blob/master/initramfs/scripts/dmverity-root
 
 PREFIX="dmverity-root"
 
