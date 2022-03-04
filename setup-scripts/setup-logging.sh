@@ -7,7 +7,6 @@ if ! id syslog &> /dev/null; then
 	sudo chmod 775 /var/log
 fi
 
-
 ver="$(lsb_release -sr)"
 if [[ $ver == 18* ]] ;
 then
@@ -17,7 +16,6 @@ then
 fi
 
 sudo cp config/30-votingworks.conf /etc/rsyslog.d/30-votingworks.conf
-
 sudo cp config/rsyslog.conf /etc/rsyslog.conf
 sudo cp config/journald.conf /etc/systemd/journald.conf
 
