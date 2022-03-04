@@ -238,44 +238,23 @@ bash setup-scripts/setup-tpm2-totp.sh
 
 # permissions on directories
 # TODO: I think we only need to change the permissions for stuff in /var/ 
-sudo chown -R vx-services:vx-services /vx/services
-sudo chmod -R u=rwX /vx/services
-sudo chmod -R go-rwX /vx/services
-
 sudo chown -R vx-services:vx-services /var/vx/services
 sudo chmod -R u=rwX /var/vx/services
 sudo chmod -R go-rwX /var/vx/services
-
-sudo chown -R vx-ui:vx-ui /vx/ui
-sudo chmod -R u=rwX /vx/ui
-sudo chmod -R go-rwX /vx/ui
 
 sudo chown -R vx-ui:vx-ui /var/vx/ui
 sudo chmod -R u=rwX /var/vx/ui
 sudo chmod -R go-rwX /var/vx/ui
 
-sudo chown -R vx-admin:vx-admin /vx/admin
-sudo chmod -R u=rwX /vx/admin
-sudo chmod -R go-rwX /vx/admin
-
 sudo chown -R vx-admin:vx-admin /var/vx/admin
 sudo chmod -R u=rwX /var/vx/admin
 sudo chmod -R go-rwX /var/vx/admin
-
-sudo chown -R vx-services:vx-services /vx/data
-sudo chmod -R u=rwX /vx/data
-sudo chmod -R go-rwX /vx/data
 
 sudo chown -R vx-services:vx-services /var/vx/data
 sudo chmod -R u=rwX /var/vx/data
 sudo chmod -R go-rwX /var/vx/data
 
 # config readable & executable by all vx users, writable by admin.
-sudo chown -R vx-admin:vx-group /vx/config
-sudo chmod -R u=rwX /vx/config
-sudo chmod -R g=rX /vx/config
-sudo chmod -R o-rwX /vx/config
-
 sudo chown -R vx-admin:vx-group /var/vx/config
 sudo chmod -R u=rwX /var/vx/config
 sudo chmod -R g=rX /var/vx/config
