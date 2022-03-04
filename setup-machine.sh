@@ -9,6 +9,12 @@
 
 set -euo pipefail
 
+if uname -a | grep Debian; then
+	export DISTRO="Debian"
+else
+	export DISTRO="Ubuntu"
+fi
+
 # which kind of machine are we setting up?
 echo "Welcome to VxSuite. THIS IS A DESTRUCTIVE SCRIPT. Ctrl-C right now if you don't know for sure what you're doing."
 echo "Which machine are we building today?"
@@ -67,24 +73,44 @@ sudo apt install -y unclutter mingetty pmount brightnessctl
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
 
+# Get some extras for Debian lockdown
+if [[ $DISTRO == "Debian" ]]; then
+	sudo apt install -y rsync cups cryptsetup xserver-xorg-core x11-common xinit sbsigntool
+	sudo chown :lpadmin /sbin/lpinfo
+	echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
+fi
+
 # turn off automatic updates
 sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
 
 # make sure machine never shuts down on idle, and does shut down on power key (no hibernate or anything.)
 sudo cp config/logind.conf /etc/systemd/
 
+echo "Creating necessary directories"
 # directory structure
-sudo mkdir /vx
-sudo mkdir -p /vx/data/module-scan
-sudo mkdir -p /vx/data/module-sems-converter
+sudo mkdir -p /vx
+sudo mkdir -p /var/vx
+sudo mkdir -p /var/vx/data/module-scan
+sudo mkdir -p /var/vx/data/module-sems-converter
 
+sudo ln -sf /var/vx/data /vx/data
+
+echo "Creating users"
 # create users, no common group, specified uids.
-sudo useradd -u 750 -m -d /vx/services vx-services
-sudo useradd -u 751 -m -d /vx/ui -s /bin/bash vx-ui
-sudo useradd -u 752 -m -d /vx/admin -s /bin/bash vx-admin
+id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-services
+id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
+id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
+
+echo "Sym-linking folders that need to be mutable"
+
+# These user folders were created on the /var directory so they can
+# be mutable. Link them to the old path on the readonly root. 
+sudo ln -sf /var/vx/services /vx/services
+sudo ln -sf /var/vx/ui /vx/ui
+sudo ln -sf /var/vx/admin /vx/admin
 
 # a vx group for all vx users
-sudo groupadd -g 800 vx-group
+getent group vx-group || sudo groupadd -g 800 vx-group
 sudo usermod -aG vx-group vx-ui
 sudo usermod -aG vx-group vx-services
 sudo usermod -aG vx-group vx-admin
@@ -116,6 +142,7 @@ then
     sudo usermod -aG scanner vx-services
 fi
 
+echo "Setting up the code"
 # copy code into the right place
 ./build.sh "${CHOICE}"
 sudo mv build/${CHOICE} /vx/code
@@ -146,12 +173,26 @@ sudo ln -s /vx/code/config/xinitrc /vx/ui/.xinitrc
 sudo mkdir -p /vx/ui/.config/gtk-3.0
 sudo ln -s /vx/code/config/gtksettings.ini /vx/ui/.config/gtk-3.0/settings.ini
 
+# Hooks for dm-verity
+sudo cp config/dmverity-root.hook /etc/initramfs-tools/hooks/dmverity-root
+sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/dmverity-root
+
 # admin function scripts
 sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
 sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
 
+# Make sure our cmdline file is readable by vx-admin
+sudo mkdir -p /vx/admin/config
+sudo cp config/cmdline /vx/code/config/cmdline
+sudo cp config/logo.bmp /vx/code/config/logo.bmp
+sudo ln -s /vx/code/config/cmdline /vx/admin/config/cmdline
+sudo ln -s /vx/code/config/logo.bmp /vx/admin/config/logo.bmp
+
 # machine configuration
-sudo mkdir -p /vx/config
+# TODO: This should be writeable right?
+sudo mkdir -p /var/vx/config
+sudo ln -sf /var/vx/config /vx/config
+
 sudo ln -s /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-config.sh
 
 # record the machine type in the configuration (-E keeps the environment variable around, CHOICE prefix sends it in)
@@ -176,7 +217,6 @@ sudo sh -c 'echo "0000" > /vx/config/machine-id'
 if [ "${CHOICE}" = "bmd" ]
 then
     sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
-
     bash setup-scripts/setup-speech-synthesis.sh
 fi
 
@@ -192,29 +232,33 @@ then
     sudo ln -s /vx/code/config/surface-go-monitors.xml /vx/ui/.config/monitors.xml
 fi
 
+# setup tpm2-totp
+bash setup-scripts/setup-tpm2-totp.sh
+
 
 # permissions on directories
-sudo chown -R vx-services:vx-services /vx/services
-sudo chmod -R u=rwX /vx/services
-sudo chmod -R go-rwX /vx/services
+# TODO: I think we only need to change the permissions for stuff in /var/ 
+sudo chown -R vx-services:vx-services /var/vx/services
+sudo chmod -R u=rwX /var/vx/services
+sudo chmod -R go-rwX /var/vx/services
 
-sudo chown -R vx-ui:vx-ui /vx/ui
-sudo chmod -R u=rwX /vx/ui
-sudo chmod -R go-rwX /vx/ui
+sudo chown -R vx-ui:vx-ui /var/vx/ui
+sudo chmod -R u=rwX /var/vx/ui
+sudo chmod -R go-rwX /var/vx/ui
 
-sudo chown -R vx-admin:vx-admin /vx/admin
-sudo chmod -R u=rwX /vx/admin
-sudo chmod -R go-rwX /vx/admin
+sudo chown -R vx-admin:vx-admin /var/vx/admin
+sudo chmod -R u=rwX /var/vx/admin
+sudo chmod -R go-rwX /var/vx/admin
 
-sudo chown -R vx-services:vx-services /vx/data
-sudo chmod -R u=rwX /vx/data
-sudo chmod -R go-rwX /vx/data
+sudo chown -R vx-services:vx-services /var/vx/data
+sudo chmod -R u=rwX /var/vx/data
+sudo chmod -R go-rwX /var/vx/data
 
 # config readable & executable by all vx users, writable by admin.
-sudo chown -R vx-admin:vx-group /vx/config
-sudo chmod -R u=rwX /vx/config
-sudo chmod -R g=rX /vx/config
-sudo chmod -R o-rwX /vx/config
+sudo chown -R vx-admin:vx-group /var/vx/config
+sudo chmod -R u=rwX /var/vx/config
+sudo chmod -R g=rX /var/vx/config
+sudo chmod -R o-rwX /var/vx/config
 
 # non-graphical login
 sudo systemctl set-default multi-user.target
@@ -230,7 +274,10 @@ sudo update-grub
 
 # turn off network
 timedatectl set-ntp no
-sudo nmcli networking off
+
+if [[  $DISTRO == "Ubuntu" ]]; then
+	sudo nmcli networking off
+fi
 
 # remove all network drivers. Buh bye.
 sudo apt purge -y network-manager
@@ -254,7 +301,10 @@ echo "Successfully setup machine."
 USER=$(whoami)
 
 # remove all unnecessary packages
-sudo apt remove -y ubuntu-desktop
+if [[ $DISTRO == "Ubuntu" ]] ; then
+	sudo apt remove -y ubuntu-desktop
+fi
+
 sudo apt remove -y git firefox snapd
 sudo apt autoremove -y
 

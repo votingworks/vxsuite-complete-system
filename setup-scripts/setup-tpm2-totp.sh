@@ -7,7 +7,7 @@ sudo apt -y install build-essential autoconf autoconf-archive automake m4 libtoo
     cd tpm2-software/tpm2-tss
     ./bootstrap
     ./configure
-    make 
+    make  -j
     sudo make install
 )
 
@@ -20,13 +20,5 @@ sudo apt -y install build-essential autoconf autoconf-archive automake m4 libtoo
 )
 
 # reindex shared objects
+# TODO is this necessary if we're not setting up TOTP until after a reboot?
 sudo ldconfig
-
-# clear out any preexisting TPM-bound TOTP if there is one
-sudo tpm2-totp clean || true
-
-# initialize the TOTP code, which will display the QR code with the secret.
-sudo tpm2-totp --pcrs=0,7 init
-
-
-

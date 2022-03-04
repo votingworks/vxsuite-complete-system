@@ -22,6 +22,14 @@ while true; do
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
+
+  # TODO: do we want to try to also display secure boot status? 
+  if [[ $(lsblk | grep "vroot") ]]; then
+	  echo -e "Lockdown state: \e[32mLocked Down\e[0m"
+  else
+	  echo -e "Lockdown state: \e[31mNot locked down\e[0m"
+  fi
+
   timedatectl status | grep "Local time" | sed 's/^ *//g'
 
   if [ "${VX_MACHINE_TYPE}" = bmd ]; then
@@ -56,6 +64,9 @@ while true; do
 
   echo "${#CHOICES[@]}. Show current public signing key"
   CHOICES+=('keyshow')
+
+  echo "${#CHOICES[@]}. Lock the system down."
+  CHOICES+=('lockdown')
 
   echo "${#CHOICES[@]}. Reset System Authentication Code"
   CHOICES+=('resettotp')
@@ -118,9 +129,15 @@ while true; do
     
     resettotp)
         sudo tpm2-totp clean || true
-        sudo tpm2-totp --pcrs=0,7 init
+        sudo tpm2-totp --pcrs=0,2,4,5,7 init
         read -s -n 1
     ;;
+    
+    lockdown)
+        sudo "${VX_FUNCTIONS_ROOT}/lockdown.sh"
+        read -s -n 1
+    ;;
+    
 
     *)
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2
