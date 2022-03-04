@@ -122,7 +122,7 @@ sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 sudo usermod -aG adm vx-admin
 sudo usermod -aG adm vx-ui
 
-## Set up log config
+# Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
 # Let some users mount/unmount usb disks
@@ -217,8 +217,6 @@ sudo sh -c 'echo "0000" > /vx/config/machine-id'
 if [ "${CHOICE}" = "bmd" ]
 then
     sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
-
-    # TODO: Fix this for Debian compat
     bash setup-scripts/setup-speech-synthesis.sh
 fi
 
@@ -346,7 +344,6 @@ sudo passwd -l vx-services
 
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 sudo cp config/sudoers /etc/sudoers
-
 
 # FIXME: clean up source code
 cd

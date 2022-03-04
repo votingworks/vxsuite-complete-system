@@ -23,6 +23,7 @@ while true; do
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
 
+  # TODO: do we want to try to also dispaly secure boot status? 
   if [[ $(lsblk | grep "vroot") ]]; then
 	  echo -e "Lockdown state: \e[32mLocked Down\e[0m"
   else
@@ -69,7 +70,6 @@ while true; do
 
   echo "${#CHOICES[@]}. Reset System Authentication Code"
   CHOICES+=('resettotp')
-
   
   echo "0. Reboot"
   echo
