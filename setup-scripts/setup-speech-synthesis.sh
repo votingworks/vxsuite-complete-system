@@ -10,7 +10,7 @@ cd /tmp/vx
 
 # Festival and Speech Dispatcher
 sudo apt install -y festival speech-dispatcher speech-dispatcher-festival festvox-us-slt-hts
-wget http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_slt_arctic-0.95-release.tar.bz2
+wget http://festvox.org/cmu_arctic/cmu_arctic/packed/cmu_us_slt_arctic-0.95-release.tar.bz2
 bunzip2 cmu_us_slt_arctic-0.95-release.tar.bz2
 tar xf cmu_us_slt_arctic-0.95-release.tar
 
