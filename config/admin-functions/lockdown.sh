@@ -14,7 +14,7 @@ HASH="$(awk '/Root hash:/ { print $3 }' "/tmp/verity.log")"
 echo "$(cat /vx/admin/config/cmdline)${HASH}" > /tmp/cmdline
 
 # TODO: Make sure the output initramfs/kernel file names are correct!
-# Now package up ouer kernel, cmdline, etc
+# Now package up our kernel, cmdline, etc
 objcopy \
     --add-section .osrel="/usr/lib/os-release" --change-section-vma .osrel=0x20000 \
     --add-section .cmdline="/tmp/cmdline" --change-section-vma .cmdline=0x30000 \
