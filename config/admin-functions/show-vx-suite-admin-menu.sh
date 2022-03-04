@@ -68,6 +68,9 @@ while true; do
   echo "${#CHOICES[@]}. Lock the system down."
   CHOICES+=('lockdown')
 
+  echo "${#CHOICES[@]}. Setup boot entry."
+  CHOICES+=('setupbootentry')
+
   echo "${#CHOICES[@]}. Reset System Authentication Code"
   CHOICES+=('resettotp')
   
@@ -138,6 +141,9 @@ while true; do
         read -s -n 1
     ;;
     
+    setupbootentry)
+    	bash setup-boot-entry.sh
+	read -s -n 1
 
     *)
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2
