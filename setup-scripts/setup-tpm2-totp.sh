@@ -7,7 +7,7 @@ sudo apt -y install build-essential autoconf autoconf-archive automake m4 libtoo
     cd tpm2-software/tpm2-tss
     ./bootstrap
     ./configure
-    make  -j4
+    make  -j
     sudo make install
 )
 
