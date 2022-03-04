@@ -144,6 +144,7 @@ while true; do
     setupbootentry)
     	bash setup-boot-entry.sh
 	read -s -n 1
+    ;;
 
     *)
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2
