@@ -4,7 +4,7 @@ This file explains getting VxSuite up and running in Debian 11.2, along with set
 
 The install process can follow the usual path of the Debian installer. The only modification that needs to be made is as follows:
 
-Set the machine's hostname to be "VxMark" (TODO: make this more general):
+Set the machine's hostname to be "Vx":
 ![image](https://user-images.githubusercontent.com/2686765/156217619-95165aca-da51-406d-8c93-4630a5e50a63.png)
 
 On the disk partitioning screen, select “Setup LVM”
