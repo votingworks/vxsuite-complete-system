@@ -1,0 +1,121 @@
+This file explains getting VxSuite up and running in Debian 11.2, along with setting up security features like Secure Boot, dm-verity, and TPM2-TOTP. 
+
+<h2>Installer</h2>
+
+The install process can follow the usual path of the Debian installer. The only modification that needs to be made is as follows:
+
+Set the machine's hostname to be "VxMark" (TODO: make this more general):
+![image](https://user-images.githubusercontent.com/2686765/156217619-95165aca-da51-406d-8c93-4630a5e50a63.png)
+
+On the disk partitioning screen, select “Setup LVM”
+
+![image](https://user-images.githubusercontent.com/2686765/156217724-78ada600-fb7b-4b93-b9f1-6ac5d1bd3f0d.png)
+
+Select the disk in question:
+![image](https://user-images.githubusercontent.com/2686765/156218657-7e0a8327-6791-4f5e-a8d5-497e013671d3.png)
+
+Use separate partitions for `/home`, `/var`, and `/tmp`
+![image](https://user-images.githubusercontent.com/2686765/156218692-8b62b4dd-aa13-49ce-8553-38636c7b3970.png)
+
+Make the changes:
+![image](https://user-images.githubusercontent.com/2686765/156218723-4eadaa21-4706-45bb-a6cd-4985f4908375.png)
+
+Use the whole disk for LVM:
+![image](https://user-images.githubusercontent.com/2686765/156218741-8d788793-0bc5-4f5e-bb4f-4daddbd21881.png)
+
+**IMPORTANT**: do not persist these changes, we're not done yet!
+![image](https://user-images.githubusercontent.com/2686765/156218759-bfd4589b-8869-4778-a1be-0ac3a8dc7801.png)
+
+On this screen, scroll to the top and click "Configure LVM":
+![image](https://user-images.githubusercontent.com/2686765/156218789-3adc2403-8017-4c86-8188-58368df9e234.png)
+![image](https://user-images.githubusercontent.com/2686765/156218984-b75458ad-8006-4913-8f4a-b25e01ea68c9.png)
+
+Now it's okay to write the changes to disk:
+![image](https://user-images.githubusercontent.com/2686765/156219108-c32f6890-e671-4038-b1a0-88b03d311225.png)
+
+Start by deleting the swap partition:
+![image](https://user-images.githubusercontent.com/2686765/156219126-87d39e66-718a-4374-91df-44543f68715f.png)
+![image](https://user-images.githubusercontent.com/2686765/156219143-ebe05a13-464a-404f-9823-33ee80c75855.png)
+
+Now add a `hashes` partition in its place: 
+![image](https://user-images.githubusercontent.com/2686765/156219159-5e54ec45-48ed-45e1-8983-5225e3d4f949.png)
+![image](https://user-images.githubusercontent.com/2686765/156219166-0ad2a46f-a3c4-4d4e-b1ab-d72ad0d7b8c4.png)
+![image](https://user-images.githubusercontent.com/2686765/156219190-1bda80c0-fe77-42ae-9d9c-d10bebd422e1.png)
+![image](https://user-images.githubusercontent.com/2686765/156219210-ba23cf55-f0c2-4734-8a1c-6acb865fbc49.png)
+
+Now we're done!
+![image](https://user-images.githubusercontent.com/2686765/156219231-c051bb0f-a816-4dfe-871a-7e4edb6c4780.png)
+![image](https://user-images.githubusercontent.com/2686765/156219254-c00b5fe9-53c7-411d-88c2-c6cf798fa665.png)
+
+Note: there may be a screen asking if we want to install with a UEFI-based bootloader. Say yes. Afterwards, continue through the rest of the install as normal. 
+
+<h2>First boot</h2>
+Since Debian does not have the same packages as Ubuntu (i.e. no PPAs), some modifications are needed from the usual VxSuite build process. First, you’ll have to add your user to the sudoers file using /sbin/visudo 
+
+```bash
+sudo apt install git build-essential rsync cups cryptsetup efitools 
+usermod -a -G lpadmin $USER
+```
+
+Add user to sudoers file and add export `PATH=$PATH:/sbin/` to your `.bashrc`
+
+```bash
+reboot
+```
+Now create the Secure boot keys:
+
+```bash
+su -
+mkdir /etc/efi-keys
+cd /etc/efi-keys
+wget https://rodsbooks.com/efi-bootloaders/mkkeys.sh
+chmod +x mkkeys.sh
+./mkkeys.sh
+```
+For the common name, I usually enter "VotingWorks"
+
+If you're in a VM, you can skip most of the secure boot steps (the following steps). Reboot the machine and enter into the BIOS setup. Find the Secure Boot screen and select an option like "delete all keys". This should put you into "Setup Mode". Now exit out of the firmware and boot the OS. From here, persist the keys you just generated to the firmware:
+```bash
+su -
+cd /etc/efi-keys
+efi-updatevar -f DB.auth DB
+efi-updatevar -f KEK.auth KEK
+efi-updatevar -f PK.auth PK
+```
+**IMPORTANT**: the order here matters. PK must be persisted _last_, otherwise it won't work. This should work well on Lenovo devices, but if it doesn't here is an alternate approach:
+
+Copy the keys to the EFI system partition:
+```bash
+cp *.auth /boot/efi
+```
+Now reboot the machine and enter the firmware interface. On the Secure Boot screen, there should be an option to "Enroll Keys". It should show you your ESP on selection, at which point you can navigate to each of the three keys and enroll them in the firmware. As above, the order matters, so do DB, KEK then PK in that order.
+
+At this point there should be keys enrolled in firmware and the machine should be in Secure Boot mode. You will probably have to turn it off for now so that we can still boot Debian, since we haven't signed anything yet. 
+
+**IMPORTANT**: We are not using disk encryption, meaning that keys which are left on `/etc/efi-keys` or `/boot/efi` are **exposed**. The keys **must** be wiped from the disk before putting the machines in the field, preferably before cloning. 
+
+
+<h2>Setting up VxSuite</h2>
+
+Now we're ready to setup VxSuite. After rebooting into the OS,
+
+```bash
+git clone git@github.com:votingworks/vxsuite-complete-system
+cd vxsuite-complete-system
+git checkout enhanced-security
+make node
+make checkout
+make build
+./setup-machine.sh
+```
+
+After this point, the machine will be locked down, and should automatically reboot. After reboot, go into the admin screen (TTY2), and select the lockdown option:
+![image](https://user-images.githubusercontent.com/2686765/156222053-16c5ed78-75b6-486d-b5cc-753110badf41.png)
+
+This should setup everything for you, except TPM2-TOTP, and reboot the machine. On reboot, make sure you go back into the firmware interface and turn on Secure Boot. If that works, it should boot into the new dm-verity-backed lockdown. On the tty2, you should now see
+![image](https://user-images.githubusercontent.com/2686765/156222216-ea909f42-00de-4097-b134-650ffcbcd3c9.png)
+
+And if you `^C` you should see the following when running `lsblk`:
+![image](https://user-images.githubusercontent.com/2686765/149411997-202e2a72-d8d4-492e-a19e-d43c7508e95a.png)
+
+
