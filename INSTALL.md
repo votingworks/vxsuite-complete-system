@@ -102,7 +102,6 @@ Now we're ready to setup VxSuite. After rebooting into the OS,
 ```bash
 git clone git@github.com:votingworks/vxsuite-complete-system
 cd vxsuite-complete-system
-git checkout enhanced-security
 make node
 make checkout
 make build
