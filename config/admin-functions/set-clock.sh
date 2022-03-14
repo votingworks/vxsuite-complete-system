@@ -7,31 +7,56 @@ TIMEZONES["M"]="America/Phoenix"
 TIMEZONES["C"]="America/Chicago"
 TIMEZONES["E"]="America/New_York"
 
-echo "Let's set the system date, time, and timezone!"
+echo "System clock is currently set to: $(date)"
+
+echo "Let's set the date"
 while true; do
-    read -p "Date (e.g. 2020-05-09): " DATE
-    if date -d "${DATE}" > /dev/null  2>&1
-    then
-	break
+    while true; do
+        read -p "Enter the month (e.g. 3): " MONTH
+        [[ "${MONTH}" =~ ^0?[1-9]|11|12$ ]] && break
+        echo -e "\e[31mInvalid month, try again\e[0m" >&2
+    done
+
+    while true; do
+        read -p "Enter the day (e.g. 7): " DAY
+        [[ "${DAY}" =~ ^[0-3]?[0-9]$ ]] && break
+        echo -e "\e[31mInvalid day, try again\e[0m" >&2
+    done
+
+    while true; do
+        read -p "Enter the year (e.g. 2020): " YEAR
+        [[ "${YEAR}" =~ ^[0-9]{4}$ ]] && break
+        echo -e "\e[31mInvalid year, try again\e[0m" >&2
+    done
+    
+    DATE="${MONTH}/${DAY}/${YEAR}"
+    if date -d "${DATE}" > /dev/null 2>&1; then
+        read -p "Confirm that date should be set to ${DATE}? (y/n) " CONFIRM
+        [[ "${CONFIRM}" = "y" ]] && break
+    else
+        echo -e "\e[31mInvalid year/month/day combination, try again\e[0m" >&2
     fi
 done
 
+echo "Let's set the time"
 while true; do
-    read -p "Time in 24h style (e.g. 19:): " TIME
-    if date -d "${TIME}" > /dev/null  2>&1
-    then
-	break
-    fi
+    while true; do
+        read -p "Pick a timezone - (P)acific, (M)ountain, (C)entral, (E)astern: " TZ
+        [[ "${TZ}" =~ ^[P,M,C,E]$ ]] && break
+        echo -e "\e[31mInvalid timezone, try again\e[0m" >&2
+    done
+
+    while true; do
+        read -p "Enter the time (e.g. 12:15pm): " TIME
+        date -d "${TIME}" > /dev/null  2>&1 && break
+        echo -e "\e[31mInvalid time, try again\e[0m" >&2
+    done
+
+    read -p "Confirm that the time should be set to ${TIME}? (y/n) " CONFIRM
+    [[ "${CONFIRM}" = "y" ]] && break
 done
 
-while true; do
-    read -p "Timezone - (P)acific, (M)ountain, (C)entral, (E)astern: " TZ
-    if [[ "${TZ}" =~ ^[P,M,C,E]$ ]]; then
-	break
-    fi
-done
-
-sudo timedatectl set-time "${DATE} ${TIME} ${TIMEZONES[${TZ}]}"
 sudo timedatectl set-timezone "${TIMEZONES[${TZ}]}"
+sudo timedatectl set-time "$(date -d "${DATE} ${TIME}" +"%F %T")"
 
-echo "Done!"
+echo "Clock is now set to: $(date)"
