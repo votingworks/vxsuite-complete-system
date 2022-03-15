@@ -26,7 +26,7 @@ TOTP_URI=`${VX_FUNCTIONS_ROOT}/reset-totp.sh | grep otpauth`
 echo "TOTP URI: ${TOTP_URI}"
 echo 'Setting up signing keys...'
 ${VX_FUNCTIONS_ROOT}/generate-key.sh > /dev/null
-PUBLIC_KEY=`cat "${VX_CONFIG_ROOT}/key.pub"`
+PUBLIC_KEY=`cat "${VX_CONFIG_ROOT}/key.pub" | tail -n 1`
 echo "Public Signing Key: ${PUBLIC_KEY}"
 echo "Record this QR code containing the Machine ID, TOTP URI, and Public Signing Key:"
 MACHINE_ID=`cat "${VX_CONFIG_ROOT}/machine-id"`
