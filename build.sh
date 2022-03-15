@@ -63,6 +63,7 @@ build() {
     cd "${DIR}/vxsuite/frontends/${APP}"
     pnpm install
     BUILD_ROOT="${BUILD_ROOT}/vxsuite" ./script/prod-build
+    echo $?
 
     cp -rp \
       "${DIR}/run-scripts/run-${APP}.sh" \
@@ -77,9 +78,7 @@ build() {
     rm -rf vxsuite # this is the built version
     ln -s ../../vxsuite ./vxsuite
   )
-  status=$?
-  echo $status
-  if [[ $status = 0 ]]; then
+  if [[ $? = 0 ]]; then
     echo -e "\e[32m✅${APP} built\e[0m"
   else
     echo -e "\e[31m✘ ${APP} build failed! check the logs above\e[0m" >&2
