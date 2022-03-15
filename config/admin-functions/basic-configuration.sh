@@ -21,7 +21,21 @@ ${VX_FUNCTIONS_ROOT}/set-clock.sh
 
 echo
 echo -e "\e[1mStep 3: Record Machine Metadata\e[0m"
+echo 'Setting up TOTP...'
+TOTP_URI=`${VX_FUNCTIONS_ROOT}/reset-totp.sh | grep otpauth`
+echo "TOTP URI: ${TOTP_URI}"
+echo 'Setting up signing keys...'
+${VX_FUNCTIONS_ROOT}/generate-key.sh > /dev/null
+PUBLIC_KEY=`cat "${VX_CONFIG_ROOT}/key.pub"`
+echo "Public Signing Key: ${PUBLIC_KEY}"
+echo "Record this QR code containing the Machine ID, TOTP URI, and Public Signing Key:"
+MACHINE_ID=`cat "${VX_CONFIG_ROOT}/machine-id"`
+echo -e "${MACHINE_ID}\n${TOTP_URI}\n${PUBLIC_KEY}" | qrencode -t ANSIUTF8 -o -
 
+while true; do
+    read -p "Confirm QR code recorded (y/n) " CONFIRM
+    [[ "${CONFIRM}" = "y" ]] && break
+done
 
 echo
 echo -e "\e[1mBasic Configuration Complete\e[0m"
