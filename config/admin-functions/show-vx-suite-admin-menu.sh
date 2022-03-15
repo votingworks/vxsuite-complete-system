@@ -22,19 +22,19 @@ while true; do
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
+  if [ "${VX_MACHINE_TYPE}" = bmd ]; then
+    echo -e "Machine App Mode: \e[32m${VX_APP_MODE}\e[0m"
+  fi
 
   # TODO: do we want to try to also display secure boot status? 
   if [[ $(lsblk | grep "vroot") ]]; then
-    echo -e "Lockdown state: \e[32mLocked Down\e[0m"
+    echo -e "Lockdown State: \e[32mLocked Down\e[0m"
   else
-    echo -e "Lockdown state: \e[31mNot locked down\e[0m"
+    echo -e "Lockdown State: \e[31mNot Locked Down\e[0m"
   fi
 
-  echo "Current time: $(date)"
+  echo "Current Time: $(date)"
 
-  if [ "${VX_MACHINE_TYPE}" = bmd ]; then
-    echo -e "App Mode: \e[32m${VX_APP_MODE}\e[0m"
-  fi
 
   CHOICES=('reboot')
 
