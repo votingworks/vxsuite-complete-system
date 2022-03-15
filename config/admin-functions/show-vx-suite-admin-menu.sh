@@ -30,7 +30,7 @@ while true; do
     echo -e "Lockdown state: \e[31mNot locked down\e[0m"
   fi
 
-  timedatectl status | grep "Local time" | sed 's/^ *//g'
+  echo "Current time: $(date)"
 
   if [ "${VX_MACHINE_TYPE}" = bmd ]; then
     echo -e "App Mode: \e[32m${VX_APP_MODE}\e[0m"
