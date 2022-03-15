@@ -48,7 +48,11 @@ build() {
   echo "🔨Building ${APP}"
   export BUILD_ROOT="${DIR}/build/${APP}"
   rm -rf "${BUILD_ROOT}"
+  # In order to get the subshell exit code without exiting the whole script, we
+  # need to temporarily set +e
+  set +e
   (
+    set -euo pipefail
     for service in "${ALL_SERVICES[@]}"; do
       make -C "${DIR}/vxsuite/services/${service}" install
     done
@@ -72,9 +76,14 @@ build() {
     cd ${BUILD_ROOT}
     rm -rf vxsuite # this is the built version
     ln -s ../../vxsuite ./vxsuite
-  ) && \
-  echo "✅${APP} built!" || \
-  (echo "✘ ${APP} build failed! check the logs above" >&2 && exit 1)
+  )
+  if [[ $? = 0 ]]; then
+    echo -e "\e[32m✅${APP} built\e[0m"
+  else
+    echo -e "\e[31m✘ ${APP} build failed! check the logs above\e[0m" >&2
+    exit 1
+  fi
+  set -e
 }
 
 APPS=()
