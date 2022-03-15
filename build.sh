@@ -63,7 +63,6 @@ build() {
     cd "${DIR}/vxsuite/frontends/${APP}"
     pnpm install
     BUILD_ROOT="${BUILD_ROOT}/vxsuite" ./script/prod-build
-    echo $?
 
     cp -rp \
       "${DIR}/run-scripts/run-${APP}.sh" \
