@@ -95,7 +95,6 @@ while true; do
 
     basic-configuration)
       "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
-      prompt-to-restart
     ;;
 
     set-machine-id)
