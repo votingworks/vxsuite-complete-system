@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
 EFIDIR="/boot/efi/EFI/debian"
 TARGET="VxLinux-signed.efi"
 OUTDIR="${EFIDIR}/${TARGET}"
