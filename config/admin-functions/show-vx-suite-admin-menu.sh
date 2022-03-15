@@ -39,9 +39,12 @@ while true; do
   CHOICES=('reboot')
 
   echo
-  echo "${#CHOICES[@]}. Run Basic Configuration"
+  echo -e "\e[1mBasic Configuration\e[0m"
+  echo "${#CHOICES[@]}. Run Basic Configuration Wizard"
   CHOICES+=('basic-configuration')
 
+  echo
+  echo -e "\e[1mAdvanced\e[0m"
   echo "${#CHOICES[@]}. Set Machine ID"
   CHOICES+=('set-machine-id')
 
