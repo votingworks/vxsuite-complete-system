@@ -34,4 +34,4 @@ On the first customization screen, make sure you have [`edk2-ovmf`](https://gith
 
 Now select the VirtIO Disk 1 option on the left panel. 
 
-Other than that, you should be good to create the virtual machine using Debian. Follow the instructions [here](https://github.com/votingworks/vxsuite-complete-system/blob/main/INSTALL.md) to create a production-ready, locked down image. Then, copy your disk image to the install stick created in the [vx-iso](https://github.com/votingworks/vx-iso) process, and you should be ready to flash to hardware!
+Other than that, you should be good to create the virtual machine using Debian. Follow the instructions [here](https://github.com/votingworks/vxsuite-complete-system/blob/main/INSTALL.md) to create a production-ready, locked down image. Then, compress your disk image using `lz4` and copy the compressed image to the install stick created in the [vx-iso](https://github.com/votingworks/vx-iso) process, and you should be ready to flash to hardware!
