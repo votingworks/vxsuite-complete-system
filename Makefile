@@ -1,5 +1,5 @@
 checkout:
-	git pull --rebase
+	git pull
 	git submodule update --init
 
 node:
@@ -21,3 +21,7 @@ build: build-kiosk-browser deps
 clean:
 	git clean -dfx
 	git submodule foreach git clean -dfx
+
+cleandev: clean
+	rm -rf /tmp/ballot*
+	rm -rf ~/.config/kiosk-browser
