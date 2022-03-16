@@ -14,10 +14,11 @@ I normally try to mirror the specifications of our production machines, which is
 For the disk image, select "Select or create custom storage" and click manage:
 ![image](https://user-images.githubusercontent.com/2686765/158506424-951edd69-5409-47eb-bd2e-9808e37c5b18.png)
 
-On the next screen, select a directory where you would like the raw disk image to live (if none are shown, click the "+" in the bottom left and enter a path). Once you have highlighted the correct place, click the `+` next to **Volumes** to create a new disk .
+On the next screen, select a directory where you would like the raw disk image to live (if none are shown, click the `+` in the bottom left and enter a path). Once you have highlighted the correct place, click the `+` next to **Volumes** to create a new disk.
 ![image](https://user-images.githubusercontent.com/2686765/158506649-a59d2281-0820-4ae3-b55d-d40e5e26c05c.png)
 
 In the dialog, give your new disk image a name (I typically pick one that corresponds to the type of production device I'm creating. In the "Format" drop down, select "raw". In the dialog shown below, this will create a disk image called `VxMark.img` that can be flashed onto hardware using [vx-iso](https://github.com/votingworks/vx-iso).
+
 ![image](https://user-images.githubusercontent.com/2686765/158506825-ca2c8ec0-24ed-4c59-9314-a7e4f294114d.png)
 
 Also make sure to up the disk size to at least 50G, and ensure that "Allocate entire volume now" is selected. 
