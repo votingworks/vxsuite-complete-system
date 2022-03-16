@@ -32,6 +32,4 @@ We want to customize the install ahead of time so our Debian install knows to cr
 On the first customization screen, make sure you have [`edk2-ovmf`](https://github.com/tianocore/edk2) installed. This will allow you to select Secure Boot-compatible virtual firmware. (I don't think SB-compatibility is strictly necessary, so it might be the case that just standard UEFI virtual firmware will work). 
 ![image](https://user-images.githubusercontent.com/2686765/158506084-b01cd6b0-4d58-4f2f-a4fa-6b4671fd3299.png)
 
-Now select the VirtIO Disk 1 option on the left panel. 
-
 Other than that, you should be good to create the virtual machine using Debian. Follow the instructions [here](https://github.com/votingworks/vxsuite-complete-system/blob/main/INSTALL.md) to create a production-ready, locked down image. Then, compress your disk image using `lz4` and copy the compressed image to the install stick created in the [vx-iso](https://github.com/votingworks/vx-iso) process, and you should be ready to flash to hardware!
