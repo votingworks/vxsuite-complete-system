@@ -67,5 +67,6 @@ Now find the EFI executable you wish to start, much like before in the EFI shell
 
 <h3> Debian install doesn't start</h3>
 Sometimes the Debian install won't start after VM creation. Double check that the ISO is in the emulated disk drive on the VM, and browse to the install ISO on your local disk.
+
 ![image](https://user-images.githubusercontent.com/2686765/158649607-37cc04c2-8754-4299-833c-b7c71cd1d755.png)
 
