@@ -235,6 +235,8 @@ fi
 # setup tpm2-totp
 bash setup-scripts/setup-tpm2-totp.sh
 
+# setup signify
+bash setup-scripts/setup-signify.sh
 
 # permissions on directories
 # TODO: I think we only need to change the permissions for stuff in /var/ 
