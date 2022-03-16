@@ -6,9 +6,9 @@ set -euo pipefail
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
 prompt-to-restart() {
-  read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? [Yn] "
+  read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? (y/n) "
   if [[ ${REPLY} = "" || ${REPLY} = Y || ${REPLY} = y ]]; then
-    sudo reboot
+    systemctl reboot -i
   fi
 }
 
