@@ -55,6 +55,7 @@ Once in the firmware interface, navigate to the "Boot Maintenance Manager"
 ![Screenshot_VxBase-dev_2022-03-16_13:07:54](https://user-images.githubusercontent.com/2686765/158649233-a22c3c39-6122-4bd8-ae71-460a38497ff7.png)  
 
 On the next screen, select "Boot from File": 
+
 ![Screenshot_VxBase-dev_2022-03-16_13:08:00](https://user-images.githubusercontent.com/2686765/158649354-7300983a-826b-4ed4-905d-e5796175a77b.png)
 
 Now find the EFI executable you wish to start, much like before in the EFI shell: 
