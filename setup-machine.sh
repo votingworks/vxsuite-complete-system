@@ -273,7 +273,7 @@ sudo cp config/grub /etc/default/grub
 sudo update-grub
 
 # turn off network
-timedatectl set-ntp no
+sudo timedatectl set-ntp no
 
 if [[  $DISTRO == "Ubuntu" ]]; then
 	sudo nmcli networking off
