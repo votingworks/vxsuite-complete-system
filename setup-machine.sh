@@ -57,6 +57,26 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 
 echo "Excellent, let's set up ${CHOICE}."
 
+echo
+echo "Next, we need to set the admin password for this machine."
+while true; do
+    read -s -p "Set vx-admin password: " ADMIN_PASSWORD
+    echo
+    read -s -p "Confirm vx-admin password: " CONFIRM_PASSWORD
+    echo
+    if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
+    then
+        echo "Password confirmed."
+        break
+    else
+        echo "Passwords do not match, try again."
+    fi
+done
+
+echo
+echo "The script will take it from here and set up the machine."
+echo
+
 # pre-flight checks to ensure we have everything we need
 if [ "${CHOICE}" == "precinct-scanner" ]
 then
@@ -309,11 +329,7 @@ sudo apt remove -y git firefox snapd
 sudo apt autoremove -y
 
 # set password for vx-admin
-echo "Setting password for the admin account:"
-echo
-while true; do
-    sudo passwd vx-admin && break
-done
+(echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
 
 # disable all passwords
 sudo passwd -l root
