@@ -6,9 +6,9 @@ set -euo pipefail
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
 prompt-to-restart() {
-  read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? [Yn] "
+  read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? (y/n) "
   if [[ ${REPLY} = "" || ${REPLY} = Y || ${REPLY} = y ]]; then
-    sudo reboot
+    systemctl reboot -i
   fi
 }
 
@@ -22,19 +22,19 @@ while true; do
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
+  if [ "${VX_MACHINE_TYPE}" = bmd ]; then
+    echo -e "Machine App Mode: \e[32m${VX_APP_MODE}\e[0m"
+  fi
 
   # TODO: do we want to try to also display secure boot status? 
   if [[ $(lsblk | grep "vroot") ]]; then
-	  echo -e "Lockdown state: \e[32mLocked Down\e[0m"
+    echo -e "Lockdown State: \e[32mLocked Down\e[0m"
   else
-	  echo -e "Lockdown state: \e[31mNot locked down\e[0m"
+    echo -e "Lockdown State: \e[31mNot Locked Down\e[0m"
   fi
 
-  timedatectl status | grep "Local time" | sed 's/^ *//g'
+  echo "Current Time: $(date)"
 
-  if [ "${VX_MACHINE_TYPE}" = bmd ]; then
-    echo -e "App Mode: \e[32m${VX_APP_MODE}\e[0m"
-  fi
 
   CHOICES=('reboot')
 
@@ -45,12 +45,7 @@ while true; do
   echo "${#CHOICES[@]}. Set Machine Model Name"
   CHOICES+=('set-machine-model-name')
 
-  if [ "${VX_MACHINE_TYPE}" = bmd ]; then
-    echo "${#CHOICES[@]}. Set app mode"
-    CHOICES+=('set-app-mode')
-  fi
-
-  echo "${#CHOICES[@]}. Copy system logs to USB"
+  echo "${#CHOICES[@]}. Copy System Logs to USB"
   CHOICES+=('copy-system-logs')
 
   echo "${#CHOICES[@]}. Set Clock"
@@ -59,20 +54,27 @@ while true; do
   echo "${#CHOICES[@]}. Change Password"
   CHOICES+=('change-password')
 
-  echo "${#CHOICES[@]}. Generate new signing keys"
-  CHOICES+=('keygen')
+  echo "${#CHOICES[@]}. Generate New Signing Keys"
+  CHOICES+=('generate-key')
 
-  echo "${#CHOICES[@]}. Show current public signing key"
-  CHOICES+=('keyshow')
-
-  echo "${#CHOICES[@]}. Lock the system down."
-  CHOICES+=('lockdown')
-
-  echo "${#CHOICES[@]}. Setup boot entry."
-  CHOICES+=('setupbootentry')
+  echo "${#CHOICES[@]}. Show Current Public Signing Key"
+  CHOICES+=('show-key')
 
   echo "${#CHOICES[@]}. Reset System Authentication Code"
-  CHOICES+=('resettotp')
+  CHOICES+=('reset-totp')
+
+  echo "${#CHOICES[@]}. Setup Boot Entry"
+  CHOICES+=('setup-boot-entry')
+
+  echo "${#CHOICES[@]}. Lock the System Down"
+  CHOICES+=('lockdown')
+
+  # Keep this one at the end so that doesn't change the numbering of other choices
+  if [ "${VX_MACHINE_TYPE}" = bmd ]; then
+    echo "${#CHOICES[@]}. Set App Mode"
+    CHOICES+=('set-app-mode')
+  fi
+
   
   echo "0. Reboot"
   echo
@@ -81,8 +83,8 @@ while true; do
   CHOICE=${CHOICES[$CHOICE_INDEX]}
   case "${CHOICE}" in
     reboot)
-	# this doesn't need root
-	systemctl reboot -i
+      # this doesn't need root
+      systemctl reboot -i
     ;;
 
     set-machine-id)
@@ -114,36 +116,29 @@ while true; do
       passwd
     ;;
 
-    keygen)
-        rm -f "${VX_CONFIG_ROOT}/key.pub" "${VX_CONFIG_ROOT}/key.sec"
-        signify-openbsd -G -n -p "${VX_CONFIG_ROOT}/key.pub" -s "${VX_CONFIG_ROOT}/key.sec"
-        # Make the signing key readable by vx-group
-        # We may want to further limit this in the future
-        chgrp vx-group "${VX_CONFIG_ROOT}/key.sec"
-        chmod g+r "${VX_CONFIG_ROOT}/key.sec"
-        cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ASCII -o -
-        read -s -n 1
+    generate-key)
+      "${VX_FUNCTIONS_ROOT}/generate-key.sh"
+      read -s -n 1
     ;;
 
-    keyshow)
-        cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ASCII -o -
-        read -s -n 1
+    show-key)
+      "${VX_FUNCTIONS_ROOT}/show-key.sh"
+      read -s -n 1
     ;;
     
-    resettotp)
-        sudo tpm2-totp clean || true
-        sudo tpm2-totp --pcrs=0,2,4,5,7 init
-        read -s -n 1
+    reset-totp)
+      "${VX_FUNCTIONS_ROOT}/reset-totp.sh"
+      read -s -n 1
     ;;
     
     lockdown)
-        sudo "${VX_FUNCTIONS_ROOT}/lockdown.sh"
-        read -s -n 1
+      sudo "${VX_FUNCTIONS_ROOT}/lockdown.sh"
+      read -s -n 1
     ;;
     
-    setupbootentry)
-    	bash setup-boot-entry.sh
-	read -s -n 1
+    setup-boot-entry)
+      "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
+      read -s -n 1
     ;;
 
     *)
