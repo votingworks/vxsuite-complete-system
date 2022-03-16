@@ -34,3 +34,36 @@ On the first customization screen, make sure you have [`edk2-ovmf`](https://gith
 ![image](https://user-images.githubusercontent.com/2686765/158506084-b01cd6b0-4d58-4f2f-a4fa-6b4671fd3299.png)
 
 Other than that, you should be good to create the virtual machine using Debian. Follow the instructions [here](https://github.com/votingworks/vxsuite-complete-system/blob/main/INSTALL.md) to create a production-ready, locked down image. Then, compress your disk image using `lz4` and copy the compressed image to the install stick created in the [vx-iso](https://github.com/votingworks/vx-iso) process, and you should be ready to flash to hardware!
+
+<h2>Troubleshooting</h2>
+<h3>Dropped into an EFI shell after install</h3>
+If you are dropped into an EFI shell after you've installed (or even before), this can be because the VM firmware isn't perfect at remembering what to boot. The EFI shell looks like this:
+![Screenshot_VxBase-dev_2022-03-16_13:07:16](https://user-images.githubusercontent.com/2686765/158648023-894363d7-4ae3-46b7-bd87-d75713ae4295.png)
+
+To proceed, you may either select the EFI exectable to boot or simply type `exit` to get into the main firmware application. If you just want to boot from here, do the following. First, figure out what the device you're booting is called by the EFI shell. Usually it is something like `FS0:` in the case of a file system, or `BLK0:` for ISOs and the like. Once you know the device your executable lives on, you can use `ls <device name>` to find the executable on the device. For debian, the executable lives somewhere like this:
+![Screenshot_VxBase-dev_2022-03-16_13:07:27](https://user-images.githubusercontent.com/2686765/158648365-dd551859-c846-4cda-a793-6b792d590bab.png)
+
+Running the above command in the EFI shell should start Debian shim and boot into the installed OS. If you're on an ISO, the process should be identical. If you read the EFI table here, you can see that `FS1:` has an alias `HD1b`, indicating it's a hard disk, while `FS0:` has an alias of `CD0...`, indicating it's an emulated CD drive. 
+![Screenshot_VxBase-dev_2022-03-16_13:16:03](https://user-images.githubusercontent.com/2686765/158649067-d0d358b0-fb8e-49d5-8f5c-e3b0aa50c4ba.png)
+
+If you would rather use the firmware interface to boot, simply type exit into the EFI shell
+![Screenshot_VxBase-dev_2022-03-16_13:07:38](https://user-images.githubusercontent.com/2686765/158649158-1d3e44cf-57aa-4c2b-ad55-ce4cbac58cc8.png)
+
+
+Once in the firmware interface, navigate to the "Boot Maintenance Manager"
+![Screenshot_VxBase-dev_2022-03-16_13:07:48](https://user-images.githubusercontent.com/2686765/158649229-eba8d181-75bd-4375-85e7-8ca754b5830f.png)
+![Screenshot_VxBase-dev_2022-03-16_13:07:54](https://user-images.githubusercontent.com/2686765/158649233-a22c3c39-6122-4bd8-ae71-460a38497ff7.png)  
+
+On the next screen, select "Boot from File": ![Screenshot_VxBase-dev_2022-03-16_13:08:00](https://user-images.githubusercontent.com/2686765/158649354-7300983a-826b-4ed4-905d-e5796175a77b.png)
+
+Now find the EFI executable you wish to start, much like before in the EFI shell: 
+![Screenshot_VxBase-dev_2022-03-16_13:08:04](https://user-images.githubusercontent.com/2686765/158649463-da6e8d7e-0d9e-4e8f-b604-950d2d452d1e.png)
+![Screenshot_VxBase-dev_2022-03-16_13:08:09](https://user-images.githubusercontent.com/2686765/158649465-a5773493-8cbe-49e9-8796-b45fb79488d2.png)
+![Screenshot_VxBase-dev_2022-03-16_13:08:14](https://user-images.githubusercontent.com/2686765/158649466-cdd9cb74-c78a-4a77-acf0-d4443fe7f10f.png)
+![Screenshot_VxBase-dev_2022-03-16_13:08:20](https://user-images.githubusercontent.com/2686765/158649471-7eb49a00-da5f-4de9-99f9-1ddab30d09cc.png)
+
+
+<h3> Debian install doesn't start</h3>
+Sometimes the Debian install won't start after VM creation. Double check that the ISO is in the emulated disk drive on the VM, and browse to the install ISO on your local disk.
+![image](https://user-images.githubusercontent.com/2686765/158649607-37cc04c2-8754-4299-833c-b7c71cd1d755.png)
+
