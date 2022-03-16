@@ -39,6 +39,12 @@ while true; do
   CHOICES=('reboot')
 
   echo
+  echo -e "\e[1mBasic Configuration\e[0m"
+  echo "${#CHOICES[@]}. Run Basic Configuration Wizard"
+  CHOICES+=('basic-configuration')
+
+  echo
+  echo -e "\e[1mAdvanced\e[0m"
   echo "${#CHOICES[@]}. Set Machine ID"
   CHOICES+=('set-machine-id')
 
@@ -85,6 +91,10 @@ while true; do
     reboot)
       # this doesn't need root
       systemctl reboot -i
+    ;;
+
+    basic-configuration)
+      "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
     ;;
 
     set-machine-id)
