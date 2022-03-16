@@ -10,4 +10,4 @@ signify-openbsd -G -n -p "${VX_CONFIG_ROOT}/key.pub" -s "${VX_CONFIG_ROOT}/key.s
 # We may want to further limit this in the future
 chgrp vx-group "${VX_CONFIG_ROOT}/key.sec"
 chmod g+r "${VX_CONFIG_ROOT}/key.sec"
-cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ANSIUTF8 -o -
+cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ANSI -o -
