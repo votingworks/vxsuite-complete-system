@@ -29,7 +29,7 @@ sudo apt update
 sudo apt install git make
 git clone https://github.com/votingworks/vxsuite-complete-system
 cd vxsuite-complete-system
-make node
+make deps
 ```
 
 Then pull down all of the code. You can re-run these commands to pull
