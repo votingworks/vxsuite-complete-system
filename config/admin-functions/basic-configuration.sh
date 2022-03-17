@@ -37,6 +37,10 @@ while true; do
     [[ "${CONFIRM}" = "y" ]] && break
 done
 
+if [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
+    rm -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT"
+fi
+
 echo
 echo -e "\e[1mBasic Configuration Complete\e[0m"
 read -p "You must reboot for these changes to take effect. Reboot now? (y/n) " CONFIRM
