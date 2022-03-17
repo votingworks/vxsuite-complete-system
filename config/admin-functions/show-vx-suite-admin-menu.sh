@@ -5,6 +5,11 @@ set -euo pipefail
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
+if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
+  "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
+  exit 0
+fi
+
 prompt-to-restart() {
   read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? (y/n) "
   if [[ ${REPLY} = "" || ${REPLY} = Y || ${REPLY} = y ]]; then
@@ -42,6 +47,9 @@ while true; do
   echo -e "\e[1mBasic Configuration\e[0m"
   echo "${#CHOICES[@]}. Run Basic Configuration Wizard"
   CHOICES+=('basic-configuration')
+
+  echo "${#CHOICES[@]}. Run Basic Configuration Wizard On Next Boot"
+  CHOICES+=('basic-configuration-on-next-boot')
 
   echo
   echo -e "\e[1mAdvanced\e[0m"
@@ -95,6 +103,10 @@ while true; do
 
     basic-configuration)
       "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
+    ;;
+
+    basic-configuration-on-next-boot)
+      touch "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT"
     ;;
 
     set-machine-id)
