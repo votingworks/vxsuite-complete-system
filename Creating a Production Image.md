@@ -1,4 +1,4 @@
-To create images for production, I set up a virtual machine in virt-manager that relies on a `raw` disk image for its disk. This outlines how to do that. After the VM is set up, the machine can be build and locked down as in the [INSTALL.md](https://github.com/votingworks/vxsuite-complete-system/blob/main/INSTALL.md) script, and the disk image flashed as described in the [vx-iso](https://github.com/votingworks/vx-iso) process. 
+To create images for production, I set up a virtual machine in virt-manager that relies on a `raw` disk image for its disk. I usually use an Arch Linux-based host system, though Ubuntu 20 and Debian 11 also work. This outlines how to do that. After the VM is set up, the machine can be build and locked down as in the [INSTALL.md](https://github.com/votingworks/vxsuite-complete-system/blob/main/INSTALL.md) script, and the disk image flashed as described in the [vx-iso](https://github.com/votingworks/vx-iso) process. 
 
 <h2>Creating a production image that can be flashed</h2>
 
@@ -8,7 +8,7 @@ Create the new VM from a local Debian ISO:
 ![image](https://user-images.githubusercontent.com/2686765/158505721-49588394-9d83-43e2-aa80-c3115950bca4.png)
 ![image](https://user-images.githubusercontent.com/2686765/158505748-dc63992d-21f1-4deb-ba0d-f20d5740e9c7.png)
 
-I normally try to mirror the specifications of our production machines, which is roughly 8G of RAM and 2-4 processor threads. However, there's nothing stopping you from picking higher values, and this may be desirable if you have many more cores and much more RAM to make build times faster. 
+Minimally, the VMs should get similar specifications of our production machines, which is roughly 8G of RAM and 2-4 processor threads. However, there's nothing stopping you from picking higher values, and this may be desirable if you have many more cores and much more RAM to make build times faster. I usually use 8 cores and 16GB of RAM just to make things snappier, though my machine has more than enough cores and RAM to spare for that.  
 ![image](https://user-images.githubusercontent.com/2686765/158505778-2b6b17d0-35d4-4b9d-bdda-abfb36398215.png)
 
 For the disk image, select "Select or create custom storage" and click manage:
