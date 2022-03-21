@@ -15,6 +15,12 @@ else
 	export DISTRO="Ubuntu"
 fi
 
+# Debian doesn't add /sbin/ to default path, but it's needed for groupadd and other commands.
+# If /sbin/ is already in the path, this won't hurt, and it's just for running this script.
+if [[ $DISTRO == "Debian" ]]; then
+    export PATH=${PATH}:/sbin/
+fi
+
 # which kind of machine are we setting up?
 echo "Welcome to VxSuite. THIS IS A DESTRUCTIVE SCRIPT. Ctrl-C right now if you don't know for sure what you're doing."
 echo "Which machine are we building today?"
