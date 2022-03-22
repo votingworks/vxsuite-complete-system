@@ -94,6 +94,12 @@ then
     fi
 fi
 
+# install kiosk-browser if it hasn't yet been installed
+if ! which kiosk-browser >/dev/null 2>&1
+then
+    make build-kiosk-browser
+fi
+
 sudo apt install -y unclutter mingetty pmount brightnessctl
 
 # simple window manager and remove all contextual info
