@@ -28,6 +28,8 @@ objcopy \
 
 # Sign the resulting binary
 # First make sure the drive is mounted
+umount /dev/sda || true
+umount /dev/sda1 || true
 mount /dev/sda /mnt || mount /dev/sda1 /mnt || (echo "Secure boot keys not found; exiting" && sleep 5 && exit);
 
 sbsign --key=/mnt/DB.key --cert=/mnt/DB.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi /tmp/linux.efi
