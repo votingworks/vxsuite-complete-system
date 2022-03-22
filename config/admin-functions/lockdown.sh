@@ -15,14 +15,15 @@ veritysetup format /dev/mapper/Vx--vg-root /dev/mapper/Vx--vg-hashes| tee "/tmp/
 HASH="$(awk '/Root hash:/ { print $3 }' "/tmp/verity.log")"
 echo "$(cat /vx/admin/config/cmdline)${HASH}" > /tmp/cmdline
 
-# TODO: Make sure the output initramfs/kernel file names are correct!
+KERNEL_VERSION=`uname -r`
+
 # Now package up our kernel, cmdline, etc
 objcopy \
     --add-section .osrel="/usr/lib/os-release" --change-section-vma .osrel=0x20000 \
     --add-section .cmdline="/tmp/cmdline" --change-section-vma .cmdline=0x30000 \
     --add-section .splash="/vx/admin/config/logo.bmp" --change-section-vma .splash=0x40000 \
-    --add-section .linux="/boot/vmlinuz-5.10.0-11-amd64" --change-section-vma .linux=0x2000000 \
-    --add-section .initrd="/boot/initrd.img-5.10.0-11-amd64" --change-section-vma .initrd=0x3000000 \
+    --add-section .linux="/boot/vmlinuz-${KERNEL_VERSION}" --change-section-vma .linux=0x2000000 \
+    --add-section .initrd="/boot/initrd.img-${KERNEL_VERSION}" --change-section-vma .initrd=0x3000000 \
     "/usr/lib/systemd/boot/efi/linuxx64.efi.stub" "/tmp/linux.efi"
 
 # Sign the resulting binary
