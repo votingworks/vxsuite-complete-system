@@ -32,7 +32,7 @@ mount /dev/sda /mnt || mount /dev/sda1 /mnt || (echo "Secure boot keys not found
 sbsign --key=/mnt/DB.key --cert=/mnt/DB.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi /tmp/linux.efi
 
 # Now install it 
-bash "{$VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
+bash "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
 
 # Reboot into the locked down system
 echo "Rebooting in 5s"
