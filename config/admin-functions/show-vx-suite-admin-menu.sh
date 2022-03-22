@@ -159,7 +159,7 @@ while true; do
     ;;
     
     setup-boot-entry)
-      "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
+      sudo "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
       read -s -n 1
     ;;
 
