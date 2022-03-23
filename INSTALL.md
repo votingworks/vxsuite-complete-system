@@ -19,8 +19,9 @@ Clicking "Continue" should result in a full install of the system, which automat
 login: vx
 password: insecure
 ```
+**NOTE**: These credentials are deleted as part of the production setup process and are not usable on deployed machines.
 
-From there, simple clone this git repo and proceed with a normal installation. 
+From there, clone this git repo and proceed with a normal installation. 
 
 <h2>Manual Installer</h2>
 
