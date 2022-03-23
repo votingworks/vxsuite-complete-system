@@ -1,8 +1,30 @@
 This file explains getting VxSuite up and running in Debian 11.2, along with setting up security features like Secure Boot, dm-verity, and TPM2-TOTP. 
 
-<h2>Installer</h2>
+<h2>Preseed Installer</h2>
 
-The install process can follow the usual path of the Debian installer. The only modification that needs to be made is as follows:
+This repo provides a preseed file that can be used for an automated install of Debian that installs the software and partitions the disks in the manner necessary to create a production machine. In future we will also provide a development machine preseed, but for now we just provide a production one. To use the production preseed file to configure a machine, navigate to the autmated install option in GRUB after booting the Debian iso:
+![Screenshot_VxMarkProdBase_2022-03-21_21:10:57](https://user-images.githubusercontent.com/2686765/159756779-68452a49-3352-4c95-892e-6d544778118d.png)
+![Screenshot_VxMarkProdBase_2022-03-21_21:11:07](https://user-images.githubusercontent.com/2686765/159756788-aa6be79d-1142-455f-8218-418c17bf36d8.png)
+
+Then, type the URL for the preseed file into the box provided by the installer. The URL is 
+
+```
+https://raw.githubusercontent.com/votingworks/vxsuite-complete-system/main/production-preseed.cfg
+```
+![Screenshot_VxMarkProdBase_2022-03-23_13:13:34](https://user-images.githubusercontent.com/2686765/159757265-6ff662b1-87d8-43fd-ba05-0e9e95ab8d17.png)
+
+Clicking "Continue" should result in a full install of the system, which automatically reboots into a login prompt. The login credentials are
+
+```
+login: vx
+password: insecure
+```
+
+From there, simple clone this git repo and proceed with a normal installation. 
+
+<h2>Manual Installer</h2>
+
+The manual install process can follow the usual path of the Debian installer. The only modification that needs to be made is as follows:
 
 Set the machine's hostname to be "Vx":
 ![image](https://user-images.githubusercontent.com/2686765/156217619-95165aca-da51-406d-8c93-4630a5e50a63.png)
