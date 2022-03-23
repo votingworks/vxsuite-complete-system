@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+ORIGINAL_TIMEDATECTL=/usr/bin/timedatectl
+
+# override just the timezone setting part
+if [[ ${1} = "set-timezone" ]]; then
+    TIMEZONE_LOCATION=`readlink /etc/localtime` || TIMEZONE_LOCATION="/etc/localtime"
+    ln -sf /usr/share/zoneinfo/$2 ${TIMEZONE_LOCATION}
+else
+    ${ORIGINAL_TIMEDATECTL} "$@"
+fi 

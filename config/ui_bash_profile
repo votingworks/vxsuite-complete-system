@@ -1,3 +1,5 @@
+export PATH=/vx/code/config/admin-functions/:${PATH}
+
 if [[ $(tty) = /dev/tty1 ]]; then
    exec startx
 fi

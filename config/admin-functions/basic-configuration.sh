@@ -17,7 +17,7 @@ ${VX_FUNCTIONS_ROOT}/choose-vx-machine-id.sh
 
 echo
 echo -e "\e[1mStep 2: Set Clock\e[0m"
-${VX_FUNCTIONS_ROOT}/set-clock.sh
+sudo ${VX_FUNCTIONS_ROOT}/set-clock.sh
 
 echo
 echo -e "\e[1mStep 3: Record Machine Metadata\e[0m"

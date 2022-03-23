@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
+: "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
 if [[ "${VX_MACHINE_ID}" != "0000" ]]; then
@@ -13,7 +14,6 @@ while true; do
     read -p "Confirm that Machine ID should be set to: ${MACHINE_ID} (y/n) " CONFIRM
     if [[ "${CONFIRM}" = "y" ]]; then
       mkdir -p "${VX_CONFIG_ROOT}"
-      sudo hostnamectl set-hostname "vx-${VX_MACHINE_TYPE}-${MACHINE_ID}"
       echo "${MACHINE_ID}" > "${VX_CONFIG_ROOT}/machine-id"
       echo "Machine ID set!"
       break
