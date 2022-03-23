@@ -56,7 +56,7 @@ while true; do
     [[ "${CONFIRM}" = "y" ]] && break
 done
 
-sudo timedatectl set-timezone "${TIMEZONES[${TZ}]}"
-sudo timedatectl set-time "$(date -d "${DATE} ${TIME}" +"%F %T")"
+timedatectl set-timezone "${TIMEZONES[${TZ}]}"
+timedatectl set-time "$(date -d "${DATE} ${TIME}" +"%F %T")"
 
 echo "Clock is now set to: $(date)"

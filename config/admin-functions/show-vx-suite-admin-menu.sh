@@ -131,7 +131,7 @@ while true; do
     ;;
 
     set-clock)
-      "${VX_FUNCTIONS_ROOT}/set-clock.sh"
+      sudo "${VX_FUNCTIONS_ROOT}/set-clock.sh"
     ;;
 
     change-password)

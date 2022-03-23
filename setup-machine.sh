@@ -341,6 +341,11 @@ if [[  $DISTRO == "Ubuntu" ]]; then
 	sudo nmcli networking off
 fi
 
+# set up symlinked timezone files to prepare for read-only filesystem
+sudo rm -f /etc/localtime
+sudo ln -sf /usr/share/zoneinfo/America/Chicago /var/etc/localtime
+sudo ln -sf /var/etc/localtime /etc/localtime
+
 # remove all network drivers. Buh bye.
 sudo apt purge -y network-manager
 sudo rm -rf /lib/modules/*/kernel/drivers/net/*
