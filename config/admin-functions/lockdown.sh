@@ -32,6 +32,8 @@ umount /dev/sda || true
 umount /dev/sda1 || true
 mount /dev/sda /mnt || mount /dev/sda1 /mnt || (echo "Secure boot keys not found; exiting" && sleep 5 && exit);
 
+# Make this directory in case it doesn't exist
+mkdir -p /boot/efi/EFI/debian
 sbsign --key=/mnt/DB.key --cert=/mnt/DB.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi /tmp/linux.efi
 
 # Now install it 

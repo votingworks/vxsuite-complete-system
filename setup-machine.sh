@@ -100,7 +100,7 @@ then
     make build-kiosk-browser
 fi
 
-sudo apt install -y unclutter mingetty pmount brightnessctl
+sudo apt install -y unclutter mingetty pmount brightnessctl efitools cryptsetup efibootmgr
 
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
@@ -351,8 +351,12 @@ sudo passwd -l ${USER}
 sudo passwd -l vx-ui
 sudo passwd -l vx-services
 
+# A hack to make lockdown work on Ubuntu
+sudo cp config/fstab /etc/fstab
+
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 sudo cp config/sudoers /etc/sudoers
+
 
 # FIXME: clean up source code
 cd
