@@ -7,9 +7,9 @@
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 /dev/mapper/Vx--vg-root /               ext4    ro,errors=remount-ro 0       1
 # /boot was on /dev/vda2 during installation
-/dev/vda1 /boot           ext2    defaults        0       2
+/dev/vda2 /boot           ext2    defaults        0       2
 # /boot/efi was on /dev/vda1 during installation
-/dev/vda2  /boot/efi       vfat    umask=0077      0       1
+/dev/vda1  /boot/efi       vfat    umask=0077      0       1
 /dev/mapper/Vx--vg-home /home           ext4    defaults        0       2
 /dev/mapper/Vx--vg-tmp /tmp            ext4    defaults        0       2
 /dev/mapper/Vx--vg-var /var            ext4    defaults        0       2
