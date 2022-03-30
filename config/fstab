@@ -13,4 +13,3 @@ UUID=2869-6CB4  /boot/efi       vfat    umask=0077      0       1
 /dev/mapper/Vx--vg-home /home           ext4    defaults        0       2
 /dev/mapper/Vx--vg-tmp /tmp            ext4    defaults        0       2
 /dev/mapper/Vx--vg-var /var            ext4    defaults        0       2
-/swapfile                                 none            swap    sw              0       0
