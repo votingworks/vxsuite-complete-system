@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Name=VxScan
+Icon=votingworks-logo.png
+Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin env SCAN_WORKSPACE=/vx/data/module-scan /vx/code/vxsuite-complete-system/run.sh precinct-scanner'
+Terminal=false
+Type=Application

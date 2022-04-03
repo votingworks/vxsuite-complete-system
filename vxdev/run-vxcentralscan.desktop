@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Name=VxCentralScan
+Icon=votingworks-logo.png
+Exec=gnome-terminal -- /bin/sh -c 'env SCAN_WORKSPACE=/vx/data/module-scan env PATH=$PATH:/sbin /vx/code/vxsuite-complete-system/run.sh bsd'
+Terminal=false
+Type=Application

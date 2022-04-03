@@ -47,7 +47,7 @@ if [[ " ${ALL_FRONTENDS[@]} " =~ " ${FRONTEND} " ]]; then
   [ -f "${VX_CONFIG_ROOT}/code-version" ] || echo dev > "${VX_CONFIG_ROOT}/code-version" 
   [ -f "${VX_CONFIG_ROOT}/code-tag" ] || echo dev > "${VX_CONFIG_ROOT}/code-tag" 
 
-  export DISPLAY=:0
+  export DISPLAY=${DISPLAY:-:0}
   cd "${DIR}/build/${FRONTEND}"
   (trap 'kill 0' SIGINT SIGHUP; "./run-${FRONTEND}.sh" & ("./run-kiosk-browser.sh"; kill 0)) | logger --tag votingworksapp
 elif [[ "${FRONTEND}" = -h || "${FRONTEND}" = --help ]]; then
