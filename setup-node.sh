@@ -1,6 +1,6 @@
 # node and npm and yarn and pnpm
 # https://github.com/nodesource/distributions/blob/master/README.md#debmanual
-NODE_VERSION=node_12.x
+NODE_VERSION=node_16.x
 
 curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 DISTRO="$(lsb_release -s -c)"
