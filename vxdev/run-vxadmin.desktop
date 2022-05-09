@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Name=VxAdmin
+Icon=votingworks-logo.png
+Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin /vx/code/vxsuite-complete-system/run.sh election-manager'
+Terminal=false
+Type=Application
