@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=VxMark
-Icon=votingworks-logo.png
+Icon=runprogram.png
 Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin /vx/code/vxsuite-complete-system/run.sh bmd'
 Terminal=false
 Type=Application

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=Configure & Update VxDev
-Icon=votingworks-logo.png
+Icon=configurevxdev.png
 Comment=Configure this VxDev machine
 Exec=gnome-terminal -- /bin/sh -c '/vx/scripts/update-vxdev.sh; sleep 3'
 Terminal=false
