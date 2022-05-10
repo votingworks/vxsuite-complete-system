@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=Update Code
-Icon=votingworks-logo.png
+Icon=updatecode.png
 Comment=Program to update the software version for the VotingWorks application.
 Exec=gnome-terminal -- /bin/sh -c '/vx/scripts/update-code.sh; sleep 3'
 Terminal=false
