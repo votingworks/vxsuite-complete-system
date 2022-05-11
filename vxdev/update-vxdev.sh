@@ -36,8 +36,8 @@ CHOICE=${CHOICES[$CHOICE_INDEX]}
 cd /vx/code/vxsuite-complete-system
 mkdir -p /vx/scripts
 
-git checkout main
-git pull
+git checkout main > /dev/null 2>&1
+git pull > /dev/null
 sudo cp vxdev/update-code.sh /vx/scripts/.
 sudo cp vxdev/update-vxdev.sh /vx/scripts/.
 sudo cp vxdev/update-code.desktop /usr/share/applications/.
