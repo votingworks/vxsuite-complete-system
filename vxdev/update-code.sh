@@ -5,7 +5,7 @@
 APP_TYPE=$(sudo cat "$VX_CONFIG_ROOT/machine-type")
 
 cd /vx/code/vxsuite-complete-system
-git checkout main > /dev/null
+git checkout main > /dev/null 2>&1
 git pull > /dev/null
 git fetch --tags > /dev/null
 sudo git clean -xfd > /dev/null
