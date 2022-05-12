@@ -30,11 +30,13 @@ then
     exit 1
 fi
 BRANCH=${CHOICES[$CHOICE_INDEX]}
+sudo apt remove -y nodejs # this will get reinstalled, the version could change based on what branch of the code we are building
 
 if [[ $BRANCH == 'latest' ]]; then
 	cd vxsuite
 	git checkout main
 	git pull
+	./script/setup-dev
 	cd ../kiosk-browser
 	git checkout main
 	git pull
@@ -43,6 +45,9 @@ elif [[ $BRANCH == 'stable' ]]; then
 	git checkout $LATEST_TAG
 	git submodule foreach --recursive sudo git clean -xfd
 	git submodule update --init --recursive
+	cd vxsuite
+	./script/setup-dev
+	cd ..
 fi
 
 make build-kiosk-browser
