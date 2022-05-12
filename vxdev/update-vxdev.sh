@@ -47,6 +47,8 @@ sudo cp vxdev/updatecode.png /home/vx/.icons
 sudo cp vxdev/configurevxdev.png /home/vx/.icons
 sudo cp vxdev/runprogram.png /home/vx/.icons
 
+gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
+
 FAVORITE_ICONS=''
 
 if [[ $CHOICE == 'VxMark' ]]; then
