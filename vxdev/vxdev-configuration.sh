@@ -27,3 +27,5 @@ gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
 
 # Lock the kernel to a specific version, upgrades require testing and upgrading wifi drivers
 sudo cp vxdev/kernel /etc/apt/preferences.d/.
+
+sudo cp vxdev/default-env /vx/config/.env.local
