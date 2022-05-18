@@ -34,23 +34,15 @@ CHOICE=${CHOICES[$CHOICE_INDEX]}
 
 
 cd /vx/code/vxsuite-complete-system
-mkdir -p /vx/scripts
 
+# Fetch the latest code
 git checkout main > /dev/null 2>&1
 git pull > /dev/null
-sudo cp vxdev/update-code.sh /vx/scripts/.
-sudo cp vxdev/update-vxdev.sh /vx/scripts/.
-sudo cp vxdev/update-code.desktop /usr/share/applications/.
-sudo cp vxdev/update-vxdev.desktop /usr/share/applications/.
 
-sudo cp vxdev/updatecode.png /home/vx/.icons
-sudo cp vxdev/configurevxdev.png /home/vx/.icons
-sudo cp vxdev/runprogram.png /home/vx/.icons
+# Update the configuration script and run it to fetch and apply any new updates to VxDev
+sudo cp vxdev/vxdev-configuration.sh /vx/scripts/.
+bash /vx/scripts/vxdev-configuration.sh
 
-gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
-
-# Lock the kernel to a specific version, upgrades require testing and upgrading wifi drivers
-sudo cp vxdev/kernel /etc/apt/preferences/.
 
 FAVORITE_ICONS=''
 

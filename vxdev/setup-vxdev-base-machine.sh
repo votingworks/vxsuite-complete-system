@@ -165,21 +165,6 @@ sudo bash setup-scripts/setup-signify.sh
 sudo timedatectl set-ntp no
 
 # Install app to configure VxDev
-sudo mkdir -p /vx/scripts
-sudo cp vxdev/update-vxdev.sh /vx/scripts/.
-sudo cp vxdev/update-vxdev.desktop /usr/share/applications/.
-gsettings set org.gnome.shell favorite-apps "['update-vxdev.desktop','firefox-esr.desktop', 'org.gnome.Nautilus.desktop']"
-
-sudo mkdir -p /home/vx/.icons
-sudo cp vxdev/updatecode.png /home/vx/.icons
-sudo cp vxdev/configurevxdev.png /home/vx/.icons
-sudo cp vxdev/runprogram.png /home/vx/.icons
-sudo cp vxdev/votingworks-desktop.png /vx/.
-gsettings set org.gnome.desktop.background picture-uri file:///vx/votingworks-desktop.png
-
-sudo cp vxdev/update-code.sh /vx/scripts/.
-sudo cp vxdev/update-vxdev.sh /vx/scripts/.
-sudo cp vxdev/update-code.desktop /usr/share/applications/.
-sudo cp vxdev/update-vxdev.desktop /usr/share/applications/.
+bash vxdev/vxdev-configuration.sh
 
 echo "Done with initial VxDev setup! You may now run the "Update and Configure VxDev" program."
