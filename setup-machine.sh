@@ -157,11 +157,8 @@ sudo usermod -aG adm vx-ui
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
-# Let some users mount/unmount usb disks
-if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
-then
-    sudo usermod -aG plugdev vx-ui
-fi
+# Allow mounting of USB
+sudo usermod -aG plugdev vx-ui
 sudo usermod -aG plugdev vx-admin
 
 # set up mount points ahead of time because read-only later
