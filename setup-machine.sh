@@ -176,6 +176,25 @@ sudo chown -R vx-ui:vx-group /media/usb-drive*
 # let vx-ui manage printers
 sudo usermod -aG lpadmin vx-ui
 
+### set up CUPS to read/write all config out of /var to be compatible with read-only root filesystem
+
+# copy existing cups config structure to new /var location
+sudo mkdir /var/etc
+sudo cp -rp /etc/cups /var/etc/
+sudo rm -rf /etc/cups
+
+# set up cups config files that internally include appropriate paths with /var
+sudo cp config/cupsd.conf /var/etc/cups/
+sudo cp config/cups-files.conf /var/etc/cups/
+
+# modify cups systemd service to read config files from /var
+sudo cp config/cups.service /usr/lib/systemd/system/
+
+# modified apparmor profiles to allow cups to access config files in /var
+sudo cp config/apparmor.d/usr.sbin.cupsd /etc/apparmor.d/
+sudo cp config/apparmor.d/usr.sbin.cups-browsed /etc/apparmor.d/
+
+
 # let vx-services scan
 if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
 then
