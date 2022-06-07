@@ -1,4 +1,4 @@
-export PATH=/vx/code/config/admin-functions/:${PATH}
+export PATH=/vx/code/config/admin-functions:${PATH}
 
 while true; do
     bash /vx/admin/admin-functions/show-vx-suite-admin-menu.sh
