@@ -23,7 +23,6 @@ root	ALL=(ALL:ALL) ALL
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/set-clock.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/lockdown.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/setup-boot-entry.sh
-vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/config/admin-functions/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
