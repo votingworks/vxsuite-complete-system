@@ -1,11 +1,24 @@
 #!/usr/bin/env bash
+#
+# This script overrides how timezone is set.
+# It assumes that
+# - /etc and /usr are read-only
+# - /etc/localtime is symlinked to a read-write location
+# - that read-write location should be symlinked to the appropriate timezone file in /usr/share/zoneinfo
+#
+# if this script is called for anything other than setting the timezone,
+# or when /etc/localtime is directly symlinked to a timezone file (the default linux setup)
+# then this script just calls the original timedatectl program.
 
 ORIGINAL_TIMEDATECTL=/usr/bin/timedatectl
+TIMEZONE_DIRECTORY=/usr/share/zoneinfo
 
-# override just the timezone setting part
-if [[ "${1}" = "set-timezone" && -n "${2}" ]]; then
-    TIMEZONE_LOCATION=`readlink /etc/localtime` || TIMEZONE_LOCATION="/etc/localtime"
-    ln -sf "/usr/share/zoneinfo/${2}" "${TIMEZONE_LOCATION}"
+LOCALTIME_SYMLINK=`readlink /etc/localtime`
+
+# override only if /etc/localtime is symlinked outside of /usr/share (default)
+# and if we're setting the timezone
+if [[ ! ${LOCALTIME_SYMLINK} =~ ${TIMEZONE_DIRECTORY}.* && "${1}" = "set-timezone" && -n "${2}" ]]; then
+    ln -sf "${TIMEZONE_DIRECTORY}/${2}" "${LOCALTIME_SYMLINK}"
 else
     ${ORIGINAL_TIMEDATECTL} "$@"
 fi 
