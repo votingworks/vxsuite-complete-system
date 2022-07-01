@@ -124,6 +124,7 @@ sudo mkdir -p /vx
 sudo mkdir -p /var/vx
 sudo mkdir -p /var/vx/data/module-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
+sudo mkdir -p /var/vx/data/admin-service
 
 sudo ln -sf /var/vx/data /vx/data
 
