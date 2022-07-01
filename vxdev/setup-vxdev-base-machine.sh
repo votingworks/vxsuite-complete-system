@@ -70,6 +70,7 @@ sudo mkdir -p /var/vx
 sudo mkdir -p /var/vx/code
 sudo mkdir -p /var/vx/data/module-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
+sudo mkdir -p /var/vx/data/admin-service
 
 # machine configuration
 # TODO: This should be writeable right?
