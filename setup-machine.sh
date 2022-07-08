@@ -189,7 +189,11 @@ sudo cp config/cupsd.conf /var/etc/cups/
 sudo cp config/cups-files.conf /var/etc/cups/
 
 # modify cups systemd service to read config files from /var
-sudo cp config/cups.service /usr/lib/systemd/system/
+if [[ $DISTRO == "Debian" ]]; then
+    sudo cp config/cups.service /usr/lib/systemd/system/
+else
+    sudo cp config/cups.service /lib/systemd/system/
+fi
 
 # modified apparmor profiles to allow cups to access config files in /var
 sudo cp config/apparmor.d/usr.sbin.cupsd /etc/apparmor.d/
