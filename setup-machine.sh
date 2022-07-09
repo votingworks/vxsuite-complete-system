@@ -221,7 +221,7 @@ sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
 sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 
 # make sure vx-services has pipenv
-sudo -u vx-services -i pip3 install pipenv
+sudo -u vx-services -i python3.9 -m pip install pipenv
 
 # symlink printer config and run scripts for vx-ui
 sudo mkdir -p /vx/ui/.vx
