@@ -163,14 +163,14 @@ sudo usermod -aG plugdev vx-ui
 sudo usermod -aG plugdev vx-admin
 
 # set up mount points ahead of time because read-only later
-sudo mkdir /media/usb-drive-sda1
-sudo mkdir /media/usb-drive-sdb1
-sudo mkdir /media/usb-drive-sdc1
-sudo mkdir /media/usb-drive-sdd1
-sudo mkdir /media/usb-drive-sde1
-sudo mkdir /media/usb-drive-sdf1
-sudo mkdir /media/usb-drive-sdg1
-sudo mkdir /media/usb-drive-sdh1
+sudo mkdir -p /media/usb-drive-sda1
+sudo mkdir -p /media/usb-drive-sdb1
+sudo mkdir -p /media/usb-drive-sdc1
+sudo mkdir -p /media/usb-drive-sdd1
+sudo mkdir -p /media/usb-drive-sde1
+sudo mkdir -p /media/usb-drive-sdf1
+sudo mkdir -p /media/usb-drive-sdg1
+sudo mkdir -p /media/usb-drive-sdh1
 
 sudo chown -R vx-ui:vx-group /media/usb-drive*
 
