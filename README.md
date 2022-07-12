@@ -129,3 +129,13 @@ the combined repositories.
 We use git submodules here for the components, for the express purpose
 that we never want to update one of the components without explicitly
 checking that all the modules work well together.
+
+## Acknowledgments
+
+Thanks to Trammell Hudson (@osresearch) for help working out TPM- and dm-verity
+related stuff, and more generally for cutting the path for more secure Linux
+systems via the osresearch/safeboot project. 
+
+Thanks to Matthew Garrett (@mjg59)
+for providing overall thoughts about our security architecture, as well as
+helping to work out Secure Boot policies.
