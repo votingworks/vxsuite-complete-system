@@ -7,7 +7,7 @@ set -euo pipefail
 
 set -euo pipefail 
 tpm2_startauthsession -S session.ctx
-tpm2_policypcr -S session.ctx -l "sha256:0,2,4,5,7" --policy pcr.policy
+tpm2_policypcr -S session.ctx -l "sha256:0,7" --policy pcr.policy
 tpm2_createprimary -C o -c primary.ctx
 
 # Save the primary context for reuse after reboot
