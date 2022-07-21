@@ -159,8 +159,8 @@ sudo cp vxdev/sudoers /etc/sudoers
 # setup tpm2-totp
 sudo bash setup-scripts/setup-tpm2-totp.sh
 
-# setup signify
-sudo bash setup-scripts/setup-signify.sh
+# setup tpm2-tools
+sudo bash setup-scripts/setup-tpm2-tools.sh
 
 # turn off time synchronization
 sudo timedatectl set-ntp no

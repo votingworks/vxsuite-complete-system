@@ -139,7 +139,7 @@ while true; do
     ;;
 
     generate-key)
-      "${VX_FUNCTIONS_ROOT}/generate-key.sh"
+      sudo "${VX_FUNCTIONS_ROOT}/generate-key.sh"
       read -s -n 1
     ;;
 
