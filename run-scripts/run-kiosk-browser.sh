@@ -17,5 +17,4 @@ kiosk-browser \
   --add-file-perm o=http://localhost:3000,p=/var/log/*,ro \
   --autoconfigure-print-config ${PRINTER_FILE} \
   --url ${URL} \
-  --signify-secret-key ${VX_CONFIG_ROOT}/key.sec
 
