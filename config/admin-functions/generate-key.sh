@@ -27,4 +27,6 @@ tpm2_evictcontrol -c key.ctx 0x81000001
 rm -f "${VX_CONFIG_ROOT}/key.pub" "${VX_CONFIG_ROOT}/key.sec"
 tpm2_readpublic -c key.ctx -f PEM -o "${VX_CONFIG_ROOT}/key.pub"
 
+chmod +r "${VX_CONFIG_ROOT}/key.pub"
+
 cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ANSI -o -
