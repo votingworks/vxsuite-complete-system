@@ -4,6 +4,7 @@ set -euo pipefail
 
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
 : "${VX_CONFIG_ROOT:="/vx/config"}"
+: "${VX_METADATA_ROOT:="/vx/code"}"
 
 source "${VX_FUNCTIONS_ROOT}/../read-vx-machine-config.sh"
 clear

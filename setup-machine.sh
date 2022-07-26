@@ -272,10 +272,10 @@ sudo sh -c 'echo "VotingWorks" > /vx/config/machine-manufacturer'
 MODEL_NAME="${MODEL_NAME}" sudo -E sh -c 'echo "${MODEL_NAME}" > /vx/config/machine-model-name'
 
 # code version, e.g. "2021.03.29-d34db33fcd"
-GIT_HASH=$(git rev-parse HEAD | cut -c -10) sudo -E sh -c 'echo "$(date +%Y.%m.%d)-${GIT_HASH}" > /vx/config/code-version'
+GIT_HASH=$(git rev-parse HEAD | cut -c -10) sudo -E sh -c 'echo "$(date +%Y.%m.%d)-${GIT_HASH}" > /vx/code/code-version'
 
 # code tag, e.g. "m11c-rc3"
-GIT_TAG=$(git tag --points-at HEAD) sudo -E sh -c 'echo "${GIT_TAG}" > /vx/config/code-tag'
+GIT_TAG=$(git tag --points-at HEAD) sudo -E sh -c 'echo "${GIT_TAG}" > /vx/code/code-tag'
 
 # machine ID
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
