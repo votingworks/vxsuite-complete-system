@@ -4,6 +4,7 @@ xset s noblank
 xrdb ~/.Xresources
 
 export VX_CONFIG_ROOT="/vx/config"
+export VX_METADATA_ROOT="/vx/code"
 bash /vx/ui/.vx/run-kiosk-browser-forever-and-log.sh &
 
 # brightness all the way

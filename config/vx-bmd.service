@@ -5,6 +5,7 @@ Description=VotingWorks BMD
 Type=simple
 User=vx-services
 Environment=VX_CONFIG_ROOT=/vx/config
+Environment=VX_METADATA_ROOT=/vx/code
 ExecStart=/bin/bash /vx/services/run-bmd.sh
 StandardOutput=syslog
 StandardError=syslog

@@ -40,12 +40,13 @@ if [[ " ${ALL_FRONTENDS[@]} " =~ " ${FRONTEND} " ]]; then
 
   # set up config
   export VX_CONFIG_ROOT="${DIR}/config"
+  export VX_METADATA_ROOT="${DIR}"
   [ -f "${VX_CONFIG_ROOT}/machine-id" ] || echo 0000 > "${VX_CONFIG_ROOT}/machine-id" 
   echo "${FRONTEND}" > "${VX_CONFIG_ROOT}/machine-type" 
   echo "VotingWorks" > "${VX_CONFIG_ROOT}/machine-manufacturer"
   [ -f "${VX_CONFIG_ROOT}/machine-model-name" ] || echo dev > "${VX_CONFIG_ROOT}/machine-model-name" 
-  [ -f "${VX_CONFIG_ROOT}/code-version" ] || echo dev > "${VX_CONFIG_ROOT}/code-version" 
-  [ -f "${VX_CONFIG_ROOT}/code-tag" ] || echo dev > "${VX_CONFIG_ROOT}/code-tag" 
+  [ -f "${VX_METADATA_ROOT}/code-version" ] || echo dev > "${VX_METADATA_ROOT}/code-version" 
+  [ -f "${VX_METADATA_ROOT}/code-tag" ] || echo dev > "${VX_METADATA_ROOT}/code-tag" 
 
   export DISPLAY=${DISPLAY:-:0}
   cd "${DIR}/build/${FRONTEND}"

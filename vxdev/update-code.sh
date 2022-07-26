@@ -2,6 +2,7 @@
 
 
 : "${VX_CONFIG_ROOT:="/vx/config"}"
+: "${VX_METADATA_ROOT:="/vx/code"}"
 APP_TYPE=$(sudo cat "$VX_CONFIG_ROOT/machine-type")
 
 cd /vx/code/vxsuite-complete-system

@@ -4,6 +4,7 @@ set -euo pipefail
 
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
 : "${VX_CONFIG_ROOT:="/vx/config"}"
+: "${VX_METADATA_ROOT:="/vx/code"}"
 
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
   "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
