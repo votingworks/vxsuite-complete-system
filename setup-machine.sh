@@ -112,6 +112,9 @@ if [[ $DISTRO == "Debian" ]]; then
 	echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 fi
 
+# set a clean hostname
+hostnamectl set-hostname "VotingWorks"
+
 # turn off automatic updates
 sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
 
