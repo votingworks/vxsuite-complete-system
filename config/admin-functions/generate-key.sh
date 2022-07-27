@@ -36,7 +36,8 @@ tpm2_evictcontrol -Q -c 0x81000001 || true 2>&1 /dev/null
 tpm2_evictcontrol -c key.ctx 0x81000001
 
 # Delete the local key files
-rm -rf key.pub key.priv
+rm -f key.pub 
+shred -u key.priv
 
 
 rm -f "${VX_CONFIG_ROOT}/key.pub" "${VX_CONFIG_ROOT}/key.sec"
