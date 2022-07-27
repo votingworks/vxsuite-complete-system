@@ -112,9 +112,6 @@ if [[ $DISTRO == "Debian" ]]; then
 	echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 fi
 
-# set a clean hostname
-hostnamectl set-hostname "VotingWorks"
-
 # turn off automatic updates
 sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
 
@@ -393,6 +390,9 @@ sudo passwd -l root
 sudo passwd -l ${USER}
 sudo passwd -l vx-ui
 sudo passwd -l vx-services
+
+# set a clean hostname
+sudo hostnamectl set-hostname "VotingWorks"
 
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 sudo cp config/sudoers /etc/sudoers
