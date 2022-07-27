@@ -24,6 +24,10 @@ tpm2_evictcontrol -Q -c 0x81000000 || true 2>&1 /dev/null
 tpm2_evictcontrol -c primary.ctx 0x81000000
 
 # Create keys
+#
+# Note that the key.priv file is encrypted using the symmetric key stored at
+# the handle specified in primary.ctx. That symmetric key never leaves the TPM.
+# See man tpm2 create and man tpm2 createprimary for more information.
 tpm2_create -L pcr.policy -u key.pub -r key.priv -C primary.ctx -G ecc 
 tpm2_load -u key.pub -r key.priv -C primary.ctx -c key.ctx
 
