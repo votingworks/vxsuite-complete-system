@@ -2,9 +2,10 @@
 set -euo pipefail 
 
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
+: "${VX_CONFIG_ROOT:="/vx/config"}"
 
 # detect Surface Go
-if dmidecode | grep -q 'Surface Go'; then
+if [ $(cat ${VX_CONFIG_ROOT}/machine-type) == "bsd" ]; then
     surface=1
 else
     surface=0
@@ -26,7 +27,7 @@ KERNEL_VERSION=`uname -r`
 
 
 # Now package up our kernel, cmdline, etc, if we're not on a Surface
-if [ $surface == 0 ]]; then
+if [ $surface == 0 ]; then
     objcopy \
         --add-section .osrel="/usr/lib/os-release" --change-section-vma .osrel=0x20000 \
         --add-section .cmdline="/tmp/cmdline" --change-section-vma .cmdline=0x30000 \
