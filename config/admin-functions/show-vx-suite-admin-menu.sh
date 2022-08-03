@@ -39,6 +39,13 @@ while true; do
     echo -e "Lockdown State: \e[31mNot Locked Down\e[0m"
   fi
 
+  if [[ $(mokutil --sb-state | grep "enabled") ]]; then
+    echo -e "Secure Boot State: \e[32mSecure Boot Enabled\e[0m"
+  else
+    echo -e "Secure Boot State: \e[31mSecure Boot Disabled\e[0m"
+    fi
+  echo -e
+
   echo "Current Time: $(date)"
 
 
