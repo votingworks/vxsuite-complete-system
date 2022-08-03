@@ -48,12 +48,10 @@ else
     chmod +w /boot/grub/grub.cfg
     cp /vx/admin/config/grub.cfg /boot/grub/grub.cfg
 
-    /boot/grub/grub.cfg << EOF 
-    menuentry 'VxLinux' {
+    echo "menuentry 'VxLinux' {
        initrd /initrd.img-${KERNEL_VERSION} 
        linux /vmlinuz-${KERNEL_VERSION} $(cat /tmp/cmdline)
-    } 
-EOF
+    }" >> /boot/grub/grub.cfg
 fi
 
 # Now install it 
