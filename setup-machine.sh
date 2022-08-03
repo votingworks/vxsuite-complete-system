@@ -252,6 +252,7 @@ sudo ln -s /vx/code/config/ui-functions /vx/ui/ui-functions
 sudo mkdir -p /vx/admin/config
 sudo cp config/cmdline /vx/code/config/cmdline
 sudo cp config/logo.bmp /vx/code/config/logo.bmp
+sudo cp config/grub.cfg /vx/code/config/grub.cfg
 sudo ln -s /vx/code/config/cmdline /vx/admin/config/cmdline
 sudo ln -s /vx/code/config/logo.bmp /vx/admin/config/logo.bmp
 
