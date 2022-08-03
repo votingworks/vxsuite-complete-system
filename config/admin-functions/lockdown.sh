@@ -45,10 +45,14 @@ if [ $surface == 0 ]; then
     sbsign --key=/mnt/DB.key --cert=/mnt/DB.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi /tmp/linux.efi
 else
     # On a surface we just need to setup the right GRUB entry
-    echo "menuentry \"VxLinux\" {
+    cp config/grub.cfg /boot/grub/grub.cfg
+
+    /boot/grub/grub.cfg << EOF 
+    menuentry 'VxLinux' {
        initrd /initrd.img-${KERNEL_VERSION} 
        linux /vmlinuz-${KERNEL_VERSION} $(cat /tmp/cmdline)
-}" >> /etc/grub.d/40_custom
+    } 
+EOF
 fi
 
 # Now install it 
