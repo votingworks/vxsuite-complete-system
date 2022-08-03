@@ -255,6 +255,7 @@ sudo cp config/logo.bmp /vx/code/config/logo.bmp
 sudo cp config/grub.cfg /vx/code/config/grub.cfg
 sudo ln -s /vx/code/config/cmdline /vx/admin/config/cmdline
 sudo ln -s /vx/code/config/logo.bmp /vx/admin/config/logo.bmp
+sudo ln -s /vx/code/config/grub.cfg /vx/admin/config/grub.cfg
 
 # machine configuration
 # TODO: This should be writeable right?
