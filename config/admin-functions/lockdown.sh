@@ -45,6 +45,7 @@ if [ $surface == 0 ]; then
     sbsign --key=/mnt/DB.key --cert=/mnt/DB.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi /tmp/linux.efi
 else
     # On a surface we just need to setup the right GRUB entry
+    chmod +w /boot/grub/grub.cfg
     cp /vx/admin/config/grub.cfg /boot/grub/grub.cfg
 
     /boot/grub/grub.cfg << EOF 
