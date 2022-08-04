@@ -51,7 +51,7 @@ else
     chmod +w /boot/grub/grub.cfg
     cp /vx/admin/config/grub.cfg /boot/grub/grub.cfg
 
-    echo "menuentry 'VxLinux' --class debian --class gnu-linux --class gnu --class os \$menuentry_id_option 'gnulinux-simple-494634a6-73df-4f29-b392-33346e0cb5c0' {
+    echo "menuentry 'VxLinux' --class debian --class gnu-linux --class gnu --class os {
 	load_video
 	insmod gzio
 	if [ x\$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
