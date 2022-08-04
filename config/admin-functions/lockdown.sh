@@ -62,6 +62,8 @@ else
         echo 'Loading initial ramdisk ...'
         initrd /initrd.img-${KERNEL_VERSION} 
     }" >> /boot/grub/grub.cfg
+
+    chmod -w /boot/grub/grub.cfg
 fi
 
 
