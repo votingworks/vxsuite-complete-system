@@ -51,8 +51,20 @@ else
     chmod +w /boot/grub/grub.cfg
     cp /vx/admin/config/grub.cfg /boot/grub/grub.cfg
 
-    echo "menuentry 'VxLinux' {
+    echo "menuentry 'VxLinux' --class debian --class gnu-linux --class gnu --class os \$menuentry_id_option 'gnulinux-simple-494634a6-73df-4f29-b392-33346e0cb5c0' {
+	load_video
+	insmod gzio
+	if [ x\$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+	insmod part_gpt
+	insmod ext2
+	if [ x\$feature_platform_search_hint = xy ]; then
+	  search --no-floppy --fs-uuid --set=root  b202bffd-df4c-4b30-9bc4-4b94148fee20
+	else
+	  search --no-floppy --fs-uuid --set=root b202bffd-df4c-4b30-9bc4-4b94148fee20
+	fi
+       echo 'Loading Linux 5.10.0-14-amd64 ...'
        linux /vmlinuz-${KERNEL_VERSION} $(cat /tmp/cmdline)
+       echo 'Loading initial ramdisk ...'
        initrd /initrd.img-${KERNEL_VERSION} 
     }" >> /boot/grub/grub.cfg
 fi
