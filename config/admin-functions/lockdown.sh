@@ -5,7 +5,7 @@ set -euo pipefail
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
 # detect Surface Go
-if [ $(cat ${VX_CONFIG_ROOT}/machine-type) == "bsd" ]; then
+if dmidecode | grep -q 'Surface Go'; then
     surface=1
 else
     surface=0
@@ -52,15 +52,15 @@ else
     cp /vx/admin/config/grub.cfg /boot/grub/grub.cfg
 
     echo "menuentry 'VxLinux' {
-	load_video
-	insmod gzio
-	if [ x\$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
-	insmod part_gpt
-	insmod ext2
-       echo 'Loading Linux ${KERNEL_VERSION} ...'
-       linux /vmlinuz-${KERNEL_VERSION} $(cat /tmp/cmdline)
-       echo 'Loading initial ramdisk ...'
-       initrd /initrd.img-${KERNEL_VERSION} 
+        load_video
+        insmod gzio
+        if [ x\$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_gpt
+        insmod ext2
+        echo 'Loading Linux ${KERNEL_VERSION} ...'
+        linux /vmlinuz-${KERNEL_VERSION} $(cat /tmp/cmdline)
+        echo 'Loading initial ramdisk ...'
+        initrd /initrd.img-${KERNEL_VERSION} 
     }" >> /boot/grub/grub.cfg
 fi
 
