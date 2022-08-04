@@ -43,19 +43,20 @@ if [ $surface == 0 ]; then
     mount /dev/sda /mnt || mount /dev/sda1 /mnt || (echo "Secure boot keys not found; exiting" && sleep 5 && exit);
 
     sbsign --key=/mnt/DB.key --cert=/mnt/DB.crt --output /boot/efi/EFI/debian/VxLinux-signed.efi /tmp/linux.efi
+
+    # Now install it 
+    bash "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
 else
     # On a surface we just need to setup the right GRUB entry
     chmod +w /boot/grub/grub.cfg
     cp /vx/admin/config/grub.cfg /boot/grub/grub.cfg
 
     echo "menuentry 'VxLinux' {
-       initrd /initrd.img-${KERNEL_VERSION} 
        linux /vmlinuz-${KERNEL_VERSION} $(cat /tmp/cmdline)
+       initrd /initrd.img-${KERNEL_VERSION} 
     }" >> /boot/grub/grub.cfg
 fi
 
-# Now install it 
-bash "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
 
 # Reboot into the locked down system
 echo "Rebooting in 5s"
