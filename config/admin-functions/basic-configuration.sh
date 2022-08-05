@@ -23,7 +23,7 @@ sudo ${VX_FUNCTIONS_ROOT}/set-clock.sh
 echo
 echo -e "\e[1mStep 3: Record Machine Key\e[0m"
 echo 'Setting up signing keys...'
-${VX_FUNCTIONS_ROOT}/generate-key.sh > /dev/null
+sudo ${VX_FUNCTIONS_ROOT}/generate-key.sh > /dev/null
 PUBLIC_KEY=$(cat "${VX_CONFIG_ROOT}/key.pub" | tail -n 1)
 echo "Public Signing Key: ${PUBLIC_KEY}"
 echo "Record this QR code containing the Machine ID and Public Signing Key:"
