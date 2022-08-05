@@ -18,7 +18,7 @@ echo "continue? [Y/n]:"
 
 read -r answer
 
-if [[ $answer != 'n' && $answer != 'N' ]]; then
+if [[ $answer == 'n' || $answer == 'N' ]]; then
     echo "Not locking down. Exiting..."
     sleep 3
     exit
