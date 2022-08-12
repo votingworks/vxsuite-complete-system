@@ -26,6 +26,11 @@ else
     URL=http://localhost:3000/
 fi
 
+# Max out volume for sound effects
+if [ "${VX_MACHINE_TYPE}" = "precinct-scanner" ]; then
+    amixer -D pulse set Master 100% || true
+fi
+
 while true; do
     echo "starting kiosk-browser"
     ./run-kiosk-browser.sh "$URL"
