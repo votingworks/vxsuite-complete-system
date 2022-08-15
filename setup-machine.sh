@@ -151,9 +151,10 @@ sudo usermod -aG vx-group vx-admin
 # remove all files created by default
 sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 
-# Let vx-admin read logs
+# Let all of our users read logs
 sudo usermod -aG adm vx-admin
 sudo usermod -aG adm vx-ui
+sudo usermod -aG adm vx-services
 
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
