@@ -51,7 +51,7 @@ one component at a time_.
 This command will run all software services needed for election manager:
 
 ```
-./run.sh election-manager
+ADMIN_WORKSPACE=/tmp ./run.sh election-manager
 ```
 
 ### Ballot Scanner (VxCentralScan)
