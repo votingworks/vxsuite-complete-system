@@ -20,10 +20,6 @@ fi
 
 if [ "${VX_MACHINE_TYPE}" = "bmd" ]; then
     amixer -D pulse set Master 80% || true
-    
-    URL=http://localhost:3000/speech-loader.html
-else
-    URL=http://localhost:3000/
 fi
 
 # Max out volume for sound effects
@@ -33,5 +29,5 @@ fi
 
 while true; do
     echo "starting kiosk-browser"
-    ./run-kiosk-browser.sh "$URL"
+    ./run-kiosk-browser.sh http://localhost:3000/
 done 2>&1 | logger --tag votingworksapp
