@@ -370,8 +370,10 @@ sudo systemctl enable vx-${CHOICE}.service
 sudo systemctl start vx-${CHOICE}.service
 
 # turn off a particular thermal zone sensor which appears to be overly sensitive on our Lenovo L14
-if [ -f /sys/class/thermal/thermal_zone2/mode ]; then
-    echo "disabled" | sudo tee /sys/class/thermal/thermal_zone2/mode
+if [ "${CHOICE}" == "election-manager" ] || [ "${CHOICE}" == "bsd" ]; then
+    if [ -f /sys/class/thermal/thermal_zone2/mode ]; then
+	echo "disabled" | sudo tee /sys/class/thermal/thermal_zone2/mode
+    fi
 fi
 
 echo "Successfully setup machine."
