@@ -96,7 +96,7 @@ fi
 
 if [ "${CHOICE}" == "bmd" ]
 then
-    sudo cp config/50-wacom-conf /etc/X11/xorg.conf.d/
+    sudo cp config/50-wacom.conf /etc/X11/xorg.conf.d/
 fi
 
 # install kiosk-browser if it hasn't yet been installed
