@@ -6,6 +6,9 @@ set -euo pipefail
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 : "${VX_METADATA_ROOT:="/vx/code"}"
 
+# Large Font
+setfont /usr/share/consolefonts/Lat15-TerminusBold24x12.psf.gz 
+
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
   "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
   exit 0
@@ -147,13 +150,17 @@ while true; do
     ;;
 
     generate-key)
+      setfont /usr/share/consolefonts/Lat15-Terminus14.psf.gz 
       sudo "${VX_FUNCTIONS_ROOT}/generate-key.sh"
       read -s -n 1
+      setfont /usr/share/consolefonts/Lat15-TerminusBold24x12.psf.gz 
     ;;
 
     show-key)
+      setfont /usr/share/consolefonts/Lat15-Terminus14.psf.gz 
       "${VX_FUNCTIONS_ROOT}/show-key.sh"
       read -s -n 1
+      setfont /usr/share/consolefonts/Lat15-TerminusBold24x12.psf.gz 
     ;;
     
     reset-totp)
