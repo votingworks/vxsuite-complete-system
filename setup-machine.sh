@@ -123,9 +123,6 @@ sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
 # make sure machine never shuts down on idle, and does shut down on power key (no hibernate or anything.)
 sudo cp config/logind.conf /etc/systemd/
 
-# make terminal font bigger
-sudo cp config/console-setup /etc/default/
-
 echo "Creating necessary directories"
 # directory structure
 sudo mkdir -p /vx
