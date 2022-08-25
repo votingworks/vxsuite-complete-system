@@ -28,16 +28,12 @@ PUBLIC_KEY=$(cat "${VX_CONFIG_ROOT}/key.pub")
 echo "Public Signing Key: ${PUBLIC_KEY}"
 echo "Record this QR code containing the Machine ID and Public Signing Key:"
 MACHINE_ID=$(< "${VX_CONFIG_ROOT}/machine-id")
-
-setfont /usr/share/consolefonts/Lat15-Terminus14.psf.gz 
 echo -e "${MACHINE_ID}\n${PUBLIC_KEY}" | qrencode -t ANSI -o -
 
 while true; do
     read -p "Confirm QR code recorded (y/n) " CONFIRM
     [[ "${CONFIRM}" = "y" ]] && break
 done
-setfont /usr/share/consolefonts/Lat15-TerminusBold24x12.psf.gz 
-
 
 if [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
     rm -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT"
