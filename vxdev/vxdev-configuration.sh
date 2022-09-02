@@ -21,7 +21,7 @@ sudo cp vxdev/update-vxdev.desktop /usr/share/applications/.
 # Set desktop background
 gsettings set org.gnome.desktop.background picture-uri file:///vx/votingworks-desktop.png
 # Set favorite apps
-gsettings set org.gnome.shell favorite-apps "['update-vxdev.desktop','firefox-esr.desktop', 'org.gnome.Nautilus.desktop']"
+gsettings set org.gnome.shell favorite-apps "['update-vxdev.desktop', 'org.gnome.Screenshot.desktop', 'firefox-esr.desktop', 'org.gnome.Nautilus.desktop', 'kazam.deskptop']"
 # Disable lock screen
 gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
 
