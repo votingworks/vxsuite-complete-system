@@ -2,6 +2,6 @@
 Version=1.0
 Name=VxMark
 Icon=runprogram.png
-Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin /vx/code/vxsuite-complete-system/run.sh bmd'
+Exec=gnome-terminal -- /bin/sh -c 'env DEBUG=* env PATH=$PATH:/sbin /vx/code/vxsuite-complete-system/run.sh bmd'
 Terminal=false
 Type=Application

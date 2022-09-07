@@ -50,7 +50,7 @@ if [[ " ${ALL_FRONTENDS[@]} " =~ " ${FRONTEND} " ]]; then
 
   export DISPLAY=${DISPLAY:-:0}
   cd "${DIR}/build/${FRONTEND}"
-  (trap 'kill 0' SIGINT SIGHUP; "./run-${FRONTEND}.sh" & ("./run-kiosk-browser.sh"; kill 0)) | logger --tag votingworksapp
+  (trap 'kill 0' SIGINT SIGHUP; "./run-${FRONTEND}.sh" & ("./run-kiosk-browser.sh"; kill 0)) 2>&1 | logger --tag votingworksapp
 elif [[ "${FRONTEND}" = -h || "${FRONTEND}" = --help ]]; then
   usage
   exit 0
