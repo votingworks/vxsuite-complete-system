@@ -70,7 +70,7 @@ if [[ $CHOICE == 'VxAdminCentralScan' ]]; then
 fi
 
 # Set desktop icons as favorites so they appear in the doc
-gsettings set org.gnome.shell favorite-apps "[$FAVORITE_ICONS, 'update-code.desktop', 'update-vxdev.desktop', 'org.gnome.Screenshot.desktop', 'firefox-esr.desktop', 'org.gnome.Nautilus.desktop', 'kazam.desktop']"
+gsettings set org.gnome.shell favorite-apps "[$FAVORITE_ICONS, 'update-code.desktop', 'update-vxdev.desktop', 'org.gnome.Screenshot.desktop', 'firefox-esr.desktop', 'org.gnome.Nautilus.desktop', 'kazam.desktop', 'org.gnome.Terminal.desktop']"
 
 CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx/config/machine-type'
 
