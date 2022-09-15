@@ -22,6 +22,9 @@ CHOICES+=('latest')
 echo "2. Latest Stable Release ($LATEST_TAG)"
 CHOICES+=('stable')
 
+echo "3. Custom Branch"
+CHOICES+=('custom')
+
 echo
 read -p "Select Option: " CHOICE_INDEX
 
@@ -30,12 +33,13 @@ then
     echo "You need to select a valid option."
     exit 1
 fi
+
 BRANCH=${CHOICES[$CHOICE_INDEX]}
-sudo apt remove -y nodejs # this will get reinstalled, the version could change based on what branch of the code we are building
+sudo apt remove -y nodejs > /dev/null # this will get reinstalled, the version could change based on what branch of the code we are building
 
 if [[ $BRANCH == 'latest' ]]; then
 	cd vxsuite
-	git checkout main
+ 	git checkout main
 	git pull
 	./script/setup-dev
 	cd ../kiosk-browser
@@ -48,6 +52,21 @@ elif [[ $BRANCH == 'stable' ]]; then
 	git submodule update --init --recursive
 	cd vxsuite
 	./script/setup-dev
+	cd ..
+elif [[ $BRANCH == 'custom' ]]; then
+	read -p "Enter the branch name: " BRANCH_NAME
+	cd vxsuite
+	git checkout main
+	git pull
+	while [ !`git branch -r --list origin/$BRANCH_NAME` ]
+	do
+		read -p "Invalid Branch Name. Try again: " BRANCH_NAME
+	done
+	git checkout $BRANCH_NAME
+	./script/setup-dev
+	cd ../kiosk-browser
+	git checkout main
+	git pull
 	cd ..
 fi
 cp /vx/config/.env.local vxsuite/.env.local
