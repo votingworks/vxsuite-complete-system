@@ -50,25 +50,20 @@ elif [[ $BRANCH == 'stable' ]]; then
 	./script/setup-dev
 	cd ..
 fi
+cp /vx/config/.env.local vxsuite/.env.local
 
 make build-kiosk-browser
 echo $APP_TYPE
 if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
-	sudo cp /vx/config/.env.local vxsuite/frontends/bsd/.env.local
-	sudo cp /vx/config/.env.local vxsuite/services/scan/.env.local
 	./build.sh bsd
 fi
 if [[ $APP_TYPE == 'VxAdmin' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
-	sudo cp /vx/config/.env.local vxsuite/frontends/election-manager/.env.local
 	./build.sh election-manager
 fi
 if [[ $APP_TYPE == 'VxMark' ]]; then
-	sudo cp /vx/config/.env.local vxsuite/frontends/bmd/.env.local
 	./build.sh bmd
 fi
 if [[ $APP_TYPE == 'VxScan' ]]; then
-	sudo cp /vx/config/.env.local vxsuite/frontends/precinct-scanner/.env.local
-	sudo cp /vx/config/.env.local vxsuite/services/scan/.env.local
 	./build.sh precinct-scanner
 fi
 
