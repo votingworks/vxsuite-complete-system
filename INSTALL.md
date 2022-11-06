@@ -2,7 +2,7 @@ This file explains getting VxSuite up and running in Debian 11.2, along with set
 
 <h2>Preseed Installer</h2>
 
-This repo provides a preseed file that can be used for an automated install of Debian that installs the software and partitions the disks in the manner necessary to create a production machine. In future we will also provide a development machine preseed, but for now we just provide a production one. To use the production preseed file to configure a machine, navigate to the autmated install option in GRUB after booting the Debian iso:
+This repo provides a preseed file that can be used for an automated install of Debian that installs the software and partitions the disks in the manner necessary to create a production machine. In future we will also provide a development machine preseed, but for now we just provide a production one. To use the production preseed file to configure a machine, navigate to the automated install option in GRUB after booting the Debian iso:
 ![Screenshot_VxMarkProdBase_2022-03-21_21:10:57](https://user-images.githubusercontent.com/2686765/159756779-68452a49-3352-4c95-892e-6d544778118d.png)
 ![Screenshot_VxMarkProdBase_2022-03-21_21:11:07](https://user-images.githubusercontent.com/2686765/159756788-aa6be79d-1142-455f-8218-418c17bf36d8.png)
 
