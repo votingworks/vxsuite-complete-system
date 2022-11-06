@@ -41,7 +41,7 @@ If you are dropped into an EFI shell after you've installed (or even before), th
 
 ![Screenshot_VxBase-dev_2022-03-16_13:07:16](https://user-images.githubusercontent.com/2686765/158648023-894363d7-4ae3-46b7-bd87-d75713ae4295.png)
 
-To proceed, you may either select the EFI exectable to boot or simply type `exit` to get into the main firmware application. If you just want to boot from here, do the following. First, figure out what the device you're booting is called by the EFI shell. Usually it is something like `FS0:`. The shell provides a mapping table of devices to EFI shell names at the top of the shell. A helpful tip: the `Alias` field can be used to determine the type of device in the event that an ISO and a disk image are present. More on this below. 
+To proceed, you may either select the EFI executable to boot or simply type `exit` to get into the main firmware application. If you just want to boot from here, do the following. First, figure out what the device you're booting is called by the EFI shell. Usually it is something like `FS0:`. The shell provides a mapping table of devices to EFI shell names at the top of the shell. A helpful tip: the `Alias` field can be used to determine the type of device in the event that an ISO and a disk image are present. More on this below. 
 
 Once you know the device your executable lives on, you can use `ls <device name>` to find the executable on the device. For debian, the executable lives somewhere like this:
 
