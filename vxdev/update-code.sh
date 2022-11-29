@@ -74,15 +74,22 @@ cp /vx/config/.env.local vxsuite/.env.local
 make build-kiosk-browser
 echo $APP_TYPE
 if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
+	cp /vx/config/.env.local vxsuite/services/scan/.env.local
+	cp /vx/config/.env.local vxsuite/frontends/bsd/.env.local
 	./build.sh bsd
 fi
 if [[ $APP_TYPE == 'VxAdmin' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
+	cp /vx/config/.env.local vxsuite/frontends/election-manager/.env.local
+	cp /vx/config/.env.local vxsuite/services/admin/.env.local
 	./build.sh election-manager
 fi
 if [[ $APP_TYPE == 'VxMark' ]]; then
+	cp /vx/config/.env.local vxsuite/frontends/bmd/.env.local
 	./build.sh bmd
 fi
 if [[ $APP_TYPE == 'VxScan' ]]; then
+	cp /vx/config/.env.local vxsuite/services/scan/.env.local
+	cp /vx/config/.env.local vxsuite/frontends/precinct-scanner/.env.local
 	./build.sh precinct-scanner
 fi
 
