@@ -12,6 +12,16 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+# Support our new /apps directory structure
+ALL_APPS=()
+
+for app in ${DIR}/vxsuite/apps/*; do
+  if [ -d "${app}" ]; then
+    ALL_APPS+=("$(basename "${app}")")
+  fi
+done
+
+# Support our old /frontends and /services directory structure
 ALL_FRONTENDS=()
 
 for app in ${DIR}/vxsuite/frontends/*; do
@@ -20,10 +30,12 @@ for app in ${DIR}/vxsuite/frontends/*; do
   fi
 done
 
+ALL_APPS_AND_FRONTENDS=(${ALL_APPS[@]} ${ALL_FRONTENDS[@]})
+
 usage() {
-  echo "usage: ./run.sh ($(IFS=\| ; echo "${ALL_FRONTENDS[*]}"))"
+  echo "usage: ./run.sh ($(IFS=\| ; echo "${ALL_APPS_AND_FRONTENDS[*]}"))"
   echo
-  echo "Runs a VxSuite frontend for testing purposes."
+  echo "Runs a VxSuite app for testing purposes."
 }
 
 if [ $# = 0 ]; then
@@ -31,31 +43,31 @@ if [ $# = 0 ]; then
   exit 1
 fi
 
-FRONTEND="$1"
-if [[ " ${ALL_FRONTENDS[@]} " =~ " ${FRONTEND} " ]]; then
-  if [ ! -d "${DIR}/build/${FRONTEND}" ]; then
-    echo "⁉️ ${FRONTEND} is not yet built, building…"
-    "${DIR}/build.sh" "${FRONTEND}"
+APP="$1"
+if [[ " ${ALL_APPS_AND_FRONTENDS[@]} " =~ " ${APP} " ]]; then
+  if [ ! -d "${DIR}/build/${APP}" ]; then
+    echo "⁉️ ${APP} is not yet built, building…"
+    "${DIR}/build.sh" "${APP}"
   fi
 
   # set up config
   export VX_CONFIG_ROOT="${DIR}/config"
   export VX_METADATA_ROOT="${DIR}"
   [ -f "${VX_CONFIG_ROOT}/machine-id" ] || echo 0000 > "${VX_CONFIG_ROOT}/machine-id" 
-  echo "${FRONTEND}" > "${VX_CONFIG_ROOT}/machine-type" 
+  echo "${APP}" > "${VX_CONFIG_ROOT}/machine-type"
   echo "VotingWorks" > "${VX_CONFIG_ROOT}/machine-manufacturer"
   [ -f "${VX_CONFIG_ROOT}/machine-model-name" ] || echo dev > "${VX_CONFIG_ROOT}/machine-model-name" 
   [ -f "${VX_METADATA_ROOT}/code-version" ] || echo dev > "${VX_METADATA_ROOT}/code-version" 
   [ -f "${VX_METADATA_ROOT}/code-tag" ] || echo dev > "${VX_METADATA_ROOT}/code-tag" 
 
   export DISPLAY=${DISPLAY:-:0}
-  cd "${DIR}/build/${FRONTEND}"
-  (trap 'kill 0' SIGINT SIGHUP; "./run-${FRONTEND}.sh" & ("./run-kiosk-browser.sh"; kill 0)) 2>&1 | logger --tag votingworksapp
-elif [[ "${FRONTEND}" = -h || "${FRONTEND}" = --help ]]; then
+  cd "${DIR}/build/${APP}"
+  (trap 'kill 0' SIGINT SIGHUP; "./run-${APP}.sh" & ("./run-kiosk-browser.sh"; kill 0)) 2>&1 | logger --tag votingworksapp
+elif [[ "${APP}" = -h || "${APP}" = --help ]]; then
   usage
   exit 0
 else
-  echo "✘ unknown frontend: ${FRONTEND}" >&2
+  echo "✘ unknown app: ${APP}" >&2
   usage >&2
   exit 1
 fi
