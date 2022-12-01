@@ -89,8 +89,8 @@ if [[ $APP_TYPE == 'VxMark' ]]; then
 fi
 if [[ $APP_TYPE == 'VxScan' ]]; then
 	cp /vx/config/.env.local vxsuite/services/scan/.env.local
-	cp /vx/config/.env.local vxsuite/frontends/precinct-scanner/.env.local
-	./build.sh precinct-scanner
+	cp /vx/config/.env.local vxsuite/apps/vx-scan/frontend/.env.local
+	./build.sh vx-scan
 fi
 
 echo "Done! Closing in 3 seconds."

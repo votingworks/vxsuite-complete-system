@@ -66,7 +66,7 @@ SCAN_WORKSPACE=/tmp ./run.sh bsd
 
 You may replace `/tmp` with any persistent path you like.
 
-### Precinct Scanner (VxScan)
+### VxScan (Precinct Scanner)
 
 This requires some other packages to be installed that, unfortunately, are not
 public. If you have access, go to https://github.com/votingworks/plustekctl and
@@ -74,7 +74,7 @@ follow the install instructions. Once you've done that, this command will run
 all software services needed for precinct scanner:
 
 ```
-SCAN_WORKSPACE=/tmp ./run.sh precinct-scanner
+SCAN_WORKSPACE=/tmp ./run.sh vx-scan
 ```
 
 You may replace `/tmp` with any persistent path you like.
@@ -117,20 +117,10 @@ bash setup-machine.sh
 
 ## High-level Contracts
 
-Each front-end system, e.g. `bmd`, `bas`, etc., and each
-module, e.g. `module-smartcards`, `module-scan`, etc., should be an
+Each frontend app, e.g. `apps/vx-scan/frontend`, etc., and each
+service, e.g. `apps/vx-scan/backend`, `services/smartcards`, etc., should be an
 application that can be built using `make build`, and then run using
 `make run`.
-
-## Code Layout & Build
-
-Each component is a git submodule. We use submodules here because they
-are exactly what we need: a pointer to a particular commit of each of
-the combined repositories.
-
-We use git submodules here for the components, for the express purpose
-that we never want to update one of the components without explicitly
-checking that all the modules work well together.
 
 ## Acknowledgments
 

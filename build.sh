@@ -22,6 +22,17 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+
+# Support our new /apps directory structure
+ALL_APPS=()
+
+for app in ${DIR}/vxsuite/apps/*; do
+  if [ -d "${app}" ]; then
+    ALL_APPS+=("$(basename "${app}")")
+  fi
+done
+
+# Support our old /frontends and /services directory structure
 ALL_FRONTENDS=()
 ALL_SERVICES=()
 
@@ -37,10 +48,12 @@ for app in ${DIR}/vxsuite/services/*; do
   fi
 done
 
+ALL_APPS_AND_FRONTENDS=(${ALL_APPS[@]} ${ALL_FRONTENDS[@]})
+
 usage() {
-  echo "usage: ./build.sh [all|$(IFS=\| ; echo "${ALL_FRONTENDS[*]}")] …"
+  echo "usage: ./build.sh [all|$(IFS=\| ; echo "${ALL_APPS_AND_FRONTENDS[*]}")] …"
   echo
-  echo "Build all or some of the VxSuite frontends."
+  echo "Build all or some of the VxSuite apps."
 }
 
 build() {
@@ -53,14 +66,23 @@ build() {
   set +e
   (
     set -euo pipefail
-    for service in "${ALL_SERVICES[@]}"; do
-      make -C "${DIR}/vxsuite/services/${service}" install
-    done
-    for frontend in "${ALL_FRONTENDS[@]}"; do
-      make -C "${DIR}/vxsuite/frontends/${frontend}" install
-    done
 
-    cd "${DIR}/vxsuite/frontends/${APP}"
+    if [ -d "${DIR}/vxsuite/frontends/${APP}" ]; then
+      for service in "${ALL_SERVICES[@]}"; do
+        make -C "${DIR}/vxsuite/services/${service}" install
+      done
+      for frontend in "${ALL_FRONTENDS[@]}"; do
+        make -C "${DIR}/vxsuite/frontends/${frontend}" install
+      done
+      cd "${DIR}/vxsuite/frontends/${APP}"
+    else
+      for app in "${ALL_APPS[@]}"; do
+        make -C "${DIR}/vxsuite/apps/${app}/frontend" install
+        make -C "${DIR}/vxsuite/apps/${app}/backend" install
+      done
+      cd "${DIR}/vxsuite/apps/${APP}/frontend"
+    fi
+
     pnpm install
     BUILD_ROOT="${BUILD_ROOT}/vxsuite" ./script/prod-build
 
@@ -86,18 +108,19 @@ build() {
   set -e
 }
 
+
 APPS=()
 
 if [ $# = 0 ]; then
-  APPS+=(${ALL_FRONTENDS[@]})
+  APPS+=(${ALL_APPS_AND_FRONTENDS[@]})
 else
   for arg in $@; do
-    if [[ " ${ALL_FRONTENDS[@]} " =~ " ${arg} " ]]; then
+    if [[ " ${ALL_APPS_AND_FRONTENDS[@]} " =~ " ${arg} " ]]; then
       if [[ ! " ${APPS[@]} " =~ " ${arg} " ]]; then
         APPS+=($arg)
       fi
     elif [[ "${arg}" = all ]]; then
-      APPS=(${ALL_FRONTENDS[@]})
+      APPS=(${ALL_APPS_AND_FRONTENDS[@]})
     elif [[ "${arg}" = -h || "${arg}" = --help ]]; then
       usage
       exit 0
