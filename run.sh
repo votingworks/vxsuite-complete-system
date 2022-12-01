@@ -62,7 +62,12 @@ if [[ " ${ALL_APPS_AND_FRONTENDS[@]} " =~ " ${APP} " ]]; then
 
   export DISPLAY=${DISPLAY:-:0}
   cd "${DIR}/build/${APP}"
-  (trap 'kill 0' SIGINT SIGHUP; "./run-${APP}.sh" & ("./run-kiosk-browser.sh"; kill 0)) 2>&1 | logger --tag votingworksapp
+  (
+    trap 'kill 0' SIGINT SIGHUP; "./run-${APP}.sh" &
+    # Delay kiosk-browser a bit to make sure the app is running first, otherwise
+    # kiosk-browser will fail to load the app and need a manual refresh (Ctrl-R)
+    (sleep 1s; "./run-kiosk-browser.sh"; kill 0)
+  ) 2>&1 | logger --tag votingworksapp
 elif [[ "${APP}" = -h || "${APP}" = --help ]]; then
   usage
   exit 0
