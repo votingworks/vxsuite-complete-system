@@ -64,9 +64,8 @@ if [[ " ${ALL_APPS_AND_FRONTENDS[@]} " =~ " ${APP} " ]]; then
   cd "${DIR}/build/${APP}"
   (
     trap 'kill 0' SIGINT SIGHUP; "./run-${APP}.sh" &
-    # Delay kiosk-browser a bit to make sure the app is running first, otherwise
-    # kiosk-browser will fail to load the app and need a manual refresh (Ctrl-R)
-    (sleep 1s; "./run-kiosk-browser.sh"; kill 0)
+    # Delay kiosk-browser to make sure the app is running first
+    (while ! curl -s localhost:3000; do sleep 1; done; "./run-kiosk-browser.sh"; kill 0)
   ) 2>&1 | logger --tag votingworksapp
 elif [[ "${APP}" = -h || "${APP}" = --help ]]; then
   usage
