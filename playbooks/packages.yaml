@@ -1,7 +1,0 @@
----
-
-- name: Install shared packages
-  become: true
-  hosts: localhost
-  roles:
-    - packages

@@ -6,10 +6,3 @@
     state: latest
   with_items: 
     - "{{ installed_packages }}"
-
-- name: Remove packages
-  package:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - "{{ removed_packages }}"

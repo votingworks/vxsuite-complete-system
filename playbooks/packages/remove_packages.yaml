@@ -1,0 +1,9 @@
+---
+
+- name: Remove shared packages
+  become: true
+  hosts: localhost
+  tasks:
+    - import_role:
+        name: packages
+        tasks_from: remove_packages

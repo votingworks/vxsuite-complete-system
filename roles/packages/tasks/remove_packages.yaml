@@ -1,0 +1,8 @@
+---
+
+- name: Remove packages
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ removed_packages }}"

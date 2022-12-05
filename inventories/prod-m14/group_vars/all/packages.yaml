@@ -17,3 +17,7 @@ installed_packages:
 
 removed_packages:
   - ubuntu-desktop
+  - network-manager
+  - git
+  - firefox
+  - snapd
