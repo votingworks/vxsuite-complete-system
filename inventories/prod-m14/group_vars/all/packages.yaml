@@ -1,3 +1,19 @@
-packages:
+installed_packages:
   - unclutter
   - mingetty 
+  - pmount 
+  - brightnessctl 
+  - alsa-utils
+  - pulseaudio
+  - pulseaudio-utils
+  - openbox
+  - rsync 
+  - cups 
+  - cryptsetup 
+  - xserver-xorg-core 
+  - x11-common 
+  - xinit 
+  - sbsigntool
+
+removed_packages:
+  - ubuntu-desktop

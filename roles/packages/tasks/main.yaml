@@ -1,12 +1,15 @@
 ---
 
-- name: debug
-  debug:
-    var: packages
-
-
 - name: Install common vxsuite-complete-system packages
   package:
     name: "{{ item }}"
+    state: latest
   with_items: 
-    - "{{ packages }}"
+    - "{{ installed_packages }}"
+
+- name: Remove packages
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ removed_packages }}"
