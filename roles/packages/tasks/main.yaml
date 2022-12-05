@@ -1,0 +1,12 @@
+---
+
+- name: debug
+  debug:
+    var: packages
+
+
+- name: Install common vxsuite-complete-system packages
+  package:
+    name: "{{ item }}"
+  with_items: 
+    - "{{ packages }}"
