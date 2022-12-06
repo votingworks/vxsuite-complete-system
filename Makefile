@@ -10,7 +10,7 @@ deps: node
 	sudo apt install -y build-essential rsync cups cryptsetup efitools #debian
 	sudo apt install -y libx11-dev
 	sudo apt install -y python3.9 python3-pip
-        sudo python3.9 -m pip install ansible
+	sudo python3.9 -m pip install ansible
 
 build-kiosk-browser:
 	make -C kiosk-browser install
