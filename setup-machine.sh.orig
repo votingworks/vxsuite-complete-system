@@ -105,20 +105,14 @@ then
     make build-kiosk-browser
 fi
 
-sudo ansible-playbook playbooks/packages/install_packages.yaml
-
-#--
-# Ansible should be handling package installs now
-# Commenting out for testing
-#--
-#sudo apt install -y unclutter mingetty pmount brightnessctl alsa-utils pulseaudio pulseaudio-utils
+sudo apt install -y unclutter mingetty pmount brightnessctl alsa-utils pulseaudio pulseaudio-utils
 
 # simple window manager and remove all contextual info
-#sudo apt install -y openbox
+sudo apt install -y openbox
 
 # Get some extras for Debian lockdown
 if [[ $DISTRO == "Debian" ]]; then
-	#sudo apt install -y rsync cups cryptsetup xserver-xorg-core x11-common xinit sbsigntool
+	sudo apt install -y rsync cups cryptsetup xserver-xorg-core x11-common xinit sbsigntool
 	sudo chown :lpadmin /sbin/lpinfo
 	echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 fi
@@ -367,16 +361,8 @@ sudo rm -f /etc/localtime
 sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
 sudo ln -sf /vx/config/localtime /etc/localtime
 
-#---
-# Remove packages via Ansible
-# Note this does all the removals in one playbook run
-# May need to ensure no issue with timing there
-#---
 # remove all network drivers. Buh bye.
-
-sudo ansible-playbook playbooks/packages/remove_packages.yaml
-
-#sudo apt purge -y network-manager
+sudo apt purge -y network-manager
 sudo rm -rf /lib/modules/*/kernel/drivers/net/*
 
 # delete any remembered existing network connections (e.g. wifi passwords)
@@ -397,11 +383,11 @@ USER=$(whoami)
 
 # remove all unnecessary packages
 if [[ $DISTRO == "Ubuntu" ]] ; then
-	#sudo apt remove -y ubuntu-desktop
+	sudo apt remove -y ubuntu-desktop
 fi
 
-#sudo apt remove -y git firefox snapd
-#sudo apt autoremove -y
+sudo apt remove -y git firefox snapd
+sudo apt autoremove -y
 
 # set password for vx-admin
 (echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
