@@ -1,0 +1,12 @@
+---
+
+users:
+  vx-services:
+    uid: 750
+    home: /var/vx/services
+  vx-ui:
+    uid: 751
+    home: /var/vx/ui
+  vx-admin:
+    uid: 752
+    home: /var/vx/admin

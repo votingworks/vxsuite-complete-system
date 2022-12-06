@@ -1,0 +1,7 @@
+---
+
+- name: Manage users and groups
+  become: true
+  hosts: localhost
+  roles:
+    - users
