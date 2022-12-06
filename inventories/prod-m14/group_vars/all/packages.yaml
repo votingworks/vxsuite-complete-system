@@ -1,23 +1,26 @@
 installed_packages:
-  - unclutter
-  - mingetty 
-  - pmount 
-  - brightnessctl 
   - alsa-utils
+  - brightnessctl 
+  - build-essential 
+  - cryptsetup 
+  - cups 
+  - efitools
+  - git 
+  - mingetty 
+  - openbox
+  - pmount 
   - pulseaudio
   - pulseaudio-utils
-  - openbox
   - rsync 
-  - cups 
-  - cryptsetup 
-  - xserver-xorg-core 
+  - sbsigntool
+  - unclutter
   - x11-common 
   - xinit 
-  - sbsigntool
+  - xserver-xorg-core 
 
 removed_packages:
-  - ubuntu-desktop
-  - network-manager
   - git
   - firefox
+  - network-manager
   - snapd
+  - ubuntu-desktop
