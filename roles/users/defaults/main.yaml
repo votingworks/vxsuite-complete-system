@@ -8,12 +8,12 @@ users:
   vx-services:
     uid: 750
     home: /var/vx/services
-    secondary_groups: 'vx-group'
+    secondary_groups: 'adm,scanner,vx-group'
   vx-ui:
     uid: 751
     home: /var/vx/ui
-    secondary_groups: 'vx-group'
+    secondary_groups: 'adm,lpadmin,plugdev,vx-group'
   vx-admin:
     uid: 752
     home: /var/vx/admin
-    secondary_groups: 'vx-group'
+    secondary_groups: 'adm,plugdev,vx-group'
