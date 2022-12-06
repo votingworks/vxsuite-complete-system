@@ -6,3 +6,11 @@
     state: absent
   with_items:
     - "{{ removed_packages }}"
+
+- name: Purge packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: true
+  with_items:
+    - "{{ purged_packages }}"
