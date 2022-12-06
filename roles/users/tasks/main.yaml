@@ -1,3 +1,11 @@
+- name: Manage groups
+  group:
+    name: "{{ item.key }}"
+    gid: "{{ item.value.gid }}"
+    state: "{{ item.value.state | default('present') }}"
+  with_dict:
+    - "{{ system_groups }}"
+
 - name: Manage users
   user:
     name: "{{ item.key }}"
@@ -7,5 +15,6 @@
     groups: "{{ item.value.secondary_groups | default('') }}"
     shell: "{{ item.value.shell | default('/bin/bash') }}"
     home: "{{ item.value.home }}"
+    state: "{{ item.value.state | default('present') }}"
   with_dict:
     - "{{ users }}"
