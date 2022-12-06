@@ -139,11 +139,13 @@ sudo mkdir -p /var/vx/data/admin-service
 
 sudo ln -sf /var/vx/data /vx/data
 
-echo "Creating users"
+echo "Creating users and groups"
+sudo ansible-playbook playbooks/users.yaml
+
 # create users, no common group, specified uids.
-id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-services
-id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
-id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
+#id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-services
+#id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
+#id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
 
 echo "Sym-linking folders that need to be mutable"
 
@@ -154,25 +156,25 @@ sudo ln -sf /var/vx/ui /vx/ui
 sudo ln -sf /var/vx/admin /vx/admin
 
 # a vx group for all vx users
-getent group vx-group || sudo groupadd -g 800 vx-group
-sudo usermod -aG vx-group vx-ui
-sudo usermod -aG vx-group vx-services
-sudo usermod -aG vx-group vx-admin
+#getent group vx-group || sudo groupadd -g 800 vx-group
+#sudo usermod -aG vx-group vx-ui
+#sudo usermod -aG vx-group vx-services
+#sudo usermod -aG vx-group vx-admin
 
 # remove all files created by default
 sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 
 # Let all of our users read logs
-sudo usermod -aG adm vx-admin
-sudo usermod -aG adm vx-ui
-sudo usermod -aG adm vx-services
+#sudo usermod -aG adm vx-admin
+#sudo usermod -aG adm vx-ui
+#sudo usermod -aG adm vx-services
 
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
 # Allow mounting of USB
-sudo usermod -aG plugdev vx-ui
-sudo usermod -aG plugdev vx-admin
+#sudo usermod -aG plugdev vx-ui
+#sudo usermod -aG plugdev vx-admin
 
 # set up mount points ahead of time because read-only later
 sudo mkdir -p /media/usb-drive-sda1
@@ -187,7 +189,7 @@ sudo mkdir -p /media/usb-drive-sdh1
 sudo chown -R vx-ui:vx-group /media/usb-drive*
 
 # let vx-ui manage printers
-sudo usermod -aG lpadmin vx-ui
+#sudo usermod -aG lpadmin vx-ui
 
 ### set up CUPS to read/write all config out of /var to be compatible with read-only root filesystem
 
@@ -216,7 +218,7 @@ sudo cp config/apparmor.d/usr.sbin.cups-browsed /etc/apparmor.d/
 if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
 then
     sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
-    sudo usermod -aG scanner vx-services
+    #sudo usermod -aG scanner vx-services
 fi
 
 echo "Setting up the code"
