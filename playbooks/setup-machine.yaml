@@ -1,5 +1,0 @@
-hosts: localhost
-become: true
-playbooks:
-package/install_packages.yaml
-
