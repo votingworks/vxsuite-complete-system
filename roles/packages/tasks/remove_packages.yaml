@@ -14,3 +14,9 @@
     purge: true
   with_items:
     - "{{ purged_packages }}"
+
+- name: Run autoremove if requested
+  apt:
+    autoremove: true
+  when: remove_unused_packages is defined and remove_unused_packages|bool
+    

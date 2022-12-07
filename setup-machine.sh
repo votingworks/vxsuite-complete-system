@@ -105,8 +105,6 @@ then
     make build-kiosk-browser
 fi
 
-sudo ansible-playbook playbooks/packages/install_packages.yaml
-
 #--
 # Ansible should be handling package installs now
 # Commenting out for testing
@@ -140,7 +138,6 @@ sudo mkdir -p /var/vx/data/admin-service
 sudo ln -sf /var/vx/data /vx/data
 
 echo "Creating users and groups"
-sudo ansible-playbook playbooks/users.yaml
 
 # create users, no common group, specified uids.
 #id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-services

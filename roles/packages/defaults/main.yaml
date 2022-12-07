@@ -1,3 +1,5 @@
+remove_unused_packages: true
+
 installed_packages:
   - alsa-utils
   - brightnessctl 
