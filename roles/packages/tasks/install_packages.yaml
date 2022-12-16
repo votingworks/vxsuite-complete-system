@@ -4,7 +4,7 @@
   set_fact:
     all_packages: "{{ all_packages | default([]) + [ item ] }}"
   with_items:
-    - "{{ installed_packages }}"
+    - "{{ base_packages }}"
     - "{{ svc_smartcards_packages }}"
     - "{{ svc_converter_ms_sems_packages }}"
     - "{{ svc_scan_packages }}"

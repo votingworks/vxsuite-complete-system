@@ -1,4 +1,4 @@
-installed_packages:
+base_packages:
   - alsa-utils
   - brightnessctl 
   - build-essential 

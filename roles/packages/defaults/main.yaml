@@ -1,6 +1,6 @@
 remove_unused_packages: true
 
-installed_packages:
+base_packages:
   - alsa-utils
   - brightnessctl 
   - build-essential 
@@ -10,6 +10,7 @@ installed_packages:
   - efitools
   - git 
   - libx11-dev
+  - make
   - mingetty 
   - openbox
   - pmount 
