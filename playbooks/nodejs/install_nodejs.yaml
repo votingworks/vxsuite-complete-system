@@ -1,0 +1,7 @@
+---
+
+- name: Base Node setup
+  become: true
+  hosts: localhost
+  roles:
+    - nodejs
