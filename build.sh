@@ -55,8 +55,6 @@ for app in ${DIR}/vxsuite/services/*; do
   fi
 done
 
-exit 0
-
 ALL_APPS_AND_FRONTENDS=(${ALL_APPS[@]} ${ALL_FRONTENDS[@]})
 
 usage() {
