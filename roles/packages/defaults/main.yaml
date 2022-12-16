@@ -22,6 +22,33 @@ installed_packages:
   - xinit 
   - xserver-xorg-core 
 
+svc_converter_ms_sems_packages:
+  - python3.9 
+  - python3.9-dev
+  - python3-distutils
+  - python3-pip
+
+svc_scan_packages:
+  - libsane
+  - libpng-dev
+  - libjpeg-dev
+  - libx11-dev
+  - libpixman-1-dev
+  - libcairo2-dev
+  - libpango1.0-dev
+  - libgif-dev
+
+svc_smartcards_packages:
+  - python3.9
+  - python3.9-dev
+  - python3.9-distutils
+  - python3-pip
+  - libusb-1.0-0-dev
+  - libpcsclite-dev
+  - pcscd
+  - pcsc-tools
+  - swig
+
 removed_packages:
   - git
   - firefox

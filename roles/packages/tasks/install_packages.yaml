@@ -1,8 +1,21 @@
 ---
 
+- name: Create a list of all the packages we need
+  set_fact:
+    all_packages: "{{ all_packages | default([]) + [ item ] }}"
+  with_items:
+    - "{{ installed_packages }}"
+    - "{{ svc_smartcards_packages }}"
+    - "{{ svc_converter_ms_sems_packages }}"
+    - "{{ svc_scan_packages }}"
+
+- name: De-dupe the list for efficiency
+  set_fact:
+    all_packages: "{{ all_packages | unique | select | list }}"
+
 - name: Install common vxsuite-complete-system packages
   package:
     name: "{{ item }}"
     state: latest
   with_items: 
-    - "{{ installed_packages }}"
+    - "{{ all_packages }}"
