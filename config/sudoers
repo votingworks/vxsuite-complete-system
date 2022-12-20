@@ -29,4 +29,7 @@ vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
 vx-ui ALL=(root:ALL) NOPASSWD: /vx/ui/ui-functions/sign.sh
 vx-ui ALL=(root:ALL) NOPASSWD: /bin/efibootmgr
+vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/sfdisk
+vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/mkfs.fat
+vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/mkfs.exfat
 vx-admin ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
