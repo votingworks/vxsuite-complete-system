@@ -105,7 +105,7 @@ then
     make build-kiosk-browser
 fi
 
-sudo apt install -y unclutter mingetty pmount brightnessctl alsa-utils pulseaudio pulseaudio-utils
+sudo apt install -y unclutter mingetty brightnessctl alsa-utils pulseaudio pulseaudio-utils
 
 # simple window manager and remove all contextual info
 sudo apt install -y openbox

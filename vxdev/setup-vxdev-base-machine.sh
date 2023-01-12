@@ -42,7 +42,7 @@ echo "The script will take it from here and set up the machine."
 echo
 
 
-sudo apt install -y unclutter mingetty pmount brightnessctl
+sudo apt install -y unclutter mingetty brightnessctl
 
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
