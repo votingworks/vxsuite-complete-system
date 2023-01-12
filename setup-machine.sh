@@ -164,10 +164,6 @@ sudo usermod -aG adm vx-services
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
-# Allow mounting of USB
-sudo usermod -aG plugdev vx-ui
-sudo usermod -aG plugdev vx-admin
-
 # Create mount point for kiosk-browser to mount USB drives
 sudo mkdir -p /media/vx/usb-drive
 sudo chown -R vx-ui:vx-group /media/vx

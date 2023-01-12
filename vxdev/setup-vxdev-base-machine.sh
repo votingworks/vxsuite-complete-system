@@ -109,10 +109,6 @@ sudo usermod -aG adm vx
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
-
-# Let some users mount/unmount usb disks
-sudo usermod -aG plugdev vx
-
 # let vx manage printers
 sudo usermod -aG lpadmin vx
 
