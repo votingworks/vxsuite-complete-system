@@ -72,6 +72,10 @@ sudo mkdir -p /var/vx/data/module-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
 sudo mkdir -p /var/vx/data/admin-service
 
+# Create mount point for kiosk-browser to mount USB drives
+sudo mkdir -p /media/vx/usb-drive
+sudo chown -R vx /media/vx
+
 # machine configuration
 # TODO: This should be writeable right?
 sudo mkdir -p /var/vx/config
