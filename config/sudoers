@@ -33,5 +33,5 @@ vx-ui ALL=(root:ALL) NOPASSWD: /bin/efibootmgr
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/sfdisk
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/mkfs.fat
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/mkfs.exfat
-%vx-group ALL=(root:ALL) NOPASSWD: /usb/bin/mount
-%vx-group ALL=(root:ALL) NOPASSWD: /usb/bin/umount
+%vx-group ALL=(root:ALL) NOPASSWD: /usr/bin/mount
+%vx-group ALL=(root:ALL) NOPASSWD: /usr/bin/umount
