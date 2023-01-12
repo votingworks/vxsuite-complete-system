@@ -168,17 +168,9 @@ sudo bash setup-scripts/setup-logging.sh
 sudo usermod -aG plugdev vx-ui
 sudo usermod -aG plugdev vx-admin
 
-# set up mount points ahead of time because read-only later
-sudo mkdir -p /media/usb-drive-sda1
-sudo mkdir -p /media/usb-drive-sdb1
-sudo mkdir -p /media/usb-drive-sdc1
-sudo mkdir -p /media/usb-drive-sdd1
-sudo mkdir -p /media/usb-drive-sde1
-sudo mkdir -p /media/usb-drive-sdf1
-sudo mkdir -p /media/usb-drive-sdg1
-sudo mkdir -p /media/usb-drive-sdh1
-
-sudo chown -R vx-ui:vx-group /media/usb-drive*
+# Create mount point for kiosk-browser to mount USB drives
+sudo mkdir -p /media/vx/usb-drive
+sudo chown -R vx-ui:vx-group /media/vx
 
 # let vx-ui manage printers
 sudo usermod -aG lpadmin vx-ui
