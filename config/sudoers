@@ -28,6 +28,7 @@ vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/config/admin-functions/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
 vx-ui ALL=(root:ALL) NOPASSWD: /vx/ui/app-scripts/sign.sh
+vx-ui ALL=(root:ALL) NOPASSWD: /vx/ui/app-scripts/manage-usb-drive.sh
 vx-ui ALL=(root:ALL) NOPASSWD: /bin/efibootmgr
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/sfdisk
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/mkfs.fat
