@@ -16,7 +16,6 @@ fi
 
 # mount if needed
 MOUNTPOINT=$( lsblk -n ${DEVICES} | awk '{ print $7 }' )
-SHORT_DEVICE=$( echo "$DEVICES" | sed 's/\/dev\///' )
 if [ -z "$MOUNTPOINT" ]
 then
     echo "USB drive not mounted, mounting now..."
