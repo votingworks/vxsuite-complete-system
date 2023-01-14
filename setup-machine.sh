@@ -252,7 +252,9 @@ sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/
 sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
 sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
 
-sudo ln -s /vx/code/config/ui-functions /vx/ui/ui-functions
+sudo ln -s /vx/code/app-scripts /vx/ui/app-scripts
+sudo ln -s /vx/code/app-scripts /vx/services/app-scripts
+sudo ln -s /vx/code/app-scripts /vx/admin/app-scripts
 
 # Make sure our cmdline file is readable by vx-admin
 sudo mkdir -p /vx/admin/config
