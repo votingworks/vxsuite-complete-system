@@ -164,17 +164,9 @@ sudo usermod -aG adm vx-services
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
-# set up mount points ahead of time because read-only later
-sudo mkdir -p /media/usb-drive-sda1
-sudo mkdir -p /media/usb-drive-sdb1
-sudo mkdir -p /media/usb-drive-sdc1
-sudo mkdir -p /media/usb-drive-sdd1
-sudo mkdir -p /media/usb-drive-sde1
-sudo mkdir -p /media/usb-drive-sdf1
-sudo mkdir -p /media/usb-drive-sdg1
-sudo mkdir -p /media/usb-drive-sdh1
-
-sudo chown -R vx-ui:vx-group /media/usb-drive*
+# set up mount point ahead of time because read-only later
+sudo mkdir -p /media/vx/usb-drive
+sudo chown -R vx-ui:vx-group /media/vx
 
 # let vx-ui manage printers
 sudo usermod -aG lpadmin vx-ui
