@@ -33,4 +33,4 @@ vx-ui ALL=(root:ALL) NOPASSWD: /bin/efibootmgr
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/sfdisk
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/mkfs.fat
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/mkfs.exfat
-%vx-group ALL=(root:ALL) NOPASSWD: /vx/ui/ui-functions/manage-usb-drive.sh
+%vx-group ALL=(root:ALL) NOPASSWD: /vx/code/config/ui-functions/manage-usb-drive.sh

@@ -9,7 +9,8 @@ usage () {
     exit 1
 }
 
-DEVICE_REGEX=^/dev/sd[a-z][0-9]$
+USB_DRIVE_DEVICE_REGEX=^/dev/sd[a-z][0-9]$
+LOOP_DEVICE_REGEX=^/dev/loop[0-9]p[0-9]$
 LABEL_REGEX=^[a-zA-Z0-9\-]*$
 
 
@@ -41,7 +42,7 @@ elif [[ $1 = '--mount' ]]; then
         usage
     fi
     
-    if [[ ! $2 =~ $DEVICE_REGEX ]]; then
+    if ! [[ $2 =~ $USB_DRIVE_DEVICE_REGEX || $2 =~ $LOOP_DEVICE_REGEX ]]; then
         echo "manage-usb-drive.sh: device \"${2}\" is not a USB drive"
         exit 1
     fi
