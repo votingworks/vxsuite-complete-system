@@ -36,7 +36,6 @@ if [[ $1 = '--unmount' ]]; then
     fi
 
     umount $MOUNTPOINT
-    rm -r $MOUNTPOINT
 elif [[ $1 = '--mount' ]]; then
     if [[ $# -lt 3 ]]; then
         usage
