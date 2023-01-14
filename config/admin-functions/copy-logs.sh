@@ -21,7 +21,7 @@ if [ -z "$MOUNTPOINT" ]
 then
     echo "USB drive not mounted, mounting now..."
     MOUNTPOINT="/media/vx/usb-drive"
-    sudo /vx/code/app-scripts/manage-usb-drive.sh --mount $DEVICES usb-drive
+    sudo /vx/code/app-scripts/mount.sh $DEVICES
 fi
 
 # create a directory
@@ -36,7 +36,7 @@ cp -rp /var/log/vx-logs.log* "$DIRECTORY"
 # unmount the USB stick to make sure it's all written to disk
 echo "Saving logs to USB drive..."
 sync $MOUNTPOINT
-sudo /vx/code/app-scripts/manage-usb-drive.sh --unmount usb-drive
+sudo /vx/code/app-scripts/umount.sh
 
 echo "All done. You may remove the USB drive."
 echo "Type Enter to continue."

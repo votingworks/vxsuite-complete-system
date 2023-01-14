@@ -240,8 +240,8 @@ sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/
 sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
 sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
 
+# Symlink app scripts directory for when vx-ui launches kiosk-browser
 sudo ln -s /vx/code/app-scripts /vx/ui/.vx/app-scripts
-sudo ln -s /vx/code/app-scripts /vx/admin/app-scripts
 
 # Make sure our cmdline file is readable by vx-admin
 sudo mkdir -p /vx/admin/config
