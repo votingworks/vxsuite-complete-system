@@ -22,5 +22,8 @@ fi
 DEVICE=$1
 MOUNTPOINT=/media/vx/usb-drive
 
-mkdir -p $MOUNTPOINT # will already exist in production but possibly not in development
+# the mount point will already exist in production but possibly not in development
+if ! [[ -e $MOUNTPOINT ]]; then
+    mkdir -p $MOUNTPOINT 
+fi
 mount -w -o umask=000,nosuid,nodev,noexec $DEVICE $MOUNTPOINT
