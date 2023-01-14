@@ -105,7 +105,7 @@ then
     make build-kiosk-browser
 fi
 
-sudo apt install -y unclutter mingetty pmount brightnessctl alsa-utils pulseaudio pulseaudio-utils
+sudo apt install -y unclutter mingetty brightnessctl alsa-utils pulseaudio pulseaudio-utils
 
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
@@ -163,10 +163,6 @@ sudo usermod -aG adm vx-services
 
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
-
-# Allow mounting of USB
-sudo usermod -aG plugdev vx-ui
-sudo usermod -aG plugdev vx-admin
 
 # set up mount points ahead of time because read-only later
 sudo mkdir -p /media/usb-drive-sda1
