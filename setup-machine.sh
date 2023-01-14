@@ -164,10 +164,6 @@ sudo usermod -aG adm vx-services
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
-# Create mount point for kiosk-browser to mount USB drives
-sudo mkdir -p /media/vx/usb-drive
-sudo chown -R vx-ui:vx-group /media/vx
-
 # let vx-ui manage printers
 sudo usermod -aG lpadmin vx-ui
 
