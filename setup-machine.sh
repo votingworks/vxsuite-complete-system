@@ -379,17 +379,13 @@ sudo apt remove -y git firefox snapd
 sudo apt autoremove -y
 
 # set password for vx-admin
-# (echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
-(echo password; echo password) | sudo passwd vx-admin
-(echo password; echo password) | sudo passwd vx-ui
-(echo password; echo password) | sudo passwd vx-services
-
+(echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
 
 # disable all passwords
-# sudo passwd -l root
-# sudo passwd -l ${USER}
-# sudo passwd -l vx-ui
-# sudo passwd -l vx-services
+sudo passwd -l root
+sudo passwd -l ${USER}
+sudo passwd -l vx-ui
+sudo passwd -l vx-services
 
 # set a clean hostname
 sudo hostnamectl set-hostname "VotingWorks"
@@ -401,8 +397,8 @@ sudo cp config/sudoers /etc/sudoers
 cd
 rm -rf *
 
-# echo "Done, rebooting in 5s."
+echo "Done, rebooting in 5s."
 
-# sleep 5
+sleep 5
 
-# reboot
+reboot
