@@ -17,7 +17,10 @@ Defaults	secure_path="/vx/code/config/admin-functions:/usr/local/sbin:/usr/local
 # Cmnd alias specification
 
 # User privilege specification
-root	ALL=(ALL:ALL) ALL
+root    ALL=(ALL:ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) ALL
 
 # fine-grained sudo permissions for certain users & actions
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/set-clock.sh
