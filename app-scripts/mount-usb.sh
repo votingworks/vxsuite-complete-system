@@ -3,7 +3,7 @@
 set -euo pipefail
 
 usage () {
-    echo 'Usage: mount.sh <device>'
+    echo 'Usage: mount-usb.sh <device>'
     exit 1
 }
 
@@ -15,7 +15,7 @@ USB_DRIVE_DEVICE_REGEX=^/dev/sd[a-z][0-9]$
 LOOP_DEVICE_REGEX=^/dev/loop[0-9]p[0-9]$
 
 if ! [[ $1 =~ $USB_DRIVE_DEVICE_REGEX || $1 =~ $LOOP_DEVICE_REGEX ]]; then
-    echo "mount.sh: device \"${1}\" is not a USB drive"
+    echo "mount-usb.sh: device \"${1}\" is not a USB drive"
     exit 1
 fi
 

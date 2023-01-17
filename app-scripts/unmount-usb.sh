@@ -3,7 +3,7 @@
 set -euo pipefail
 
 usage () {
-    echo 'Usage: umount.sh'
+    echo 'Usage: unmount-usb.sh'
     exit 1
 }
 
