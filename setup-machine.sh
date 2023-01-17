@@ -105,7 +105,7 @@ then
     make build-kiosk-browser
 fi
 
-sudo apt install -y unclutter mingetty pmount brightnessctl alsa-utils pulseaudio pulseaudio-utils
+sudo apt install -y unclutter mingetty brightnessctl alsa-utils pulseaudio pulseaudio-utils
 
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
@@ -164,21 +164,9 @@ sudo usermod -aG adm vx-services
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
-# Allow mounting of USB
-sudo usermod -aG plugdev vx-ui
-sudo usermod -aG plugdev vx-admin
-
-# set up mount points ahead of time because read-only later
-sudo mkdir -p /media/usb-drive-sda1
-sudo mkdir -p /media/usb-drive-sdb1
-sudo mkdir -p /media/usb-drive-sdc1
-sudo mkdir -p /media/usb-drive-sdd1
-sudo mkdir -p /media/usb-drive-sde1
-sudo mkdir -p /media/usb-drive-sdf1
-sudo mkdir -p /media/usb-drive-sdg1
-sudo mkdir -p /media/usb-drive-sdh1
-
-sudo chown -R vx-ui:vx-group /media/usb-drive*
+# set up mount point ahead of time because read-only later
+sudo mkdir -p /media/vx/usb-drive
+sudo chown -R vx-ui:vx-group /media/vx
 
 # let vx-ui manage printers
 sudo usermod -aG lpadmin vx-ui
@@ -252,7 +240,8 @@ sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/
 sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
 sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
 
-sudo ln -s /vx/code/config/ui-functions /vx/ui/ui-functions
+# Symlink app scripts directory for when vx-ui launches kiosk-browser
+sudo ln -s /vx/code/app-scripts /vx/ui/.vx/app-scripts
 
 # Make sure our cmdline file is readable by vx-admin
 sudo mkdir -p /vx/admin/config

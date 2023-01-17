@@ -92,6 +92,7 @@ build() {
       "${DIR}/run-scripts/run-kiosk-browser-forever-and-log.sh" \
       "${DIR}/config" \
       "${DIR}/printing" \
+      "${DIR}/app-scripts" \
       "${BUILD_ROOT}"
 
     # temporary hack because the symlink works but somehow the copy doesn't for precinct-scanner

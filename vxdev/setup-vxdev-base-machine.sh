@@ -42,7 +42,7 @@ echo "The script will take it from here and set up the machine."
 echo
 
 
-sudo apt install -y unclutter mingetty pmount brightnessctl
+sudo apt install -y unclutter mingetty brightnessctl
 
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
@@ -100,6 +100,7 @@ sudo cp -rp \
   "${DIR}/../run-scripts/run-kiosk-browser-forever-and-log.sh" \
   "${DIR}/../config" \
   "${DIR}/../printing" \
+  "${DIR}/../app-scripts" \
   "/vx/code"
 
 
@@ -109,13 +110,10 @@ sudo usermod -aG adm vx
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
-
-# Let some users mount/unmount usb disks
-sudo usermod -aG plugdev vx
-
 # let vx manage printers
 sudo usermod -aG lpadmin vx
 
+# let vx scan
 sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
 sudo usermod -aG scanner vx
 
