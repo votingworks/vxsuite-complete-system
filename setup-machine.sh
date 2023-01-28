@@ -130,22 +130,27 @@ sudo mkdir -p /var/vx
 sudo mkdir -p /var/vx/data/module-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
 sudo mkdir -p /var/vx/data/admin-service
+sudo mkdir -p /var/vx/ui-kiosk-browser-config
 
 sudo ln -sf /var/vx/data /vx/data
 
 echo "Creating users"
 # create users, no common group, specified uids.
-id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-services
-id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
-id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
+id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /vx/services vx-services
+id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /vx/ui -s /bin/bash vx-ui
+id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /vx/admin -s /bin/bash vx-admin
+
+echo "Sym-linking home directories so we can use the /vx paths"
+
+sudo ln -sf /vx/services /vx/services
+sudo ln -sf /vx/ui /vx/ui
+sudo ln -sf /vx/admin /vx/admin
 
 echo "Sym-linking folders that need to be mutable"
 
-# These user folders were created on the /var directory so they can
-# be mutable. Link them to the old path on the readonly root. 
-sudo ln -sf /var/vx/services /vx/services
-sudo ln -sf /var/vx/ui /vx/ui
-sudo ln -sf /var/vx/admin /vx/admin
+# Make a mutable place for kiosk-browser config
+sudo mkdir -p /vx/ui/.config
+sudo ln -s /var/vx/ui-kiosk-browser-config /vx/ui/.config/kiosk-browser
 
 # a vx group for all vx users
 getent group vx-group || sudo groupadd -g 800 vx-group
@@ -253,7 +258,6 @@ sudo ln -s /vx/code/config/logo.bmp /vx/admin/config/logo.bmp
 sudo ln -s /vx/code/config/grub.cfg /vx/admin/config/grub.cfg
 
 # machine configuration
-# TODO: This should be writeable right?
 sudo mkdir -p /var/vx/config
 sudo ln -sf /var/vx/config /vx/config
 
@@ -303,18 +307,22 @@ bash setup-scripts/setup-tpm2-totp.sh
 bash setup-scripts/setup-tpm2-tools.sh
 
 # permissions on directories
-# TODO: I think we only need to change the permissions for stuff in /var/ 
-sudo chown -R vx-services:vx-services /var/vx/services
-sudo chmod -R u=rwX /var/vx/services
-sudo chmod -R go-rwX /var/vx/services
+sudo chown -R vx-services:vx-services /vx/services
+sudo chmod -R u=rwX /vx/services
+sudo chmod -R go-rwX /vx/services
 
-sudo chown -R vx-ui:vx-ui /var/vx/ui
-sudo chmod -R u=rwX /var/vx/ui
-sudo chmod -R go-rwX /var/vx/ui
+sudo chown -R vx-ui:vx-ui /vx/ui
+sudo chmod -R u=rwX /vx/ui
+sudo chmod -R go-rwX /vx/ui
 
-sudo chown -R vx-admin:vx-admin /var/vx/admin
-sudo chmod -R u=rwX /var/vx/admin
-sudo chmod -R go-rwX /var/vx/admin
+# the special directory for kiosk-browser config
+sudo chown -R vx-ui:vx-ui /var/vx/ui-kiosk-browser-config
+sudo chmod -R u=rwX /var/vx/ui-kiosk-browser-config
+sudo chmod -R go-rwX /var/vx/ui-kiosk-browser-config
+
+sudo chown -R vx-admin:vx-admin /vx/admin
+sudo chmod -R u=rwX /vx/admin
+sudo chmod -R go-rwX /vx/admin
 
 sudo chown -R vx-services:vx-services /var/vx/data
 sudo chmod -R u=rwX /var/vx/data
@@ -366,7 +374,7 @@ sudo systemctl start ${CHOICE}.service
 echo "Successfully setup machine."
 
 
-## NOW LOCK IT DOWN
+# now we remove permissions, reset passwords, and ready for production.
 
 USER=$(whoami)
 
@@ -393,7 +401,7 @@ sudo hostnamectl set-hostname "VotingWorks"
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 sudo cp config/sudoers /etc/sudoers
 
-# FIXME: clean up source code
+# remove everything from this bootstrap user's home directory
 cd
 rm -rf *
 
