@@ -28,6 +28,7 @@ fi
 update-initramfs -u
 
 # Remount / so it can't change while we're doing the veritysetup
+cd /tmp
 mount -o ro,remount /
 
 # Now do the dm-verity setup
