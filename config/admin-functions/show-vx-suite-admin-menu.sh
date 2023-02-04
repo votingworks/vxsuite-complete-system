@@ -28,7 +28,7 @@ while true; do
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
-  if [ "${VX_MACHINE_TYPE}" = bmd ]; then
+  if [ "${VX_MACHINE_TYPE}" = "vx-mark" ]; then
     echo -e "Machine App Mode: \e[32m${VX_APP_MODE}\e[0m"
   fi
 
@@ -92,7 +92,7 @@ while true; do
   CHOICES+=('lockdown')
 
   # Keep this one at the end so that doesn't change the numbering of other choices
-  if [ "${VX_MACHINE_TYPE}" = bmd ]; then
+  if [ "${VX_MACHINE_TYPE}" = "vx-mark" ]; then
     echo "${#CHOICES[@]}. Set App Mode"
     CHOICES+=('set-app-mode')
   fi
