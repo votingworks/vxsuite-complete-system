@@ -86,7 +86,7 @@ fi
 if [[ $APP_TYPE == 'VxMark' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/vx-mark/frontend/.env.local
 	cp /vx/config/.env.local vxsuite/apps/vx-mark/backend/.env.local
-	./build.sh bmd
+	./build.sh vx-mark
 fi
 if [[ $APP_TYPE == 'VxScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/vx-scan/backend/.env.local
