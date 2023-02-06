@@ -358,10 +358,10 @@ sudo rm -rf /lib/modules/*/kernel/drivers/net/*
 sudo rm -f /etc/NetworkManager/system-connections/*
 
 # set up the service for the selected machine type
-sudo cp config/vx-${CHOICE}.service /etc/systemd/system/
-sudo chmod 644 /etc/systemd/system/vx-${CHOICE}.service
-sudo systemctl enable vx-${CHOICE}.service
-sudo systemctl start vx-${CHOICE}.service
+sudo cp config/${CHOICE}.service /etc/systemd/system/
+sudo chmod 644 /etc/systemd/system/${CHOICE}.service
+sudo systemctl enable ${CHOICE}.service
+sudo systemctl start ${CHOICE}.service
 
 echo "Successfully setup machine."
 
