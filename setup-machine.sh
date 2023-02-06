@@ -38,7 +38,7 @@ CHOICES+=('bsd')
 MODEL_NAMES+=('VxCentralScan')
 
 echo "${#CHOICES[@]}. Ballot Marking Device (BMD)"
-CHOICES+=('bmd')
+CHOICES+=('vx-mark')
 MODEL_NAMES+=('VxMark')
 
 echo "${#CHOICES[@]}. Ballot Activation System (BAS)"
@@ -94,7 +94,7 @@ then
     fi
 fi
 
-if [ "${CHOICE}" == "bmd" ]
+if [ "${CHOICE}" == "vx-mark" ]
 then
     sudo cp config/50-wacom.conf /etc/X11/xorg.conf.d/
 fi
@@ -195,7 +195,7 @@ sudo cp config/apparmor.d/usr.sbin.cups-browsed /etc/apparmor.d/
 
 
 # let vx-services scan
-if [ "${CHOICE}" != "bmd" ] && [ "${CHOICE}" != "bas" ] 
+if [ "${CHOICE}" != "vx-mark" ] && [ "${CHOICE}" != "bas" ] 
 then
     sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
     sudo usermod -aG scanner vx-services
@@ -278,7 +278,7 @@ GIT_TAG=$(git tag --points-at HEAD) sudo -E sh -c 'echo "${GIT_TAG}" > /vx/code/
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
 
 # app mode & speech synthesis
-if [ "${CHOICE}" = "bmd" ]
+if [ "${CHOICE}" = "vx-mark" ]
 then
     sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
     bash setup-scripts/setup-speech-synthesis.sh
@@ -358,10 +358,10 @@ sudo rm -rf /lib/modules/*/kernel/drivers/net/*
 sudo rm -f /etc/NetworkManager/system-connections/*
 
 # set up the service for the selected machine type
-sudo cp config/vx-${CHOICE}.service /etc/systemd/system/
-sudo chmod 644 /etc/systemd/system/vx-${CHOICE}.service
-sudo systemctl enable vx-${CHOICE}.service
-sudo systemctl start vx-${CHOICE}.service
+sudo cp config/${CHOICE}.service /etc/systemd/system/
+sudo chmod 644 /etc/systemd/system/${CHOICE}.service
+sudo systemctl enable ${CHOICE}.service
+sudo systemctl start ${CHOICE}.service
 
 echo "Successfully setup machine."
 
