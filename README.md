@@ -1,6 +1,6 @@
 # Vx Complete System
 
-This repository is used to download a set of components that are consistent with each other in terms of compatibility and versioning. This repository has all the components and scripts to run each machine (BMD, BAS, BSD, EMS).
+This repository is used to download a set of components that are consistent with each other in terms of compatibility and versioning. This repository has all the components and scripts to run each machine (VxAdmin, VxMark, VxScan, VxCentralScan).
 
 ## Developing vxsuite through kiosk-browser
 If you are developing a change in [vxsuite](https://github.com/votingworks/vxsuite) and want to test it through kiosk-browser to mimic production, follow the steps below. Only do this *after* you have run the `setup-dev` script in vxsuite, which will install node and other dependencies.
@@ -94,15 +94,7 @@ ballot-marking device, in the given mode. Make sure to substitute your
 chosen mode (`MarkOnly`, `PrintOnly`, `MarkAndPrint`) in the command:
 
 ```
-VX_APP_MODE="<mode>" ./run.sh bmd
-```
-
-### Encoder (VxEncode)
-
-This command will run all software services needed for the smart-card encoder:
-
-```
-./run.sh bas
+VX_APP_MODE="<mode>" ./run.sh vx-mark
 ```
 
 ## Configuring for Production
