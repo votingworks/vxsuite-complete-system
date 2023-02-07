@@ -28,6 +28,9 @@ ALL_APPS=()
 
 for app in ${DIR}/vxsuite/apps/*; do
   if [ -d "${app}" ]; then
+    tmp_dir=$(basename "${app}")
+    make -C "${DIR}/vxsuite/apps/${tmp_dir}/frontend" install
+    make -C "${DIR}/vxsuite/apps/${tmp_dir}/backend" install
     ALL_APPS+=("$(basename "${app}")")
   fi
 done
@@ -38,12 +41,16 @@ ALL_SERVICES=()
 
 for app in ${DIR}/vxsuite/frontends/*; do
   if [ -d "${app}" ]; then
+    tmp_dir=$(basename "${app}")
+    make -C "${DIR}/vxsuite/frontends/${tmp_dir}" install
     ALL_FRONTENDS+=("$(basename "${app}")")
   fi
 done
 
 for app in ${DIR}/vxsuite/services/*; do
   if [ -d "${app}" ]; then
+    tmp_dir=$(basename "${app}")
+    make -C "${DIR}/vxsuite/services/${tmp_dir}" install
     ALL_SERVICES+=("$(basename "${app}")")
   fi
 done
@@ -68,18 +75,8 @@ build() {
     set -euo pipefail
 
     if [ -d "${DIR}/vxsuite/frontends/${APP}" ]; then
-      for service in "${ALL_SERVICES[@]}"; do
-        make -C "${DIR}/vxsuite/services/${service}" install
-      done
-      for frontend in "${ALL_FRONTENDS[@]}"; do
-        make -C "${DIR}/vxsuite/frontends/${frontend}" install
-      done
       cd "${DIR}/vxsuite/frontends/${APP}"
     else
-      for app in "${ALL_APPS[@]}"; do
-        make -C "${DIR}/vxsuite/apps/${app}/frontend" install
-        make -C "${DIR}/vxsuite/apps/${app}/backend" install
-      done
       cd "${DIR}/vxsuite/apps/${APP}/frontend"
     fi
 
