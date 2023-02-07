@@ -41,10 +41,6 @@ echo "${#CHOICES[@]}. Ballot Marking Device (BMD)"
 CHOICES+=('vx-mark')
 MODEL_NAMES+=('VxMark')
 
-echo "${#CHOICES[@]}. Ballot Activation System (BAS)"
-CHOICES+=('bas')
-MODEL_NAMES+=('VxEncode')
-
 echo "${#CHOICES[@]}. Precinct Scanner"
 CHOICES+=('vx-scan')
 MODEL_NAMES+=('VxScan')
@@ -200,7 +196,7 @@ sudo cp config/apparmor.d/usr.sbin.cups-browsed /etc/apparmor.d/
 
 
 # let vx-services scan
-if [ "${CHOICE}" != "vx-mark" ] && [ "${CHOICE}" != "bas" ] 
+if [ "${CHOICE}" != "vx-mark" ]
 then
     sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
     sudo usermod -aG scanner vx-services

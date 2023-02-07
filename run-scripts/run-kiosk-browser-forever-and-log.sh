@@ -13,7 +13,7 @@ source ${CONFIG}/read-vx-machine-config.sh
 : "${VX_MACHINE_TYPE:=""}"
 
 # remove pointer on screen
-if [ "${VX_MACHINE_TYPE}" = "vx-mark" ] || [ "${VX_MACHINE_TYPE}" = "bas" ] || [ "${VX_MACHINE_TYPE}" = "vx-scan" ]; then
+if [ "${VX_MACHINE_TYPE}" = "vx-mark" ] || [ "${VX_MACHINE_TYPE}" = "vx-scan" ]; then
     unclutter -idle 0.01 -root &
 fi
     
