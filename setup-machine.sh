@@ -30,11 +30,11 @@ MODEL_NAMES=('')
 
 echo
 echo "${#CHOICES[@]}. Election Manager"
-CHOICES+=('election-manager')
+CHOICES+=('admin')
 MODEL_NAMES+=('VxAdmin')
 
 echo "${#CHOICES[@]}. Ballot Scanner"
-CHOICES+=('bsd')
+CHOICES+=('central-scan')
 MODEL_NAMES+=('VxCentralScan')
 
 echo "${#CHOICES[@]}. Ballot Marking Device (BMD)"

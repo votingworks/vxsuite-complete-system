@@ -14,7 +14,7 @@ sudo usermod -aG lpadmin $USER
 # run whatever apps and services you are testing in vxsuite
 KIOSK_BROWSER_ALLOW_DEVTOOLS=true ./run-scripts/run-kiosk-browser.sh
 # Example: Allow Devtools while running Election Manager
-# KIOSK_BROWSER_ALLOW_DEVTOOLS=true ADMIN_WORKSPACE=/tmp ./run.sh election-manager
+# KIOSK_BROWSER_ALLOW_DEVTOOLS=true ADMIN_WORKSPACE=/tmp ./run.sh admin
 ```
 
 When kiosk-browser is running, you can type `Ctrl+Shift+I` in order to open developer tools, and `Ctrl+W` to close the window. You can also `Alt+Tab` to navigate back to the terminal and `Ctrl+C` to quit kiosk-browser.
@@ -54,7 +54,7 @@ one component at a time_.
 This command will run all software services needed for election manager:
 
 ```
-ADMIN_WORKSPACE=/tmp ./run.sh election-manager
+ADMIN_WORKSPACE=/tmp ./run.sh admin
 ```
 
 ### Ballot Scanner (VxCentralScan)
@@ -62,7 +62,7 @@ ADMIN_WORKSPACE=/tmp ./run.sh election-manager
 This command will run all software services needed for ballot scanner:
 
 ```
-SCAN_WORKSPACE=/tmp ./run.sh bsd
+SCAN_WORKSPACE=/tmp ./run.sh central-scan
 ```
 
 You may replace `/tmp` with any persistent path you like.

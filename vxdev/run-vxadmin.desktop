@@ -2,6 +2,6 @@
 Version=1.0
 Name=VxAdmin
 Icon=runprogram.png
-Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin env ADMIN_WORKSPACE=/vx/data/admin-service /vx/code/vxsuite-complete-system/run.sh election-manager'
+Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin env ADMIN_WORKSPACE=/vx/data/admin-service /vx/code/vxsuite-complete-system/run.sh admin'
 Terminal=false
 Type=Application

@@ -17,4 +17,4 @@ fi
 
 export PIPENV_VENV_IN_PROJECT=1
 export NODE_ENV=production
-(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/services/admin run & make -C vxsuite/services/smartcards run & make -C vxsuite/services/converter-ms-sems run & make -C vxsuite/frontends/election-manager run) | logger --tag votingworksapp
+(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/admin/backend run & make -C vxsuite/services/smartcards run & make -C vxsuite/services/converter-ms-sems run & make -C vxsuite/apps/admin/frontend run) | logger --tag votingworksapp
