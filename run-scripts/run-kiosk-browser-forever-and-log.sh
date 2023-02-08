@@ -13,7 +13,7 @@ source ${CONFIG}/read-vx-machine-config.sh
 : "${VX_MACHINE_TYPE:=""}"
 
 # remove pointer on screen
-if [ "${VX_MACHINE_TYPE}" = "mark" ] || [ "${VX_MACHINE_TYPE}" = "vx-scan" ]; then
+if [ "${VX_MACHINE_TYPE}" = "mark" ] || [ "${VX_MACHINE_TYPE}" = "scan" ]; then
     unclutter -idle 0.01 -root &
 fi
     
@@ -23,7 +23,7 @@ if [ "${VX_MACHINE_TYPE}" = "mark" ]; then
 fi
 
 # Max out volume for sound effects
-if [ "${VX_MACHINE_TYPE}" = "vx-scan" ]; then
+if [ "${VX_MACHINE_TYPE}" = "scan" ]; then
     amixer -D pulse set Master 100% || true
 fi
 

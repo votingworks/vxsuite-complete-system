@@ -75,7 +75,7 @@ follow the install instructions. Once you've done that, this command will run
 all software services needed for precinct scanner:
 
 ```
-SCAN_WORKSPACE=/tmp ./run.sh vx-scan
+SCAN_WORKSPACE=/tmp ./run.sh scan
 ```
 
 You may replace `/tmp` with any persistent path you like.
@@ -110,8 +110,8 @@ bash setup-machine.sh
 
 ## High-level Contracts
 
-Each frontend app, e.g. `apps/vx-scan/frontend`, etc., and each
-service, e.g. `apps/vx-scan/backend`, `services/smartcards`, etc., should be an
+Each frontend app, e.g. `apps/scan/frontend`, etc., and each
+service, e.g. `apps/scan/backend`, `services/smartcards`, etc., should be an
 application that can be built using `make build`, and then run using
 `make run`.
 

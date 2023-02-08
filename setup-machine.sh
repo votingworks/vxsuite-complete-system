@@ -42,7 +42,7 @@ CHOICES+=('mark')
 MODEL_NAMES+=('VxMark')
 
 echo "${#CHOICES[@]}. Precinct Scanner"
-CHOICES+=('vx-scan')
+CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
 echo
@@ -80,7 +80,7 @@ echo "The script will take it from here and set up the machine."
 echo
 
 # pre-flight checks to ensure we have everything we need
-if [ "${CHOICE}" == "vx-scan" ]
+if [ "${CHOICE}" == "scan" ]
 then
     if ! which plustekctl >/dev/null 2>&1
     then
