@@ -128,7 +128,7 @@ while true; do
     ;;
 
     set-app-mode)
-      if [ "${VX_MACHINE_TYPE}" = bmd ]; then
+      if [ "${VX_MACHINE_TYPE}" = "vx-mark" ]; then
         "${VX_FUNCTIONS_ROOT}/choose-vx-mark-app-mode.sh"
         prompt-to-restart
       fi
