@@ -12,7 +12,7 @@
 #
 # Then, you can run a specific app for testing like so:
 #
-#   ./run.sh vx-mark
+#   ./run.sh mark
 #
 # This will leave the machine in an unlocked, unspecialized state suitable for
 # testing out new builds/features/etc.

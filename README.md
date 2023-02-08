@@ -3,7 +3,8 @@
 This repository is used to download a set of components that are consistent with each other in terms of compatibility and versioning. This repository has all the components and scripts to run each machine (VxAdmin, VxMark, VxScan, VxCentralScan).
 
 ## Developing vxsuite through kiosk-browser
-If you are developing a change in [vxsuite](https://github.com/votingworks/vxsuite) and want to test it through kiosk-browser to mimic production, follow the steps below. Only do this *after* you have run the `setup-dev` script in vxsuite, which will install node and other dependencies.
+
+If you are developing a change in [vxsuite](https://github.com/votingworks/vxsuite) and want to test it through kiosk-browser to mimic production, follow the steps below. Only do this _after_ you have run the `setup-dev` script in vxsuite, which will install node and other dependencies.
 
 ```sh
 make checkout
@@ -15,8 +16,8 @@ KIOSK_BROWSER_ALLOW_DEVTOOLS=true ./run-scripts/run-kiosk-browser.sh
 # Example: Allow Devtools while running Election Manager
 # KIOSK_BROWSER_ALLOW_DEVTOOLS=true ADMIN_WORKSPACE=/tmp ./run.sh election-manager
 ```
-When kiosk-browser is running, you can type `Ctrl+Shift+I` in order to open developer tools, and `Ctrl+W` to close the window. You can also `Alt+Tab` to navigate back to the terminal and `Ctrl+C` to quit kiosk-browser.
 
+When kiosk-browser is running, you can type `Ctrl+Shift+I` in order to open developer tools, and `Ctrl+W` to close the window. You can also `Alt+Tab` to navigate back to the terminal and `Ctrl+C` to quit kiosk-browser.
 
 ## Hardware and OS
 
@@ -94,7 +95,7 @@ ballot-marking device, in the given mode. Make sure to substitute your
 chosen mode (`MarkOnly`, `PrintOnly`, `MarkAndPrint`) in the command:
 
 ```
-VX_APP_MODE="<mode>" ./run.sh vx-mark
+VX_APP_MODE="<mode>" ./run.sh mark
 ```
 
 ## Configuring for Production
@@ -118,7 +119,7 @@ application that can be built using `make build`, and then run using
 
 Thanks to Trammell Hudson (@osresearch) for help working out TPM- and dm-verity
 related stuff, and more generally for cutting the path for more secure Linux
-systems via the osresearch/safeboot project. 
+systems via the osresearch/safeboot project.
 
 Thanks to Matthew Garrett (@mjg59)
 for providing overall thoughts about our security architecture, as well as

@@ -84,9 +84,9 @@ if [[ $APP_TYPE == 'VxAdmin' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
 	./build.sh election-manager
 fi
 if [[ $APP_TYPE == 'VxMark' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/vx-mark/frontend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/vx-mark/backend/.env.local
-	./build.sh vx-mark
+	cp /vx/config/.env.local vxsuite/apps/mark/frontend/.env.local
+	cp /vx/config/.env.local vxsuite/apps/mark/backend/.env.local
+	./build.sh mark
 fi
 if [[ $APP_TYPE == 'VxScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/vx-scan/backend/.env.local
