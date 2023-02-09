@@ -49,7 +49,7 @@ usage() {
   echo "Build all or some of the VxSuite apps."
 }
 
-# Function builds a single app
+# Function that builds a single app
 build() {
   local APP="$1"
   echo "🔨Building ${APP}"
