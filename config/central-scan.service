@@ -1,14 +1,13 @@
 [Unit]
-Description=VotingWorks Election Manager
+Description=VotingWorks Ballot Scanner
 
 [Service]
 Type=simple
 User=vx-services
 Environment=VX_CONFIG_ROOT=/vx/config
 Environment=VX_METADATA_ROOT=/vx/code
-Environment=MODULE_SEMS_CONVERTER_WORKSPACE=/vx/data/module-sems-converter
-Environment=ADMIN_WORKSPACE=/vx/data/admin-service
-ExecStart=/bin/bash /vx/services/run-election-manager.sh
+Environment=SCAN_WORKSPACE=/vx/data/module-scan
+ExecStart=/bin/bash /vx/services/run-central-scan.sh
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=votingworksapp

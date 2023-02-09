@@ -74,24 +74,24 @@ cp /vx/config/.env.local vxsuite/.env.local
 make build-kiosk-browser
 echo $APP_TYPE
 if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
-	cp /vx/config/.env.local vxsuite/services/scan/.env.local
-	cp /vx/config/.env.local vxsuite/frontends/bsd/.env.local
-	./build.sh bsd
+	cp /vx/config/.env.local vxsuite/apps/central-scan/backend/.env.local
+	cp /vx/config/.env.local vxsuite/apps/central-scan/frontend/.env.local
+	./build.sh central-scan
 fi
 if [[ $APP_TYPE == 'VxAdmin' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
-	cp /vx/config/.env.local vxsuite/frontends/election-manager/.env.local
-	cp /vx/config/.env.local vxsuite/services/admin/.env.local
-	./build.sh election-manager
+	cp /vx/config/.env.local vxsuite/apps/admin/frontend/.env.local
+	cp /vx/config/.env.local vxsuite/apps/admin/backend/.env.local
+	./build.sh admin
 fi
 if [[ $APP_TYPE == 'VxMark' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/vx-mark/frontend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/vx-mark/backend/.env.local
-	./build.sh vx-mark
+	cp /vx/config/.env.local vxsuite/apps/mark/frontend/.env.local
+	cp /vx/config/.env.local vxsuite/apps/mark/backend/.env.local
+	./build.sh mark
 fi
 if [[ $APP_TYPE == 'VxScan' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/vx-scan/backend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/vx-scan/frontend/.env.local
-	./build.sh vx-scan
+	cp /vx/config/.env.local vxsuite/apps/scan/backend/.env.local
+	cp /vx/config/.env.local vxsuite/apps/scan/frontend/.env.local
+	./build.sh scan
 fi
 
 echo "Done! Closing in 3 seconds."

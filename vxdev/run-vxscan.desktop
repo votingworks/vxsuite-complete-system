@@ -2,6 +2,6 @@
 Version=1.0
 Name=VxScan
 Icon=runprogram.png
-Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin env SCAN_WORKSPACE=/vx/data/module-scan /vx/code/vxsuite-complete-system/run.sh vx-scan'
+Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin env SCAN_WORKSPACE=/vx/data/module-scan /vx/code/vxsuite-complete-system/run.sh scan'
 Terminal=false
 Type=Application

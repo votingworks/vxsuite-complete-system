@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 ###
-# run.sh – Run frontends for testing purposes.
+# run.sh – Run apps for testing purposes.
 #
-# This script is not used for running frontends in production, but for running
+# This script is not used for running apps in production, but for running
 # them on a device that is not yet locked down. This may be useful as a demo
 # machine or for testing new builds/features/etc.
 ###
@@ -12,7 +12,6 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# Support our new /apps directory structure
 ALL_APPS=()
 
 for app in ${DIR}/vxsuite/apps/*; do
@@ -21,19 +20,9 @@ for app in ${DIR}/vxsuite/apps/*; do
   fi
 done
 
-# Support our old /frontends and /services directory structure
-ALL_FRONTENDS=()
-
-for app in ${DIR}/vxsuite/frontends/*; do
-  if [[ -d "${app}" ]]; then
-    ALL_FRONTENDS+=("$(basename "${app}")")
-  fi
-done
-
-ALL_APPS_AND_FRONTENDS=(${ALL_APPS[@]} ${ALL_FRONTENDS[@]})
 
 usage() {
-  echo "usage: ./run.sh ($(IFS=\| ; echo "${ALL_APPS_AND_FRONTENDS[*]}"))"
+  echo "usage: ./run.sh ($(IFS=\| ; echo "${ALL_APPS[*]}"))"
   echo
   echo "Runs a VxSuite app for testing purposes."
 }
@@ -44,7 +33,7 @@ if [ $# = 0 ]; then
 fi
 
 APP="$1"
-if [[ " ${ALL_APPS_AND_FRONTENDS[@]} " =~ " ${APP} " ]]; then
+if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
   if [ ! -d "${DIR}/build/${APP}" ]; then
     echo "⁉️ ${APP} is not yet built, building…"
     "${DIR}/build.sh" "${APP}"

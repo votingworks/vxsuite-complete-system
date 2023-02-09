@@ -6,7 +6,7 @@ set -euo pipefail
 
 # detect Surface Go
 #if dmidecode | grep -q 'Surface Go'; then
-if [[ $(cat "${VX_CONFIG_ROOT}/machine-type") == "vx-scan" ]]; then
+if [[ $(cat "${VX_CONFIG_ROOT}/machine-type") == "scan" ]]; then
     surface=1
     echo "Detected a Precinct Scanner (Surface Go) device. Locking down with GRUB."
 else

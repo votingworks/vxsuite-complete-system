@@ -3,7 +3,8 @@
 This repository is used to download a set of components that are consistent with each other in terms of compatibility and versioning. This repository has all the components and scripts to run each machine (VxAdmin, VxMark, VxScan, VxCentralScan).
 
 ## Developing vxsuite through kiosk-browser
-If you are developing a change in [vxsuite](https://github.com/votingworks/vxsuite) and want to test it through kiosk-browser to mimic production, follow the steps below. Only do this *after* you have run the `setup-dev` script in vxsuite, which will install node and other dependencies.
+
+If you are developing a change in [vxsuite](https://github.com/votingworks/vxsuite) and want to test it through kiosk-browser to mimic production, follow the steps below. Only do this _after_ you have run the `setup-dev` script in vxsuite, which will install node and other dependencies.
 
 ```sh
 make checkout
@@ -13,10 +14,10 @@ sudo usermod -aG lpadmin $USER
 # run whatever apps and services you are testing in vxsuite
 KIOSK_BROWSER_ALLOW_DEVTOOLS=true ./run-scripts/run-kiosk-browser.sh
 # Example: Allow Devtools while running Election Manager
-# KIOSK_BROWSER_ALLOW_DEVTOOLS=true ADMIN_WORKSPACE=/tmp ./run.sh election-manager
+# KIOSK_BROWSER_ALLOW_DEVTOOLS=true ADMIN_WORKSPACE=/tmp ./run.sh admin
 ```
-When kiosk-browser is running, you can type `Ctrl+Shift+I` in order to open developer tools, and `Ctrl+W` to close the window. You can also `Alt+Tab` to navigate back to the terminal and `Ctrl+C` to quit kiosk-browser.
 
+When kiosk-browser is running, you can type `Ctrl+Shift+I` in order to open developer tools, and `Ctrl+W` to close the window. You can also `Alt+Tab` to navigate back to the terminal and `Ctrl+C` to quit kiosk-browser.
 
 ## Hardware and OS
 
@@ -53,7 +54,7 @@ one component at a time_.
 This command will run all software services needed for election manager:
 
 ```
-ADMIN_WORKSPACE=/tmp ./run.sh election-manager
+ADMIN_WORKSPACE=/tmp ./run.sh admin
 ```
 
 ### Ballot Scanner (VxCentralScan)
@@ -61,7 +62,7 @@ ADMIN_WORKSPACE=/tmp ./run.sh election-manager
 This command will run all software services needed for ballot scanner:
 
 ```
-SCAN_WORKSPACE=/tmp ./run.sh bsd
+SCAN_WORKSPACE=/tmp ./run.sh central-scan
 ```
 
 You may replace `/tmp` with any persistent path you like.
@@ -74,7 +75,7 @@ follow the install instructions. Once you've done that, this command will run
 all software services needed for precinct scanner:
 
 ```
-SCAN_WORKSPACE=/tmp ./run.sh vx-scan
+SCAN_WORKSPACE=/tmp ./run.sh scan
 ```
 
 You may replace `/tmp` with any persistent path you like.
@@ -94,7 +95,7 @@ ballot-marking device, in the given mode. Make sure to substitute your
 chosen mode (`MarkOnly`, `PrintOnly`, `MarkAndPrint`) in the command:
 
 ```
-VX_APP_MODE="<mode>" ./run.sh vx-mark
+VX_APP_MODE="<mode>" ./run.sh mark
 ```
 
 ## Configuring for Production
@@ -109,8 +110,7 @@ bash setup-machine.sh
 
 ## High-level Contracts
 
-Each frontend app, e.g. `apps/vx-scan/frontend`, etc., and each
-service, e.g. `apps/vx-scan/backend`, `services/smartcards`, etc., should be an
+Each frontend (e.g. `apps/scan/frontend`), backend (e.g. `apps/scan/backend`), and service (e.g. `services/smartcards`) should be an
 application that can be built using `make build`, and then run using
 `make run`.
 
@@ -118,7 +118,7 @@ application that can be built using `make build`, and then run using
 
 Thanks to Trammell Hudson (@osresearch) for help working out TPM- and dm-verity
 related stuff, and more generally for cutting the path for more secure Linux
-systems via the osresearch/safeboot project. 
+systems via the osresearch/safeboot project.
 
 Thanks to Matthew Garrett (@mjg59)
 for providing overall thoughts about our security architecture, as well as

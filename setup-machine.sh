@@ -30,19 +30,19 @@ MODEL_NAMES=('')
 
 echo
 echo "${#CHOICES[@]}. Election Manager"
-CHOICES+=('election-manager')
+CHOICES+=('admin')
 MODEL_NAMES+=('VxAdmin')
 
 echo "${#CHOICES[@]}. Ballot Scanner"
-CHOICES+=('bsd')
+CHOICES+=('central-scan')
 MODEL_NAMES+=('VxCentralScan')
 
 echo "${#CHOICES[@]}. Ballot Marking Device (BMD)"
-CHOICES+=('vx-mark')
+CHOICES+=('mark')
 MODEL_NAMES+=('VxMark')
 
 echo "${#CHOICES[@]}. Precinct Scanner"
-CHOICES+=('vx-scan')
+CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
 echo
@@ -80,7 +80,7 @@ echo "The script will take it from here and set up the machine."
 echo
 
 # pre-flight checks to ensure we have everything we need
-if [ "${CHOICE}" == "vx-scan" ]
+if [ "${CHOICE}" == "scan" ]
 then
     if ! which plustekctl >/dev/null 2>&1
     then
@@ -90,7 +90,7 @@ then
     fi
 fi
 
-if [ "${CHOICE}" == "vx-mark" ]
+if [ "${CHOICE}" == "mark" ]
 then
     sudo cp config/50-wacom.conf /etc/X11/xorg.conf.d/
 fi
@@ -196,7 +196,7 @@ sudo cp config/apparmor.d/usr.sbin.cups-browsed /etc/apparmor.d/
 
 
 # let vx-services scan
-if [ "${CHOICE}" != "vx-mark" ]
+if [ "${CHOICE}" != "mark" ]
 then
     sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
     sudo usermod -aG scanner vx-services
@@ -278,7 +278,7 @@ GIT_TAG=$(git tag --points-at HEAD) sudo -E sh -c 'echo "${GIT_TAG}" > /vx/code/
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
 
 # app mode & speech synthesis
-if [ "${CHOICE}" = "vx-mark" ]
+if [ "${CHOICE}" = "mark" ]
 then
     sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
     bash setup-scripts/setup-speech-synthesis.sh

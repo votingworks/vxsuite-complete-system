@@ -1,12 +1,13 @@
 [Unit]
-Description=VotingWorks BMD
+Description=VotingWorks VxScan
 
 [Service]
 Type=simple
 User=vx-services
 Environment=VX_CONFIG_ROOT=/vx/config
 Environment=VX_METADATA_ROOT=/vx/code
-ExecStart=/bin/bash /vx/services/run-vx-mark.sh
+Environment=SCAN_WORKSPACE=/vx/data/module-scan
+ExecStart=/bin/bash /vx/services/run-scan.sh
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=votingworksapp
