@@ -110,8 +110,7 @@ bash setup-machine.sh
 
 ## High-level Contracts
 
-Each frontend app, e.g. `apps/scan/frontend`, etc., and each
-service, e.g. `apps/scan/backend`, `services/smartcards`, etc., should be an
+Each frontend (e.g. `apps/scan/frontend`), backend (e.g. `apps/scan/backend`), and service (e.g. `services/smartcards`) should be an
 application that can be built using `make build`, and then run using
 `make run`.
 
