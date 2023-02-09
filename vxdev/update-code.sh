@@ -76,7 +76,7 @@ echo $APP_TYPE
 if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/central-scan/backend/.env.local
 	cp /vx/config/.env.local vxsuite/apps/central-scan/frontend/.env.local
-	./build.sh bsd
+	./build.sh central-scan
 fi
 if [[ $APP_TYPE == 'VxAdmin' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/admin/frontend/.env.local
