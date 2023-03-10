@@ -199,6 +199,7 @@ sudo cp config/apparmor.d/usr.sbin.cups-browsed /etc/apparmor.d/
 if [ "${CHOICE}" != "mark" ]
 then
     sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
+    sudo cp config/50-custom-scanner.rules /etc/udev/rules.d/
     sudo usermod -aG scanner vx-services
 fi
 
