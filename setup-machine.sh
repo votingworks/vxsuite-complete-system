@@ -106,12 +106,11 @@ sudo apt install -y unclutter mingetty brightnessctl alsa-utils pulseaudio pulse
 # simple window manager and remove all contextual info
 sudo apt install -y openbox
 
-# Get some extras for Debian lockdown
-if [[ $DISTRO == "Debian" ]]; then
-	sudo apt install -y rsync cups cryptsetup xserver-xorg-core x11-common xinit sbsigntool
-	sudo chown :lpadmin /sbin/lpinfo
-	echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
-fi
+sudo apt install -y xorg xserver-xorg-core xserver-xorg-video-all xserver-xorg-input-all xinput x11-common xinit
+sudo apt install -y rsync cups cryptsetup sbsigntool
+
+sudo chown :lpadmin /sbin/lpinfo
+echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 
 # turn off automatic updates
 sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
