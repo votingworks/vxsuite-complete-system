@@ -7,6 +7,14 @@ export VX_CONFIG_ROOT="/vx/config"
 export VX_METADATA_ROOT="/vx/code"
 bash /vx/ui/.vx/run-kiosk-browser-forever-and-log.sh &
 
+# Elo screen, adjust orientation and corresponding touch coordinates
+# xinput is not ready to be used until X has fully started, so we have to delay
+ELO="Elo Touch ET1502L"
+(sleep 3 && if xinput list | grep "$ELO" > /dev/null; then
+     xrandr -o right
+     xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
+fi) &
+
 # brightness all the way
 sudo brightnessctl s 100%
 
