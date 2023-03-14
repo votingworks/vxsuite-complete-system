@@ -45,6 +45,10 @@ echo "${#CHOICES[@]}. Precinct Scanner"
 CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
+echo "${#CHOICES[@]}. New Precinct Scanner (Custom America)"
+CHOICES+=('scan2')
+MODEL_NAMES+=('VxScan')
+
 echo
 read -p "Select machine: " CHOICE_INDEX
 
@@ -88,6 +92,12 @@ then
         echo -e "Please install it from \e[4mhttps://github.com/votingworks/plustekctl\e[0m." >&2
         exit 1
     fi
+fi
+
+## from here on, scan2 is the same as scan
+if [ "${CHOICE}" == "scan2" ]
+then
+    CHOICE="scan"
 fi
 
 if [ "${CHOICE}" == "mark" ]
