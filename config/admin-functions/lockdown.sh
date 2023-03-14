@@ -4,17 +4,19 @@ set -euo pipefail
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
-# detect Surface Go
-#if dmidecode | grep -q 'Surface Go'; then
-if [[ $(cat "${VX_CONFIG_ROOT}/machine-type") == "scan" ]]; then
+echo "Is this image going on a Surface Go? [y/N]:" 
+
+read -r is_surface_go
+
+if [[ $is_surface_go == 'y' || $is_surface_go == 'Y' ]]; then
     surface=1
-    echo "Detected a Precinct Scanner (Surface Go) device. Locking down with GRUB."
+    echo "Surface Go device. Locking down with GRUB."
 else
     surface=0
     echo "Locking down with a unified kernel binary."
 fi
 
-echo "continue? [Y/n]:" 
+echo "Are you sure you want to proceed with lockdown? [Y/n]:" 
 
 read -r answer
 
