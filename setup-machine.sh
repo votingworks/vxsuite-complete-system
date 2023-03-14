@@ -126,27 +126,18 @@ sudo mkdir -p /var/vx
 sudo mkdir -p /var/vx/data/module-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
 sudo mkdir -p /var/vx/data/admin-service
-sudo mkdir -p /var/vx/ui-kiosk-browser-config
+sudo mkdir -p /var/vx/ui
 
 sudo ln -sf /var/vx/data /vx/data
+
+# vx-ui has a mutable homedir because X
+sudo ln -sf /var/vx/ui /vx/ui
 
 echo "Creating users"
 # create users, no common group, specified uids.
 id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /vx/services vx-services
-id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /vx/ui -s /bin/bash vx-ui
+id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui # special case vx-ui mutable homedir
 id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /vx/admin -s /bin/bash vx-admin
-
-echo "Sym-linking home directories so we can use the /vx paths"
-
-sudo ln -sf /vx/services /vx/services
-sudo ln -sf /vx/ui /vx/ui
-sudo ln -sf /vx/admin /vx/admin
-
-echo "Sym-linking folders that need to be mutable"
-
-# Make a mutable place for kiosk-browser config
-sudo mkdir -p /vx/ui/.config
-sudo ln -s /var/vx/ui-kiosk-browser-config /vx/ui/.config/kiosk-browser
 
 # a vx group for all vx users
 getent group vx-group || sudo groupadd -g 800 vx-group
@@ -204,8 +195,6 @@ then
 fi
 
 echo "Setting up the code"
-# copy code into the right place
-./build.sh "${CHOICE}"
 sudo mv build/${CHOICE} /vx/code
 
 # temporary hack cause of precinct-scanner runtime issue
@@ -218,12 +207,6 @@ sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 
 # make sure vx-services has pipenv
 sudo -u vx-services -i python3.9 -m pip install pipenv
-
-# symlink printer config and run scripts for vx-ui
-sudo mkdir -p /vx/ui/.vx
-sudo ln -s /vx/code/printing /vx/ui/.vx/printing
-sudo ln -s /vx/code/run-kiosk-browser.sh /vx/ui/.vx/run-kiosk-browser.sh
-sudo ln -s /vx/code/run-kiosk-browser-forever-and-log.sh /vx/ui/.vx/run-kiosk-browser-forever-and-log.sh
 
 # symlink appropriate vx/ui files
 sudo ln -s /vx/code/config/ui_bash_profile /vx/ui/.bash_profile
@@ -241,9 +224,6 @@ sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/
 # admin function scripts
 sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
 sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
-
-# Symlink app scripts directory for when vx-ui launches kiosk-browser
-sudo ln -s /vx/code/app-scripts /vx/ui/.vx/app-scripts
 
 # Make sure our cmdline file is readable by vx-admin
 sudo mkdir -p /vx/admin/config
@@ -308,14 +288,10 @@ sudo chown -R vx-services:vx-services /vx/services
 sudo chmod -R u=rwX /vx/services
 sudo chmod -R go-rwX /vx/services
 
-sudo chown -R vx-ui:vx-ui /vx/ui
-sudo chmod -R u=rwX /vx/ui
-sudo chmod -R go-rwX /vx/ui
-
-# the special directory for kiosk-browser config
-sudo chown -R vx-ui:vx-ui /var/vx/ui-kiosk-browser-config
-sudo chmod -R u=rwX /var/vx/ui-kiosk-browser-config
-sudo chmod -R go-rwX /var/vx/ui-kiosk-browser-config
+# specially located home directory
+sudo chown -R vx-ui:vx-ui /var/vx/ui
+sudo chmod -R u=rwX /var/vx/ui
+sudo chmod -R go-rwX /var/vx/ui
 
 sudo chown -R vx-admin:vx-admin /vx/admin
 sudo chmod -R u=rwX /vx/admin
