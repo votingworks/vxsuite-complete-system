@@ -4,11 +4,9 @@ set -euo pipefail
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
-# detect Surface Go
-#if dmidecode | grep -q 'Surface Go'; then
-if [[ $(cat "${VX_CONFIG_ROOT}/machine-type") == "scan" ]]; then
+if dmidecode | grep -q 'Surface Go'; then
     surface=1
-    echo "Detected a Precinct Scanner (Surface Go) device. Locking down with GRUB."
+    echo "Detected a Surface Go device. Locking down with GRUB."
 else
     surface=0
     echo "Locking down with a unified kernel binary."
