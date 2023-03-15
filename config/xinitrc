@@ -8,20 +8,12 @@ export VX_METADATA_ROOT="/vx/code"
 bash /vx/code/run-kiosk-browser-forever-and-log.sh &
 
 # Elo screen, adjust orientation and corresponding touch coordinates
-# xinput is not ready to be used until X has fully started,
-# so we try every second for 20 seconds to see if we've got an Elo
-#
-# we do this as a background job to let X start properly
+# xinput is not ready to be used until X has fully started, so we have to delay
 ELO="Elo Touch ET1502L"
-(for i in {1..20}
- do
-     sleep 1
-     if xinput list | grep "$ELO" > /dev/null; then
-	 xrandr -o right
-	 xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
-     fi
- done
-) &
+(sleep 4 && if xinput list | grep "$ELO" > /dev/null; then
+     xrandr -o right
+     xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
+fi) &
 
 # brightness all the way
 sudo brightnessctl s 100%
