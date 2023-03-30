@@ -23,61 +23,27 @@ fi
 
 # which kind of machine are we setting up?
 echo "Welcome to VxSuite. THIS IS A DESTRUCTIVE SCRIPT. Ctrl-C right now if you don't know for sure what you're doing."
-echo "Which machine are we building today?"
 
-CHOICES=('')
-MODEL_NAMES=('')
+CHOICE="$1"
 
-echo
-echo "${#CHOICES[@]}. Election Manager"
-CHOICES+=('admin')
-MODEL_NAMES+=('VxAdmin')
-
-echo "${#CHOICES[@]}. Ballot Scanner"
-CHOICES+=('central-scan')
-MODEL_NAMES+=('VxCentralScan')
-
-echo "${#CHOICES[@]}. Ballot Marking Device (BMD)"
-CHOICES+=('mark')
-MODEL_NAMES+=('VxMark')
-
-echo "${#CHOICES[@]}. Precinct Scanner"
-CHOICES+=('scan')
-MODEL_NAMES+=('VxScan')
-
-echo
-read -p "Select machine: " CHOICE_INDEX
-
-if [ "${CHOICE_INDEX}" -ge "${#CHOICES[@]}" ] || [ "${CHOICE_INDEX}" -lt 1 ]
-then
-    echo "You need to select a valid machine type."
+if [[ $CHOICE == 'admin' ]]; then
+    MODEL_NAME='VxAdmin'
+elif [[ $CHOICE == 'central-scan' ]]; then
+    MODEL_NAME='VxCentralScan'
+elif [[ $CHOICE == 'mark' ]]; then
+    MODEL_NAME='VxMark'
+elif [[ $CHOICE == 'scan' ]]; then
+    MODEL_NAME='VxScan'
+else
+    echo "You need to provide a valid machine type."
     exit 1
 fi
 
-CHOICE=${CHOICES[$CHOICE_INDEX]}
-MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
-
 echo "Excellent, let's set up ${CHOICE}."
-
-echo
-echo "Next, we need to set the admin password for this machine."
-while true; do
-    read -s -p "Set vx-admin password: " ADMIN_PASSWORD
-    echo
-    read -s -p "Confirm vx-admin password: " CONFIRM_PASSWORD
-    echo
-    if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
-    then
-        echo "Password confirmed."
-        break
-    else
-        echo "Passwords do not match, try again."
-    fi
-done
-
-echo
 echo "The script will take it from here and set up the machine."
 echo
+
+ADMIN_PASSWORD="insecure"
 
 # pre-flight checks to ensure we have everything we need
 if [ "${CHOICE}" == "scan" ]
@@ -198,7 +164,7 @@ echo "Setting up the code"
 sudo mv build/${CHOICE} /vx/code
 
 # temporary hack cause of precinct-scanner runtime issue
-sudo rm /vx/code/vxsuite # it's a symlink
+sudo rm -f /vx/code/vxsuite # it's a symlink
 sudo cp -rp vxsuite /vx/code/
 
 # symlink the code and run-*.sh in /vx/services
