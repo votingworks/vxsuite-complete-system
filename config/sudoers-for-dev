@@ -1,0 +1,40 @@
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults	env_reset
+Defaults	mail_badpass
+Defaults	secure_path="/vx/code/config/admin-functions:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+
+# User privilege specification
+root	ALL=(ALL:ALL) ALL
+vx-admin	ALL=(ALL:ALL) ALL
+
+# fine-grained sudo permissions for certain users & actions
+vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/set-clock.sh
+vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/lockdown.sh
+vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/generate-key.sh
+vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/setup-boot-entry.sh
+vx-admin ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
+vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/mount-usb.sh
+vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/unmount-usb.sh
+vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/config/admin-functions/timedatectl
+vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
+vx-ui ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
+vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/sign.sh
+vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/mount-usb.sh
+vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/unmount-usb.sh
+vx-ui ALL=(root:ALL) NOPASSWD: /bin/efibootmgr
+vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/sfdisk
+vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/mkfs.fat
+vx-ui ALL=(root:ALL) NOPASSWD: /usr/sbin/mkfs.exfat

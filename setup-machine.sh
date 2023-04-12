@@ -80,6 +80,17 @@ while true; do
 done
 
 echo
+read -p "Finally, do you want sudo privileges for vx-admin (only for dev purposes)? [y/N]: " vxadmin_sudo_raw
+
+if [[ $vxadmin_sudo_raw == 'y' || $vxadmin_sudo_raw == 'Y' ]]; then
+    VXADMIN_SUDO=1
+    echo "OK, giving vx-admin sudo privileges."
+else
+    VXADMIN_SUDO=0
+    echo "No sudo privileges for anyone!"
+fi
+
+echo
 echo "The script will take it from here and set up the machine."
 echo
 
@@ -385,7 +396,11 @@ sudo passwd -l vx-services
 sudo hostnamectl set-hostname "VotingWorks"
 
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
-sudo cp config/sudoers /etc/sudoers
+if [[ $VXADMIN_SUDO ]] ; then
+    sudo cp config/sudoers-for-dev /etc/sudoers
+else
+    sudo cp config/sudoers /etc/sudoers
+fi
 
 # remove everything from this bootstrap user's home directory
 cd
