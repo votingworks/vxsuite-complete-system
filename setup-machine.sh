@@ -136,30 +136,35 @@ sudo mkdir -p /var/vx/data/module-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
 sudo mkdir -p /var/vx/data/admin-service
 sudo mkdir -p /var/vx/ui
+sudo mkdir -p /var/vx/admin
+sudo mkdir -p /var/vx/services
 
 sudo ln -sf /var/vx/data /vx/data
 
-# vx-ui has a mutable homedir because X
+# mutable homedirs because we haven't figured out how to do this well yet.
 sudo ln -sf /var/vx/ui /vx/ui
+sudo ln -sf /var/vx/admin /vx/admin
+sudo ln -sf /var/vx/services /vx/services
+
 
 echo "Creating users"
 # create users, no common group, specified uids.
-id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /vx/services vx-services
-id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui # special case vx-ui mutable homedir
-id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /vx/admin -s /bin/bash vx-admin
+id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
+id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
+id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-services
 
 # a vx group for all vx users
 getent group vx-group || sudo groupadd -g 800 vx-group
 sudo usermod -aG vx-group vx-ui
-sudo usermod -aG vx-group vx-services
 sudo usermod -aG vx-group vx-admin
+sudo usermod -aG vx-group vx-services
 
 # remove all files created by default
 sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 
 # Let all of our users read logs
-sudo usermod -aG adm vx-admin
 sudo usermod -aG adm vx-ui
+sudo usermod -aG adm vx-admin
 sudo usermod -aG adm vx-services
 
 # Set up log config
@@ -293,18 +298,17 @@ bash setup-scripts/setup-tpm2-totp.sh
 bash setup-scripts/setup-tpm2-tools.sh
 
 # permissions on directories
-sudo chown -R vx-services:vx-services /vx/services
-sudo chmod -R u=rwX /vx/services
-sudo chmod -R go-rwX /vx/services
-
-# specially located home directory
 sudo chown -R vx-ui:vx-ui /var/vx/ui
 sudo chmod -R u=rwX /var/vx/ui
 sudo chmod -R go-rwX /var/vx/ui
 
-sudo chown -R vx-admin:vx-admin /vx/admin
-sudo chmod -R u=rwX /vx/admin
-sudo chmod -R go-rwX /vx/admin
+sudo chown -R vx-admin:vx-admin /var/vx/admin
+sudo chmod -R u=rwX /var/vx/admin
+sudo chmod -R go-rwX /var/vx/admin
+
+sudo chown -R vx-services:vx-services /var/vx/services
+sudo chmod -R u=rwX /var/vx/services
+sudo chmod -R go-rwX /var/vx/services
 
 sudo chown -R vx-services:vx-services /var/vx/data
 sudo chmod -R u=rwX /var/vx/data
