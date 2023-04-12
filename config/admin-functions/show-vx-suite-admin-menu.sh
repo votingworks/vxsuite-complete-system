@@ -82,6 +82,9 @@ while true; do
   echo "${#CHOICES[@]}. Show Current Public Signing Key"
   CHOICES+=('show-key')
 
+  echo "${#CHOICES[@]}. Recreate Machine Cert"
+  CHOICES+=('recreate-machine-cert')
+
   echo "${#CHOICES[@]}. Reset System Authentication Code"
   CHOICES+=('reset-totp')
 
@@ -148,11 +151,18 @@ while true; do
 
     generate-key)
       sudo "${VX_FUNCTIONS_ROOT}/generate-key.sh"
+      # Generating a new machine private key necessitates recreating the machine cert
+      sudo "${VX_FUNCTIONS_ROOT}/create-machine-cert.sh"
       read -s -n 1
     ;;
 
     show-key)
       "${VX_FUNCTIONS_ROOT}/show-key.sh"
+      read -s -n 1
+    ;;
+
+    recreate-machine-cert)
+      sudo "${VX_FUNCTIONS_ROOT}/create-machine-cert.sh"
       read -s -n 1
     ;;
     

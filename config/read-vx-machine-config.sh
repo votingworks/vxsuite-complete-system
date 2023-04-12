@@ -33,6 +33,7 @@ if [ ! -f "${VX_METADATA_ROOT}/code-tag" ]; then
   exit 1
 fi
 
+export VX_CONFIG_ROOT="${VX_CONFIG_ROOT}"
 export VX_MACHINE_ID="$(< "${VX_CONFIG_ROOT}/machine-id")"
 export VX_MACHINE_TYPE="$(< "${VX_CONFIG_ROOT}/machine-type")"
 export VX_MACHINE_MANUFACTURER="$(< "${VX_CONFIG_ROOT}/machine-manufacturer")"
@@ -42,4 +43,12 @@ export VX_CODE_TAG="$(< "${VX_METADATA_ROOT}/code-tag")"
 
 if [ -f "${VX_CONFIG_ROOT}/app-mode" ]; then
   export VX_APP_MODE="$(< "${VX_CONFIG_ROOT}/app-mode")"
+fi
+
+if [ -f "${VX_CONFIG_ROOT}/machine-jurisdiction" ]; then
+  export VX_MACHINE_JURISDICTION="$(< "${VX_CONFIG_ROOT}/machine-jurisdiction")"
+fi
+
+if [ -f "${VX_CONFIG_ROOT}/machine-private-key-password" ]; then
+  export VX_MACHINE_PRIVATE_KEY_PASSWORD="$(< "${VX_CONFIG_ROOT}/machine-private-key-password")"
 fi
