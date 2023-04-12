@@ -230,9 +230,6 @@ sudo cp -rp vxsuite /vx/code/
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
 sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 
-# make sure vx-services has pipenv
-sudo -u vx-services -i python3.9 -m pip install pipenv
-
 # symlink appropriate vx/ui files
 sudo ln -s /vx/code/config/ui_bash_profile /vx/ui/.bash_profile
 sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
@@ -330,6 +327,9 @@ sudo chown -R vx-admin:vx-group /var/vx/config
 sudo chmod -R u=rwX /var/vx/config
 sudo chmod -R g=rX /var/vx/config
 sudo chmod -R o-rwX /var/vx/config
+
+# make sure vx-services has pipenv
+sudo -u vx-services -i python3.9 -m pip install pipenv
 
 # non-graphical login
 sudo systemctl set-default multi-user.target
