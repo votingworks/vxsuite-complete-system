@@ -85,6 +85,9 @@ while true; do
   echo "${#CHOICES[@]}. Recreate Machine Cert"
   CHOICES+=('recreate-machine-cert')
 
+  echo "${#CHOICES[@]}. Program System Administrator Cards"
+  CHOICES+=('program-system-administrator-cards')
+
   echo "${#CHOICES[@]}. Reset System Authentication Code"
   CHOICES+=('reset-totp')
 
@@ -151,8 +154,10 @@ while true; do
 
     generate-key)
       sudo "${VX_FUNCTIONS_ROOT}/generate-key.sh"
-      # Generating a new machine private key necessitates recreating the machine cert
+      # Generating a new machine private key necessitates recreating the machine cert and
+      # repogramming system administrator cards
       sudo "${VX_FUNCTIONS_ROOT}/create-machine-cert.sh"
+      sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
       read -s -n 1
     ;;
 
@@ -163,6 +168,13 @@ while true; do
 
     recreate-machine-cert)
       sudo "${VX_FUNCTIONS_ROOT}/create-machine-cert.sh"
+      # Recreating the machine cert necessitates reprogramming system administrator cards
+      sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
+      read -s -n 1
+    ;;
+
+    program-system-administrator-cards)
+      sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
       read -s -n 1
     ;;
     

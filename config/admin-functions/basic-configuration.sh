@@ -35,10 +35,13 @@ while true; do
     [[ "${CONFIRM}" = "y" ]] && break
 done
 
-# Will uncomment this as soon as I've added support for bootstrapping your first sys admin card
-# echo
-# echo -e "\e[1mStep 4: Create Machine Cert\e[0m"
-# sudo ${VX_FUNCTIONS_ROOT}/create-machine-cert.sh
+echo
+echo -e "\e[1mStep 4: Create Machine Cert\e[0m"
+sudo ${VX_FUNCTIONS_ROOT}/create-machine-cert.sh
+
+echo
+echo -e "\e[1mStep 5: Program System Administrator Cards\e[0m"
+sudo ${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh
 
 if [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
     rm -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT"
