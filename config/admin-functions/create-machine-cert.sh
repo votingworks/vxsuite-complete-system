@@ -141,6 +141,7 @@ create_machine_cert_signing_request \
     "${machine_private_key_password}" \
     "${machine_cert_subject}" \
     "${USB_CERTS_DIRECTORY}/csr.pem"
+echo "${VX_MACHINE_TYPE}" > "${USB_CERTS_DIRECTORY}/machine-type"
 unmount_usb
 
 read -p "Remove the USB, take it to VxCertifier, and bring it back to this machine when prompted. Press enter once you've re-inserted the USB. "
