@@ -5,7 +5,10 @@ xrdb ~/.Xresources
 
 export VX_CONFIG_ROOT="/vx/config"
 export VX_METADATA_ROOT="/vx/code"
-bash /vx/code/run-kiosk-browser-forever-and-log.sh &
+
+# delay until X is started and configured
+# this appears to fix the issue where, sometimes, the Elo touchscreen doesn't respond
+(sleep 6 && bash /vx/code/run-kiosk-browser-forever-and-log.sh) &
 
 # Elo screen, adjust orientation and corresponding touch coordinates
 # xinput is not ready to be used until X has fully started, so we have to delay
