@@ -23,11 +23,13 @@ ELO="Elo Touch ET1502L"
      # prevent suspending the module, otherwise the start of chimes gets clipped
      pactl unload-module module-suspend-on-idle
 
-     # we need a startup chime to activate the channel
-     aplay ~/chime.wav
-
      xrandr -o right
      xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
+
+     # we need a startup chime to activate the channel
+     # delay because it appears the xrandr and xinput commands above turn off sound for a bit
+     # (because of course they do)
+     sleep 5 && aplay ~/chime.wav
 fi) &
 
 # brightness all the way
