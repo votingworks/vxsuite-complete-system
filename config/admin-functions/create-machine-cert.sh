@@ -4,6 +4,7 @@ set -euo pipefail
 
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 : "${VX_METADATA_ROOT:="/vx/code"}"
+: "${VX_MACHINE_TYPE:="$(< "${VX_CONFIG_ROOT}/machine-type")"}"
 
 MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert.pem"
 if [[ "${VX_MACHINE_TYPE}" == "admin" ]]; then
