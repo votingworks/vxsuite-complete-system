@@ -162,7 +162,7 @@ while true; do
       echo "Generating a new machine private key necessitates recreating the machine cert"
       sudo "${VX_FUNCTIONS_ROOT}/create-machine-cert.sh"
       echo
-      echo "Recreating the machine cert necessitates reprogramming system administrator cards"
+      echo "Recreating the machine cert might necessitate reprogramming system administrator cards"
       sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
     ;;
 
@@ -174,7 +174,7 @@ while true; do
     recreate-machine-cert)
       sudo "${VX_FUNCTIONS_ROOT}/create-machine-cert.sh"
       echo
-      echo "Recreating the machine cert necessitates reprogramming system administrator cards"
+      echo "Recreating the machine cert might necessitate reprogramming system administrator cards"
       sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
     ;;
 
