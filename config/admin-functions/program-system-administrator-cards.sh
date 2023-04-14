@@ -4,14 +4,16 @@ set -euo pipefail
 
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 : "${VX_METADATA_ROOT:="/vx/code"}"
+: "${VX_MACHINE_JURISDICTION:="$(< "${VX_CONFIG_ROOT}/machine-jurisdiction")"}"
+: "${VX_MACHINE_PRIVATE_KEY_PASSWORD:="$(< "${VX_CONFIG_ROOT}/machine-private-key-password")"}"
 
 function program_system_administrator_card() {
     # Use a subshell to ensure the cd doesn't have an effect beyond this command
     (cd "${VX_METADATA_ROOT}/vxsuite/libs/auth" &&
         NODE_ENV=production \
         VX_CONFIG_ROOT="${VX_CONFIG_ROOT}" \
-        VX_MACHINE_JURISDICTION=$(< "${VX_CONFIG_ROOT}/machine-jurisdiction") \
-        VX_MACHINE_PRIVATE_KEY_PASSWORD=$(< "${VX_CONFIG_ROOT}/machine-private-key-password") \
+        VX_MACHINE_JURISDICTION="${VX_MACHINE_JURISDICTION}" \
+        VX_MACHINE_PRIVATE_KEY_PASSWORD="${VX_MACHINE_PRIVATE_KEY_PASSWORD}" \
         ./scripts/program-system-administrator-java-card)
 }
 
