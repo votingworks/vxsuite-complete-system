@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Requires sudo
+
 set -euo pipefail
 
 : "${VX_CONFIG_ROOT:="/vx/config"}"
@@ -27,9 +29,8 @@ function get_machine_jurisdiction_from_user_input() {
         if [[ "${machine_jurisdiction}" =~ ^[a-z]{2}\.[a-z-]+$ ]]; then
             echo "${machine_jurisdiction}" > "${VX_CONFIG_ROOT}/machine-jurisdiction"
             break
-        else
-            echo -e "\e[31m${validation_error_message}\e[0m" >&2
         fi
+        echo -e "\e[31m${validation_error_message}\e[0m" >&2
     done
     echo "${machine_jurisdiction}"
 }
@@ -112,6 +113,15 @@ function create_machine_cert_signing_request() {
         -out "${cert_signing_request_path}"
 }
 
+# Permissions helpers
+
+# Applies permissions to match the permissions of other non-executable files in VX_CONFIG_ROOT
+function match_vx_config_non_executable_file_permissions() {
+    local file_path="${1}"
+    chown vx-admin:vx-group "${file_path}"
+    chmod u=rw,g=r,o= "${file_path}"
+}
+
 # ---------- Script ----------
 
 mkdir -p "${VX_CONFIG_ROOT}"
@@ -121,6 +131,7 @@ mkdir -p "${VX_CONFIG_ROOT}"
 machine_private_key_password="$(generate_password_with_256_bits_of_entropy)"
 echo "${machine_private_key_password}" > "${VX_CONFIG_ROOT}/machine-private-key-password"
 generate_private_key "${MACHINE_PRIVATE_KEY_PATH}" "${machine_private_key_password}"
+match_vx_config_non_executable_file_permissions "${MACHINE_PRIVATE_KEY_PATH}"
 
 if [[ ${VX_MACHINE_TYPE} == "admin" ]]; then
     machine_jurisdiction="$(get_machine_jurisdiction_from_user_input)"
@@ -151,15 +162,16 @@ while true; do
     mount_usb_if_present
     if [[ -f "${USB_CERTS_DIRECTORY}/cert.pem" ]]; then
         break
-    else
-        unmount_usb_if_mounted
-        read -p "Cert not found on USB. Double check that you've inserted the right USB. Press enter once you've re-inserted a USB. "
     fi
+    unmount_usb_if_mounted
+    read -p "Cert not found on USB. Double check that you've inserted the right USB and given it time to mount. Press enter to try again. "
 done
 echo "Cert found on USB!"
 
 echo "Copying cert to ${MACHINE_CERT_PATH}..."
 cp "${USB_CERTS_DIRECTORY}/cert.pem" "${MACHINE_CERT_PATH}"
+match_vx_config_non_executable_file_permissions "${MACHINE_CERT_PATH}"
 rm -rf "${USB_CERTS_DIRECTORY}"
 unmount_usb
+
 echo "Machine cert saved!"
