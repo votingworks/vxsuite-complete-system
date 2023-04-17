@@ -8,6 +8,7 @@
 
 set -euo pipefail
 
+SERIAL_FILE="/tmp/serial.txt"
 USB_CERTS_DIRECTORY="/media/vx/usb-drive/certs"
 
 function get_usb_path() {
@@ -22,6 +23,8 @@ function mount_usb() {
 function unmount_usb() {
     ./app-scripts/unmount-usb.sh
 }
+
+rm -f "${SERIAL_FILE}"
 
 mount_usb
 
@@ -42,6 +45,7 @@ if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
         -CAkey ./vxsuite/libs/auth/certs/dev/vx-private-key.pem \
         -passin pass:1234 \
         -CAcreateserial \
+        -CAserial "${SERIAL_FILE}" \
         -in "${USB_CERTS_DIRECTORY}/csr.pem" \
         -days 36500 \
         -extensions v3_ca -extfile ./vxsuite/libs/auth/certs/openssl.cnf \
@@ -52,9 +56,12 @@ else
         -CAkey ./vxsuite/libs/auth/certs/dev/vx-private-key.pem \
         -passin pass:1234 \
         -CAcreateserial \
+        -CAserial "${SERIAL_FILE}" \
         -in "${USB_CERTS_DIRECTORY}/csr.pem" \
         -days 36500 \
         -out "${USB_CERTS_DIRECTORY}/cert.pem"
 fi
 
 unmount_usb
+
+rm "${SERIAL_FILE}"
