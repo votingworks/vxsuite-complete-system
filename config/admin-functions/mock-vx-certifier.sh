@@ -42,6 +42,8 @@ if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
         -CAkey ./vxsuite/libs/auth/certs/dev/vx-private-key.pem \
         -passin pass:1234 \
         -CAcreateserial \
+        -CAserial \
+        /tmp/serial.txt \
         -in "${USB_CERTS_DIRECTORY}/csr.pem" \
         -days 36500 \
         -extensions v3_ca -extfile ./vxsuite/libs/auth/certs/openssl.cnf \
@@ -52,6 +54,8 @@ else
         -CAkey ./vxsuite/libs/auth/certs/dev/vx-private-key.pem \
         -passin pass:1234 \
         -CAcreateserial \
+        -CAserial \
+        /tmp/serial.txt \
         -in "${USB_CERTS_DIRECTORY}/csr.pem" \
         -days 36500 \
         -out "${USB_CERTS_DIRECTORY}/cert.pem"
