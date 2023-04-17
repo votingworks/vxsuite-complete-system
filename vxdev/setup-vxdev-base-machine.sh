@@ -14,13 +14,6 @@ if [[ $DISTRO == "Debian" ]]; then
     export PATH=${PATH}:/sbin/
 fi
 
-if ! which plustekctl >/dev/null 2>&1
-then
-    echo "error: plustekctl was not found in PATH=${PATH}" >&2
-    echo -e "Please install it from \e[4mhttps://github.com/votingworks/plustekctl\e[0m." >&2
-#    exit 1
-fi
-
 echo
 echo "Welcome to VxDev, we need to set the admin password for this machine."
 while true; do
