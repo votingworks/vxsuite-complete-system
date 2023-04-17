@@ -174,4 +174,4 @@ match_vx_config_non_executable_file_permissions "${MACHINE_CERT_PATH}"
 rm -rf "${USB_CERTS_DIRECTORY}"
 unmount_usb
 
-echo "Machine cert saved!"
+echo "Machine cert saved! You can remove the USB."
