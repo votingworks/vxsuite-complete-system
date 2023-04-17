@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Requires sudo
+
 set -euo pipefail
 
 : "${VX_CONFIG_ROOT:="/vx/config"}"
@@ -16,6 +18,9 @@ function program_system_administrator_card() {
         VX_MACHINE_PRIVATE_KEY_PASSWORD="${VX_MACHINE_PRIVATE_KEY_PASSWORD}" \
         ./scripts/program-system-administrator-java-card)
 }
+
+# Close any existing connections to the card reader, e.g. from the VxAdmin app
+service pcscd stop > /dev/null 2>&1
 
 while true; do
     read -p "Connect a card reader to the machine and insert a card. Press enter to program the card. "
