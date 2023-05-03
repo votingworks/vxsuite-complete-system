@@ -1,0 +1,9 @@
+[Unit]
+Description=Mimic3 Speech Synthesis
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mimic3-server --voice en_US/m-ailabs_low
+
+[Install]
+WantedBy=multi-user.target

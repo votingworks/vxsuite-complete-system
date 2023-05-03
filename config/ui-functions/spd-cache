@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# This is just a passthrough executable generically called spd-cache
+# so its name is not specific to a particular TTS backend,
+# for use by kiosk-browser
+
+$(dirname "$0")/mimic3-cache "$@"
+

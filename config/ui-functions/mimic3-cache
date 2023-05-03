@@ -1,0 +1,26 @@
+#!/bin/bash
+
+CACHE_DIR=${CACHE_DIR:-/vx/ui/mimic-cache}
+mkdir -p ${CACHE_DIR}
+
+switch=$1
+input=$2
+
+if [[ $switch != "-w" ]]; then
+    exit 0
+fi
+
+# trim leading and trailing spaces
+input=$(echo "$input" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+
+# have we cached this?
+hash=`echo "${input}" | sha1sum | cut -d' ' -f1`
+filename="${CACHE_DIR}/${hash}.wav"
+
+# if no file or the file is empty (can happen on crash in previous attempts to generate this file), generate it
+if ! [ -s "${filename}" ]; then
+    echo "${input}" | /usr/bin/mimic3 --remote --voice en_US/m-ailabs_low --stdout > ${filename}
+fi
+
+# just return the filename of the cached file
+echo `realpath ${filename}`
