@@ -1,0 +1,13 @@
+[Unit]
+Description=VotingWorks App Switcher
+
+[Service]
+Type=simple
+User=vx-services
+ExecStart=/bin/bash /vx/code/app-scripts/watch-and-switch.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=votingworksapp
+
+[Install]
+WantedBy=multi-user.target
