@@ -201,13 +201,27 @@ fi
 echo "Setting up the code"
 sudo mv build/${CHOICE} /vx/code
 
+# copy the other run files
+for service in "${CHOICES[@]}"
+do
+    if [ -f "build/${service}/run-${service}.sh" ]; then
+	cp build/${service}/run-${service}.sh /vx/code/
+    fi    
+done
+
 # temporary hack cause of precinct-scanner runtime issue
 sudo rm /vx/code/vxsuite # it's a symlink
 sudo cp -rp vxsuite /vx/code/
 
 # symlink the code and run-*.sh in /vx/services
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
-sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
+
+for service in "${CHOICES[@]}"
+do
+    if [ -f "/vx/code/run-${service}.sh" ]; then
+	sudo ln -s /vx/code/run-${service}.sh /vx/services/run-${service}.sh
+    fi
+done
 
 # symlink appropriate vx/ui files
 sudo ln -s /vx/code/config/ui_bash_profile /vx/ui/.bash_profile
@@ -342,9 +356,25 @@ sudo rm -rf /lib/modules/*/kernel/drivers/net/*
 # delete any remembered existing network connections (e.g. wifi passwords)
 sudo rm -f /etc/NetworkManager/system-connections/*
 
-# set up the service for the selected machine type
-sudo cp config/${CHOICE}.service /etc/systemd/system/
-sudo chmod 644 /etc/systemd/system/${CHOICE}.service
+# Loop through the options using a for loop
+for service in "${CHOICES[@]}"
+do
+    if [ -f "config/${service}.service" ]; then    
+	sudo cp config/${service}.service /etc/systemd/system/
+	sudo chmod 644 /etc/systemd/system/${service}.service
+    fi
+done
+
+if [ "${CHOICE}" == "admin" ]
+then
+    # watch and switch service
+    sudo cp config/watch-and-switch.service /etc/systemd/system/
+    sudo chmod 644 /etc/systemd/system/watch-and-switch.service
+    sudo systemctl enable watch-and-switch.service
+    sudo systemctl start watch-and-switch.service
+fi
+
+# start and enable only the one we want
 sudo systemctl enable ${CHOICE}.service
 sudo systemctl start ${CHOICE}.service
 

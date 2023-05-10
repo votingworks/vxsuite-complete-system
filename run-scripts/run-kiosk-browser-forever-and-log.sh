@@ -30,4 +30,5 @@ fi
 while true; do
     echo "starting kiosk-browser"
     ./run-kiosk-browser.sh http://localhost:3000/
+    sleep 2
 done 2>&1 | logger --tag votingworksapp
