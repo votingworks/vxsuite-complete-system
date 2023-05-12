@@ -43,7 +43,6 @@ if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
     openssl x509 -req \
         -CA ./vxsuite/libs/auth/certs/dev/vx-cert-authority-cert.pem \
         -CAkey ./vxsuite/libs/auth/certs/dev/vx-private-key.pem \
-        -passin pass:1234 \
         -CAcreateserial \
         -CAserial "${SERIAL_FILE}" \
         -in "${USB_CERTS_DIRECTORY}/csr.pem" \
@@ -54,7 +53,6 @@ else
     openssl x509 -req \
         -CA ./vxsuite/libs/auth/certs/dev/vx-cert-authority-cert.pem \
         -CAkey ./vxsuite/libs/auth/certs/dev/vx-private-key.pem \
-        -passin pass:1234 \
         -CAcreateserial \
         -CAserial "${SERIAL_FILE}" \
         -in "${USB_CERTS_DIRECTORY}/csr.pem" \
