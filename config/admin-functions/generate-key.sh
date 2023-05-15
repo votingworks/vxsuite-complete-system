@@ -25,7 +25,10 @@ tpm2_evictcontrol -c primary.ctx 0x81000000
 # Note that the key.priv file is encrypted using the symmetric key stored at
 # the handle specified in primary.ctx. That symmetric key never leaves the TPM.
 # See man tpm2 create and man tpm2 createprimary for more information.
-tpm2_create -L pcr.policy -u key.pub -r key.priv -C primary.ctx -G ecc 
+#
+# A password isn't required for our security model, just required by OpenSSL,
+# hence the dummy password.
+tpm2_create -L pcr.policy -u key.pub -r key.priv -C primary.ctx -G ecc -p password
 tpm2_load -u key.pub -r key.priv -C primary.ctx -c key.ctx
 
 # Save the keys
