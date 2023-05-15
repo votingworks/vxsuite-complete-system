@@ -69,11 +69,6 @@ You may replace `/tmp` with any persistent path you like.
 
 ### VxScan (Precinct Scanner)
 
-This requires some other packages to be installed that, unfortunately, are not
-public. If you have access, go to https://github.com/votingworks/plustekctl and
-follow the install instructions. Once you've done that, this command will run
-all software services needed for precinct scanner:
-
 ```
 SCAN_WORKSPACE=/tmp ./run.sh scan
 ```

@@ -45,10 +45,6 @@ echo "${#CHOICES[@]}. Precinct Scanner"
 CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
-echo "${#CHOICES[@]}. New Precinct Scanner (Custom America)"
-CHOICES+=('scan2')
-MODEL_NAMES+=('VxScan')
-
 echo
 read -p "Select machine: " CHOICE_INDEX
 
@@ -93,23 +89,6 @@ fi
 echo
 echo "The script will take it from here and set up the machine."
 echo
-
-# pre-flight checks to ensure we have everything we need
-if [ "${CHOICE}" == "scan" ]
-then
-    if ! which plustekctl >/dev/null 2>&1
-    then
-        echo "error: plustekctl was not found in PATH=${PATH}" >&2
-        echo -e "Please install it from \e[4mhttps://github.com/votingworks/plustekctl\e[0m." >&2
-        exit 1
-    fi
-fi
-
-## from here on, scan2 is the same as scan
-if [ "${CHOICE}" == "scan2" ]
-then
-    CHOICE="scan"
-fi
 
 if [ "${CHOICE}" == "mark" ]
 then
