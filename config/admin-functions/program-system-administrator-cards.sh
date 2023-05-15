@@ -9,12 +9,12 @@ set -euo pipefail
 : "${VX_MACHINE_JURISDICTION:="$(< "${VX_CONFIG_ROOT}/machine-jurisdiction")"}"
 
 function program_system_administrator_card() {
-    pushd "${VX_METADATA_ROOT}/vxsuite/libs/auth"
+    pushd "${VX_METADATA_ROOT}/vxsuite/libs/auth" > /dev/null
     NODE_ENV=production \
     VX_CONFIG_ROOT="${VX_CONFIG_ROOT}" \
     VX_MACHINE_JURISDICTION="${VX_MACHINE_JURISDICTION}" \
     ./scripts/program-system-administrator-java-card
-    popd
+    popd > /dev/null
 }
 
 # Close any existing connections to the card reader, e.g. from the VxAdmin app
