@@ -80,19 +80,17 @@ function wait_for_usb_and_mount_once_present() {
 # OpenSSL helpers
 
 function create_machine_cert_signing_request() {
+    pushd "${VX_METADATA_ROOT}/vxsuite/libs/auth"
     local machine_jurisdiction="${1:-}"
     if [[ -n "${machine_jurisdiction}" ]]; then
-        # Use a subshell to ensure the cd doesn't have an effect beyond this command
-        (cd "${VX_METADATA_ROOT}/vxsuite/libs/auth" &&
-            VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
-            VX_MACHINE_JURISDICTION="${machine_jurisdiction}" \
-            ./scripts/create-production-machine-cert-signing-request)
+        VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
+        VX_MACHINE_JURISDICTION="${machine_jurisdiction}" \
+        ./scripts/create-production-machine-cert-signing-request
     else
-        # Use a subshell to ensure the cd doesn't have an effect beyond this command
-        (cd "${VX_METADATA_ROOT}/vxsuite/libs/auth" &&
-            VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
-            ./scripts/create-production-machine-cert-signing-request)
+        VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
+        ./scripts/create-production-machine-cert-signing-request
     fi
+    popd
 }
 
 # Permissions helpers
