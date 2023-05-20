@@ -23,4 +23,4 @@ if ! [ -s "${filename}" ]; then
 fi
 
 # just return the filename of the cached file
-echo `realpath ${filename}`
+realpath ${filename}
