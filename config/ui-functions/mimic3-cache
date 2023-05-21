@@ -10,6 +10,9 @@ if [[ $switch != "-w" ]]; then
     exit 0
 fi
 
+# clear files older than 2 months from the cache
+find ${CACHE_DIR} -type f -name "*.wav" -mtime +60 -delete
+
 # trim leading and trailing spaces
 input=$(echo "$input" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
