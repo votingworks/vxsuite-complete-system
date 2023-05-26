@@ -1,0 +1,21 @@
+#!/bin/bash
+
+switch=$1
+input=$2
+
+if [[ $switch != "-w" ]]; then
+    exit 0
+fi
+
+# call out to cache
+filename=`$(dirname "$0")/mimic3-cache -w "${input}"`
+
+# Find the process ID (PID) of the current aplay process, if any
+PID=$(pgrep -x aplay)
+
+# If an aplay process is running, kill it
+if [ ! -z "$PID" ]; then
+    kill $PID
+fi
+
+cat ${filename} | aplay
