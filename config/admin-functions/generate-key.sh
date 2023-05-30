@@ -4,10 +4,10 @@ set -euo pipefail
 
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
-# First detect whether the TPM supports sha1 or sha256
-algo="sha256"
-if [ $(tpm2 pcrread sha1:0 | wc -l) == 2 ]; then
-    algo="sha1"
+# Detect whether the TPM supports sha256, falling back to sha1 if necessary
+algo="sha1"
+if [ "$(tpm2 pcrread sha256:0 | wc -l)" == "2" ]; then
+    algo="sha256"
 fi
 
 tpm2_startauthsession -S session.ctx

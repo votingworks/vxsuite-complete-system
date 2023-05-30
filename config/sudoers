@@ -31,6 +31,7 @@ vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/mount-usb.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/unmount-usb.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/create-cert
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/create-cert
+vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/sign-message
 vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/config/admin-functions/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
