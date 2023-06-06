@@ -28,8 +28,12 @@ ALL_APPS=()
 for app in ${DIR}/vxsuite/apps/*; do
   if [ -d "${app}" ]; then
     tmp_dir=$(basename "${app}")
-    make -C "${DIR}/vxsuite/apps/${tmp_dir}/frontend" install
-    make -C "${DIR}/vxsuite/apps/${tmp_dir}/backend" install
+    if [ -d "${app}/frontend" ]; then
+      make -C "${DIR}/vxsuite/apps/${tmp_dir}/frontend" install
+    fi
+    if [ -d "${app}/backend" ]; then
+      make -C "${DIR}/vxsuite/apps/${tmp_dir}/backend" install
+    fi
     ALL_APPS+=("$(basename "${app}")")
   fi
 done
@@ -52,6 +56,10 @@ usage() {
 # Function that builds a single app
 build() {
   local APP="$1"
+  # temporary hack to fix the fact that the design app is not meant for production
+  if [ "${APP}" = "design" ]; then
+    return
+  fi
   echo "🔨Building ${APP}"
   export BUILD_ROOT="${DIR}/build/${APP}"
   rm -rf "${BUILD_ROOT}"
