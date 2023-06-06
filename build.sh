@@ -70,14 +70,17 @@ build() {
     pnpm install
     BUILD_ROOT="${BUILD_ROOT}/vxsuite" ./script/prod-build
 
-    cp -rp \
-      "${DIR}/run-scripts/run-${APP}.sh" \
-      "${DIR}/run-scripts/run-kiosk-browser.sh" \
-      "${DIR}/run-scripts/run-kiosk-browser-forever-and-log.sh" \
-      "${DIR}/config" \
-      "${DIR}/printing" \
-      "${DIR}/app-scripts" \
-      "${BUILD_ROOT}"
+    # temporary hack to fix the fact that not all apps may be runnable.
+    if [ -d "${DIR}/run-scripts/run-${APP}.sh" ]; then
+      cp -rp \
+        "${DIR}/run-scripts/run-${APP}.sh" \
+        "${DIR}/run-scripts/run-kiosk-browser.sh" \
+        "${DIR}/run-scripts/run-kiosk-browser-forever-and-log.sh" \
+        "${DIR}/config" \
+        "${DIR}/printing" \
+        "${DIR}/app-scripts" \
+        "${BUILD_ROOT}"
+    fi
 
     # temporary hack because the symlink works but somehow the copy doesn't for precinct-scanner
     cd ${BUILD_ROOT}
