@@ -56,6 +56,10 @@ usage() {
 # Function that builds a single app
 build() {
   local APP="$1"
+  # temporary hack to fix the fact that the design app is not meant for production
+  if [ "${APP}" = "design" ]; then
+    return
+  fi
   echo "🔨Building ${APP}"
   export BUILD_ROOT="${DIR}/build/${APP}"
   rm -rf "${BUILD_ROOT}"
@@ -70,17 +74,14 @@ build() {
     pnpm install
     BUILD_ROOT="${BUILD_ROOT}/vxsuite" ./script/prod-build
 
-    # temporary hack to fix the fact that not all apps may be runnable.
-    if [ -d "${DIR}/run-scripts/run-${APP}.sh" ]; then
-      cp -rp \
-        "${DIR}/run-scripts/run-${APP}.sh" \
-        "${DIR}/run-scripts/run-kiosk-browser.sh" \
-        "${DIR}/run-scripts/run-kiosk-browser-forever-and-log.sh" \
-        "${DIR}/config" \
-        "${DIR}/printing" \
-        "${DIR}/app-scripts" \
-        "${BUILD_ROOT}"
-    fi
+    cp -rp \
+      "${DIR}/run-scripts/run-${APP}.sh" \
+      "${DIR}/run-scripts/run-kiosk-browser.sh" \
+      "${DIR}/run-scripts/run-kiosk-browser-forever-and-log.sh" \
+      "${DIR}/config" \
+      "${DIR}/printing" \
+      "${DIR}/app-scripts" \
+      "${BUILD_ROOT}"
 
     # temporary hack because the symlink works but somehow the copy doesn't for precinct-scanner
     cd ${BUILD_ROOT}
