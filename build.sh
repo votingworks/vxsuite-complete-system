@@ -28,8 +28,12 @@ ALL_APPS=()
 for app in ${DIR}/vxsuite/apps/*; do
   if [ -d "${app}" ]; then
     tmp_dir=$(basename "${app}")
-    make -C "${DIR}/vxsuite/apps/${tmp_dir}/frontend" install
-    make -C "${DIR}/vxsuite/apps/${tmp_dir}/backend" install
+    if [ -d "${app}/frontend" ]; then
+      make -C "${DIR}/vxsuite/apps/${tmp_dir}/frontend" install
+    fi
+    if [ -d "${app}/backend" ]; then
+      make -C "${DIR}/vxsuite/apps/${tmp_dir}/backend" install
+    fi
     ALL_APPS+=("$(basename "${app}")")
   fi
 done
