@@ -10,5 +10,5 @@ echo "deb-src https://deb.nodesource.com/${NODE_VERSION} ${DISTRO} main" | sudo 
 sudo apt update
 sudo apt install -y nodejs
 
-sudo npm install -g yarn pnpm@7
+sudo npm install -g yarn pnpm@8.1.0
 
