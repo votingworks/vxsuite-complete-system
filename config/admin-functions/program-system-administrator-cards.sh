@@ -7,12 +7,14 @@ set -euo pipefail
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 : "${VX_METADATA_ROOT:="/vx/code"}"
 : "${VX_MACHINE_JURISDICTION:="$(< "${VX_CONFIG_ROOT}/machine-jurisdiction")"}"
+: "${VX_MACHINE_TYPE:="$(< "${VX_CONFIG_ROOT}/machine-type")"}"
 
 function program_system_administrator_card() {
     pushd "${VX_METADATA_ROOT}/vxsuite/libs/auth" > /dev/null
     NODE_ENV=production \
     VX_CONFIG_ROOT="${VX_CONFIG_ROOT}" \
     VX_MACHINE_JURISDICTION="${VX_MACHINE_JURISDICTION}" \
+    VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
     ./scripts/program-system-administrator-java-card
     popd > /dev/null
 }
