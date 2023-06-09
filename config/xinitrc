@@ -12,19 +12,20 @@ export VX_METADATA_ROOT="/vx/code"
 
 # Elo screen, adjust orientation and corresponding touch coordinates
 # xinput is not ready to be used until X has fully started, so we have to delay
-ELO="Elo Touch ET1502L"
+ELO="Elo Touch"
 (sleep 4 && if xinput list | grep "$ELO" > /dev/null; then
      # this is very specific to using the Lenovo m70q tiny with sound out via HDMI
-     pulseaudio --start
-     pulseaudio --kill
-     pactl load-module module-alsa-sink device=hw:0,8
-     pactl set-default-sink 1
+     #pulseaudio --start
+     #pulseaudio --kill
+     #pactl load-module module-alsa-sink device=hw:0,8
+     #pactl set-default-sink 1
 
      # prevent suspending the module, otherwise the start of chimes gets clipped
      pactl unload-module module-suspend-on-idle
 
-     xrandr -o right
-     xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
+     # we are using landscape now
+     #xrandr -o right
+     #xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
 
      # we need a startup chime to activate the channel
      # delay because it appears the xrandr and xinput commands above turn off sound for a bit
