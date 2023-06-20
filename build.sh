@@ -56,8 +56,8 @@ usage() {
 # Function that builds a single app
 build() {
   local APP="$1"
-  # temporary hack to fix the fact that the design app is not meant for production
-  if [ "${APP}" = "design" ]; then
+  # Temporary hack to fix the fact that these two apps are not production-ready yet
+  if [[ "${APP}" = "design" || "${APP}" = "mark-scan" ]]; then
     return
   fi
   echo "🔨Building ${APP}"
