@@ -22,44 +22,72 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-ALL_APPS=()
+# Define vxsuite apps that can be built, along with the expected path prefix
+ALL_APPS=(admin central-scan mark scan)
+APPS_PATH_PREFIX="${DIR}/vxsuite/apps"
 
-# Install linux dependencies for all apps
-for app in ${DIR}/vxsuite/apps/*; do
-  if [ -d "${app}" ]; then
-    tmp_dir=$(basename "${app}")
-    if [ -d "${app}/frontend" ]; then
-      make -C "${DIR}/vxsuite/apps/${tmp_dir}/frontend" install
-    fi
-    if [ -d "${app}/backend" ]; then
-      make -C "${DIR}/vxsuite/apps/${tmp_dir}/backend" install
-    fi
-    ALL_APPS+=("$(basename "${app}")")
-  fi
-done
-
-# Install linux dependencies for all services
-for app in ${DIR}/vxsuite/services/*; do
-  if [ -d "${app}" ]; then
-    tmp_dir=$(basename "${app}")
-    make -C "${DIR}/vxsuite/services/${tmp_dir}" install
-    ALL_SERVICES+=("$(basename "${app}")")
-  fi
-done
+# Define vxsuite services that can be built, along with the expected path prefix
+ALL_SERVICES=(converter-ms-sems)
+SERVICES_PATH_PREFIX="${DIR}/vxsuite/services"
 
 usage() {
-  echo "usage: ./build.sh [all|$(IFS=\| ; echo "${ALL_APPS[*]}")] …"
+  echo "usage: ./build.sh [all|$(IFS=\| ; echo "${ALL_APPS[*]}")]"
   echo
   echo "Build all or some of the VxSuite apps."
 }
 
+APPS_TO_BUILD=()
+
+# Determine which apps to build
+if [ $# = 0 ]; then
+  APPS_TO_BUILD+=(${ALL_APPS[@]})
+else
+  for arg in $@; do
+    if [[ " ${ALL_APPS[@]} " =~ " ${arg} " ]]; then
+      if [[ ! " ${APPS_TO_BUILD[@]} " =~ " ${arg} " ]]; then
+        APPS_TO_BUILD+=($arg)
+      fi
+    elif [[ "${arg}" = all ]]; then
+      APPS_TO_BUILD=(${ALL_APPS[@]})
+    elif [[ "${arg}" = -h || "${arg}" = --help ]]; then
+      usage
+      exit 0
+    elif [[ "${arg}" = -* ]]; then
+      echo "✘ unknown option: ${arg}" >&2
+      usage >&2
+      exit 1
+    else
+      echo "✘ unknown app: ${arg}" >&2
+      usage >&2
+      exit 1
+    fi
+  done
+fi
+
+# Install linux dependencies for all defined apps before we build
+for app in "${ALL_APPS[@]}"; do
+  app_path="${APPS_PATH_PREFIX}/${app}"
+  if [ -d "${app_path}" ]; then
+    if [ -d "${app_path}/frontend" ]; then
+      make -C "${app_path}/frontend" install
+    fi
+    if [ -d "${app_path}/backend" ]; then
+      make -C "${app_path}/backend" install
+    fi
+  fi
+done
+
+# Install linux dependencies for all services before we build
+for service in "${ALL_SERVICES[@]}"; do
+  service_path="${SERVICES_PATH_PREFIX}/${service}"
+  if [ -d "${service_path}" ]; then
+    make -C "${service_path}" install
+  fi
+done
+
 # Function that builds a single app
 build() {
   local APP="$1"
-  # Temporary hack to fix the fact that these two apps are not production-ready yet
-  if [[ "${APP}" = "design" || "${APP}" = "mark-scan" ]]; then
-    return
-  fi
   echo "🔨Building ${APP}"
   export BUILD_ROOT="${DIR}/build/${APP}"
   rm -rf "${BUILD_ROOT}"
@@ -97,35 +125,10 @@ build() {
   set -e
 }
 
-APPS=()
+echo "Building ${#APPS_TO_BUILD[@]} app(s): ${APPS_TO_BUILD[@]}"
 
-# Determine which apps to build
-if [ $# = 0 ]; then
-  APPS+=(${ALL_APPS[@]})
-else
-  for arg in $@; do
-    if [[ " ${ALL_APPS[@]} " =~ " ${arg} " ]]; then
-      if [[ ! " ${APPS[@]} " =~ " ${arg} " ]]; then
-        APPS+=($arg)
-      fi
-    elif [[ "${arg}" = all ]]; then
-      APPS=(${ALL_APPS[@]})
-    elif [[ "${arg}" = -h || "${arg}" = --help ]]; then
-      usage
-      exit 0
-    elif [[ "${arg}" = -* ]]; then
-      echo "✘ unknown option: ${arg}" >&2
-      usage >&2
-      exit 1
-    else
-      echo "✘ unknown app: ${arg}" >&2
-      usage >&2
-      exit 1
-    fi
-  done
-fi
-
-echo "Building ${#APPS[@]} app(s): ${APPS[@]}"
-for app in "${APPS[@]}"; do
+for app in "${APPS_TO_BUILD[@]}"; do
   build "${app}"
 done
+
+exit 0
