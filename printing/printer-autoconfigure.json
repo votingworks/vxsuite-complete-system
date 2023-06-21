@@ -27,6 +27,15 @@
       "ppd": {
         "path": "hp-color_laserjet_pro_m453-4-ps.ppd"
       }
+    },
+    {
+      "label": "Brother PJ-822",
+      "vendorId": 1273,
+      "productId": 8418,
+      "baseDeviceURI": "usb://Brother/PJ-822",
+      "ppd": {
+        "path": "brother_pj822_printer_en.ppd"
+      }
     }
   ]
 }
