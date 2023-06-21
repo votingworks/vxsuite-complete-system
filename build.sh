@@ -22,11 +22,11 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-#-- Define vxsuite apps that can be built, along with the expected path prefix
+# Define vxsuite apps that can be built, along with the expected path prefix
 ALL_APPS=(admin central-scan mark scan)
 APPS_PATH_PREFIX="${DIR}/vxsuite/apps"
 
-#-- Define vxsuite services that can be built, along with the expected path prefix
+# Define vxsuite services that can be built, along with the expected path prefix
 ALL_SERVICES=(converter-ms-sems)
 SERVICES_PATH_PREFIX="${DIR}/vxsuite/services"
 
@@ -64,7 +64,7 @@ else
   done
 fi
 
-#-- Install linux dependencies for all defined apps before we build
+# Install linux dependencies for all defined apps before we build
 for app in "${ALL_APPS[@]}"; do
   app_path="${APPS_PATH_PREFIX}/${app}"
   if [ -d "${app_path}" ]; then
