@@ -1,5 +1,8 @@
 export PATH=/vx/code/config/admin-functions:${PATH}
 
+# remove the lockdown trigger on login
+rm -f /vx/config/RUN_LOCKDOWN_ON_NEXT_BOOT
+
 while true; do
     bash /vx/admin/admin-functions/show-vx-suite-admin-menu.sh
 done

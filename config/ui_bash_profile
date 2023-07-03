@@ -1,7 +1,7 @@
-export PATH=/vx/code/config/admin-functions:${PATH}
+export PATH=/vx/code/config/admin-functions:/sbin:${PATH}
 
 if [[ $(tty) = /dev/tty1 ]]; then
-   exec startx
+   # if startx crashes or quits for any reason, log out
+   XAUTHORITY=/tmp/.Xauthority startx || logout
 fi
 
-export PATH=$PATH:/sbin
