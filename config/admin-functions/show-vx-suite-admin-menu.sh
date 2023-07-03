@@ -59,6 +59,9 @@ while true; do
   echo "${#CHOICES[@]}. Run Basic Configuration Wizard On Next Boot"
   CHOICES+=('basic-configuration-on-next-boot')
 
+  echo "${#CHOICES[@]}. Reboot to Admin Menu for Lockdown"
+  CHOICES+=('lockdown-on-next-boot')
+
   echo
   echo -e "\e[1mAdvanced\e[0m"
   echo "${#CHOICES[@]}. Set Machine ID"
@@ -123,8 +126,14 @@ while true; do
     ;;
 
     basic-configuration-on-next-boot)
-      touch "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT"
-    ;;
+	touch "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT"
+      ;;
+
+    lockdown-on-next-boot)
+	touch "${VX_CONFIG_ROOT}/RUN_LOCKDOWN_ON_NEXT_BOOT"
+	sudo "${VX_FUNCTIONS_ROOT}/make-root-readonly.sh"
+	prompt-to-restart
+      ;;
 
     set-machine-id)
       "${VX_FUNCTIONS_ROOT}/choose-vx-machine-id.sh"
