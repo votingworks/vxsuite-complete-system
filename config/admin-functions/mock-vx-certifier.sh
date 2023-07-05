@@ -4,7 +4,7 @@
 # terminal. Should be run from the root of vxsuite-complete-system, with a USB plugged in, after
 # create-machine-cert.sh has written a CSR to the USB.
 #
-# Usage: sudo ./config/admin-functions/mock-vx-certifier.sh
+# Usage: sudo VX_PRIVATE_KEY_PATH=/path/to/vx-private-key.pem ./config/admin-functions/mock-vx-certifier.sh
 
 set -euo pipefail
 
@@ -41,8 +41,8 @@ fi
 
 if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
     openssl x509 -req \
-        -CA ./vxsuite/libs/auth/certs/dev/vx-cert-authority-cert.pem \
-        -CAkey ./vxsuite/libs/auth/certs/dev/vx-private-key.pem \
+        -CA ./vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem \
+        -CAkey "${VX_PRIVATE_KEY_PATH}" \
         -CAcreateserial \
         -CAserial "${SERIAL_FILE}" \
         -in "${USB_CERTS_DIRECTORY}/csr.pem" \
@@ -51,8 +51,8 @@ if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
         -out "${USB_CERTS_DIRECTORY}/cert.pem"
 else
     openssl x509 -req \
-        -CA ./vxsuite/libs/auth/certs/dev/vx-cert-authority-cert.pem \
-        -CAkey ./vxsuite/libs/auth/certs/dev/vx-private-key.pem \
+        -CA ./vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem \
+        -CAkey "${VX_PRIVATE_KEY_PATH}" \
         -CAcreateserial \
         -CAserial "${SERIAL_FILE}" \
         -in "${USB_CERTS_DIRECTORY}/csr.pem" \
