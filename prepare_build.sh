@@ -78,21 +78,7 @@ build() {
 
     cd "${DIR}/vxsuite/apps/${APP}/frontend"
 
-    BUILD_ROOT="${BUILD_ROOT}/vxsuite" ./script/prod-build
-
-    cp -rp \
-      "${DIR}/run-scripts/run-${APP}.sh" \
-      "${DIR}/run-scripts/run-kiosk-browser.sh" \
-      "${DIR}/run-scripts/run-kiosk-browser-forever-and-log.sh" \
-      "${DIR}/config" \
-      "${DIR}/printing" \
-      "${DIR}/app-scripts" \
-      "${BUILD_ROOT}"
-
-    # temporary hack because the symlink works but somehow the copy doesn't for precinct-scanner
-    cd ${BUILD_ROOT}
-    rm -rf vxsuite # this is the built version
-    ln -s ../../vxsuite ./vxsuite
+    pnpm install
   )
   if [[ $? = 0 ]]; then
     echo -e "\e[32m✅${APP} built\e[0m"
