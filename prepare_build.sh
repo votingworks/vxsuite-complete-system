@@ -89,6 +89,9 @@ build() {
   set -e
 }
 
+echo "Download all Rust crates"
+pnpm --dir ${DIR}/vxsuite/libs/ballot-interpreter-nh/ install:rust-addon
+
 echo "Building ${#APPS_TO_BUILD[@]} app(s): ${APPS_TO_BUILD[@]}"
 
 for app in "${APPS_TO_BUILD[@]}"; do
