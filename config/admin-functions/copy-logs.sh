@@ -28,9 +28,9 @@ DIRECTORY="$MOUNTPOINT/logs-$( date +%Y%m%d-%H%M%S )"
 mkdir -p "$DIRECTORY"
 
 # copy logs
-cp -rp /var/log/syslog* "$DIRECTORY"
-cp -rp /var/log/auth.log* "$DIRECTORY"
-cp -rp /var/log/vx-logs.log* "$DIRECTORY"
+cp -r /var/log/syslog* "$DIRECTORY"
+cp -r /var/log/auth.log* "$DIRECTORY"
+cp -r /var/log/vx-logs.log* "$DIRECTORY"
 
 # unmount the USB stick to make sure it's all written to disk
 echo "Saving logs to USB drive..."
