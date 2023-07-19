@@ -101,14 +101,6 @@ then
     make build-kiosk-browser
 fi
 
-sudo apt install -y unclutter mingetty brightnessctl alsa-utils pulseaudio pulseaudio-utils
-
-# simple window manager and remove all contextual info
-sudo apt install -y openbox
-
-sudo apt install -y xorg xserver-xorg-core xserver-xorg-video-all xserver-xorg-input-all xinput x11-common xinit
-sudo apt install -y rsync cups cryptsetup sbsigntool
-
 sudo chown :lpadmin /sbin/lpinfo
 echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 
