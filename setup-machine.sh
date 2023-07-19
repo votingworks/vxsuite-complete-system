@@ -336,8 +336,9 @@ sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
 sudo ln -sf /vx/config/localtime /etc/localtime
 
 # remove all network drivers. Buh bye.
-sudo apt purge -y network-manager
-sudo rm -rf /lib/modules/*/kernel/drivers/net/*
+# KEEPING THIS FOR VULN SCAN enablement
+#sudo apt purge -y network-manager
+#sudo rm -rf /lib/modules/*/kernel/drivers/net/*
 
 # delete any remembered existing network connections (e.g. wifi passwords)
 sudo rm -f /etc/NetworkManager/system-connections/*
