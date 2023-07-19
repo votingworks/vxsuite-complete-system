@@ -271,12 +271,6 @@ then
     sudo ln -s /vx/code/config/surface-go-monitors.xml /vx/ui/.config/monitors.xml
 fi
 
-# setup tpm2-totp
-bash setup-scripts/setup-tpm2-totp.sh
-
-# setup tpm keys
-bash setup-scripts/setup-tpm2-tools.sh
-
 # permissions on directories
 sudo chown -R vx-ui:vx-ui /var/vx/ui
 sudo chmod -R u=rwX /var/vx/ui
