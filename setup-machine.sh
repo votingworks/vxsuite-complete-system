@@ -377,7 +377,7 @@ sudo hostnamectl set-hostname "VotingWorks"
 sudo sh -c 'echo "\n127.0.1.1\tVotingWorks" >> /etc/hosts'
 
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
-if [[ $VXADMIN_SUDO ]] ; then
+if [[ "${VXADMIN_SUDO}" == 1 ]] ; then
     sudo cp config/sudoers-for-dev /etc/sudoers
 else
     sudo cp config/sudoers /etc/sudoers
