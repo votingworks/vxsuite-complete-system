@@ -1,5 +1,7 @@
 set -euo pipefail
 
+export PATH="${PATH}:/sbin/"
+
 if hostnamectl status | grep 'Virtualization: parallels'; then
 	echo 'Skipping TPM2 setup on Parallels VMs'
         exit 0	
