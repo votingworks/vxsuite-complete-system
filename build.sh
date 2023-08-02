@@ -20,6 +20,12 @@
 
 set -euo pipefail
 
+local_user=`logname`
+local_user_home_dir=$( getent passwd "${local_user}" | cut -d: -f6 )
+
+# Make sure PATH includes cargo and /sbin
+export PATH="${local_user_home_dir}/.cargo/bin:${PATH}:/sbin/"
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Define vxsuite apps that can be built, along with the expected path prefix
