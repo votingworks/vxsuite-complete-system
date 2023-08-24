@@ -294,9 +294,6 @@ sudo chmod -R u=rwX /var/vx/config
 sudo chmod -R g=rX /var/vx/config
 sudo chmod -R o-rwX /var/vx/config
 
-# make sure vx-services has pipenv
-sudo -u vx-services -i python3.9 -m pip install pipenv
-
 # non-graphical login
 sudo systemctl set-default multi-user.target
 
