@@ -84,7 +84,7 @@ build() {
 
     cd "${DIR}/vxsuite/apps/${APP}/frontend"
 
-    pnpm install
+    pnpm install --frozen-lockfile
   )
   if [[ $? = 0 ]]; then
     echo -e "\e[32m✅${APP} ready for building\e[0m"
