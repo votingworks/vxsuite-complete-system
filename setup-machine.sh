@@ -376,5 +376,8 @@ rm -rf *
 
 echo "Machine setup is complete. Please wait for the VM to reboot."
 
+#-- Just to prevent an active prompt
+sleep 60 
+
 exit 0;
 
