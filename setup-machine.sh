@@ -349,6 +349,10 @@ sudo apt autoremove -y
 # set password for vx-admin
 (echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
 
+# We need to schedule a reboot since the vx user will no longer have sudo privileges. 
+# One minute is the shortest option, and that's plenty of time for final steps.
+sudo shutdown --no-wall -r +1
+
 # disable all passwords
 sudo passwd -l root
 sudo passwd -l ${USER}
@@ -356,7 +360,7 @@ sudo passwd -l vx-ui
 sudo passwd -l vx-services
 
 # set a clean hostname
-sudo hostnamectl set-hostname "VotingWorks"
+sudo hostnamectl set-hostname "VotingWorks" 2>/dev/null
 sudo sh -c 'echo "\n127.0.1.1\tVotingWorks" >> /etc/hosts'
 
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
@@ -370,8 +374,7 @@ fi
 cd
 rm -rf *
 
-echo "Done, rebooting in 5s."
+echo "Machine setup is complete. Please wait for the VM to reboot."
 
-sleep 5
+exit 0;
 
-reboot
