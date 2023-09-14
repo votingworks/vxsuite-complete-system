@@ -131,9 +131,9 @@ sudo ln -sf /var/vx/services /vx/services
 
 echo "Creating users"
 # create users, no common group, specified uids.
-id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
-id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
-id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-services
+id -u vx-ui &> /dev/null || sudo useradd -u 1751 -m -d /var/vx/ui -s /bin/bash vx-ui
+id -u vx-admin &> /dev/null || sudo useradd -u 1752 -m -d /var/vx/admin -s /bin/bash vx-admin
+id -u vx-services &> /dev/null || sudo useradd -u 1750 -m -d /var/vx/services vx-services
 
 # a vx group for all vx users
 getent group vx-group || sudo groupadd -g 800 vx-group

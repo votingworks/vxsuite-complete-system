@@ -14,7 +14,7 @@ fi
 prompt-to-restart() {
   read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? (y/n) "
   if [[ ${REPLY} = "" || ${REPLY} = Y || ${REPLY} = y ]]; then
-    systemctl reboot -i
+    sudo /usr/sbin/reboot
   fi
 }
 
@@ -114,8 +114,7 @@ while true; do
   CHOICE=${CHOICES[$CHOICE_INDEX]}
   case "${CHOICE}" in
     reboot)
-      # this doesn't need root
-      systemctl reboot -i
+      sudo /usr/sbin/reboot
     ;;
 
     basic-configuration)
