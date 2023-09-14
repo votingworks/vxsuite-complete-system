@@ -360,8 +360,8 @@ sudo passwd -l vx-ui
 sudo passwd -l vx-services
 
 # set a clean hostname
-sudo hostnamectl set-hostname "VotingWorks" 2>/dev/null
 sudo sh -c 'echo "\n127.0.1.1\tVotingWorks" >> /etc/hosts'
+sudo hostnamectl set-hostname "VotingWorks" 2>/dev/null
 
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 if [[ $VXADMIN_SUDO ]] ; then
