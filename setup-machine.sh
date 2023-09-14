@@ -9,17 +9,7 @@
 
 set -euo pipefail
 
-if uname -a | grep Debian; then
-	export DISTRO="Debian"
-else
-	export DISTRO="Ubuntu"
-fi
-
-# Debian doesn't add /sbin/ to default path, but it's needed for groupadd and other commands.
-# If /sbin/ is already in the path, this won't hurt, and it's just for running this script.
-if [[ $DISTRO == "Debian" ]]; then
-    export PATH=${PATH}:/sbin/
-fi
+export PATH=${PATH}:/sbin/
 
 # which kind of machine are we setting up?
 echo "Welcome to VxSuite. THIS IS A DESTRUCTIVE SCRIPT. Ctrl-C right now if you don't know for sure what you're doing."
@@ -171,11 +161,7 @@ sudo cp config/cupsd.conf /var/etc/cups/
 sudo cp config/cups-files.conf /var/etc/cups/
 
 # modify cups systemd service to read config files from /var
-if [[ $DISTRO == "Debian" ]]; then
-    sudo cp config/cups.service /usr/lib/systemd/system/
-else
-    sudo cp config/cups.service /lib/systemd/system/
-fi
+sudo cp config/cups.service /usr/lib/systemd/system/
 
 # modified apparmor profiles to allow cups to access config files in /var
 sudo cp config/apparmor.d/usr.sbin.cupsd /etc/apparmor.d/
@@ -309,10 +295,6 @@ sudo update-grub
 # turn off network
 sudo timedatectl set-ntp no
 
-if [[  $DISTRO == "Ubuntu" ]]; then
-	sudo nmcli networking off
-fi
-
 # set up symlinked timezone files to prepare for read-only filesystem
 sudo rm -f /etc/localtime
 sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
@@ -337,11 +319,6 @@ echo "Successfully setup machine."
 # now we remove permissions, reset passwords, and ready for production.
 
 USER=$(whoami)
-
-# remove all unnecessary packages
-if [[ $DISTRO == "Ubuntu" ]] ; then
-	sudo apt remove -y ubuntu-desktop
-fi
 
 sudo apt remove -y git firefox snapd
 sudo apt autoremove -y
