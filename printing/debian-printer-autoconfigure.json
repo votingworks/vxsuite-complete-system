@@ -36,6 +36,15 @@
       "ppd": {
         "path": "brother_pj822_printer_en.ppd"
       }
+    },
+    {
+      "label": "Brother PJ-823",
+      "vendorId": 1273,
+      "productId": 8419,
+      "baseDeviceURI": "usb://Brother/PJ-823",
+      "ppd": {
+        "path": "brother_pj823_printer_en.ppd"
+      }
     }
   ]
 }
