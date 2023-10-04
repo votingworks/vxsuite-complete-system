@@ -28,6 +28,7 @@ vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/setup-boot-entry.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/create-machine-cert.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/program-system-administrator-cards.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
+vx-admin ALL=(root:ALL) NOPASSWD: /usr/sbin/reboot
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/mount-usb.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/unmount-usb.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/intermediate-scripts/create-cert

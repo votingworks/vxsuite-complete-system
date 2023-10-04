@@ -37,9 +37,9 @@ ALL_SERVICES=(converter-ms-sems)
 SERVICES_PATH_PREFIX="${DIR}/vxsuite/services"
 
 usage() {
-  echo "usage: ./build.sh [all|$(IFS=\| ; echo "${ALL_APPS[*]}")]"
+  echo "usage: ./prepare_build.sh [all|$(IFS=\| ; echo "${ALL_APPS[*]}")]"
   echo
-  echo "Build all or some of the VxSuite apps."
+  echo "Prepare to build all or some of the VxSuite apps."
 }
 
 APPS_TO_BUILD=()
@@ -73,7 +73,7 @@ fi
 # Function that builds a single app
 build() {
   local APP="$1"
-  echo "🔨Building ${APP}"
+  echo "🔨Preparing ${APP} for build"
   export BUILD_ROOT="${DIR}/build/${APP}"
   rm -rf "${BUILD_ROOT}"
   # In order to get the subshell exit code without exiting the whole script, we
@@ -84,32 +84,24 @@ build() {
 
     cd "${DIR}/vxsuite/apps/${APP}/frontend"
 
-    BUILD_ROOT="${BUILD_ROOT}/vxsuite" ./script/prod-build
-
-    cp -rp \
-      "${DIR}/run-scripts/run-${APP}.sh" \
-      "${DIR}/run-scripts/run-kiosk-browser.sh" \
-      "${DIR}/run-scripts/run-kiosk-browser-forever-and-log.sh" \
-      "${DIR}/config" \
-      "${DIR}/printing" \
-      "${DIR}/app-scripts" \
-      "${BUILD_ROOT}"
-
-    # temporary hack because the symlink works but somehow the copy doesn't for precinct-scanner
-    cd ${BUILD_ROOT}
-    rm -rf vxsuite # this is the built version
-    ln -s ../../vxsuite ./vxsuite
+    pnpm install --frozen-lockfile
   )
   if [[ $? = 0 ]]; then
-    echo -e "\e[32m✅${APP} built\e[0m"
+    echo -e "\e[32m✅${APP} ready for building\e[0m"
   else
-    echo -e "\e[31m✘ ${APP} build failed! check the logs above\e[0m" >&2
+    echo -e "\e[31m✘ ${APP} build prep failed! check the logs above\e[0m" >&2
     exit 1
   fi
   set -e
 }
 
-echo "Building ${#APPS_TO_BUILD[@]} app(s): ${APPS_TO_BUILD[@]}"
+echo "Download all Rust crates"
+pnpm --dir ${DIR}/vxsuite/libs/ballot-interpreter/ install:rust-addon
+
+echo "Download all kiosk-browser tools"
+make -C kiosk-browser install
+
+echo "Preparing ${#APPS_TO_BUILD[@]} app(s): ${APPS_TO_BUILD[@]}"
 
 for app in "${APPS_TO_BUILD[@]}"; do
   build "${app}"

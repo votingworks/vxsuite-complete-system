@@ -9,17 +9,7 @@
 
 set -euo pipefail
 
-if uname -a | grep Debian; then
-	export DISTRO="Debian"
-else
-	export DISTRO="Ubuntu"
-fi
-
-# Debian doesn't add /sbin/ to default path, but it's needed for groupadd and other commands.
-# If /sbin/ is already in the path, this won't hurt, and it's just for running this script.
-if [[ $DISTRO == "Debian" ]]; then
-    export PATH=${PATH}:/sbin/
-fi
+export PATH=${PATH}:/sbin/
 
 # which kind of machine are we setting up?
 echo "Welcome to VxSuite. THIS IS A DESTRUCTIVE SCRIPT. Ctrl-C right now if you don't know for sure what you're doing."
@@ -29,19 +19,19 @@ CHOICES=('')
 MODEL_NAMES=('')
 
 echo
-echo "${#CHOICES[@]}. Election Manager"
+echo "${#CHOICES[@]}. VxAdmin"
 CHOICES+=('admin')
 MODEL_NAMES+=('VxAdmin')
 
-echo "${#CHOICES[@]}. Ballot Scanner"
+echo "${#CHOICES[@]}. VxCentralScan"
 CHOICES+=('central-scan')
 MODEL_NAMES+=('VxCentralScan')
 
-echo "${#CHOICES[@]}. Ballot Marking Device (BMD)"
+echo "${#CHOICES[@]}. VxMark"
 CHOICES+=('mark')
 MODEL_NAMES+=('VxMark')
 
-echo "${#CHOICES[@]}. Precinct Scanner"
+echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
@@ -101,14 +91,6 @@ then
     make build-kiosk-browser
 fi
 
-sudo apt install -y unclutter mingetty brightnessctl alsa-utils pulseaudio pulseaudio-utils
-
-# simple window manager and remove all contextual info
-sudo apt install -y openbox
-
-sudo apt install -y xorg xserver-xorg-core xserver-xorg-video-all xserver-xorg-input-all xinput x11-common xinit
-sudo apt install -y rsync cups cryptsetup sbsigntool
-
 sudo chown :lpadmin /sbin/lpinfo
 echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 
@@ -139,9 +121,9 @@ sudo ln -sf /var/vx/services /vx/services
 
 echo "Creating users"
 # create users, no common group, specified uids.
-id -u vx-ui &> /dev/null || sudo useradd -u 751 -m -d /var/vx/ui -s /bin/bash vx-ui
-id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
-id -u vx-services &> /dev/null || sudo useradd -u 750 -m -d /var/vx/services vx-services
+id -u vx-ui &> /dev/null || sudo useradd -u 1751 -m -d /var/vx/ui -s /bin/bash vx-ui
+id -u vx-admin &> /dev/null || sudo useradd -u 1752 -m -d /var/vx/admin -s /bin/bash vx-admin
+id -u vx-services &> /dev/null || sudo useradd -u 1750 -m -d /var/vx/services vx-services
 
 # a vx group for all vx users
 getent group vx-group || sudo groupadd -g 800 vx-group
@@ -179,11 +161,7 @@ sudo cp config/cupsd.conf /var/etc/cups/
 sudo cp config/cups-files.conf /var/etc/cups/
 
 # modify cups systemd service to read config files from /var
-if [[ $DISTRO == "Debian" ]]; then
-    sudo cp config/cups.service /usr/lib/systemd/system/
-else
-    sudo cp config/cups.service /lib/systemd/system/
-fi
+sudo cp config/cups.service /usr/lib/systemd/system/
 
 # modified apparmor profiles to allow cups to access config files in /var
 sudo cp config/apparmor.d/usr.sbin.cupsd /etc/apparmor.d/
@@ -279,12 +257,6 @@ then
     sudo ln -s /vx/code/config/surface-go-monitors.xml /vx/ui/.config/monitors.xml
 fi
 
-# setup tpm2-totp
-bash setup-scripts/setup-tpm2-totp.sh
-
-# setup tpm keys
-bash setup-scripts/setup-tpm2-tools.sh
-
 # permissions on directories
 sudo chown -R vx-ui:vx-ui /var/vx/ui
 sudo chmod -R u=rwX /var/vx/ui
@@ -308,9 +280,6 @@ sudo chmod -R u=rwX /var/vx/config
 sudo chmod -R g=rX /var/vx/config
 sudo chmod -R o-rwX /var/vx/config
 
-# make sure vx-services has pipenv
-sudo -u vx-services -i python3.9 -m pip install pipenv
-
 # non-graphical login
 sudo systemctl set-default multi-user.target
 
@@ -325,10 +294,6 @@ sudo update-grub
 
 # turn off network
 sudo timedatectl set-ntp no
-
-if [[  $DISTRO == "Ubuntu" ]]; then
-	sudo nmcli networking off
-fi
 
 # set up symlinked timezone files to prepare for read-only filesystem
 sudo rm -f /etc/localtime
@@ -355,16 +320,15 @@ echo "Successfully setup machine."
 
 USER=$(whoami)
 
-# remove all unnecessary packages
-if [[ $DISTRO == "Ubuntu" ]] ; then
-	sudo apt remove -y ubuntu-desktop
-fi
-
 sudo apt remove -y git firefox snapd
 sudo apt autoremove -y
 
 # set password for vx-admin
 (echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
+
+# We need to schedule a reboot since the vx user will no longer have sudo privileges. 
+# One minute is the shortest option, and that's plenty of time for final steps.
+sudo shutdown --no-wall -r +1
 
 # disable all passwords
 sudo passwd -l root
@@ -373,8 +337,8 @@ sudo passwd -l vx-ui
 sudo passwd -l vx-services
 
 # set a clean hostname
-sudo hostnamectl set-hostname "VotingWorks"
 sudo sh -c 'echo "\n127.0.1.1\tVotingWorks" >> /etc/hosts'
+sudo hostnamectl set-hostname "VotingWorks" 2>/dev/null
 
 # move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
 if [[ "${VXADMIN_SUDO}" == 1 ]] ; then
@@ -387,8 +351,10 @@ fi
 cd
 rm -rf *
 
-echo "Done, rebooting in 5s."
+echo "Machine setup is complete. Please wait for the VM to reboot."
 
-sleep 5
+#-- Just to prevent an active prompt
+sleep 60 
 
-reboot
+exit 0;
+
