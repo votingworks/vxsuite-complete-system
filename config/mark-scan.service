@@ -1,0 +1,16 @@
+[Unit]
+Description=VotingWorks BMD and ballot caster
+
+[Service]
+Type=simple
+User=vx-services
+Environment=VX_CONFIG_ROOT=/vx/config
+Environment=VX_METADATA_ROOT=/vx/code
+Environment=MARK_SCAN_WORKSPACE=/vx/data/module-mark-scan
+ExecStart=/bin/bash /vx/services/run-mark-scan.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=votingworksapp
+
+[Install]
+WantedBy=multi-user.target
