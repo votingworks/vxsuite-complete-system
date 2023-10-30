@@ -96,7 +96,7 @@ build() {
 }
 
 echo "Download all Rust crates"
-pnpm --dir ${DIR}/vxsuite/libs/ballot-interpreter/ install:rust-addon
+pnpm --recursive install:rust-addon
 
 echo "Download all kiosk-browser tools"
 make -C kiosk-browser install
