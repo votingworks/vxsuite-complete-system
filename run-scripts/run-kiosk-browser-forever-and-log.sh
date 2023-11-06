@@ -5,6 +5,9 @@ set -euo pipefail
 # go to directory where this file is located
 cd "$(dirname "$0")"
 
+# rotate vx-logs.log if necessary
+sudo /sbin/logrotate --force /etc/vx-logs.logrotate
+
 # configuration information
 CONFIG=${VX_CONFIG_ROOT:-./config}
 METADATA=${VX_METADATA_ROOT:-./}
