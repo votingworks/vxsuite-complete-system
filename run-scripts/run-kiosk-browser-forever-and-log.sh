@@ -6,7 +6,9 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 # rotate vx-logs.log if necessary
-sudo /sbin/logrotate --force /etc/vx-logs.logrotate
+# always return true on failure since logs dont always need rotating
+# but logrotate throws an error code
+sudo /sbin/logrotate --force /etc/vx-logs.logrotate || true
 
 # configuration information
 CONFIG=${VX_CONFIG_ROOT:-./config}
