@@ -7,10 +7,7 @@ URL=${1:-http://localhost:3000}
 : "${VX_METADATA_ROOT:="./"}"
 
 OS=$(lsb_release -cs)
-PRINTER_FILE='./printing/printer-autoconfigure.json'
-if [[ $OS == "bullseye" ]]; then
-	PRINTER_FILE='./printing/debian-printer-autoconfigure.json'
-fi
+PRINTER_FILE='./printing/debian-printer-autoconfigure.json'
 
 kiosk-browser \
   --add-file-perm o=http://localhost:3000,p=/media/**/*,rw \
