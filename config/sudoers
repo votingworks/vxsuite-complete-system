@@ -41,3 +41,4 @@ vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/sign.sh
 vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/mount-usb.sh
 vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/unmount-usb.sh
 vx-ui ALL=(root:ALL) NOPASSWD: /bin/efibootmgr
+vx-ui ALL=(root:ALL) NOPASSWD: /sbin/logrotate
