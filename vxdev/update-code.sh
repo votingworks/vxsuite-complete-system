@@ -6,7 +6,7 @@
 APP_TYPE=$(sudo cat "$VX_CONFIG_ROOT/machine-type")
 
 cd /vx/code/vxsuite-complete-system
-git checkout main > /dev/null 2>&1
+git checkout adam/aws-qa > /dev/null 2>&1
 git pull > /dev/null
 git fetch --tags > /dev/null
 sudo git clean -xfd > /dev/null
@@ -35,13 +35,11 @@ then
 fi
 
 BRANCH=${CHOICES[$CHOICE_INDEX]}
-sudo apt remove -y nodejs > /dev/null # this will get reinstalled, the version could change based on what branch of the code we are building
 
 if [[ $BRANCH == 'latest' ]]; then
 	cd vxsuite
  	git checkout main
 	git pull
-	./script/setup-dev
 	cd ../kiosk-browser
 	git checkout main
 	git pull
@@ -51,7 +49,6 @@ elif [[ $BRANCH == 'stable' ]]; then
 	git submodule foreach --recursive sudo git clean -xfd
 	git submodule update --init --recursive
 	cd vxsuite
-	./script/setup-dev
 	cd ..
 elif [[ $BRANCH == 'custom' ]]; then
 	read -p "Enter the branch name: " BRANCH_NAME
@@ -63,7 +60,6 @@ elif [[ $BRANCH == 'custom' ]]; then
 		read -p "Invalid Branch Name. Try again: " BRANCH_NAME
 	done
 	git checkout $BRANCH_NAME
-	./script/setup-dev
 	cd ../kiosk-browser
 	git checkout main
 	git pull
@@ -76,22 +72,32 @@ echo $APP_TYPE
 if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/central-scan/backend/.env.local
 	cp /vx/config/.env.local vxsuite/apps/central-scan/frontend/.env.local
+	./prepare_build.sh central-scan
 	./build.sh central-scan
 fi
 if [[ $APP_TYPE == 'VxAdmin' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/admin/frontend/.env.local
 	cp /vx/config/.env.local vxsuite/apps/admin/backend/.env.local
+	./prepare_build.sh admin
 	./build.sh admin
 fi
 if [[ $APP_TYPE == 'VxMark' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/mark/frontend/.env.local
 	cp /vx/config/.env.local vxsuite/apps/mark/backend/.env.local
+	./prepare_build.sh mark
 	./build.sh mark
 fi
 if [[ $APP_TYPE == 'VxScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/scan/backend/.env.local
 	cp /vx/config/.env.local vxsuite/apps/scan/frontend/.env.local
+	./prepare_build.sh scan
 	./build.sh scan
+fi
+if [[ $APP_TYPE == 'VxMarkScan' ]]; then
+	cp /vx/config/.env.local vxsuite/apps/mark-scan/backend/.env.local
+	cp /vx/config/.env.local vxsuite/apps/mark-scan/frontend/.env.local
+	./prepare_build.sh mark-scan
+	./build.sh mark-scan
 fi
 
 echo "Done! Closing in 3 seconds."
