@@ -110,9 +110,6 @@ sudo usermod -aG lpadmin vx
 sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
 sudo usermod -aG scanner vx
 
-# make sure vx has pipenv
-sudo -u vx -i pip3 install pipenv
-
 # admin function scripts
 sudo ln -sf /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
 sudo ln -sf /vx/code/config/admin-functions /vx/admin/admin-functions
@@ -129,9 +126,6 @@ sudo sh -c 'git tag --points-at HEAD > /vx/code/code-tag'
 # machine ID
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
 
-# sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
-bash setup-scripts/setup-speech-synthesis.sh
-
 # vx-ui OpenBox configuration
 sudo mkdir -p /vx/ui/.config/openbox
 sudo ln -sf /vx/code/config/openbox-menu.xml /vx/ui/.config/openbox/menu.xml
@@ -146,12 +140,6 @@ fi
 
 # update sudoers file to give vx user special permissions
 sudo cp vxdev/sudoers /etc/sudoers
-
-# setup tpm2-totp
-sudo bash setup-scripts/setup-tpm2-totp.sh
-
-# setup tpm2-tools
-sudo bash setup-scripts/setup-tpm2-tools.sh
 
 # turn off time synchronization
 sudo timedatectl set-ntp no

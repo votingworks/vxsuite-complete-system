@@ -111,6 +111,11 @@ build() {
 
 echo "Building ${#APPS_TO_BUILD[@]} app(s): ${APPS_TO_BUILD[@]}"
 
+if ! which kiosk-browser >/dev/null 2>&1
+then
+  make offline-kiosk-browser
+fi
+
 for app in "${APPS_TO_BUILD[@]}"; do
   build "${app}"
 done
