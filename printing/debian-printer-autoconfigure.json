@@ -29,6 +29,15 @@
       }
     },
     {
+      "label": "HP Color LaserJet Pro M4001dn",
+      "vendorId": 1008,
+      "productId": 628,
+      "baseDeviceURI": "usb://HP/LaserJet%20Pro%204001",
+      "ppd": {
+        "path": "generic-postscript-driver.ppd"
+      }
+    },
+    {
       "label": "Brother PJ-822",
       "vendorId": 1273,
       "productId": 8418,
