@@ -31,7 +31,20 @@ ELO="Elo Touch"
      # delay because it appears the xrandr and xinput commands above turn off sound for a bit
      # (because of course they do)
      sleep 5 && aplay ~/chime.wav
-fi) &
+ fi) &
+
+# look for an external display and mirror to it
+(while true; do
+     sleep 5
+
+     if xrandr | grep "HDMI-1 connected"; then
+	 xrandr --output HDMI-1 --mode 1920x1080 --same-as eDP-1 > /dev/null
+
+	 # once this is done, we don't need to loop anymore
+	 # the setting will survive unplug/replug until next reboot
+	 break
+     fi
+ done) &
 
 # brightness all the way
 sudo brightnessctl s 100%
