@@ -10,13 +10,11 @@ set -euo pipefail
 : "${VX_MACHINE_TYPE:="$(< "${VX_CONFIG_ROOT}/machine-type")"}"
 
 function program_system_administrator_card() {
-    pushd "${VX_METADATA_ROOT}/vxsuite/libs/auth" > /dev/null
     NODE_ENV=production \
     VX_CONFIG_ROOT="${VX_CONFIG_ROOT}" \
     VX_MACHINE_JURISDICTION="${VX_MACHINE_JURISDICTION}" \
     VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
-    ./scripts/program-system-administrator-java-card
-    popd > /dev/null
+    "${VX_METADATA_ROOT}/vxsuite/libs/auth/scripts/program-system-administrator-java-card"
 }
 
 # Close any existing connections to the card reader, e.g. from the VxAdmin app
