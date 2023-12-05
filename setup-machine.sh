@@ -131,6 +131,8 @@ sudo usermod -aG vx-group vx-ui
 sudo usermod -aG vx-group vx-admin
 sudo usermod -aG vx-group vx-services
 
+sudo usermod -aG video vx-ui
+
 # remove all files created by default
 sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 
