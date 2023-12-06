@@ -26,6 +26,17 @@ if [[ $answer == 'n' || $answer == 'N' ]]; then
     exit
 fi
 
+if [ $surface == 0 ]; then
+  read -s -p "Please enter the passphrase for the secure boot key: " KBUILD_SIGN_PIN
+
+  export KBUILD_SIGN_PIN
+
+  umount /dev/sda || true
+  umount /dev/sda1 || true
+  mount /dev/sda /mnt || mount /dev/sda1 /mnt || (echo "Secure boot keys not found; exiting" && sleep 5 && exit);
+
+  /usr/src/linux-kbuild-6.1/scripts/sign-file sha256 /mnt/DB.key /mnt/DB.crt $(modinfo -n i915)
+fi
 
 update-initramfs -u
 
