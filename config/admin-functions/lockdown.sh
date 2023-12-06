@@ -26,7 +26,8 @@ if [[ $answer == 'n' || $answer == 'N' ]]; then
     exit
 fi
 
-if [ $surface == 0 ]; then
+modules_to_sign="i915"
+if [[ $surface == 0 ]] && [[ -n $modules_to_sign ]]; then
   read -s -p "Please enter the passphrase for the secure boot key: " KBUILD_SIGN_PIN
 
   export KBUILD_SIGN_PIN
@@ -35,7 +36,12 @@ if [ $surface == 0 ]; then
   umount /dev/sda1 || true
   mount /dev/sda /mnt || mount /dev/sda1 /mnt || (echo "Secure boot keys not found; exiting" && sleep 5 && exit);
 
-  /usr/src/linux-kbuild-6.1/scripts/sign-file sha256 /mnt/DB.key /mnt/DB.crt $(modinfo -n i915)
+  for module in ${modules_to_sign}
+  do
+    if modinfo -n ${module} 2>&1 > /dev/null; then
+      /usr/src/linux-kbuild-6.1/scripts/sign-file sha256 /mnt/DB.key /mnt/DB.crt $(modinfo -n ${module})
+    fi
+  done
 fi
 
 update-initramfs -u
