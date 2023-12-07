@@ -169,6 +169,8 @@ sudo cp config/cups.service /usr/lib/systemd/system/
 sudo cp config/apparmor.d/usr.sbin.cupsd /etc/apparmor.d/
 sudo cp config/apparmor.d/usr.sbin.cups-browsed /etc/apparmor.d/
 
+# copy any modprobe configs we might use
+sudo cp config/modprobe.d/* /etc/modprobe.d/
 
 # let vx-services scan
 if [ "${CHOICE}" != "mark" ]

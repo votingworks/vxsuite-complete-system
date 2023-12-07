@@ -26,6 +26,28 @@ if [[ $answer == 'n' || $answer == 'N' ]]; then
     exit
 fi
 
+# We don't need to sign i915 since it is signed by Debian's Secure Boot key
+# and we have access to that under Secure Boot. 
+# However, if we do ever need to use an unsigned module, the below code 
+# will sign with the VotingWorks key.
+# You would just add modules to the var, e.g. modules_to_sign="i915 mod2 mod3"
+modules_to_sign=""
+if [[ $surface == 0 ]] && [[ -n $modules_to_sign ]]; then
+  read -s -p "Please enter the passphrase for the secure boot key: " KBUILD_SIGN_PIN
+
+  export KBUILD_SIGN_PIN
+
+  umount /dev/sda || true
+  umount /dev/sda1 || true
+  mount /dev/sda /mnt || mount /dev/sda1 /mnt || (echo "Secure boot keys not found; exiting" && sleep 5 && exit);
+
+  for module in ${modules_to_sign}
+  do
+    if modinfo -n ${module} 2>&1 > /dev/null; then
+      /usr/src/linux-kbuild-6.1/scripts/sign-file sha256 /mnt/DB.key /mnt/DB.crt $(modinfo -n ${module})
+    fi
+  done
+fi
 
 update-initramfs -u
 
