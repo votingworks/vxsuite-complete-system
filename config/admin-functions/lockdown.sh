@@ -26,7 +26,12 @@ if [[ $answer == 'n' || $answer == 'N' ]]; then
     exit
 fi
 
-modules_to_sign="i915"
+# We don't need to sign i915 since it is signed by Debian's Secure Boot key
+# and we have access to that under Secure Boot. 
+# However, if we do ever need to use an unsigned module, the below code 
+# will sign with the VotingWorks key.
+# You would just add modules to the var, e.g. modules_to_sign="i915 mod2 mod3"
+modules_to_sign=""
 if [[ $surface == 0 ]] && [[ -n $modules_to_sign ]]; then
   read -s -p "Please enter the passphrase for the secure boot key: " KBUILD_SIGN_PIN
 
