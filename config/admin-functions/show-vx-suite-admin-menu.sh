@@ -202,7 +202,6 @@ while true; do
 
     hash-signature)
       sudo "${VX_FUNCTIONS_ROOT}/hash-signature.sh"
-      read -s -n 1
     ;;
     
     setup-boot-entry)
