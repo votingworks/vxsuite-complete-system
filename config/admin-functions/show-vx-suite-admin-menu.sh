@@ -94,6 +94,9 @@ while true; do
   echo "${#CHOICES[@]}. Lock the System Down"
   CHOICES+=('lockdown')
 
+  echo "${#CHOICES[@]}. Show Image Hash Signature"
+  CHOICES+=('hash-signature')
+
   # Keep conditional choices at the end so that the numbering of the other choices is consistent
   # across machines
 
@@ -194,6 +197,11 @@ while true; do
     
     lockdown)
       sudo "${VX_FUNCTIONS_ROOT}/lockdown.sh"
+      read -s -n 1
+    ;;
+
+    hash-signature)
+      sudo "${VX_FUNCTIONS_ROOT}/hash-signature.sh"
       read -s -n 1
     ;;
     
