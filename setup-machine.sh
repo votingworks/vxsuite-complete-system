@@ -172,6 +172,9 @@ sudo cp config/apparmor.d/usr.sbin.cups-browsed /etc/apparmor.d/
 # copy any modprobe configs we might use
 sudo cp config/modprobe.d/* /etc/modprobe.d/
 
+# load the i915 display module as early as possible
+sudo sh -c 'echo "i915" >> /etc/modules-load.d/modules.conf'
+
 # let vx-services scan
 if [ "${CHOICE}" != "mark" ]
 then
