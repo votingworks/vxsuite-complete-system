@@ -51,6 +51,11 @@ fi
 
 update-initramfs -u
 
+# change fstab to mount the root partition as read-only the next time it boots
+# we have to do this before we remount as read-only ourselves,
+# and of course before we dm-verity the root partition
+sed -i -e "s/errors=/ro,errors=/" /etc/fstab
+
 # Remount / so it can't change while we're doing the veritysetup
 cd /tmp
 mount -o ro,remount /
