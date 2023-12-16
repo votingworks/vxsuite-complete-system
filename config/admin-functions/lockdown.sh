@@ -78,6 +78,7 @@ if [ $surface == 0 ]; then
         --add-section .splash="/vx/admin/config/logo.bmp" --change-section-vma .splash=0x40000 \
         --add-section .linux="/boot/vmlinuz-${KERNEL_VERSION}" --change-section-vma .linux=0x2000000 \
         --add-section .initrd="/boot/initrd.img-${KERNEL_VERSION}" --change-section-vma .initrd=0x3000000 \
+	--add-section .loglevel="loglevel=3" --change-section-vma .loglevel=0x50000 \
         "/usr/lib/systemd/boot/efi/linuxx64.efi.stub" "/tmp/linux.efi"
 
     # Sign the resulting binary
