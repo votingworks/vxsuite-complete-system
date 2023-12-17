@@ -46,4 +46,3 @@ tpm2_readpublic -c key.ctx -f PEM -o "${VX_CONFIG_ROOT}/key.pub"
 
 chmod +r "${VX_CONFIG_ROOT}/key.pub"
 
-cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ANSI -o -

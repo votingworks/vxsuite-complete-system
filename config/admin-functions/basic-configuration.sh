@@ -25,15 +25,7 @@ echo -e "\e[1mStep 3: Record Machine Key\e[0m"
 echo 'Setting up signing keys...'
 sudo ${VX_FUNCTIONS_ROOT}/generate-key.sh > /dev/null
 PUBLIC_KEY=$(cat "${VX_CONFIG_ROOT}/key.pub")
-echo "Public Signing Key: ${PUBLIC_KEY}"
-echo "Record this QR code containing the Machine ID and Public Signing Key:"
-MACHINE_ID=$(< "${VX_CONFIG_ROOT}/machine-id")
-echo -e "${MACHINE_ID}\n${PUBLIC_KEY}" | qrencode -t ANSI -o -
-
-while true; do
-    read -p "Confirm QR code recorded (y/n) " CONFIRM
-    [[ "${CONFIRM}" = "y" ]] && break
-done
+echo "Signing key set up successfully."
 
 echo
 echo -e "\e[1mStep 4: Create Machine Cert\e[0m"
