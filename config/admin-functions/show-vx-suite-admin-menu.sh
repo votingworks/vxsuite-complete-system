@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+setfont /usr/share/consolefonts/Lat7-Terminus32x16.psf.gz 
+
 set -euo pipefail
 
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
