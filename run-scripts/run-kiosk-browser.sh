@@ -14,6 +14,5 @@ kiosk-browser \
   --add-file-perm o=http://localhost:3000,p=/var/log,ro \
   --add-file-perm o=http://localhost:3000,p=/var/log/*,ro \
   --autoconfigure-print-config ${PRINTER_FILE} \
-  --app-scripts-directory ./app-scripts \
   --url ${URL} || true
 
