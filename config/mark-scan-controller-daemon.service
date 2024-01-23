@@ -1,0 +1,15 @@
+[Unit]
+Description=VotingWorks daemon that handles accessible controller input.
+
+[Service]
+Type=simple
+User=vx-services
+Environment=VX_CONFIG_ROOT=/vx/config
+Environment=VX_METADATA_ROOT=/vx/code
+ExecStart=/bin/bash /vx/services/run-mark-scan-controller-daemon.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=votingworksapp
+
+[Install]
+WantedBy=multi-user.target
