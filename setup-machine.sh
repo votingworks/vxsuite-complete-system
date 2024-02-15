@@ -31,6 +31,10 @@ echo "${#CHOICES[@]}. VxMark"
 CHOICES+=('mark')
 MODEL_NAMES+=('VxMark')
 
+echo "${#CHOICES[@]}. VxMarkScan"
+CHOICES+=('mark-scan')
+MODEL_NAMES+=('VxMarkScan')
+
 echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
