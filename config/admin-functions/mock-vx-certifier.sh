@@ -20,6 +20,7 @@ if [[
     "${VX_MACHINE_TYPE}" != "admin" &&
     "${VX_MACHINE_TYPE}" != "central-scan" &&
     "${VX_MACHINE_TYPE}" != "mark" &&
+    "${VX_MACHINE_TYPE}" != "mark-scan" &&
     "${VX_MACHINE_TYPE}" != "scan"
 ]]; then
     echo "VX_MACHINE_TYPE must be one of admin, central-scan, mark, or scan" >&2
