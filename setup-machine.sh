@@ -200,6 +200,7 @@ sudo cp -rp vxsuite /vx/code/
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
 sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 
+
 # symlink appropriate vx/ui files
 sudo ln -s /vx/code/config/ui_bash_profile /vx/ui/.bash_profile
 sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
@@ -325,6 +326,18 @@ sudo cp config/${CHOICE}.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/${CHOICE}.service
 sudo systemctl enable ${CHOICE}.service
 sudo systemctl start ${CHOICE}.service
+
+# mark-scan requires additional service daemons
+if [[ "${CHOICE}" == "mark-scan" ]]; then
+  for vx_daemon in controller pat
+  do
+    sudo cp config/mark-scan-${vx_daemon}-daemon.service /etc/systemd/system/
+    sudo cp run-scripts/run-mark-scan-${vx_daemon}-daemon.sh /vx/services/
+    sudo chmod 644 /etc/systemd/system/mark-scan-${vx_daemon}-daemon.service
+    sudo systemctl enable mark-scan-${vx_daemon}-daemon.service
+    sudo systemctl start mark-scan-${vx_daemon}-daemon.service
+  done
+fi
 
 echo "Successfully setup machine."
 
