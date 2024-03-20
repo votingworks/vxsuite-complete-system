@@ -105,6 +105,10 @@ echo "Preparing ${#APPS_TO_BUILD[@]} app(s): ${APPS_TO_BUILD[@]}"
 
 for app in "${APPS_TO_BUILD[@]}"; do
   build "${app}"
+  if [[ "${app}" == "mark-scan" ]]; then
+    make -C "${DIR}/vxsuite/apps/mark-scan/accessible-controller" build
+    make -C "${DIR}/vxsuite/apps/mark-scan/pat-device-input" build
+  fi
 done
 
 exit 0
