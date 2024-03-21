@@ -63,7 +63,7 @@ then
 fi
 
 
-if ! veritysetup open "${DATADEV}" vroot "${HASHDEV}" "${HASH}"
+if ! veritysetup open --panic-on-corruption "${DATADEV}" vroot "${HASHDEV}" "${HASH}"
 then
 	log_failure_msg "$PREFIX: ${DATADEV} unable to setup verity, remounting ${rootmnt}"
 	panic "$PREFIX: failed veritysetup"
