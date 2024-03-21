@@ -332,8 +332,9 @@ if [[ "${CHOICE}" == "mark-scan" ]]; then
   for vx_daemon in controller pat
   do
     sudo cp config/mark-scan-${vx_daemon}-daemon.service /etc/systemd/system/
-    sudo cp run-scripts/run-mark-scan-${vx_daemon}-daemon.sh /vx/services/
+    sudo cp run-scripts/run-mark-scan-${vx_daemon}-daemon.sh /vx/code/
     sudo chmod 644 /etc/systemd/system/mark-scan-${vx_daemon}-daemon.service
+    sudo ln -s /vx/code/run-mark-scan-${vx_daemon}-daemon.sh /vx/services/run-mark-scan-${vx_daemon}-daemon.sh
     sudo systemctl enable mark-scan-${vx_daemon}-daemon.service
     sudo systemctl start mark-scan-${vx_daemon}-daemon.service
   done
