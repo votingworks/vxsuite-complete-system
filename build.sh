@@ -118,6 +118,15 @@ fi
 
 for app in "${APPS_TO_BUILD[@]}"; do
   build "${app}"
+  # mark-scan has additional daemons that need to be built
+  # crates were fetched while online, now we build the release while offline
+  if [[ "${app}" == "mark-scan" ]]; then
+    for vx_daemon in accessible-controller pat-device-input
+    do
+      cd "${DIR}/vxsuite/apps/mark-scan/${vx_daemon}"
+      mkdir -p target && cargo build --offline --release --target-dir target/.
+    done
+  fi
 done
 
 exit 0

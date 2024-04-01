@@ -105,9 +105,14 @@ echo "Preparing ${#APPS_TO_BUILD[@]} app(s): ${APPS_TO_BUILD[@]}"
 
 for app in "${APPS_TO_BUILD[@]}"; do
   build "${app}"
+  # mark-scan has additional daemons that need to be built
+  # so we fetch their Rust crates while online
   if [[ "${app}" == "mark-scan" ]]; then
-    make -C "${DIR}/vxsuite/apps/mark-scan/accessible-controller" build
-    make -C "${DIR}/vxsuite/apps/mark-scan/pat-device-input" build
+    for vx_daemon in accessible-controller pat-device-input
+    do
+      cd "${DIR}/vxsuite/apps/mark-scan/${vx_daemon}"
+      cargo fetch
+    done
   fi
 done
 
