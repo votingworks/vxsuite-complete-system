@@ -137,6 +137,10 @@ sudo usermod -aG vx-group vx-services
 
 sudo usermod -aG video vx-ui
 
+# mark-scan requires access to the audio group
+sudo usermod -aG audio vx-ui
+sudo usermod -aG audio vx-services
+
 # remove all files created by default
 sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 
