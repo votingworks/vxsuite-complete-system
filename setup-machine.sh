@@ -193,6 +193,24 @@ then
     sudo usermod -aG scanner vx-services
 fi
 
+if [ "${CHOICE}" == "mark-scan" ]
+then
+    # let vx-services use virtual uinput devices
+    getent group uinput || groupadd uinput
+    sudo cp config/50-uinput.rules /etc/udev/rules.d/
+    # uinput module must be loaded explicitly
+    sudo cp config/uinput.conf /etc/modules-load.d/uinput.conf
+    sudo usermod -aG uinput vx-services
+
+    # let vx-services use serialport devices at /dev/ttyACM<n>
+    sudo usermod -aG dialout vx-services
+
+    # let vx-services use GPIO
+    getent group gpio || groupadd gpio
+    sudo cp config/50-gpio.rules /etc/udev/rules.d/
+    sudo usermod -aG gpio vx-services
+fi
+
 echo "Setting up the code"
 sudo mv build/${CHOICE} /vx/code
 
@@ -203,7 +221,6 @@ sudo cp -rp vxsuite /vx/code/
 # symlink the code and run-*.sh in /vx/services
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
 sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
-
 
 # symlink appropriate vx/ui files
 sudo ln -s /vx/code/config/ui_bash_profile /vx/ui/.bash_profile
