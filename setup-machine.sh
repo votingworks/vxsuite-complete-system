@@ -196,19 +196,17 @@ fi
 if [ "${CHOICE}" == "mark-scan" ]
 then
     # let vx-services use virtual uinput devices
-    getent group uinput || groupadd uinput
     sudo cp config/50-uinput.rules /etc/udev/rules.d/
-    # uinput module must be loaded explicitly
-    sudo cp config/uinput.conf /etc/modules-load.d/uinput.conf
     sudo usermod -aG uinput vx-services
+    # uinput module must be loaded explicitly
+    sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
     # let vx-services use serialport devices at /dev/ttyACM<n>
     sudo usermod -aG dialout vx-services
 
     # let vx-services use GPIO
-    getent group gpio || groupadd gpio
-    sudo cp config/50-gpio.rules /etc/udev/rules.d/
     sudo usermod -aG gpio vx-services
+    sudo cp config/50-gpio.rules /etc/udev/rules.d/
 fi
 
 echo "Setting up the code"
