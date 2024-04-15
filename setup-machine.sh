@@ -195,6 +195,10 @@ fi
 
 if [ "${CHOICE}" == "mark-scan" ]
 then
+    # create groups if they don't already exist
+    sudo getent group uinput || sudo groupadd uinput
+    sudo getent group gpio || sudo groupadd gpio
+
     # let vx-services use virtual uinput devices
     sudo cp config/50-uinput.rules /etc/udev/rules.d/
     sudo usermod -aG uinput vx-services
