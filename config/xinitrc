@@ -10,10 +10,10 @@ export VX_METADATA_ROOT="/vx/code"
 # this appears to fix the issue where, sometimes, the Elo touchscreen doesn't respond
 (sleep 6 && bash /vx/code/run-kiosk-browser-forever-and-log.sh) &
 
-# Elo screen, adjust orientation and corresponding touch coordinates
+# Penmount screen for mark-scan, adjust orientation and corresponding touch coordinates
 # xinput is not ready to be used until X has fully started, so we have to delay
-ELO="Elo Touch"
-(sleep 4 && if xinput list | grep -i "$ELO" > /dev/null; then
+PENMOUNT="PENMOUNT PM2501"
+(sleep 4 && if xinput list | grep -i "$PENMOUNT" > /dev/null; then
      # this is very specific to using the Lenovo m70q tiny with sound out via HDMI
      # pulseaudio --start
      # pulseaudio --kill
@@ -24,8 +24,8 @@ ELO="Elo Touch"
      pactl unload-module module-suspend-on-idle
 
      # we are using landscape now, the following is for portrait
-     # xrandr -o right
-     # xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
+     # xrandr -o left
+     # xinput set-prop "$PENMOUNT" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
 
      # we need a startup chime to activate the channel
      # delay because it appears the xrandr and xinput commands above turn off sound for a bit
