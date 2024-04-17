@@ -81,5 +81,8 @@ gsettings set org.gnome.shell favorite-apps "[$FAVORITE_ICONS, 'update-code.desk
 
 CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx/config/machine-type'
 
+# vxdev daemons need this now, unlike setup_machine.sh, we use the CHOICE var
+MODEL_NAME="${CHOICE}" sudo -E sh -c 'echo "${MODEL_NAME}" > /vx/config/machine-model-name'
+
 
 echo "Done, this window will close in 3 seconds"

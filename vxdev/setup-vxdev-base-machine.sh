@@ -56,7 +56,7 @@ sudo ln -sf /var/vx/admin /vx/admin
 # Set up vx-services user
 id -u vx-services &> /dev/null || sudo useradd -u 753 -m -d /var/vx/services -s /bin/bash vx-services
 sudo ln -sf /var/vx/services /vx/services
-
+sudo ln -sf /home/vx/code/vxsuite-complete-system/vxsuite /var/vx/services/vxsuite
 # make sure machine never shuts down on idle, and does shut down on power key (no hibernate or anything.)
 sudo cp config/logind.conf /etc/systemd/
 
@@ -65,8 +65,8 @@ echo "Creating necessary directories"
 sudo mkdir -p /vx
 sudo mkdir -p /var/vx
 sudo mkdir -p /var/vx/code
-sudo mkdir -p /var/vx/services
 sudo mkdir -p /var/vx/data/module-scan
+sudo mkdir -p /var/vx/data/module-mark-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
 sudo mkdir -p /var/vx/data/admin-service
 
@@ -77,7 +77,6 @@ sudo ln -sf /var/vx/config /vx/config
 
 sudo ln -sf /var/vx/data /vx/data
 sudo ln -sf /var/vx/code /vx/code
-sudo ln -sf /var/vx/services /vx/services
 
 sudo ln -sf /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-config.sh
 sudo ln -sf /home/vx/code/vxsuite-complete-system /vx/code/vxsuite-complete-system
@@ -164,6 +163,9 @@ fi
 
 # update sudoers file to give vx user special permissions
 sudo cp vxdev/sudoers /etc/sudoers
+
+# grant read and execute on vx home dir so vx-services can access daemons
+chown 755 /home/vx
 
 # turn off time synchronization
 sudo timedatectl set-ntp no
