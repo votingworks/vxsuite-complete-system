@@ -49,6 +49,15 @@ if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
   [ -f "${VX_METADATA_ROOT}/code-version" ] || echo dev > "${VX_METADATA_ROOT}/code-version" 
   [ -f "${VX_METADATA_ROOT}/code-tag" ] || echo dev > "${VX_METADATA_ROOT}/code-tag" 
 
+  # mark-scan requires daemons running in the background
+  # reload their daemon configs and then issue restart commands
+  if [[ "${APP}" == "mark-scan" ]]; then
+    sudo systemctl daemon-reload
+    for vx_daemon in controller pat
+    do
+      sudo systemctl restart mark-scan-${vx_daemon}-daemon.service
+    done
+  fi
   export DISPLAY=${DISPLAY:-:0}
   cd "${DIR}/build/${APP}"
   (
