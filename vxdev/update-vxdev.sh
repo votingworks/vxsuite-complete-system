@@ -59,8 +59,8 @@ if [[ $CHOICE == 'VxScan' ]]; then
 	FAVORITE_ICONS="'run-vxscan.desktop'"
 fi
 if [[ $CHOICE == 'VxMarkScan' ]]; then
-	sudo cp vxdev/run-vxscan.desktop /usr/share/applications/.
-	FAVORITE_ICONS="'run-vxscan.desktop'"
+	sudo cp vxdev/run-vxmarkscan.desktop /usr/share/applications/.
+	FAVORITE_ICONS="'run-vxmarkscan.desktop'"
 fi
 if [[ $CHOICE == 'VxAdmin' ]]; then
 	sudo cp vxdev/run-vxadmin.desktop /usr/share/applications/.
