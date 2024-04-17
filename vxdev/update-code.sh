@@ -98,6 +98,14 @@ if [[ $APP_TYPE == 'VxMarkScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/mark-scan/frontend/.env.local
 	./prepare_build.sh mark-scan
 	./build.sh mark-scan
+	for vx_daemon in controller pat
+	do
+	  sudo cp config/mark-scan-${vx_daemon}-daemon.service /etc/systemd/system/
+	  sudo cp run-scripts/run-mark-scan-${vx_daemon}-daemon.sh /vx/code/
+	  sudo chmod 644 /etc/systemd/system/mark-scan-${vx_daemon}-daemon.service
+	  sudo ln -sf /vx/code/run-mark-scan-${vx_daemon}-daemon.sh /vx/services/run-mark-scan-${vx_daemon}-daemon.sh
+	  sudo systemctl daemon-reload
+	done
 fi
 
 echo "Done! Closing in 3 seconds."
