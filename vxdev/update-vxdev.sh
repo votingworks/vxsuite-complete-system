@@ -21,6 +21,9 @@ CHOICES+=('VxMark')
 echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('VxScan')
 
+echo "${#CHOICES[@]}. VxMarkScan"
+CHOICES+=('VxMarkScan')
+
 echo
 read -p "Select Application: " CHOICE_INDEX
 
@@ -52,6 +55,10 @@ if [[ $CHOICE == 'VxMark' ]]; then
 	FAVORITE_ICONS="'run-vxmark.desktop'"
 fi
 if [[ $CHOICE == 'VxScan' ]]; then
+	sudo cp vxdev/run-vxscan.desktop /usr/share/applications/.
+	FAVORITE_ICONS="'run-vxscan.desktop'"
+fi
+if [[ $CHOICE == 'VxMarkScan' ]]; then
 	sudo cp vxdev/run-vxscan.desktop /usr/share/applications/.
 	FAVORITE_ICONS="'run-vxscan.desktop'"
 fi
