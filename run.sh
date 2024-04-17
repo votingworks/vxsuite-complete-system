@@ -36,6 +36,7 @@ APP="$1"
 if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
   if [ ! -d "${DIR}/build/${APP}" ]; then
     echo "⁉️ ${APP} is not yet built, building…"
+    "${DIR}/prepare_build.sh" "${APP}"
     "${DIR}/build.sh" "${APP}"
   fi
 
