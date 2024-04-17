@@ -24,8 +24,8 @@ PENMOUNT="PENMOUNT PM2501"
      pactl unload-module module-suspend-on-idle
 
      # we are using landscape now, the following is for portrait
-     # xrandr -o left
-     # xinput set-prop "$PENMOUNT" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+     xrandr -o left
+     xinput set-prop "$PENMOUNT" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
 
      # we need a startup chime to activate the channel
      # delay because it appears the xrandr and xinput commands above turn off sound for a bit
