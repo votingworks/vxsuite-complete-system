@@ -67,7 +67,13 @@ elif [[ $BRANCH == 'custom' ]]; then
 fi
 cp /vx/config/.env.local vxsuite/.env.local
 
-make build-kiosk-browser
+# improve this by tracking commit id
+# only rebuild when it changes
+if ! which kiosk-browser >/dev/null 2>&1
+then
+	make build-kiosk-browser
+fi
+
 echo $APP_TYPE
 if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/central-scan/backend/.env.local

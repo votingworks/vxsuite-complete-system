@@ -98,8 +98,11 @@ build() {
 echo "Download all Rust crates"
 pnpm --recursive install:rust-addon
 
-echo "Download all kiosk-browser tools"
-make -C kiosk-browser install
+if ! which kiosk-browser >/dev/null 2>&1
+then
+  echo "Download all kiosk-browser tools"
+  make -C kiosk-browser install
+fi
 
 echo "Preparing ${#APPS_TO_BUILD[@]} app(s): ${APPS_TO_BUILD[@]}"
 
