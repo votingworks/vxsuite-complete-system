@@ -165,7 +165,7 @@ fi
 sudo cp vxdev/sudoers /etc/sudoers
 
 # grant read and execute on vx home dir so vx-services can access daemons
-chown 755 /home/vx
+chmod 755 /home/vx
 
 # turn off time synchronization
 sudo timedatectl set-ntp no
