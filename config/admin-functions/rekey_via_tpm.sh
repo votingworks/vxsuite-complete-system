@@ -1,16 +1,54 @@
 #!/bin/bash
 
-# TODO: add error checking
+# TODO: add more error checking
 # TODO?: support passing multiple partitions
+
+# check for flag file created by lockdown.sh only run if exists
+if [ ! -f /home/REKEY_VIA_TPM ]; then
+  echo "NOTE: No flag file exists to encrypt via the TPM. Skipping this step."
+  sleep 5
+  exit 0
+fi
+
+# check for tpm2 only run if exists
+if [ ! -f /sys/class/tpm/tpm0/tpm_version_major ]; then
+  echo "No TPM chip was detected. Skipping TPM disk encryption."
+  sleep 5
+  exit 0
+else
+  if ! grep '^2' /sys/class/tpm/tpm0/tpm_version_major > /dev/null; then
+    echo "TPM is not version 2. Skipping TPM disk encryption."
+    sleep 5
+    exit 0
+  fi
+fi
+
+# check for crypttab entry only run if present and configured for tpm
+if ! grep '^var_decrypted' /etc/crypttab > /dev/null; then
+  echo "There is no crypttab entry. Skipping TPM disk encryption."
+  sleep 5
+  exit 0
+else
+  if ! grep 'luks,tpm2-device=auto' /etc/crypttab > /dev/null; then
+    echo "The crypttab entry is not configured to use TPM. Skipping TPM disk encryption."
+    sleep 5
+    exit 0
+  fi
+fi
+
+# check for tpm2-tools installed only run if found; otherwise, you can break boot
+# NOTE: If we get here, the machine will only be bootable by manually entering
+#       the insecure passphrase on every boot
+if ! tpm2_selftest -v > /dev/null 2>&1; then
+  echo "The necessary tpm2 tools are not installed. Skipping TPM disk encryption."
+  sleep 5
+  exit 0
+fi
+
 encrypted_dev_path='/dev/Vx-vg/var_encrypted'
 insecure_key='/home/insecure.key'
 random_key='/home/random.key'
 partition_path='/var'
-
-# check for flag file created by lockdown.sh only run if exists
-# check for tpm2 only run if exists
-# check for crypttab entry only run if configured for tpm
-# check for tpm2-tools installed only run if found
 
 echo "Creating a random keyfile..."
 dd if=/dev/urandom of=${random_key} bs=512 count=4

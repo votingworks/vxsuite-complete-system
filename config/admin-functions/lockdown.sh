@@ -51,6 +51,16 @@ fi
 
 update-initramfs -u
 
+# Since we are locking down, we need to modify /etc/crypttab to use the TPM
+# Also set the flag file to run the actual rekey_via_tpm.sh script on first boot
+# Only do this if the crypttab is already configured, just in case
+if grep '^var_decrypted' /etc/crypttab > /dev/null; then
+  sed -i -e /^var_decrypted/d 
+  echo "var_decrypted /dev/Vx-vg/var_encrypted none luks,tpm2-device=auto" >> /etc/crypttab
+  touch /home/REKEY_VIA_TPM
+fi
+
+
 # Remount / so it can't change while we're doing the veritysetup
 cd /tmp
 mount -o ro,remount /
