@@ -3,8 +3,10 @@
 # TODO: add more error checking
 # TODO?: support passing multiple partitions
 
+rekey_flag='/home/REKEY_VIA_TPM'
+
 # check for flag file created by lockdown.sh only run if exists
-if [ ! -f /home/REKEY_VIA_TPM ]; then
+if [ ! -f ${rekey_flag} ]; then
   echo "NOTE: No flag file exists to encrypt via the TPM. Skipping this step."
   sleep 5
   exit 0
@@ -45,6 +47,8 @@ if ! tpm2_selftest -v > /dev/null 2>&1; then
   exit 0
 fi
 
+# TODO: add a check via luksDump to see if TPM is already in use
+
 encrypted_dev_path='/dev/Vx-vg/var_encrypted'
 insecure_key='/home/insecure.key'
 random_key='/home/random.key'
@@ -72,6 +76,8 @@ cryptsetup luksRemoveKey --key-file ${random_key} ${encrypted_dev_path}
 echo "Removing all keyfiles from disk..."
 shred -uvz ${insecure_key}
 shred -uvz ${random_key}
+
+rm -f ${rekey_flag}
 
 echo "${partition_path} encryption key has been stored in the TPM."
 
