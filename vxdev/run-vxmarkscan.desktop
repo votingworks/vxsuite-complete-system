@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Name=VxMarkScan
+Icon=runprogram.png
+Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin env MARK_SCAN_WORKSPACE=/vx/data/module-mark-scan /vx/code/vxsuite-complete-system/run.sh mark-scan'
+Terminal=false
+Type=Application

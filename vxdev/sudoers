@@ -22,3 +22,4 @@ root	ALL=(ALL:ALL) ALL
 
 # fine-grained sudo permissions for certain users & actions
 vx ALL=(ALL) NOPASSWD: ALL
+vx-services ALL=(ALL) NOPASSWD: ALL

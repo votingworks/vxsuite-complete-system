@@ -21,6 +21,9 @@ CHOICES+=('VxMark')
 echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('VxScan')
 
+echo "${#CHOICES[@]}. VxMarkScan"
+CHOICES+=('VxMarkScan')
+
 echo
 read -p "Select Application: " CHOICE_INDEX
 
@@ -55,6 +58,10 @@ if [[ $CHOICE == 'VxScan' ]]; then
 	sudo cp vxdev/run-vxscan.desktop /usr/share/applications/.
 	FAVORITE_ICONS="'run-vxscan.desktop'"
 fi
+if [[ $CHOICE == 'VxMarkScan' ]]; then
+	sudo cp vxdev/run-vxmarkscan.desktop /usr/share/applications/.
+	FAVORITE_ICONS="'run-vxmarkscan.desktop'"
+fi
 if [[ $CHOICE == 'VxAdmin' ]]; then
 	sudo cp vxdev/run-vxadmin.desktop /usr/share/applications/.
 	FAVORITE_ICONS="'run-vxadmin.desktop'"
@@ -73,6 +80,9 @@ fi
 gsettings set org.gnome.shell favorite-apps "[$FAVORITE_ICONS, 'update-code.desktop', 'update-vxdev.desktop', 'org.gnome.Screenshot.desktop', 'firefox-esr.desktop', 'org.gnome.Nautilus.desktop', 'kazam.desktop', 'org.gnome.Terminal.desktop']"
 
 CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx/config/machine-type'
+
+# vxdev daemons need this now, unlike setup_machine.sh, we use the CHOICE var
+MODEL_NAME="${CHOICE}" sudo -E sh -c 'echo "${MODEL_NAME}" > /vx/config/machine-model-name'
 
 
 echo "Done, this window will close in 3 seconds"

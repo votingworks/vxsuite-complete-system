@@ -137,6 +137,10 @@ sudo usermod -aG vx-group vx-services
 
 sudo usermod -aG video vx-ui
 
+# mark-scan requires access to the audio group
+sudo usermod -aG audio vx-ui
+sudo usermod -aG audio vx-services
+
 # remove all files created by default
 sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 
@@ -187,6 +191,26 @@ then
     sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
     sudo cp config/50-custom-scanner.rules /etc/udev/rules.d/
     sudo usermod -aG scanner vx-services
+fi
+
+if [ "${CHOICE}" == "mark-scan" ]
+then
+    # create groups if they don't already exist
+    sudo getent group uinput || sudo groupadd uinput
+    sudo getent group gpio || sudo groupadd gpio
+
+    # let vx-services use virtual uinput devices
+    sudo cp config/50-uinput.rules /etc/udev/rules.d/
+    sudo usermod -aG uinput vx-services
+    # uinput module must be loaded explicitly
+    sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
+
+    # let vx-services use serialport devices at /dev/ttyACM<n>
+    sudo usermod -aG dialout vx-services
+
+    # let vx-services use GPIO
+    sudo usermod -aG gpio vx-services
+    sudo cp config/50-gpio.rules /etc/udev/rules.d/
 fi
 
 echo "Setting up the code"
@@ -325,6 +349,19 @@ sudo cp config/${CHOICE}.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/${CHOICE}.service
 sudo systemctl enable ${CHOICE}.service
 sudo systemctl start ${CHOICE}.service
+
+# mark-scan requires additional service daemons
+if [[ "${CHOICE}" == "mark-scan" ]]; then
+  for vx_daemon in controller pat
+  do
+    sudo cp config/mark-scan-${vx_daemon}-daemon.service /etc/systemd/system/
+    sudo cp run-scripts/run-mark-scan-${vx_daemon}-daemon.sh /vx/code/
+    sudo chmod 644 /etc/systemd/system/mark-scan-${vx_daemon}-daemon.service
+    sudo ln -s /vx/code/run-mark-scan-${vx_daemon}-daemon.sh /vx/services/run-mark-scan-${vx_daemon}-daemon.sh
+    sudo systemctl enable mark-scan-${vx_daemon}-daemon.service
+    sudo systemctl start mark-scan-${vx_daemon}-daemon.service
+  done
+fi
 
 echo "Successfully setup machine."
 

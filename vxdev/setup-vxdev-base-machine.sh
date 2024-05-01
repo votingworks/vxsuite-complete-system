@@ -53,6 +53,10 @@ id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/b
 sudo ln -sf /var/vx/admin /vx/admin
 (echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
 
+# Set up vx-services user
+id -u vx-services &> /dev/null || sudo useradd -u 753 -m -d /var/vx/services -s /bin/bash vx-services
+sudo ln -sf /var/vx/services /vx/services
+sudo ln -sf /home/vx/code/vxsuite-complete-system/vxsuite /var/vx/services/vxsuite
 # make sure machine never shuts down on idle, and does shut down on power key (no hibernate or anything.)
 sudo cp config/logind.conf /etc/systemd/
 
@@ -62,6 +66,7 @@ sudo mkdir -p /vx
 sudo mkdir -p /var/vx
 sudo mkdir -p /var/vx/code
 sudo mkdir -p /var/vx/data/module-scan
+sudo mkdir -p /var/vx/data/module-mark-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
 sudo mkdir -p /var/vx/data/admin-service
 
@@ -86,6 +91,9 @@ sudo chmod -R go-rwX /var/vx/admin
 sudo chown -R vx-admin:vx-admin /var/vx/config
 sudo chmod -R ugo=rwX /var/vx/config
 
+sudo chown -R vx-services:vx-services /var/vx/services
+sudo chmod -R ugo=rwX /var/vx/services
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 sudo cp -rp \
@@ -109,6 +117,21 @@ sudo usermod -aG lpadmin vx
 # let vx scan
 sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
 sudo usermod -aG scanner vx
+
+# mark-scan groups and permissions
+sudo getent group uinput || sudo groupadd uinput
+sudo getent group gpio || sudo groupadd gpio
+
+sudo cp config/50-uinput.rules /etc/udev/rules.d/
+sudo usermod -aG uinput vx-services
+
+sudo usermod -aG audio vx
+sudo usermod -aG audio vx-services
+sudo usermod -aG dialout vx-services
+sudo usermod -aG gpio vx-services
+sudo cp config/50-gpio.rules /etc/udev/rules.d/
+
+sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
 # admin function scripts
 sudo ln -sf /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
@@ -140,6 +163,9 @@ fi
 
 # update sudoers file to give vx user special permissions
 sudo cp vxdev/sudoers /etc/sudoers
+
+# grant read and execute on vx home dir so vx-services can access daemons
+chmod 755 /home/vx
 
 # turn off time synchronization
 sudo timedatectl set-ntp no

@@ -1,0 +1,2 @@
+SUBSYSTEM=="gpio", ACTION=="add", PROGRAM="/bin/sh -c 'chown -R root:gpio /sys/class/gpio && chmod -R g+rw /sys/class/gpio'"
+SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", PROGRAM="/bin/sh -c 'chown -R root:gpio /sys/devices/platform/INT33FF:00/gpiochip0/gpio/* && chmod -R g+rw /sys/devices/platform/INT33FF:00/gpiochip0/gpio/*'"
