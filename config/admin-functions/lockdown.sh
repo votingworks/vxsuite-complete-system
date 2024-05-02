@@ -26,6 +26,13 @@ if [[ $answer == 'n' || $answer == 'N' ]]; then
     exit
 fi
 
+# Since this script is pretty destructive if something goes wrong
+# check that the signing keys are mounted before proceeding, exit if not
+umount /dev/sda || true
+umount /dev/sda1 || true
+mount /dev/sda /mnt || mount /dev/sda1 /mnt || (echo "Secure boot keys not found; exiting" && sleep 5 && exit);
+umount /mnt
+
 # We don't need to sign i915 since it is signed by Debian's Secure Boot key
 # and we have access to that under Secure Boot. 
 # However, if we do ever need to use an unsigned module, the below code 
@@ -114,8 +121,11 @@ else
     chmod -w /boot/grub/grub.cfg
 fi
 
+# Generate the read-only hash
+bash "${VX_FUNCTIONS_ROOT}/hash-signature.sh"
 
-# Reboot into the locked down system
-echo "Rebooting in 5s"
+# Shut down the locked down system
+# We can't reboot this on the aws build machine due to encrypted /var
+echo "Shutting down in 5s"
 sleep 5
-systemctl reboot -i
+systemctl poweroff
