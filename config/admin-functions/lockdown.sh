@@ -26,6 +26,19 @@ if [[ $answer == 'n' || $answer == 'N' ]]; then
     exit
 fi
 
+# Since we shutdown after this script now, let's add a check related
+# to basic configuration on first boot
+if [[ ! -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
+  echo "This system is not configured to run the basic configuration wizard on first boot. Would you like to configure that now? [y/n]: "
+  read -r enable_config
+  if [[ $enable_config == 'n' || $enable_config == 'N' ]]; then
+    echo "Skipping basic configuration wizard on next boot."
+  else
+    echo "Enabling basic configuration wizard on next boot."
+    touch "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT"
+  fi
+fi
+
 # Since this script is pretty destructive if something goes wrong
 # check that the signing keys are mounted before proceeding, exit if not
 umount /dev/sda || true
