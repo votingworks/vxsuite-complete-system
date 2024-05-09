@@ -70,7 +70,7 @@ if [[ $surface == 0 ]] && [[ -n $modules_to_sign ]]; then
 fi
 
 # Since we are locking down, we need to modify /etc/crypttab to use the TPM
-# Also set the flag file to run the actual rekey_via_tpm.sh script on first boot
+# Also set the flag file to run the actual rekey-via-tpm.sh script on first boot
 # Only do this if the crypttab is already configured, just in case
 if grep '^var_decrypted' /etc/crypttab > /dev/null; then
   sed -i -e /^var_decrypted/d /etc/crypttab

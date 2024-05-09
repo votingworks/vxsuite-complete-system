@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# TODO: add more error checking
+set -euo pipefail
+
 # TODO?: support passing multiple partitions
 
 rekey_flag='/home/REKEY_VIA_TPM'
