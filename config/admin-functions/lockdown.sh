@@ -26,6 +26,26 @@ if [[ $answer == 'n' || $answer == 'N' ]]; then
     exit
 fi
 
+# Since we shutdown after this script now, let's add a check related
+# to basic configuration on first boot
+if [[ ! -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
+  echo "This system is not configured to run the basic configuration wizard on first boot. Would you like to configure that now? [y/n]: "
+  read -r enable_config
+  if [[ $enable_config == 'n' || $enable_config == 'N' ]]; then
+    echo "Skipping basic configuration wizard on next boot."
+  else
+    echo "Enabling basic configuration wizard on next boot."
+    touch "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT"
+  fi
+fi
+
+# Since this script is pretty destructive if something goes wrong
+# check that the signing keys are mounted before proceeding, exit if not
+umount /dev/sda || true
+umount /dev/sda1 || true
+mount /dev/sda /mnt || mount /dev/sda1 /mnt || (echo "Secure boot keys not found; exiting" && sleep 5 && exit);
+umount /mnt
+
 # We don't need to sign i915 since it is signed by Debian's Secure Boot key
 # and we have access to that under Secure Boot. 
 # However, if we do ever need to use an unsigned module, the below code 
@@ -47,6 +67,15 @@ if [[ $surface == 0 ]] && [[ -n $modules_to_sign ]]; then
       /usr/src/linux-kbuild-6.1/scripts/sign-file sha256 /mnt/DB.key /mnt/DB.crt $(modinfo -n ${module})
     fi
   done
+fi
+
+# Since we are locking down, we need to modify /etc/crypttab to use the TPM
+# Also set the flag file to run the actual rekey-via-tpm.sh script on first boot
+# Only do this if the crypttab is already configured, just in case
+if grep '^var_decrypted' /etc/crypttab > /dev/null; then
+  sed -i -e /^var_decrypted/d /etc/crypttab
+  echo "var_decrypted /dev/Vx-vg/var_encrypted none luks,tpm2-device=auto" >> /etc/crypttab
+  touch /home/REKEY_VIA_TPM
 fi
 
 update-initramfs -u
@@ -105,8 +134,11 @@ else
     chmod -w /boot/grub/grub.cfg
 fi
 
+# Generate the read-only hash
+bash "${VX_FUNCTIONS_ROOT}/hash-signature.sh"
 
-# Reboot into the locked down system
-echo "Rebooting in 5s"
+# Shut down the locked down system
+# We can't reboot this on the aws build machine due to encrypted /var
+echo "Shutting down in 5s"
 sleep 5
-systemctl reboot -i
+systemctl poweroff

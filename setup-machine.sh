@@ -370,8 +370,13 @@ echo "Successfully setup machine."
 
 USER=$(whoami)
 
+# cleanup
 sudo apt remove -y git firefox snapd
 sudo apt autoremove -y
+sudo rm -f /var/cache/apt/archives/*.deb
+sudo rm -rf /var/tmp/code 
+sudo rm -rf /var/tmp/downloads
+sudo rm -rf /var/tmp/rust*
 
 # set password for vx-admin
 (echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
