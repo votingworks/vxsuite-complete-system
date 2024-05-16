@@ -156,10 +156,8 @@ sudo bash setup-scripts/setup-logging.sh
 sudo mkdir -p /media/vx/usb-drive
 sudo chown -R vx-ui:vx-group /media/vx
 
-# let vx-ui and vx-services manage printers
-sudo usermod -aG lpadmin vx-ui
+# let vx-services manage printers
 sudo usermod -aG lpadmin vx-services
-
 
 ### set up CUPS to read/write all config out of /var to be compatible with read-only root filesystem
 
