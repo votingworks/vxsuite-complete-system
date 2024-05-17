@@ -1,5 +1,7 @@
 export PATH=/vx/code/config/admin-functions:${PATH}
 
+sudo /vx/admin/admin-functions/rotate-tty2.sh
+
 while true; do
     bash /vx/admin/admin-functions/show-vx-suite-admin-menu.sh
 done
