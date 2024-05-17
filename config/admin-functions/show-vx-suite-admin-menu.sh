@@ -116,6 +116,11 @@ while true; do
     CHOICES+=('set-app-mode')
   fi
 
+  if [ "${VX_MACHINE_TYPE}" = "mark-scan" ]; then
+    echo "${#CHOICES[@]}. Fix VSAP Audio"
+    CHOICES+=('fix-vsap-audio')
+  fi
+
   echo "0. Reboot"
   echo
   read -p "Select menu item: " CHOICE_INDEX
@@ -212,6 +217,11 @@ while true; do
     
     setup-boot-entry)
       sudo "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
+      read -s -n 1
+    ;;
+
+    fix-vsap-audio)
+      "${VX_FUNCTIONS_ROOT}/fix-vsap-audio.sh"
       read -s -n 1
     ;;
 
