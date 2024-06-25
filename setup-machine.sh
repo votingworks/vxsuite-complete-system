@@ -403,6 +403,7 @@ fi
 # remove everything from this bootstrap user's home directory
 cd
 rm -rf *
+rm -rf .*
 
 echo "Machine setup is complete. Please wait for the VM to reboot."
 
