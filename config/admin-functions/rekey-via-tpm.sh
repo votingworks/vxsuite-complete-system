@@ -52,15 +52,16 @@ fi
 secure_boot_state=$(mokutil --sb-state | grep SecureBoot | cut -d' ' -f2)
 if [[ $secure_boot_state != "enabled" ]]; then
   echo "Secure Boot is not enabled. Please enable it via the BIOS."
-  echo "(VSAP may only require a reboot since the BIOS is limited.)"
+  echo "(VxMark may only require a reboot since the BIOS is limited.)"
   echo "Rebooting to BIOS in 10 seconds..."
   sleep 10
   systemctl reboot --firmware
 fi
 
 # check for VotingWorks signed PK
+# Note: The ${var,,} syntax lowercases the variable content
 secure_boot_signer=$(mokutil --pk | grep Issuer | cut -d'=' -f2)
-if [[ $secure_boot_signer != "VotingWorks PK" ]]; then
+if [[ ${secure_boot_signer,,} =~ "votingworks" ]]; then
   echo "VotingWorks secure boot keys are not installed."
   echo "Please configure the BIOS to Secure Boot Setup Mode and install the required keys."
   echo "Rebooting to BIOS in 10 seconds..."
