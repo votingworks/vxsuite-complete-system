@@ -178,7 +178,12 @@ sudo cp config/apparmor.d/usr.sbin.cupsd /etc/apparmor.d/
 sudo cp config/apparmor.d/usr.sbin.cups-browsed /etc/apparmor.d/
 
 # copy any modprobe configs we might use
-sudo cp config/modprobe.d/* /etc/modprobe.d/
+sudo cp config/modprobe.d/10-i915.conf /etc/modprobe.d/
+sudo cp config/modprobe.d/50-bluetooth.conf /etc/modprobe.d/
+if [ "${CHOICE}" == "scan" ]
+then
+    sudo cp config/modprobe.d/60-fujitsu-printer.conf /etc/modprobe.d/
+fi
 
 # load the i915 display module as early as possible
 sudo sh -c 'echo "i915" >> /etc/modules-load.d/modules.conf'
@@ -189,6 +194,13 @@ then
     sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
     sudo cp config/50-custom-scanner.rules /etc/udev/rules.d/
     sudo usermod -aG scanner vx-services
+fi
+
+if [ "${CHOICE}" == "scan" ]
+then
+    sudo cp config/50-pdi-scanner.rules /etc/udev/rules.d/
+    sudo cp config/60-fujitsu-printer.rules /etc/udev/rules.d/
+    sudo usermod -aG plugdev vx-services
 fi
 
 if [ "${CHOICE}" == "mark-scan" ]
