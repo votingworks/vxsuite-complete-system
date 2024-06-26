@@ -100,7 +100,6 @@ sudo cp -rp \
   "${DIR}/../run-scripts/run-kiosk-browser.sh" \
   "${DIR}/../run-scripts/run-kiosk-browser-forever-and-log.sh" \
   "${DIR}/../config" \
-  "${DIR}/../printing" \
   "${DIR}/../app-scripts" \
   "/vx/code"
 
