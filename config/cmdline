@@ -1,1 +1,1 @@
-root=/dev/mapper/vroot ro quiet vt.handoff=7 fsck.mode=skip verity.hashdev=/dev/mapper/Vx--vg-hashes verity.rootdev=/dev/mapper/Vx--vg-root verity.hash=
+root=/dev/mapper/vroot ro quiet vt.handoff=7 fsck.mode=skip panic=3 verity.error_behavior=restart verity.hashdev=/dev/mapper/Vx--vg-hashes verity.rootdev=/dev/mapper/Vx--vg-root verity.hash=
