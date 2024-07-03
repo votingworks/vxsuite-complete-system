@@ -10,34 +10,32 @@ export VX_METADATA_ROOT="/vx/code"
 # this appears to fix the issue where, sometimes, the Elo touchscreen doesn't respond
 (sleep 6 && bash /vx/code/run-kiosk-browser-forever-and-log.sh) &
 
-# Penmount screen for mark-scan, adjust orientation and corresponding touch coordinates
-# xinput is not ready to be used until X has fully started, so we have to delay
+# Device specific configurations
 ELO="Elo Touch"
-PENMOUNT="PENMOUNT PM2501"
-(sleep 4 && if xinput list | grep -i "$PENMOUNT" > /dev/null; then
-     # this is very specific to using the Lenovo m70q tiny with sound out via HDMI
-     # pulseaudio --start
-     # pulseaudio --kill
-     # pactl load-module module-alsa-sink device=hw:0,8
-     # pactl set-default-sink 1
+VSAP155="PENMOUNT PM2501"
+VSAP150="PenMount PM1415"
 
-     # prevent suspending the module, otherwise the start of chimes gets clipped
-     pactl unload-module module-suspend-on-idle
+( sleep 4 && if xinput list | grep -i "$ELO" > /dev/null; then
+  xrandr -o right
+  xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
+elif xinput list | grep -i "$VSAP150" > /dev/null; then
+  # Rotate mark-scan screen to portrait
+  xrandr -o left
+  xinput set-prop "$VSAP150" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+elif xinput list | grep -i "$VSAP155" > /dev/null; then
+  # Rotate mark-scan screen to portrait
+  xrandr -o left
+  xinput set-prop "$VSAP155" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+else
+  echo "No screen rotation"
+fi
 
-     # Rotate mark-scan screen to portrait
-     xrandr -o left
-     xinput set-prop "$PENMOUNT" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
-
-     # Uncomment to rotate Elo screen to portrait. You will also need to add $ELO to
-     # the `xinput list | grep` command
-     # xrandr -o right
-     # xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
-
-     # we need a startup chime to activate the channel
-     # delay because it appears the xrandr and xinput commands above turn off sound for a bit
-     # (because of course they do)
-     sleep 5 && aplay ~/chime.wav
- fi) &
+prevent suspending the module, otherwise the start of chimes gets clipped
+pactl unload-module module-suspend-on-idle
+# we need a startup chime to activate the channel
+# delay because it appears the xrandr and xinput commands above turn off sound for a bit
+# (because of course they do)
+sleep 5 && aplay ~/chime.wav ) &
 
 # look for an external display and mirror to it
 (while true; do
