@@ -18,20 +18,31 @@ VSAP150="PenMount PM1415"
 ( sleep 4 && if xinput list | grep -i "$ELO" > /dev/null; then
   xrandr -o right
   xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
+  pulseaudio --start
+  # specific amixer commands may be needed after testing
 elif xinput list | grep -i "$VSAP150" > /dev/null; then
   # Rotate mark-scan screen to portrait
   xrandr -o left
   xinput set-prop "$VSAP150" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+  pulseaudio --start
+  amixer -c0 set Speaker 0% mute
+  amixer -c0 set Headphone 100% unmute
+  amixer set Master 100% unmute
 elif xinput list | grep -i "$VSAP155" > /dev/null; then
   # Rotate mark-scan screen to portrait
   xrandr -o left
   xinput set-prop "$VSAP155" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+  pulseaudio --start
+  amixer -c0 set Speaker 0% mute
+  amixer -c0 set Headphone 100% unmute
+  amixer set Master 100% unmute
 else
   echo "No screen rotation"
 fi
 
-prevent suspending the module, otherwise the start of chimes gets clipped
+#prevent suspending the module, otherwise the start of chimes gets clipped
 pactl unload-module module-suspend-on-idle
+
 # we need a startup chime to activate the channel
 # delay because it appears the xrandr and xinput commands above turn off sound for a bit
 # (because of course they do)
