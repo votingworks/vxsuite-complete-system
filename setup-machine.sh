@@ -373,6 +373,13 @@ if [[ "${CHOICE}" == "mark-scan" ]]; then
   done
 fi
 
+# We need to disable pulseaudio for users since it runs per user
+# vx-ui vx-admin (maybe vx-services in the future)
+# mkdir -p ~user/.config/systemd/user
+# chown user:user for directories
+# ln -s /dev/null ~user/.config/systemd/user/pulseaudio.service
+# ln -s /dev/null ~user/.config/systemd/user/pulseaudio.socket
+#
 echo "Successfully setup machine."
 
 
