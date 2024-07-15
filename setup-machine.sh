@@ -374,12 +374,17 @@ if [[ "${CHOICE}" == "mark-scan" ]]; then
 fi
 
 # We need to disable pulseaudio for users since it runs per user
-# vx-ui vx-admin (maybe vx-services in the future)
-# mkdir -p ~user/.config/systemd/user
-# chown user:user for directories
-# ln -s /dev/null ~user/.config/systemd/user/pulseaudio.service
-# ln -s /dev/null ~user/.config/systemd/user/pulseaudio.socket
-#
+# We manually start the pulseaudio service within vxsuite for the vx-ui user
+# Note: Depending on future use-cases, we may need to disable vx-services
+for user in vx-admin vx-ui
+do
+  user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
+  sudo mkdir -p ${user_home_dir}/.config/systemd/user
+  sudo ln -s /dev/null ${user_home_dir}/.config/systemd/user/pulseaudio.service
+  sudo ln -s /dev/null ${user_home_dir}/.config/systemd/user/pulseaudio.socket
+  sudo chown -R ${user}:${user} ${user_home_dir}/.config
+done
+
 echo "Successfully setup machine."
 
 
