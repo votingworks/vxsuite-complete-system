@@ -70,14 +70,14 @@ while true; do
 done
 
 echo
-read -p "Finally, do you want sudo privileges for vx-admin (only for dev purposes)? [y/N]: " vxadmin_sudo_raw
+read -p "Finally, is this image for QA where you want sudo privledges, the ability to record screengrabs, etc.? [y/N]" qa_image_flag
 
-if [[ $vxadmin_sudo_raw == 'y' || $vxadmin_sudo_raw == 'Y' ]]; then
+if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     VXADMIN_SUDO=1
-    echo "OK, giving vx-admin sudo privileges."
+    echo "OK, creating a QA image with vx-admin sudo privileges."
 else
     VXADMIN_SUDO=0
-    echo "No sudo privileges for anyone!"
+    echo "Ok, creating a production image. No sudo privileges for anyone!"
 fi
 
 echo
@@ -281,6 +281,9 @@ GIT_HASH=$(git rev-parse HEAD | cut -c -10) sudo -E sh -c 'echo "$(date +%Y.%m.%
 
 # code tag, e.g. "m11c-rc3"
 GIT_TAG=$(git tag --points-at HEAD) sudo -E sh -c 'echo "${GIT_TAG}" > /vx/code/code-tag'
+
+# qa image flag, 0 (prod image) or 1 (qa image)
+IS_QA_IMAGE="${VXADMIN_SUDO}" sudo -E sh -c 'echo "${IS_QA_IMAGE}" > /vx/config/is-qa-image'
 
 # machine ID
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
