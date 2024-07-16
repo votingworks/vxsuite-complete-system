@@ -40,7 +40,7 @@ else
   echo "No screen rotation"
 fi
 
-#prevent suspending the module, otherwise the start of chimes gets clipped
+# prevent suspending the module, otherwise the start of chimes gets clipped
 pactl unload-module module-suspend-on-idle
 
 # we need a startup chime to activate the channel

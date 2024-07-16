@@ -375,7 +375,8 @@ fi
 
 # We need to disable pulseaudio for users since it runs per user
 # We manually start the pulseaudio service within vxsuite for the vx-ui user
-# Note: Depending on future use-cases, we may need to disable vx-services
+# Note: Depending on future use-cases, we may need to disable pulseaudio 
+# for the vx-services user. It is not currently necessary though.
 for user in vx-admin vx-ui
 do
   user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
