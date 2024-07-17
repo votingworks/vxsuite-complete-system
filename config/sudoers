@@ -36,6 +36,7 @@ vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/intermediate-sc
 vx-admin ALL=(root:ALL) NOPASSWD: /usr/sbin/reboot
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/intermediate-scripts/create-cert
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/intermediate-scripts/sign-message
+vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/backend/src/intermediate-scripts/*
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/usb-drive/scripts/*
 vx-services ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/hash-signature.sh
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/pactl.sh
