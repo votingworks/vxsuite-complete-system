@@ -208,19 +208,24 @@ then
     # create groups if they don't already exist
     sudo getent group uinput || sudo groupadd uinput
     sudo getent group gpio || sudo groupadd gpio
+    sudo getent group fai100 || sudo groupadd fai100
 
-    # let vx-services use virtual uinput devices
+    # let vx-services use virtual uinput devices for all mark-scan BMD models
     sudo cp config/50-uinput.rules /etc/udev/rules.d/
     sudo usermod -aG uinput vx-services
     # uinput module must be loaded explicitly
     sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
-    # let vx-services use serialport devices at /dev/ttyACM<n>
+    # let vx-services use serialport devices at /dev/ttyACM<n> for BMD 155
     sudo usermod -aG dialout vx-services
 
-    # let vx-services use GPIO
+    # let vx-services use GPIO for BMD 155
     sudo usermod -aG gpio vx-services
     sudo cp config/50-gpio.rules /etc/udev/rules.d/
+
+    # let vx-services use FAI-100 controller on BMD 150
+    sudo usermod -aG fai100 vx-services
+    sudo cp config/55-fai100.rules /etc/udev/rules.d/
 fi
 
 echo "Setting up the code"
