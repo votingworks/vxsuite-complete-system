@@ -54,31 +54,34 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-echo "Next, we need to set the admin password for this machine."
-while true; do
-    read -s -p "Set vx-admin password: " ADMIN_PASSWORD
-    echo
-    read -s -p "Confirm vx-admin password: " CONFIRM_PASSWORD
-    echo
-    if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
-    then
-        echo "Password confirmed."
-        break
-    else
-        echo "Passwords do not match, try again."
-    fi
-done
-
-echo
-read -p "Finally, is this image for QA where you want sudo privledges, the ability to record screengrabs, etc.? [y/N]" qa_image_flag
+read -p "Is this image for QA where you want sudo privileges, the ability to record screengrabs, etc.? [y/N]" qa_image_flag
 
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     VXADMIN_SUDO=1
+    ADMIN_PASSWORD='insecure'
     echo "OK, creating a QA image with vx-admin sudo privileges."
+    echo "Using password insecure for vx-admin user."
 else
     VXADMIN_SUDO=0
     echo "Ok, creating a production image. No sudo privileges for anyone!"
+    echo
+    echo "Next, we need to set the admin password for this machine."
+    while true; do
+        read -s -p "Set vx-admin password: " ADMIN_PASSWORD
+        echo
+        read -s -p "Confirm vx-admin password: " CONFIRM_PASSWORD
+        echo
+        if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
+        then
+            echo "Password confirmed."
+            break
+        else
+            echo "Passwords do not match, try again."
+        fi
+    done
 fi
+
+
 
 echo
 echo "The script will take it from here and set up the machine."
