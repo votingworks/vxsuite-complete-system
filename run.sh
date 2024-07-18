@@ -46,6 +46,7 @@ if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
   [ -f "${VX_CONFIG_ROOT}/machine-id" ] || echo 0000 > "${VX_CONFIG_ROOT}/machine-id" 
   echo "${APP}" > "${VX_CONFIG_ROOT}/machine-type"
   echo "VotingWorks" > "${VX_CONFIG_ROOT}/machine-manufacturer"
+  echo "1" > "${VX_CONFIG_ROOT}/is-qa-image"
   [ -f "${VX_CONFIG_ROOT}/machine-model-name" ] || echo dev > "${VX_CONFIG_ROOT}/machine-model-name" 
   [ -f "${VX_METADATA_ROOT}/code-version" ] || echo dev > "${VX_METADATA_ROOT}/code-version" 
   [ -f "${VX_METADATA_ROOT}/code-tag" ] || echo dev > "${VX_METADATA_ROOT}/code-tag" 
