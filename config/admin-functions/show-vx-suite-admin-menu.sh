@@ -37,7 +37,6 @@ while true; do
   if [ "${VX_MACHINE_TYPE}" = "mark" ]; then
     echo -e "Machine App Mode: \e[32m${VX_APP_MODE}\e[0m"
   fi
-
   # TODO: do we want to try to also display secure boot status? 
   if [[ $(lsblk | grep "vroot") ]]; then
     echo -e "Lockdown State: \e[32mLocked Down\e[0m"
@@ -50,6 +49,12 @@ while true; do
   else
     echo -e "Secure Boot State: \e[31mDisabled\e[0m"
     fi
+  if [ "${IS_QA_IMAGE}" = "1" ]; then
+    echo -e "QA Image, sudo privileges are enabled."
+  else
+    echo -e "Production Image"
+  fi
+
   echo -e
 
   echo "Current Time: $(date)"
@@ -114,6 +119,14 @@ while true; do
   if [ "${VX_MACHINE_TYPE}" = "mark" ]; then
     echo "${#CHOICES[@]}. Set App Mode"
     CHOICES+=('set-app-mode')
+  fi
+
+  if [ "${IS_QA_IMAGE}" = "1" ]; then
+    echo "${#CHOICES[@]}. Start Screen Recording"
+    CHOICES+=('start-recording')
+
+    echo "${#CHOICES[@]}. Copy all Screen Recordings to USB"
+    CHOICES+=('copy-recordings')
   fi
 
   echo "0. Reboot"
@@ -212,6 +225,16 @@ while true; do
     
     setup-boot-entry)
       sudo "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
+      read -s -n 1
+    ;;
+
+    start-recording)
+      sudo "${VX_FUNCTIONS_ROOT}/start-screen-recording.sh"
+      read -s -n 1
+    ;;
+
+    copy-recordings)
+      sudo "${VX_FUNCTIONS_ROOT}/copy-recordings.sh"
       read -s -n 1
     ;;
 

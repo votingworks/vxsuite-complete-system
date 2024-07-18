@@ -54,31 +54,34 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-echo "Next, we need to set the admin password for this machine."
-while true; do
-    read -s -p "Set vx-admin password: " ADMIN_PASSWORD
-    echo
-    read -s -p "Confirm vx-admin password: " CONFIRM_PASSWORD
-    echo
-    if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
-    then
-        echo "Password confirmed."
-        break
-    else
-        echo "Passwords do not match, try again."
-    fi
-done
+read -p "Is this image for QA where you want sudo privileges, the ability to record screengrabs, etc.? [y/N]" qa_image_flag
 
-echo
-read -p "Finally, do you want sudo privileges for vx-admin (only for dev purposes)? [y/N]: " vxadmin_sudo_raw
-
-if [[ $vxadmin_sudo_raw == 'y' || $vxadmin_sudo_raw == 'Y' ]]; then
+if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     VXADMIN_SUDO=1
-    echo "OK, giving vx-admin sudo privileges."
+    ADMIN_PASSWORD='insecure'
+    echo "OK, creating a QA image with vx-admin sudo privileges."
+    echo "Using password insecure for vx-admin user."
 else
     VXADMIN_SUDO=0
-    echo "No sudo privileges for anyone!"
+    echo "Ok, creating a production image. No sudo privileges for anyone!"
+    echo
+    echo "Next, we need to set the admin password for this machine."
+    while true; do
+        read -s -p "Set vx-admin password: " ADMIN_PASSWORD
+        echo
+        read -s -p "Confirm vx-admin password: " CONFIRM_PASSWORD
+        echo
+        if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
+        then
+            echo "Password confirmed."
+            break
+        else
+            echo "Passwords do not match, try again."
+        fi
+    done
 fi
+
+
 
 echo
 echo "The script will take it from here and set up the machine."
@@ -286,6 +289,9 @@ GIT_HASH=$(git rev-parse HEAD | cut -c -10) sudo -E sh -c 'echo "$(date +%Y.%m.%
 
 # code tag, e.g. "m11c-rc3"
 GIT_TAG=$(git tag --points-at HEAD) sudo -E sh -c 'echo "${GIT_TAG}" > /vx/code/code-tag'
+
+# qa image flag, 0 (prod image) or 1 (qa image)
+IS_QA_IMAGE="${VXADMIN_SUDO}" sudo -E sh -c 'echo "${IS_QA_IMAGE}" > /vx/config/is-qa-image'
 
 # machine ID
 sudo sh -c 'echo "0000" > /vx/config/machine-id'

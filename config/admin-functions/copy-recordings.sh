@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-echo "Let's copy the logs to a USB stick."
+echo "Let's copy the screen recordings to a USB stick."
 
 # check for USB stick
 DEVICES=$( readlink -f $( ls /dev/disk/by-id/usb*part* 2>/dev/null || echo "") 2>/dev/null || echo "")
@@ -24,16 +24,14 @@ then
 fi
 
 # create a directory
-DIRECTORY="$MOUNTPOINT/logs-$( date +%Y%m%d-%H%M%S )"
+DIRECTORY="$MOUNTPOINT/screen-recordings"
 mkdir -p "$DIRECTORY"
 
-# copy logs
-cp -r /var/log/votingworks/syslog* "$DIRECTORY"
-cp -r /var/log/votingworks/auth.log* "$DIRECTORY"
-cp -r /var/log/votingworks/vx-logs.log* "$DIRECTORY"
+# copy recordings
+sudo sh -c "cp /var/vx/ui/screen-recordings/*.mp4 $DIRECTORY"
 
 # unmount the USB stick to make sure it's all written to disk
-echo "Saving logs to USB drive..."
+echo "Saving to USB drive and unmounting..."
 sync $MOUNTPOINT
 sudo /vx/code/app-scripts/unmount-usb.sh
 
