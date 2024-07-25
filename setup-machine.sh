@@ -191,6 +191,20 @@ fi
 # load the i915 display module as early as possible
 sudo sh -c 'echo "i915" >> /etc/modules-load.d/modules.conf'
 
+# On non-vsap systems, there can be varying levels of screen flickering
+# depending on the system components. To fix it, we use an xorg config
+# that switches the acceleration method to uxa instead of sna
+# Note: The logic below is not an ideal long-term solution since it's 
+# possible a future mark or mark-scan system would also have this issue.
+# As of now (202402725), we use VSAP units that do not exhibit flickering
+# and applying this change can not be used on them without causing other
+# undesireable graphical behaviors. Longer term, it would be better to 
+# detect during initial boot whether to apply this xorg config.
+if [ "${CHOICE}" != "mark" ] && [ "${CHOICE}" != "mark-scan" ]
+then
+    sudo cp config/10-intel-xorg.conf /etc/X11/xorg.conf.d/10-intel.conf
+fi
+
 # let vx-services scan
 if [ "${CHOICE}" != "mark" ]
 then
