@@ -16,10 +16,8 @@ VSAP155="PENMOUNT PM2501"
 VSAP150="PenMount PM1415"
 
 ( sleep 4 && if xinput list | grep -i "$ELO" > /dev/null; then
-  xrandr -o right
-  xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
   pulseaudio --start
-  # specific amixer commands may be needed after testing
+  # Specific amixer commands may be needed after testing
 elif xinput list | grep -i "$VSAP150" > /dev/null; then
   # Rotate mark-scan screen to portrait
   xrandr -o left
@@ -37,7 +35,7 @@ elif xinput list | grep -i "$VSAP155" > /dev/null; then
   amixer -c0 set Headphone 100% unmute
   amixer set Master 100% unmute
 else
-  echo "No screen rotation"
+  echo "No screen condition matched"
 fi
 
 # prevent suspending the module, otherwise the start of chimes gets clipped
