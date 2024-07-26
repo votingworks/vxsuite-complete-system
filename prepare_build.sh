@@ -111,7 +111,7 @@ for app in "${APPS_TO_BUILD[@]}"; do
   # mark-scan has additional daemons that need to be built
   # so we fetch their Rust crates while online
   if [[ "${app}" == "mark-scan" ]]; then
-    for vx_daemon in accessible-controller pat-device-input
+    for vx_daemon in accessible-controller pat-device-input fai-100-controller
     do
       cd "${DIR}/vxsuite/apps/mark-scan/${vx_daemon}"
       cargo fetch
