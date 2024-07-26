@@ -55,7 +55,7 @@ if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
   # reload their daemon configs and then issue restart commands
   if [[ "${APP}" == "mark-scan" ]]; then
     sudo systemctl daemon-reload
-    for vx_daemon in controller pat
+    for vx_daemon in controller pat fai-100
     do
       sudo systemctl restart mark-scan-${vx_daemon}-daemon.service
     done
