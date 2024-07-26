@@ -1,0 +1,20 @@
+[Unit]
+Description=VotingWorks daemon that handles BMD 150 controller and PAT signal.
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+[Service]
+Restart=on-failure
+RestartSec=10
+Type=simple
+User=vx-services
+Environment=VX_CONFIG_ROOT=/vx/config
+Environment=VX_METADATA_ROOT=/vx/code
+Environment=MARK_SCAN_WORKSPACE=/vx/data/module-mark-scan
+ExecStart=/bin/bash /vx/services/run-mark-scan-fai-100-daemon.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=votingworksapp
+
+[Install]
+WantedBy=multi-user.target
