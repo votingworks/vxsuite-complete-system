@@ -120,7 +120,17 @@ for app in "${APPS_TO_BUILD[@]}"; do
   # mark-scan has additional daemons that need to be built
   # crates were fetched while online, now we build the release while offline
   if [[ "${app}" == "mark-scan" ]]; then
-    for vx_daemon in accessible-controller pat-device-input fai-100-controller
+    # default to 155 daemons
+    vx_daemons="accessible-controller pat-device-input"
+    vxsuite_env_file="${DIR}/vxsuite/.env"
+
+    # check for the 150 env var to build the 150 daemon instead
+    if grep REACT_APP_VX_MARK_SCAN_USE_BMD_150 $vxsuite_env_file | grep -i true > /dev/null 2>&1
+    then
+      vx_daemons="fai-100-controller"
+    fi
+
+    for vx_daemon in ${vx_daemons}
     do
       cd "${DIR}/vxsuite/apps/mark-scan/${vx_daemon}"
       mkdir -p target && cargo build --offline --release --target-dir target/.
