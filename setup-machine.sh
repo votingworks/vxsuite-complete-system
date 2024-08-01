@@ -387,7 +387,17 @@ sudo systemctl start ${CHOICE}.service
 
 # mark-scan requires additional service daemons
 if [[ "${CHOICE}" == "mark-scan" ]]; then
-  for vx_daemon in controller pat
+  # default to 155 daemons
+  vx_daemons="controller pat"
+  vxsuite_env_file="/vx/code/vxsuite/.env"
+
+  # check for the 150 env var to use 150 daemon
+  if grep REACT_APP_VX_MARK_SCAN_USE_BMD_150 $vxsuite_env_file | grep -i true > /dev/null 2>&1
+  then
+    vx_daemons="fai-100"
+  fi 
+
+  for vx_daemon in ${vx_daemons}
   do
     sudo cp config/mark-scan-${vx_daemon}-daemon.service /etc/systemd/system/
     sudo cp run-scripts/run-mark-scan-${vx_daemon}-daemon.sh /vx/code/
