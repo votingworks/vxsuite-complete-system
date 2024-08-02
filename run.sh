@@ -55,7 +55,18 @@ if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
   # reload their daemon configs and then issue restart commands
   if [[ "${APP}" == "mark-scan" ]]; then
     sudo systemctl daemon-reload
-    for vx_daemon in controller pat
+
+    # default to 155 daemons
+    vx_daemons="controller pat"
+    vxsuite_env_file="/vx/code/vxsuite/.env"
+
+    # check for the 150 env var to use 150 daemon
+    if grep REACT_APP_VX_MARK_SCAN_USE_BMD_150 $vxsuite_env_file | grep -i true > /dev/null 2>&1
+    then
+      vx_daemons="fai-100"
+    fi
+
+    for vx_daemon in ${vx_daemons}
     do
       sudo systemctl restart mark-scan-${vx_daemon}-daemon.service
     done
