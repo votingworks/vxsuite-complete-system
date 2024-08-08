@@ -26,6 +26,7 @@ elif xinput list | grep -i "$VSAP150" > /dev/null; then
   amixer -c0 set Speaker 0% mute
   amixer -c0 set Headphone 100% unmute
   amixer set Master 100% unmute
+  pactl set-sink-volume 0 75%
 elif xinput list | grep -i "$VSAP155" > /dev/null; then
   # Rotate mark-scan screen to portrait
   xrandr -o left
@@ -34,6 +35,7 @@ elif xinput list | grep -i "$VSAP155" > /dev/null; then
   amixer -c0 set Speaker 0% mute
   amixer -c0 set Headphone 100% unmute
   amixer set Master 100% unmute
+  pactl set-sink-volume 0 75%
 else
   echo "No screen condition matched"
 fi
@@ -44,7 +46,7 @@ pactl unload-module module-suspend-on-idle
 # we need a startup chime to activate the channel
 # delay because it appears the xrandr and xinput commands above turn off sound for a bit
 # (because of course they do)
-sleep 5 && aplay ~/chime.wav ) &
+sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%) &
 
 # look for an external display and mirror to it
 (while true; do
