@@ -1,12 +1,21 @@
 #!/bin/bash
 
+verity_hash=$(cat /proc/cmdline | awk -F'verity.hash=' '{print $2}' | cut -d' ' -f1)
+verity_result="UNVERIFIED"
+
+if [[ ! -z ${verity_hash} ]]; then
+  verity_root_device=$(cat /proc/cmdline | awk -F'verity.rootdev=' '{print $2}' | cut -d' ' -f1)
+  verity_hash_device=$(cat /proc/cmdline | awk -F'verity.hashdev=' '{print $2}' | cut -d' ' -f1)
+  verify_result=$(veritysetup verify ${verity_root_device} ${verity_hash_device} ${verity_hash} > /dev/null 2>&1)
+  if [[ $? -eq 0 ]]; then
+    verity_result="$verity_hash"
+  fi
+fi
+
 if [[ $1 == "noninteractive" ]]; then
-  hash=$(sha256sum /dev/mapper/Vx--vg-root | cut -d' ' -f1)
-  echo "$hash"
+  echo "$verity_result"
 else
-  echo "Retrieving image signature (this may take some time)..."
-  sha256sum /dev/mapper/Vx--vg-root
-  echo ""
+  echo "$verity_result"
   read -p "Press enter once you have recorded the image signature."
 fi
 

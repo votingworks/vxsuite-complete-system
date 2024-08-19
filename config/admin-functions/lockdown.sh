@@ -135,7 +135,8 @@ else
 fi
 
 # Generate the read-only hash
-bash "${VX_FUNCTIONS_ROOT}/hash-signature.sh"
+echo "Hash: ${HASH}"
+read -p "Press enter once you have recorded the system hash."
 
 # Shut down the locked down system
 # We can't reboot this on the aws build machine due to encrypted /var
