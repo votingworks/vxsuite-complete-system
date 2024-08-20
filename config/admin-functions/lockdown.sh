@@ -134,8 +134,9 @@ else
     chmod -w /boot/grub/grub.cfg
 fi
 
-# Generate the read-only hash
-bash "${VX_FUNCTIONS_ROOT}/hash-signature.sh"
+# Output the dm-verity hash
+echo "Hash: ${HASH}"
+read -p "Press enter once you have recorded the system hash."
 
 # Shut down the locked down system
 # We can't reboot this on the aws build machine due to encrypted /var
