@@ -134,7 +134,7 @@ else
     chmod -w /boot/grub/grub.cfg
 fi
 
-# Generate the read-only hash
+# Output the dm-verity hash
 echo "Hash: ${HASH}"
 read -p "Press enter once you have recorded the system hash."
 
