@@ -13,6 +13,7 @@ if [[ $(tty) = /dev/tty1 ]] && [[ -f "/home/REKEY_VIA_TPM" ]]; then
 fi
 
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
+  sudo "${VX_FUNCTIONS_ROOT}/expand-var-filesystem.sh"
   "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
   exit 0
 fi
