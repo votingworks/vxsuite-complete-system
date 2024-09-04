@@ -2,6 +2,12 @@
 
 set -euo pipefail
 
+flag_file="/home/VAR_RESIZED"
+
+if [[ -f ${flag_file} ]]; then
+  exit 0
+fi
+
 var_map=$( df -l /var | grep mapper | awk '{print $1}' )
 pvs_path=$( pvs | grep Vx | awk '{print $1}' )
 parent_partition=$( lsblk -ndo pkname ${pvs_path} )
@@ -20,7 +26,8 @@ growpart "/dev/${parent_partition}" 3
 pvresize $pvs_path
 
 if [[ $volume_to_extend != "NONE" ]]; then
-  lvextend -r -l +100%FREE ${volume_to_extend}
+  echo "insecure" | lvextend -r -l +100%FREE ${volume_to_extend}
+  touch ${flag_file}
 fi
 
 exit 0;

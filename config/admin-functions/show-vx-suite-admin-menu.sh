@@ -8,11 +8,13 @@ set -euo pipefail
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 : "${VX_METADATA_ROOT:="/vx/code"}"
 
+if [[ $(tty) = /dev/tty1 ]]; then
+  sudo "${VX_FUNCTIONS_ROOT}/expand-var-filesystem.sh"
+fi
+
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "/home/REKEY_VIA_TPM" ]]; then
   sudo "${VX_FUNCTIONS_ROOT}/rekey-via-tpm.sh"
 fi
-
-sudo "${VX_FUNCTIONS_ROOT}/expand-var-filesystem.sh"
 
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
   "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
