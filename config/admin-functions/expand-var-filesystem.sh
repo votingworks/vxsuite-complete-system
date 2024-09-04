@@ -21,7 +21,7 @@ fi
 
 # convention: we always expect partition 3
 # if this changes in the future, we'll need to add logic to detect
-growpart "/dev/${parent_partition}" 3
+growpart "/dev/${parent_partition}" 3 || touch ${flag_file} && exit 0
 
 pvresize $pvs_path
 
