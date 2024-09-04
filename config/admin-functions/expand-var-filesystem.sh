@@ -23,10 +23,10 @@ fi
 # if this changes in the future, we'll need to add logic to detect
 growpart "/dev/${parent_partition}" 3 || true
 
-pvresize $pvs_path
+LVM_SYSTEM_DIR=/home/.lvm pvresize $pvs_path
 
 if [[ $volume_to_extend != "NONE" ]]; then
-  echo "insecure" | lvextend -r -l +100%FREE ${volume_to_extend}
+  echo "insecure" | LVM_SYSTEM_DIR=/home/.lvm lvextend -r -l +100%FREE ${volume_to_extend}
   touch ${flag_file}
 fi
 

@@ -175,6 +175,9 @@ chmod 755 /home/vx
 # turn off time synchronization
 sudo timedatectl set-ntp no
 
+# utilize available disk space
+echo "sudo /bin/bash /vx/code/config/admin-functions/expand-var-filesystem.sh" >> /home/vx/.profile
+
 # Install app to configure VxDev
 bash vxdev/vxdev-configuration.sh
 
