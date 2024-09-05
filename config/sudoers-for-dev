@@ -23,6 +23,7 @@ vx-admin	ALL=(ALL:ALL) ALL
 # fine-grained sudo permissions for certain users & actions
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/set-clock.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/rekey-via-tpm.sh
+vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/expand-var-filesystem.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/lockdown.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/hash-signature.sh
 vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/generate-key.sh

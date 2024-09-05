@@ -175,6 +175,13 @@ chmod 755 /home/vx
 # turn off time synchronization
 sudo timedatectl set-ntp no
 
+# This results in the resize script running as part of the vx user's profile.
+# After the first execution, future executions immediately exit because of the 
+# existence of the flag file. If the disk is not expanded for some reason,
+# the flag file can be removed and the script manually run again.
+# An alternative to this would be a systemd config, but that felt unnecessary.
+echo "sudo /bin/bash /vx/code/config/admin-functions/expand-var-filesystem.sh" >> /home/vx/.profile
+
 # Install app to configure VxDev
 bash vxdev/vxdev-configuration.sh
 
