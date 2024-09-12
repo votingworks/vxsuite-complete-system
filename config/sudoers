@@ -41,6 +41,7 @@ vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/backend/src/intermedi
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/usb-drive/scripts/*
 vx-services ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/hash-signature.sh
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/pactl.sh
+vx-services ALL=(vx-ui:ALL) NOPASSWD: /usr/bin/amixer
 vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/config/admin-functions/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
