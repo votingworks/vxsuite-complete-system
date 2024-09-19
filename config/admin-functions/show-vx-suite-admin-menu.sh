@@ -23,6 +23,12 @@ if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_
   exit 0
 fi
 
+# If the machine was rebooted into the vendor menu, clear the relevant flag such that the machine
+# won't boot into the vendor menu on next boot
+if grep -q 1 "${VX_CONFIG_ROOT}/REBOOT_TO_VENDOR_MENU"; then
+  echo 0 > "${VX_CONFIG_ROOT}/REBOOT_TO_VENDOR_MENU"
+fi
+
 prompt-to-restart() {
   read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? (y/n) "
   if [[ ${REPLY} = "" || ${REPLY} = Y || ${REPLY} = y ]]; then

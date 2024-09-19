@@ -346,10 +346,13 @@ sudo chown -R vx-services:vx-services /var/vx/data
 sudo chmod -R u=rwX /var/vx/data
 sudo chmod -R go-rwX /var/vx/data
 
-# config readable & executable by all vx users, writable by admin.
+# Config is writable by the vx-admin user and readable/executable by all vx-* users.
+# /vx/config/REBOOT_TO_VENDOR_MENU is special-cased to be writable by all vx-* users.
+sudo echo 0 > /var/vx/config/REBOOT_TO_VENDOR_MENU
 sudo chown -R vx-admin:vx-group /var/vx/config
 sudo chmod -R u=rwX /var/vx/config
-sudo chmod -R g=rX /var/vx/config
+sudo chmod -R g=rX  /var/vx/config
+sudo chmod    g=rwX /var/vx/config/REBOOT_TO_VENDOR_MENU
 sudo chmod -R o-rwX /var/vx/config
 
 # non-graphical login

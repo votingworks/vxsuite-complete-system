@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # This script is designed to be run in override.conf file for the service getty@tty1.
-# It conditionally selects which user to autologin based on whether or not the
-# machine needs configuration.
-if [[ -f /vx/config/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT ]]; then
+# It conditionally selects which user to automatically log in as, based on whether or not the
+# machine 1) needs configuration or 2) is being rebooted into the vendor menu.
+if [[ -f /vx/config/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT ]] || grep -q 1 /vx/config/REBOOT_TO_VENDOR_MENU; then
     USER=vx-admin
 else
     USER=vx-ui
