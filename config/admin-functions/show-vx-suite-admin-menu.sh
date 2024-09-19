@@ -25,8 +25,8 @@ fi
 
 # If the machine was rebooted into the vendor menu, clear the relevant flag such that the machine
 # won't boot into the vendor menu on next boot
-if grep -q 1 "${VX_CONFIG_ROOT}/REBOOT_TO_VENDOR_MENU"; then
-  echo 0 > "${VX_CONFIG_ROOT}/REBOOT_TO_VENDOR_MENU"
+if [[ -f "${VX_CONFIG_ROOT}/app-flags/REBOOT_TO_VENDOR_MENU" ]]; then
+  rm -f "${VX_CONFIG_ROOT}/app-flags/REBOOT_TO_VENDOR_MENU"
 fi
 
 prompt-to-restart() {

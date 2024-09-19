@@ -285,6 +285,7 @@ sudo ln -s /vx/code/config/grub.cfg /vx/admin/config/grub.cfg
 
 # machine configuration
 sudo mkdir -p /var/vx/config
+sudo mkdir /var/vx/config/app-flags
 sudo ln -sf /var/vx/config /vx/config
 
 sudo ln -s /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-config.sh
@@ -346,13 +347,12 @@ sudo chown -R vx-services:vx-services /var/vx/data
 sudo chmod -R u=rwX /var/vx/data
 sudo chmod -R go-rwX /var/vx/data
 
-# Config is writable by the vx-admin user and readable/executable by all vx-* users.
-# /vx/config/REBOOT_TO_VENDOR_MENU is special-cased to be writable by all vx-* users.
-sudo echo 0 > /var/vx/config/REBOOT_TO_VENDOR_MENU
+# Config is writable by the vx-admin user and readable/executable by all vx-* users, with the
+# exception of the app-flags subdirectory, which is special-cased to be writable by all vx-* users
 sudo chown -R vx-admin:vx-group /var/vx/config
 sudo chmod -R u=rwX /var/vx/config
-sudo chmod -R g=rX  /var/vx/config
-sudo chmod    g=rwX /var/vx/config/REBOOT_TO_VENDOR_MENU
+sudo chmod -R g=rX /var/vx/config
+sudo chmod -R g=rwX /var/vx/config/app-flags
 sudo chmod -R o-rwX /var/vx/config
 
 # non-graphical login
