@@ -54,7 +54,7 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-read -p "Is this image for QA where you want sudo privileges, the ability to record screengrabs, etc.? [y/N]" qa_image_flag
+read -p "Is this image for QA where you want sudo privileges, the ability to record screengrabs, etc.? [y/N] " qa_image_flag
 
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     VXADMIN_SUDO=1
@@ -285,6 +285,7 @@ sudo ln -s /vx/code/config/grub.cfg /vx/admin/config/grub.cfg
 
 # machine configuration
 sudo mkdir -p /var/vx/config
+sudo mkdir /var/vx/config/app-flags
 sudo ln -sf /var/vx/config /vx/config
 
 sudo ln -s /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-config.sh
@@ -346,10 +347,12 @@ sudo chown -R vx-services:vx-services /var/vx/data
 sudo chmod -R u=rwX /var/vx/data
 sudo chmod -R go-rwX /var/vx/data
 
-# config readable & executable by all vx users, writable by admin.
+# Config is writable by the vx-admin user and readable/executable by all vx-* users, with the
+# exception of the app-flags subdirectory, which is special-cased to be writable by all vx-* users
 sudo chown -R vx-admin:vx-group /var/vx/config
 sudo chmod -R u=rwX /var/vx/config
 sudo chmod -R g=rX /var/vx/config
+sudo chmod -R g=rwX /var/vx/config/app-flags
 sudo chmod -R o-rwX /var/vx/config
 
 # non-graphical login
