@@ -54,7 +54,7 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-read -p "Is this image for QA where you want sudo privileges, the ability to record screengrabs, etc.? [y/N]" qa_image_flag
+read -p "Is this image for QA where you want sudo privileges, the ability to record screengrabs, etc.? [y/N] " qa_image_flag
 
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     VXADMIN_SUDO=1
