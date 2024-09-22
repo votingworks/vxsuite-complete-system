@@ -58,13 +58,11 @@ read -p "Is this image for QA where you want sudo privileges, terminal access vi
 
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     IS_QA_IMAGE=1
-    VXADMIN_SUDO=1
     ADMIN_PASSWORD='insecure'
     echo "OK, creating a QA image with sudo privileges for the vx-admin user and terminal access via TTY2."
     echo "Using password insecure for the vx-admin user."
 else
     IS_QA_IMAGE=0
-    VXADMIN_SUDO=0
     echo "Ok, creating a production image. No sudo privileges for anyone!"
     echo
     echo "Next, we need to set a password for the vx-admin user."
@@ -460,8 +458,9 @@ sudo passwd -l vx-services
 sudo sh -c 'echo "\n127.0.1.1\tVotingWorks" >> /etc/hosts'
 sudo hostnamectl set-hostname "VotingWorks" 2>/dev/null
 
-# move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
-if [[ "${VXADMIN_SUDO}" == 1 ]] ; then
+# copy in our sudoers file, which removes sudo privileges except for very specific circumstances
+# where needed
+if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
     sudo cp config/sudoers-for-dev /etc/sudoers
 else
     sudo cp config/sudoers /etc/sudoers
