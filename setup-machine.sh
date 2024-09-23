@@ -54,18 +54,18 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-read -p "Is this image for QA where you want sudo privileges, the ability to record screengrabs, etc.? [y/N] " qa_image_flag
+read -p "Is this image for QA where you want sudo privileges, terminal access via TTY2, the ability to record screengrabs, etc.? [y/N] " qa_image_flag
 
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
-    VXADMIN_SUDO=1
+    IS_QA_IMAGE=1
     ADMIN_PASSWORD='insecure'
-    echo "OK, creating a QA image with vx-admin sudo privileges."
-    echo "Using password insecure for vx-admin user."
+    echo "OK, creating a QA image with sudo privileges for the vx-admin user and terminal access via TTY2."
+    echo "Using password insecure for the vx-admin user."
 else
-    VXADMIN_SUDO=0
+    IS_QA_IMAGE=0
     echo "Ok, creating a production image. No sudo privileges for anyone!"
     echo
-    echo "Next, we need to set the admin password for this machine."
+    echo "Next, we need to set a password for the vx-admin user."
     while true; do
         read -s -p "Set vx-admin password: " ADMIN_PASSWORD
         echo
@@ -81,11 +81,15 @@ else
     done
 fi
 
-
-
 echo
 echo "The script will take it from here and set up the machine."
 echo
+
+# Disable terminal access via TTY2 for production images
+if [[ "${IS_QA_IMAGE}" == 0 ]]
+then
+    sudo cp config/11-disable-tty.conf /etc/X11/xorg.conf.d/
+fi
 
 if [ "${CHOICE}" == "mark" ]
 then
@@ -124,7 +128,6 @@ sudo ln -sf /var/vx/data /vx/data
 sudo ln -sf /var/vx/ui /vx/ui
 sudo ln -sf /var/vx/admin /vx/admin
 sudo ln -sf /var/vx/services /vx/services
-
 
 echo "Creating users"
 # create users, no common group, specified uids.
@@ -306,7 +309,7 @@ GIT_HASH=$(git rev-parse HEAD | cut -c -10) sudo -E sh -c 'echo "$(date +%Y.%m.%
 GIT_TAG=$(git tag --points-at HEAD) sudo -E sh -c 'echo "${GIT_TAG}" > /vx/code/code-tag'
 
 # qa image flag, 0 (prod image) or 1 (qa image)
-IS_QA_IMAGE="${VXADMIN_SUDO}" sudo -E sh -c 'echo "${IS_QA_IMAGE}" > /vx/config/is-qa-image'
+IS_QA_IMAGE="${IS_QA_IMAGE}" sudo -E sh -c 'echo "${IS_QA_IMAGE}" > /vx/config/is-qa-image'
 
 # machine ID
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
@@ -426,7 +429,6 @@ done
 
 echo "Successfully setup machine."
 
-
 # now we remove permissions, reset passwords, and ready for production.
 
 USER=$(whoami)
@@ -456,8 +458,9 @@ sudo passwd -l vx-services
 sudo sh -c 'echo "\n127.0.1.1\tVotingWorks" >> /etc/hosts'
 sudo hostnamectl set-hostname "VotingWorks" 2>/dev/null
 
-# move in our sudo file, which removes sudo'ing except for granting vx-admin a very specific set of privileges
-if [[ "${VXADMIN_SUDO}" == 1 ]] ; then
+# copy in our sudoers file, which removes sudo privileges except for very specific circumstances
+# where needed
+if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
     sudo cp config/sudoers-for-dev /etc/sudoers
 else
     sudo cp config/sudoers /etc/sudoers
@@ -474,4 +477,3 @@ echo "Machine setup is complete. Please wait for the VM to reboot."
 sleep 60 
 
 exit 0;
-
