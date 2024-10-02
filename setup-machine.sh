@@ -274,7 +274,11 @@ sudo cp config/dmverity-root.hook /etc/initramfs-tools/hooks/dmverity-root
 sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/dmverity-root
 
 # admin function scripts
-sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
+if [ "${CHOICE}" = "mark-scan" ]; then
+  sudo ln -s /vx/code/config/admin_bash_profile_for_mark_scan /vx/admin/.bash_profile
+else
+  sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
+fi
 sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
 
 # Make sure our cmdline file is readable by vx-admin

@@ -1,3 +1,4 @@
+echo 3 | sudo tee -a /sys/class/graphics/fbcon/rotate"
 export PATH=/vx/code/config/admin-functions:${PATH}
 
 while true; do
