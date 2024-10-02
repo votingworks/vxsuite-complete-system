@@ -3,9 +3,12 @@
 set -euo pipefail
 declare -A TIMEZONES
 TIMEZONES["p"]="America/Los_Angeles"
-TIMEZONES["m"]="America/Phoenix"
+TIMEZONES["ms"]="America/Phoenix"
+TIMEZONES["m"]="America/Denver"
 TIMEZONES["c"]="America/Chicago"
 TIMEZONES["e"]="America/New_York"
+TIMEZONES["h"]="Pacific/Honolulu"
+TIMEZONES["a"]="America/Anchorage"
 
 echo "System clock is currently set to: $(date)"
 
@@ -41,8 +44,8 @@ done
 echo "Let's set the time"
 while true; do
     while true; do
-        read -p "Pick a timezone - (p)acific, (m)ountain, (c)entral, (e)astern: " TZ
-        [[ "${TZ}" =~ ^p|m|c|e$ ]] && break
+	    read -p "Pick a timezone - (p)acific, (ms) mountain-standard (mst year-round), (m)ountain (has mdt), (c)entral, (e)astern, (a) alaska, (h) hawaii: " TZ
+        [[ "${TZ}" =~ ^p|ms|m|c|e|a|h$ ]] && break
         echo -e "\e[31mInvalid timezone, try again\e[0m" >&2
     done
 
