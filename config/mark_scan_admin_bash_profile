@@ -1,0 +1,7 @@
+echo 3 | sudo /usr/bin/tee -a /sys/class/graphics/fbcon/rotate
+export PATH=/vx/code/config/admin-functions:${PATH}
+
+while true; do
+    bash /vx/admin/admin-functions/show-vx-suite-admin-menu.sh
+done
+
