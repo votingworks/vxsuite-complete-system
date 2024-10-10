@@ -120,6 +120,9 @@ while true; do
   echo "${#CHOICES[@]}. Show Image Hash Signature"
   CHOICES+=('hash-signature')
 
+  echo "${#CHOICES[@]}. Reboot to BIOS"
+  CHOICES+=('reboot-to-bios')
+
   # Keep conditional choices at the end so that the numbering of the other choices is consistent
   # across machines
 
@@ -248,6 +251,10 @@ while true; do
     copy-recordings)
       sudo "${VX_FUNCTIONS_ROOT}/copy-recordings.sh"
       read -s -n 1
+    ;;
+    
+    reboot-to-bios)
+      sudo systemctl reboot --firmware-setup -i
     ;;
 
     *)
