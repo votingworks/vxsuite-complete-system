@@ -161,7 +161,16 @@ while true; do
 
     set-machine-id)
       "${VX_FUNCTIONS_ROOT}/choose-vx-machine-id.sh"
-      prompt-to-restart
+      echo
+      echo "Changing the machine ID necessitates recreating the machine cert"
+      sudo "${VX_FUNCTIONS_ROOT}/create-machine-cert.sh"
+
+      if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+        echo
+        echo "Recreating the machine cert might necessitate reprogramming system administrator cards"
+        sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
+        prompt-to-restart
+      fi
     ;;
 
     set-machine-model-name)
@@ -199,6 +208,7 @@ while true; do
         echo
         echo "Recreating the machine cert might necessitate reprogramming system administrator cards"
         sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
+        prompt-to-restart
       fi
     ;;
 
@@ -214,11 +224,13 @@ while true; do
         echo
         echo "Recreating the machine cert might necessitate reprogramming system administrator cards"
         sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
+        prompt-to-restart
       fi
     ;;
 
     program-system-administrator-cards)
       sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
+      prompt-to-restart
     ;;
     
     reset-totp)
