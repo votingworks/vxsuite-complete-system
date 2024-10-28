@@ -475,6 +475,13 @@ cd
 rm -rf *
 rm -rf .*
 
+# see if we can reclaim disk space from cache after home directory deletions
+/usr/bin/sync
+cd /tmp
+ls 
+cd 
+ls -altr
+
 echo "Machine setup is complete. Please wait for the VM to reboot."
 
 #-- Just to prevent an active prompt
