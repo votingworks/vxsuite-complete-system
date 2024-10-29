@@ -4,7 +4,7 @@
 # It conditionally selects which user to automatically log in as, based on whether or not the
 # machine 1) needs configuration or 2) is being rebooted into the vendor menu.
 if [[ -f /vx/config/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT ]] || [[ -f /vx/config/app-flags/REBOOT_TO_VENDOR_MENU ]]; then
-    USER=vx-admin
+    USER=vx-vendor
 else
     USER=vx-ui
 fi

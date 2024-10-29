@@ -17,9 +17,9 @@ fi
 echo
 echo "Welcome to VxDev, we need to set the admin password for this machine."
 while true; do
-    read -s -p "Set vx-admin password: " ADMIN_PASSWORD
+    read -s -p "Set vx-vendor password: " ADMIN_PASSWORD
     echo
-    read -s -p "Confirm vx-admin password: " CONFIRM_PASSWORD
+    read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
     echo
     if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
     then
@@ -47,11 +47,11 @@ if [[ $DISTRO == "Debian" ]]; then
 	echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 fi
 
-# Set up vx-admin user
+# Set up vx-vendor user
 sudo mkdir -p /vx
-id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
+id -u vx-vendor &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-vendor
 sudo ln -sf /var/vx/admin /vx/admin
-(echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
+(echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-vendor
 
 # Set up vx-services user
 id -u vx-services &> /dev/null || sudo useradd -u 753 -m -d /var/vx/services -s /bin/bash vx-services
@@ -84,11 +84,11 @@ sudo ln -sf /home/vx/code/vxsuite-complete-system /vx/code/vxsuite-complete-syst
 sudo chown -R vx:vx /vx/data
 sudo chmod -R ugo=rwX /vx/data
 
-sudo chown -R vx-admin:vx-admin /var/vx/admin
+sudo chown -R vx-vendor:vx-vendor /var/vx/admin
 sudo chmod -R u=rwX /var/vx/admin
 sudo chmod -R go-rwX /var/vx/admin
 
-sudo chown -R vx-admin:vx-admin /var/vx/config
+sudo chown -R vx-vendor:vx-vendor /var/vx/config
 sudo chmod -R ugo=rwX /var/vx/config
 
 sudo chown -R vx-services:vx-services /var/vx/services

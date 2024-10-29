@@ -2,7 +2,7 @@
 
 # /vx/ui --> home directory for the vx-ui user (rw with symlink for ro files)
 # /vx/services --> home directory for the vx-services user (rw with symlink for ro files)
-# /vx/admin --> home directory for the vx-admin user (rw with symlink for ro files)
+# /vx/admin --> home directory for the vx-vendor user (rw with symlink for ro files)
 # /vx/code --> all the executable code (ro)
 # /vx/data --> all the scans and sqlite database for services
 # /vx/config --> machine configuration that spans all the users.
@@ -59,17 +59,17 @@ read -p "Is this image for QA where you want sudo privileges, terminal access vi
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     IS_QA_IMAGE=1
     ADMIN_PASSWORD='insecure'
-    echo "OK, creating a QA image with sudo privileges for the vx-admin user and terminal access via TTY2."
-    echo "Using password insecure for the vx-admin user."
+    echo "OK, creating a QA image with sudo privileges for the vx-vendor user and terminal access via TTY2."
+    echo "Using password insecure for the vx-vendor user."
 else
     IS_QA_IMAGE=0
     echo "Ok, creating a production image. No sudo privileges for anyone!"
     echo
-    echo "Next, we need to set a password for the vx-admin user."
+    echo "Next, we need to set a password for the vx-vendor user."
     while true; do
-        read -s -p "Set vx-admin password: " ADMIN_PASSWORD
+        read -s -p "Set vx-vendor password: " ADMIN_PASSWORD
         echo
-        read -s -p "Confirm vx-admin password: " CONFIRM_PASSWORD
+        read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
         echo
         if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
         then
@@ -132,13 +132,13 @@ sudo ln -sf /var/vx/services /vx/services
 echo "Creating users"
 # create users, no common group, specified uids.
 id -u vx-ui &> /dev/null || sudo useradd -u 1751 -m -d /var/vx/ui -s /bin/bash vx-ui
-id -u vx-admin &> /dev/null || sudo useradd -u 1752 -m -d /var/vx/admin -s /bin/bash vx-admin
+id -u vx-vendor &> /dev/null || sudo useradd -u 1752 -m -d /var/vx/admin -s /bin/bash vx-vendor
 id -u vx-services &> /dev/null || sudo useradd -u 1750 -m -d /var/vx/services vx-services
 
 # a vx group for all vx users
 getent group vx-group || sudo groupadd -g 800 vx-group
 sudo usermod -aG vx-group vx-ui
-sudo usermod -aG vx-group vx-admin
+sudo usermod -aG vx-group vx-vendor
 sudo usermod -aG vx-group vx-services
 
 sudo usermod -aG video vx-ui
@@ -152,7 +152,7 @@ sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
 
 # Let all of our users read logs
 sudo usermod -aG adm vx-ui
-sudo usermod -aG adm vx-admin
+sudo usermod -aG adm vx-vendor
 sudo usermod -aG adm vx-services
 
 # Set up log config
@@ -281,7 +281,7 @@ else
 fi
 sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
 
-# Make sure our cmdline file is readable by vx-admin
+# Make sure our cmdline file is readable by vx-vendor
 sudo mkdir -p /vx/admin/config
 sudo cp config/cmdline /vx/code/config/cmdline
 sudo cp config/logo.bmp /vx/code/config/logo.bmp
@@ -342,7 +342,7 @@ sudo chown -R vx-ui:vx-ui /var/vx/ui
 sudo chmod -R u=rwX /var/vx/ui
 sudo chmod -R go-rwX /var/vx/ui
 
-sudo chown -R vx-admin:vx-admin /var/vx/admin
+sudo chown -R vx-vendor:vx-vendor /var/vx/admin
 sudo chmod -R u=rwX /var/vx/admin
 sudo chmod -R go-rwX /var/vx/admin
 
@@ -354,9 +354,9 @@ sudo chown -R vx-services:vx-services /var/vx/data
 sudo chmod -R u=rwX /var/vx/data
 sudo chmod -R go-rwX /var/vx/data
 
-# Config is writable by the vx-admin user and readable/executable by all vx-* users, with the
+# Config is writable by the vx-vendor user and readable/executable by all vx-* users, with the
 # exception of the app-flags subdirectory, which is special-cased to be writable by all vx-* users
-sudo chown -R vx-admin:vx-group /var/vx/config
+sudo chown -R vx-vendor:vx-group /var/vx/config
 sudo chmod -R u=rwX /var/vx/config
 sudo chmod -R g=rX /var/vx/config
 sudo chmod -R g=rwX /var/vx/config/app-flags
@@ -422,7 +422,7 @@ fi
 # We manually start the pulseaudio service within vxsuite for the vx-ui user
 # Note: Depending on future use-cases, we may need to disable pulseaudio 
 # for the vx-services user. It is not currently necessary though.
-for user in vx-admin vx-ui
+for user in vx-vendor vx-ui
 do
   user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
   sudo mkdir -p ${user_home_dir}/.config/systemd/user
@@ -445,8 +445,8 @@ sudo rm -rf /var/tmp/code
 sudo rm -rf /var/tmp/downloads
 sudo rm -rf /var/tmp/rust*
 
-# set password for vx-admin
-(echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
+# set password for vx-vendor
+(echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-vendor
 
 # We need to schedule a reboot since the vx user will no longer have sudo privileges. 
 # One minute is the shortest option, and that's plenty of time for final steps.
