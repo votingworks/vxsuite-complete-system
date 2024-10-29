@@ -58,7 +58,7 @@ read -p "Is this image for QA where you want sudo privileges, terminal access vi
 
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     IS_QA_IMAGE=1
-    ADMIN_PASSWORD='insecure'
+    VENDOR_PASSWORD='insecure'
     echo "OK, creating a QA image with sudo privileges for the vx-vendor user and terminal access via TTY2."
     echo "Using password insecure for the vx-vendor user."
 else
@@ -67,11 +67,11 @@ else
     echo
     echo "Next, we need to set a password for the vx-vendor user."
     while true; do
-        read -s -p "Set vx-vendor password: " ADMIN_PASSWORD
+        read -s -p "Set vx-vendor password: " VENDOR_PASSWORD
         echo
         read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
         echo
-        if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
+        if [[ "${VENDOR_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
         then
             echo "Password confirmed."
             break
@@ -446,7 +446,7 @@ sudo rm -rf /var/tmp/downloads
 sudo rm -rf /var/tmp/rust*
 
 # set password for vx-vendor
-(echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-vendor
+(echo $VENDOR_PASSWORD; echo $VENDOR_PASSWORD) | sudo passwd vx-vendor
 
 # We need to schedule a reboot since the vx user will no longer have sudo privileges. 
 # One minute is the shortest option, and that's plenty of time for final steps.

@@ -17,11 +17,11 @@ fi
 echo
 echo "Welcome to VxDev, we need to set the admin password for this machine."
 while true; do
-    read -s -p "Set vx-vendor password: " ADMIN_PASSWORD
+    read -s -p "Set vx-vendor password: " VENDOR_PASSWORD
     echo
     read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
     echo
-    if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
+    if [[ "${VENDOR_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
     then
         echo "Password confirmed."
         break
@@ -51,7 +51,7 @@ fi
 sudo mkdir -p /vx
 id -u vx-vendor &> /dev/null || sudo useradd -u 752 -m -d /var/vx/vendor -s /bin/bash vx-vendor
 sudo ln -sf /var/vx/vendor /vx/vendor
-(echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-vendor
+(echo $VENDOR_PASSWORD; echo $VENDOR_PASSWORD) | sudo passwd vx-vendor
 
 # Set up vx-services user
 id -u vx-services &> /dev/null || sudo useradd -u 753 -m -d /var/vx/services -s /bin/bash vx-services
