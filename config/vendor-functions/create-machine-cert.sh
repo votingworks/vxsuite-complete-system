@@ -53,7 +53,7 @@ function unmount_usb_drive() {
 # Applies permissions to match the permissions of other non-executable files in VX_CONFIG_ROOT
 function match_vx_config_non_executable_file_permissions() {
     local file_path="${1}"
-    chown vx-admin:vx-group "${file_path}"
+    chown vx-vendor:vx-group "${file_path}"
     chmod u=rw,g=r,o= "${file_path}"
 }
 

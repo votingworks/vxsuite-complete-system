@@ -8,7 +8,7 @@
 #
 Defaults	env_reset
 Defaults	mail_badpass
-Defaults	secure_path="/vx/code/config/admin-functions:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+Defaults	secure_path="/vx/code/config/vendor-functions:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
 # Host alias specification
 
@@ -20,29 +20,29 @@ Defaults	secure_path="/vx/code/config/admin-functions:/usr/local/sbin:/usr/local
 root	ALL=(ALL:ALL) ALL
 
 # fine-grained sudo permissions for certain users & actions
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/set-clock.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/rekey-via-tpm.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/expand-var-filesystem.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/lockdown.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/hash-signature.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/generate-key.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/setup-boot-entry.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/create-machine-cert.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/program-system-administrator-cards.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
-vx-admin ALL=(root:ALL) NOPASSWD: /usr/sbin/reboot
-vx-admin ALL=(root:ALL) NOPASSWD: /usr/bin/tee
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/mount-usb.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/unmount-usb.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/pactl.sh
-vx-admin ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/intermediate-scripts/create-cert
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/set-clock.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/rekey-via-tpm.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/expand-var-filesystem.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/lockdown.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/hash-signature.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/generate-key.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/setup-boot-entry.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/create-machine-cert.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/program-system-administrator-cards.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
+vx-vendor ALL=(root:ALL) NOPASSWD: /usr/sbin/reboot
+vx-vendor ALL=(root:ALL) NOPASSWD: /usr/bin/tee
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/mount-usb.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/unmount-usb.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/pactl.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/intermediate-scripts/create-cert
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/intermediate-scripts/create-cert
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/auth/src/intermediate-scripts/sign-message
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/backend/src/intermediate-scripts/*
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/vxsuite/libs/usb-drive/scripts/*
-vx-services ALL=(root:ALL) NOPASSWD: /vx/admin/admin-functions/hash-signature.sh
+vx-services ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/hash-signature.sh
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/pactl.sh
-vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/config/admin-functions/timedatectl
+vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/config/vendor-functions/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
 vx-ui ALL=(root:ALL) NOPASSWD: /bin/efibootmgr

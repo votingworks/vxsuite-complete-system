@@ -89,7 +89,7 @@ veritysetup format /dev/mapper/Vx--vg-root /dev/mapper/Vx--vg-hashes| tee "/tmp/
 
 # Find the root hash and append it to our cmdline
 HASH="$(awk '/Root hash:/ { print $3 }' "/tmp/verity.log")"
-echo "$(cat /vx/admin/config/cmdline)${HASH}" > /tmp/cmdline
+echo "$(cat /vx/vendor/config/cmdline)${HASH}" > /tmp/cmdline
 
 KERNEL_VERSION=`uname -r`
 
@@ -99,7 +99,7 @@ if [ $surface == 0 ]; then
     objcopy \
         --add-section .osrel="/usr/lib/os-release" --change-section-vma .osrel=0x20000 \
         --add-section .cmdline="/tmp/cmdline" --change-section-vma .cmdline=0x30000 \
-        --add-section .splash="/vx/admin/config/logo.bmp" --change-section-vma .splash=0x40000 \
+        --add-section .splash="/vx/vendor/config/logo.bmp" --change-section-vma .splash=0x40000 \
         --add-section .linux="/boot/vmlinuz-${KERNEL_VERSION}" --change-section-vma .linux=0x2000000 \
         --add-section .initrd="/boot/initrd.img-${KERNEL_VERSION}" --change-section-vma .initrd=0x3000000 \
         "/usr/lib/systemd/boot/efi/linuxx64.efi.stub" "/tmp/linux.efi"
@@ -117,7 +117,7 @@ if [ $surface == 0 ]; then
 else
     # On a surface we just need to setup the right GRUB entry
     chmod +w /boot/grub/grub.cfg
-    cp /vx/admin/config/grub.cfg /boot/grub/grub.cfg
+    cp /vx/vendor/config/grub.cfg /boot/grub/grub.cfg
 
     echo "menuentry 'VxLinux' {
         load_video

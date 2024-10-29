@@ -17,11 +17,11 @@ fi
 echo
 echo "Welcome to VxDev, we need to set the admin password for this machine."
 while true; do
-    read -s -p "Set vx-admin password: " ADMIN_PASSWORD
+    read -s -p "Set vx-vendor password: " VENDOR_PASSWORD
     echo
-    read -s -p "Confirm vx-admin password: " CONFIRM_PASSWORD
+    read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
     echo
-    if [[ "${ADMIN_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
+    if [[ "${VENDOR_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
     then
         echo "Password confirmed."
         break
@@ -47,11 +47,11 @@ if [[ $DISTRO == "Debian" ]]; then
 	echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 fi
 
-# Set up vx-admin user
+# Set up vx-vendor user
 sudo mkdir -p /vx
-id -u vx-admin &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-admin
-sudo ln -sf /var/vx/admin /vx/admin
-(echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-admin
+id -u vx-vendor &> /dev/null || sudo useradd -u 752 -m -d /var/vx/vendor -s /bin/bash vx-vendor
+sudo ln -sf /var/vx/vendor /vx/vendor
+(echo $VENDOR_PASSWORD; echo $VENDOR_PASSWORD) | sudo passwd vx-vendor
 
 # Set up vx-services user
 id -u vx-services &> /dev/null || sudo useradd -u 753 -m -d /var/vx/services -s /bin/bash vx-services
@@ -84,11 +84,11 @@ sudo ln -sf /home/vx/code/vxsuite-complete-system /vx/code/vxsuite-complete-syst
 sudo chown -R vx:vx /vx/data
 sudo chmod -R ugo=rwX /vx/data
 
-sudo chown -R vx-admin:vx-admin /var/vx/admin
-sudo chmod -R u=rwX /var/vx/admin
-sudo chmod -R go-rwX /var/vx/admin
+sudo chown -R vx-vendor:vx-vendor /var/vx/vendor
+sudo chmod -R u=rwX /var/vx/vendor
+sudo chmod -R go-rwX /var/vx/vendor
 
-sudo chown -R vx-admin:vx-admin /var/vx/config
+sudo chown -R vx-vendor:vx-vendor /var/vx/config
 sudo chmod -R ugo=rwX /var/vx/config
 
 sudo chown -R vx-services:vx-services /var/vx/services
@@ -139,8 +139,8 @@ sudo cp config/50-gpio.rules /etc/udev/rules.d/
 sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
 # admin function scripts
-sudo ln -sf /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
-sudo ln -sf /vx/code/config/admin-functions /vx/admin/admin-functions
+sudo ln -sf /vx/code/config/admin_bash_profile /vx/vendor/.bash_profile
+sudo ln -sf /vx/code/config/vendor-functions /vx/vendor/vendor-functions
 
 # machine manufacturer
 sudo sh -c 'echo "VotingWorks" > /vx/config/machine-manufacturer'
@@ -180,7 +180,7 @@ sudo timedatectl set-ntp no
 # existence of the flag file. If the disk is not expanded for some reason,
 # the flag file can be removed and the script manually run again.
 # An alternative to this would be a systemd config, but that felt unnecessary.
-echo "sudo /bin/bash /vx/code/config/admin-functions/expand-var-filesystem.sh" >> /home/vx/.profile
+echo "sudo /bin/bash /vx/code/config/vendor-functions/expand-var-filesystem.sh" >> /home/vx/.profile
 
 # Install app to configure VxDev
 bash vxdev/vxdev-configuration.sh
