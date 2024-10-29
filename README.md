@@ -109,6 +109,11 @@ Each frontend (e.g. `apps/scan/frontend`) and backend (e.g. `apps/scan/backend`)
 application that can be built using `make build`, and then run using
 `make run`.
 
+## License
+
+All files are licensed under GNU GPL v3.0 only. Refer to the [license file](./LICENSE) for
+more information.
+
 ## Acknowledgments
 
 Thanks to Trammell Hudson (@osresearch) for help working out TPM- and dm-verity
