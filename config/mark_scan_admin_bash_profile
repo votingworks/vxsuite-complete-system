@@ -2,6 +2,6 @@ echo 3 | sudo /usr/bin/tee -a /sys/class/graphics/fbcon/rotate
 export PATH=/vx/code/config/vendor-functions:${PATH}
 
 while true; do
-    bash /vx/vendor/vendor-functions/show-vx-suite-admin-menu.sh
+    bash /vx/vendor/vendor-functions/show-vendor-menu.sh
 done
 
