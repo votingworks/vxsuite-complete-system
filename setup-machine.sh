@@ -2,7 +2,7 @@
 
 # /vx/ui --> home directory for the vx-ui user (rw with symlink for ro files)
 # /vx/services --> home directory for the vx-services user (rw with symlink for ro files)
-# /vx/admin --> home directory for the vx-vendor user (rw with symlink for ro files)
+# /vx/vendor --> home directory for the vx-vendor user (rw with symlink for ro files)
 # /vx/code --> all the executable code (ro)
 # /vx/data --> all the scans and sqlite database for services
 # /vx/config --> machine configuration that spans all the users.
@@ -119,20 +119,20 @@ sudo mkdir -p /var/vx/data/module-scan
 sudo mkdir -p /var/vx/data/module-sems-converter
 sudo mkdir -p /var/vx/data/admin-service
 sudo mkdir -p /var/vx/ui
-sudo mkdir -p /var/vx/admin
+sudo mkdir -p /var/vx/vendor
 sudo mkdir -p /var/vx/services
 
 sudo ln -sf /var/vx/data /vx/data
 
 # mutable homedirs because we haven't figured out how to do this well yet.
 sudo ln -sf /var/vx/ui /vx/ui
-sudo ln -sf /var/vx/admin /vx/admin
+sudo ln -sf /var/vx/vendor /vx/vendor
 sudo ln -sf /var/vx/services /vx/services
 
 echo "Creating users"
 # create users, no common group, specified uids.
 id -u vx-ui &> /dev/null || sudo useradd -u 1751 -m -d /var/vx/ui -s /bin/bash vx-ui
-id -u vx-vendor &> /dev/null || sudo useradd -u 1752 -m -d /var/vx/admin -s /bin/bash vx-vendor
+id -u vx-vendor &> /dev/null || sudo useradd -u 1752 -m -d /var/vx/vendor -s /bin/bash vx-vendor
 id -u vx-services &> /dev/null || sudo useradd -u 1750 -m -d /var/vx/services vx-services
 
 # a vx group for all vx users
@@ -148,7 +148,7 @@ sudo usermod -aG audio vx-ui
 sudo usermod -aG audio vx-services
 
 # remove all files created by default
-sudo rm -rf /vx/services/* /vx/ui/* /vx/admin/*
+sudo rm -rf /vx/services/* /vx/ui/* /vx/vendor/*
 
 # Let all of our users read logs
 sudo usermod -aG adm vx-ui
@@ -275,20 +275,20 @@ sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/
 
 # admin function scripts
 if [ "${CHOICE}" = "mark-scan" ]; then
-  sudo ln -s /vx/code/config/mark_scan_admin_bash_profile /vx/admin/.bash_profile
+  sudo ln -s /vx/code/config/mark_scan_admin_bash_profile /vx/vendor/.bash_profile
 else
-  sudo ln -s /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
+  sudo ln -s /vx/code/config/admin_bash_profile /vx/vendor/.bash_profile
 fi
-sudo ln -s /vx/code/config/admin-functions /vx/admin/admin-functions
+sudo ln -s /vx/code/config/admin-functions /vx/vendor/admin-functions
 
 # Make sure our cmdline file is readable by vx-vendor
-sudo mkdir -p /vx/admin/config
+sudo mkdir -p /vx/vendor/config
 sudo cp config/cmdline /vx/code/config/cmdline
 sudo cp config/logo.bmp /vx/code/config/logo.bmp
 sudo cp config/grub.cfg /vx/code/config/grub.cfg
-sudo ln -s /vx/code/config/cmdline /vx/admin/config/cmdline
-sudo ln -s /vx/code/config/logo.bmp /vx/admin/config/logo.bmp
-sudo ln -s /vx/code/config/grub.cfg /vx/admin/config/grub.cfg
+sudo ln -s /vx/code/config/cmdline /vx/vendor/config/cmdline
+sudo ln -s /vx/code/config/logo.bmp /vx/vendor/config/logo.bmp
+sudo ln -s /vx/code/config/grub.cfg /vx/vendor/config/grub.cfg
 
 # machine configuration
 sudo mkdir -p /var/vx/config
@@ -342,9 +342,9 @@ sudo chown -R vx-ui:vx-ui /var/vx/ui
 sudo chmod -R u=rwX /var/vx/ui
 sudo chmod -R go-rwX /var/vx/ui
 
-sudo chown -R vx-vendor:vx-vendor /var/vx/admin
-sudo chmod -R u=rwX /var/vx/admin
-sudo chmod -R go-rwX /var/vx/admin
+sudo chown -R vx-vendor:vx-vendor /var/vx/vendor
+sudo chmod -R u=rwX /var/vx/vendor
+sudo chmod -R go-rwX /var/vx/vendor
 
 sudo chown -R vx-services:vx-services /var/vx/services
 sudo chmod -R u=rwX /var/vx/services

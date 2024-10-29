@@ -49,8 +49,8 @@ fi
 
 # Set up vx-vendor user
 sudo mkdir -p /vx
-id -u vx-vendor &> /dev/null || sudo useradd -u 752 -m -d /var/vx/admin -s /bin/bash vx-vendor
-sudo ln -sf /var/vx/admin /vx/admin
+id -u vx-vendor &> /dev/null || sudo useradd -u 752 -m -d /var/vx/vendor -s /bin/bash vx-vendor
+sudo ln -sf /var/vx/vendor /vx/vendor
 (echo $ADMIN_PASSWORD; echo $ADMIN_PASSWORD) | sudo passwd vx-vendor
 
 # Set up vx-services user
@@ -84,9 +84,9 @@ sudo ln -sf /home/vx/code/vxsuite-complete-system /vx/code/vxsuite-complete-syst
 sudo chown -R vx:vx /vx/data
 sudo chmod -R ugo=rwX /vx/data
 
-sudo chown -R vx-vendor:vx-vendor /var/vx/admin
-sudo chmod -R u=rwX /var/vx/admin
-sudo chmod -R go-rwX /var/vx/admin
+sudo chown -R vx-vendor:vx-vendor /var/vx/vendor
+sudo chmod -R u=rwX /var/vx/vendor
+sudo chmod -R go-rwX /var/vx/vendor
 
 sudo chown -R vx-vendor:vx-vendor /var/vx/config
 sudo chmod -R ugo=rwX /var/vx/config
@@ -139,8 +139,8 @@ sudo cp config/50-gpio.rules /etc/udev/rules.d/
 sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
 # admin function scripts
-sudo ln -sf /vx/code/config/admin_bash_profile /vx/admin/.bash_profile
-sudo ln -sf /vx/code/config/admin-functions /vx/admin/admin-functions
+sudo ln -sf /vx/code/config/admin_bash_profile /vx/vendor/.bash_profile
+sudo ln -sf /vx/code/config/admin-functions /vx/vendor/admin-functions
 
 # machine manufacturer
 sudo sh -c 'echo "VotingWorks" > /vx/config/machine-manufacturer'

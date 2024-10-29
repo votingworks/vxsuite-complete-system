@@ -1,6 +1,6 @@
 export PATH=/vx/code/config/admin-functions:${PATH}
 
 while true; do
-    bash /vx/admin/admin-functions/show-vendor-menu.sh
+    bash /vx/vendor/admin-functions/show-vendor-menu.sh
 done
 
