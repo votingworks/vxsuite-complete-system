@@ -4,7 +4,7 @@
 # terminal. Should be run from the root of vxsuite-complete-system, with a USB drive plugged in,
 # after create-machine-cert.sh has written a CSR to the USB drive.
 #
-# Usage: sudo VX_PRIVATE_KEY_PATH=/path/to/vx-private-key.pem ./config/admin-functions/mock-vx-certifier.sh
+# Usage: sudo VX_PRIVATE_KEY_PATH=/path/to/vx-private-key.pem ./config/vendor-functions/mock-vx-certifier.sh
 
 set -euo pipefail
 
@@ -13,7 +13,7 @@ USB_DRIVE_CERTS_DIRECTORY="/media/vx/usb-drive/certs"
 
 rm -f "${SERIAL_FILE}"
 
-VX_METADATA_ROOT="." ./config/admin-functions/select-usb-drive-and-mount.sh
+VX_METADATA_ROOT="." ./config/vendor-functions/select-usb-drive-and-mount.sh
 
 VX_MACHINE_TYPE="$(< "${USB_DRIVE_CERTS_DIRECTORY}/machine-type")"
 if [[

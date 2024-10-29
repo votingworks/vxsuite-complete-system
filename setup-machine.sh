@@ -279,7 +279,7 @@ if [ "${CHOICE}" = "mark-scan" ]; then
 else
   sudo ln -s /vx/code/config/admin_bash_profile /vx/vendor/.bash_profile
 fi
-sudo ln -s /vx/code/config/admin-functions /vx/vendor/admin-functions
+sudo ln -s /vx/code/config/vendor-functions /vx/vendor/vendor-functions
 
 # Make sure our cmdline file is readable by vx-vendor
 sudo mkdir -p /vx/vendor/config

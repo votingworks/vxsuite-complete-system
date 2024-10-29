@@ -140,7 +140,7 @@ sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
 # admin function scripts
 sudo ln -sf /vx/code/config/admin_bash_profile /vx/vendor/.bash_profile
-sudo ln -sf /vx/code/config/admin-functions /vx/vendor/admin-functions
+sudo ln -sf /vx/code/config/vendor-functions /vx/vendor/vendor-functions
 
 # machine manufacturer
 sudo sh -c 'echo "VotingWorks" > /vx/config/machine-manufacturer'
@@ -180,7 +180,7 @@ sudo timedatectl set-ntp no
 # existence of the flag file. If the disk is not expanded for some reason,
 # the flag file can be removed and the script manually run again.
 # An alternative to this would be a systemd config, but that felt unnecessary.
-echo "sudo /bin/bash /vx/code/config/admin-functions/expand-var-filesystem.sh" >> /home/vx/.profile
+echo "sudo /bin/bash /vx/code/config/vendor-functions/expand-var-filesystem.sh" >> /home/vx/.profile
 
 # Install app to configure VxDev
 bash vxdev/vxdev-configuration.sh
