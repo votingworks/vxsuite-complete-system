@@ -1,4 +1,4 @@
-This file explains getting VxSuite up and running in Debian 11.2, along with setting up security features like Secure Boot, dm-verity, and TPM2-TOTP. 
+This file explains getting VxSuite up and running in Debian 11.2, along with setting up security features like Secure Boot, dm-verity, and TPM2-TOTP.
 
 <h2>Preseed Installer</h2>
 
@@ -6,11 +6,12 @@ This repo provides a preseed file that can be used for an automated install of D
 ![Screenshot_VxMarkProdBase_2022-03-21_21:10:57](https://user-images.githubusercontent.com/2686765/159756779-68452a49-3352-4c95-892e-6d544778118d.png)
 ![Screenshot_VxMarkProdBase_2022-03-21_21:11:07](https://user-images.githubusercontent.com/2686765/159756788-aa6be79d-1142-455f-8218-418c17bf36d8.png)
 
-Then, type the URL for the preseed file into the box provided by the installer. The URL is 
+Then, type the URL for the preseed file into the box provided by the installer. The URL is
 
 ```
 https://raw.githubusercontent.com/votingworks/vxsuite-complete-system/main/production-preseed.cfg
 ```
+
 ![Screenshot_VxMarkProdBase_2022-03-23_13:13:34](https://user-images.githubusercontent.com/2686765/159757265-6ff662b1-87d8-43fd-ba05-0e9e95ab8d17.png)
 
 Clicking "Continue" should result in a full install of the system, which automatically reboots into a login prompt. The login credentials are
@@ -19,9 +20,10 @@ Clicking "Continue" should result in a full install of the system, which automat
 login: vx
 password: insecure
 ```
+
 **NOTE**: These credentials are deleted as part of the production setup process and are not usable on deployed machines.
 
-From there, clone this git repo and proceed with a normal installation. 
+From there, clone this git repo and proceed with a normal installation.
 
 <h2>Manual Installer</h2>
 
@@ -60,7 +62,7 @@ Start by deleting the swap partition:
 ![image](https://user-images.githubusercontent.com/2686765/156219126-87d39e66-718a-4374-91df-44543f68715f.png)
 ![image](https://user-images.githubusercontent.com/2686765/156219143-ebe05a13-464a-404f-9823-33ee80c75855.png)
 
-Now add a `hashes` partition in its place: 
+Now add a `hashes` partition in its place:
 ![image](https://user-images.githubusercontent.com/2686765/156219159-5e54ec45-48ed-45e1-8983-5225e3d4f949.png)
 ![image](https://user-images.githubusercontent.com/2686765/156219166-0ad2a46f-a3c4-4d4e-b1ab-d72ad0d7b8c4.png)
 ![image](https://user-images.githubusercontent.com/2686765/156219190-1bda80c0-fe77-42ae-9d9c-d10bebd422e1.png)
@@ -70,13 +72,13 @@ Now we're done!
 ![image](https://user-images.githubusercontent.com/2686765/156219231-c051bb0f-a816-4dfe-871a-7e4edb6c4780.png)
 ![image](https://user-images.githubusercontent.com/2686765/156219254-c00b5fe9-53c7-411d-88c2-c6cf798fa665.png)
 
-Note: there may be a screen asking if we want to install with a UEFI-based bootloader. Say yes. Afterwards, continue through the rest of the install as normal. 
+Note: there may be a screen asking if we want to install with a UEFI-based bootloader. Say yes. Afterwards, continue through the rest of the install as normal.
 
 <h2>First boot</h2>
 Since Debian does not have the same packages as Ubuntu (i.e. no PPAs), some modifications are needed from the usual VxSuite build process. First, you’ll have to add your user to the sudoers group using `usermod -a -G sudo ${USER}`
 
 ```bash
-sudo apt install git build-essential rsync cups cryptsetup efitools 
+sudo apt install git build-essential rsync cups cryptsetup efitools
 usermod -a -G lpadmin $USER
 ```
 
@@ -99,7 +101,7 @@ make build
 ./setup-machine.sh
 ```
 
-After this point, the machine will be locked down, and should automatically reboot. After reboot, ensure that your secure boot keys are on a USB drive connected to the machine and go into the admin screen (TTY2). Select the lockdown option:
+After this point, the machine will be locked down, and should automatically reboot. After reboot, ensure that your secure boot keys are on a USB drive connected to the machine and go into the vendor screen (TTY2). Select the lockdown option:
 ![image](https://user-images.githubusercontent.com/2686765/156222053-16c5ed78-75b6-486d-b5cc-753110badf41.png)
 
 This should setup everything for you, except TPM2-TOTP, and reboot the machine. On reboot, make sure you go back into the firmware interface and turn on Secure Boot. If that works, it should boot into the new dm-verity-backed lockdown. On the tty2, you should now see
@@ -107,5 +109,3 @@ This should setup everything for you, except TPM2-TOTP, and reboot the machine. 
 
 And if you `^C` you should see the following when running `lsblk`:
 ![image](https://user-images.githubusercontent.com/2686765/149411997-202e2a72-d8d4-492e-a19e-d43c7508e95a.png)
-
-

@@ -273,7 +273,7 @@ sudo ln -s /vx/code/config/gtksettings.ini /vx/ui/.config/gtk-3.0/settings.ini
 sudo cp config/dmverity-root.hook /etc/initramfs-tools/hooks/dmverity-root
 sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/dmverity-root
 
-# admin function scripts
+# vendor function scripts
 if [ "${CHOICE}" = "mark-scan" ]; then
   sudo ln -s /vx/code/config/mark_scan_admin_bash_profile /vx/vendor/.bash_profile
 else

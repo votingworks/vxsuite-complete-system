@@ -40,7 +40,7 @@ while true; do
   source "${VX_FUNCTIONS_ROOT}/../read-vx-machine-config.sh"
   clear
 
-  echo -e "\e[1mVxSuite Admin\e[0m"
+  echo -e "\e[1mVxSuite Vendor Menu\e[0m"
   echo -e "Code Version: \e[32m${VX_CODE_VERSION}\e[0m"
   echo -e "Machine ID: \e[32m${VX_MACHINE_ID}\e[0m"
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
