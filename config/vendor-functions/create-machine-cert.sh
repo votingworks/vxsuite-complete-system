@@ -8,6 +8,7 @@ set -euo pipefail
 : "${VX_FUNCTIONS_ROOT:="$(dirname "${0}")"}"
 : "${VX_METADATA_ROOT:="/vx/code"}"
 : "${VX_MACHINE_TYPE:="$(< "${VX_CONFIG_ROOT}/machine-type")"}"
+: "${VX_MACHINE_ID:="$(< "${VX_CONFIG_ROOT}/machine-id")"}"
 
 if [[ "${VX_MACHINE_TYPE}" == "admin" ]]; then
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert-authority-cert.pem"
@@ -37,10 +38,12 @@ function create_machine_cert_signing_request() {
     local machine_jurisdiction="${1:-}"
     if [[ -n "${machine_jurisdiction}" ]]; then
         VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
+            VX_MACHINE_ID="${VX_MACHINE_ID}" \
             VX_MACHINE_JURISDICTION="${machine_jurisdiction}" \
             ./create-production-machine-cert-signing-request
     else
         VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
+            VX_MACHINE_ID="${VX_MACHINE_ID}" \
             ./create-production-machine-cert-signing-request
     fi
     popd > /dev/null
