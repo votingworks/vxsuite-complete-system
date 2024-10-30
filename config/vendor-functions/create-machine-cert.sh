@@ -81,7 +81,7 @@ read -p "Insert a USB drive into the machine. Press enter once you've done so. "
 echo "Writing cert signing request to USB drive..."
 rm -rf "${USB_DRIVE_CERTS_DIRECTORY}"
 mkdir "${USB_DRIVE_CERTS_DIRECTORY}"
-if [[ ${VX_MACHINE_TYPE} == "admin" ]]; then
+if [[ "${VX_MACHINE_TYPE}" == "admin" ]]; then
     create_machine_cert_signing_request "${machine_jurisdiction}" > "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem"
 else
     create_machine_cert_signing_request > "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem"
@@ -91,10 +91,9 @@ unmount_usb_drive
 
 if [[ "${IS_QA_IMAGE}" == 1 ]]; then
     read -p "Because we're using a QA image, we can auto-certify this machine using the dev VotingWorks private key. You'll be prompted to select a USB drive again. Press enter to continue. "
-    pushd "${VX_FUNCTIONS_ROOT}/../.." > /dev/null
-    VX_PRIVATE_KEY_PATH="./vxsuite/libs/auth/certs/dev/vx-private-key.pem" \
-        ./config/vendor-functions/mock-vx-certifier.sh
-    popd > /dev/null
+    VX_PRIVATE_KEY_PATH="${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/dev/vx-private-key.pem" \
+        VX_METADATA_ROOT="${VX_METADATA_ROOT}" \
+        "${VX_FUNCTIONS_ROOT}/mock-vx-certifier.sh"
     read -p "You'll be prompted to select a USB drive one last time. Press enter to continue. "
 else
     read -p "Remove the USB drive, take it to VxCertifier, and bring it back to this machine when prompted. Press enter once you've re-inserted the USB drive. "
