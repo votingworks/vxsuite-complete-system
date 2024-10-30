@@ -470,6 +470,14 @@ else
     sudo cp config/sudoers /etc/sudoers
 fi
 
+# QA images are certified using the dev VotingWorks private key so root all verification with the
+# dev VotingWorks cert by writing it to the expected file path
+if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
+    sudo cp \
+        /vx/code/vxsuite/libs/auth/certs/dev/vx-cert-authority-cert.pem \
+        /vx/code/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem
+fi
+
 # remove everything from this bootstrap user's home directory
 cd
 rm -rf *
