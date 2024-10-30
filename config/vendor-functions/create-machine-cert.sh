@@ -9,6 +9,7 @@ set -euo pipefail
 : "${VX_METADATA_ROOT:="/vx/code"}"
 : "${VX_MACHINE_TYPE:="$(< "${VX_CONFIG_ROOT}/machine-type")"}"
 : "${VX_MACHINE_ID:="$(< "${VX_CONFIG_ROOT}/machine-id")"}"
+: "${IS_QA_IMAGE:="$(< "${VX_CONFIG_ROOT}/is-qa-image")"}"
 
 if [[ "${VX_MACHINE_TYPE}" == "admin" ]]; then
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert-authority-cert.pem"
@@ -19,16 +20,24 @@ USB_DRIVE_CERTS_DIRECTORY="/media/vx/usb-drive/certs"
 VX_IANA_ENTERPRISE_OID="1.3.6.1.4.1.59817"
 
 function get_machine_jurisdiction_from_user_input() {
-    local prompt="Enter a jurisdiction ({state-2-letter-abbreviation}.{county-or-town}, e.g. ms.warren or ca.los-angeles): "
-    local validation_error_message="Expected jurisdiction to be of the format {state-2-letter-abbreviation}.{county-or-town}"
     local machine_jurisdiction
+    local confirm
     while true; do
-        read -p "${prompt}" machine_jurisdiction
-        if [[ "${machine_jurisdiction}" =~ ^[a-z]{2}\.[a-z-]+$ ]]; then
-            echo "${machine_jurisdiction}" > "${VX_CONFIG_ROOT}/machine-jurisdiction"
-            break
+        if [[ "${IS_QA_IMAGE}" == 1 ]]; then
+            machine_jurisdiction="vx.test"
+        else
+            read -p "Enter a jurisdiction ({state-2-letter-abbreviation}.{county-or-town}, e.g. ms.warren or ca.los-angeles): " machine_jurisdiction
         fi
-        echo -e "\e[31m${validation_error_message}\e[0m" >&2
+        if [[ "${machine_jurisdiction}" =~ ^[a-z]{2}\.[a-z-]+$ ]]; then
+            read -p "Confirm that the machine jurisdiction should be set to: ${machine_jurisdiction} (y/n) " confirm
+            if [[ "${confirm}" = "y" ]]; then
+                echo "${machine_jurisdiction}" > "${VX_CONFIG_ROOT}/machine-jurisdiction"
+                break
+            else
+                continue
+            fi
+        fi
+        echo -e "\e[31mExpected jurisdiction to be of the format {state-2-letter-abbreviation}.{county-or-town}\e[0m" >&2
     done
     echo "${machine_jurisdiction}"
 }
@@ -62,7 +71,7 @@ function match_vx_config_non_executable_file_permissions() {
 
 mkdir -p "${VX_CONFIG_ROOT}"
 
-if [[ ${VX_MACHINE_TYPE} == "admin" ]]; then
+if [[ "${VX_MACHINE_TYPE}" == "admin" ]]; then
     machine_jurisdiction="$(get_machine_jurisdiction_from_user_input)"
 fi
 
@@ -80,7 +89,16 @@ fi
 echo "${VX_MACHINE_TYPE}" > "${USB_DRIVE_CERTS_DIRECTORY}/machine-type"
 unmount_usb_drive
 
-read -p "Remove the USB drive, take it to VxCertifier, and bring it back to this machine when prompted. Press enter once you've re-inserted the USB drive. "
+if [[ "${IS_QA_IMAGE}" == 1 ]]; then
+    read -p "Because we're using a QA image, we can auto-certify this machine using the dev VotingWorks private key. You'll be prompted to select a USB drive again. Press enter to continue. "
+    pushd "${VX_FUNCTIONS_ROOT}/../.." > /dev/null
+    VX_PRIVATE_KEY_PATH="./vxsuite/libs/auth/certs/dev/vx-private-key.pem" \
+        ./config/vendor-functions/mock-vx-certifier.sh
+    popd > /dev/null
+    read -p "You'll be prompted to select a USB drive one last time. Press enter to continue. "
+else
+    read -p "Remove the USB drive, take it to VxCertifier, and bring it back to this machine when prompted. Press enter once you've re-inserted the USB drive. "
+fi
 
 while true; do
     "${VX_FUNCTIONS_ROOT}/select-usb-drive-and-mount.sh"
@@ -96,5 +114,12 @@ cp "${USB_DRIVE_CERTS_DIRECTORY}/cert.pem" "${MACHINE_CERT_PATH}"
 match_vx_config_non_executable_file_permissions "${MACHINE_CERT_PATH}"
 rm -rf "${USB_DRIVE_CERTS_DIRECTORY}"
 unmount_usb_drive
+
+# Quick cert correctness check
+if ! openssl x509 -in "${MACHINE_CERT_PATH}" -noout -pubkey | \
+    diff -q "${VX_CONFIG_ROOT}/key.pub" -; then
+    echo -e "\e[31mPublic key in cert doesn't match public key extracted from TPM\e[0m" >&2
+    exit 1
+fi
 
 echo "Machine cert saved! You can remove the USB drive."
