@@ -118,6 +118,7 @@ unmount_usb_drive
 if ! openssl x509 -in "${MACHINE_CERT_PATH}" -noout -pubkey | \
     diff -q "${VX_CONFIG_ROOT}/key.pub" -; then
     echo -e "\e[31mPublic key in cert doesn't match public key extracted from TPM\e[0m" >&2
+    read -p "Press enter to start over. "
     exit 1
 fi
 
