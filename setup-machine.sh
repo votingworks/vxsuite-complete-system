@@ -383,7 +383,7 @@ sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
 sudo ln -sf /vx/config/localtime /etc/localtime
 
 # remove all network drivers. Buh bye.
-sudo apt purge -y network-manager
+sudo apt purge -y network-manager > /dev/null 2>&1 || true
 sudo rm -rf /lib/modules/*/kernel/drivers/net/*
 
 # delete any remembered existing network connections (e.g. wifi passwords)
@@ -438,8 +438,8 @@ echo "Successfully setup machine."
 USER=$(whoami)
 
 # cleanup
-sudo apt remove -y git firefox snapd
-sudo apt autoremove -y
+sudo apt remove -y git firefox snapd > /dev/null 2>&1 || true
+sudo apt autoremove -y > /dev/null 2>&1 || true
 sudo rm -f /var/cache/apt/archives/*.deb
 sudo rm -rf /var/tmp/code 
 sudo rm -rf /var/tmp/downloads
@@ -462,14 +462,6 @@ sudo passwd -l vx-services
 sudo sh -c 'echo "\n127.0.1.1\tVotingWorks" >> /etc/hosts'
 sudo hostnamectl set-hostname "VotingWorks" 2>/dev/null
 
-# copy in our sudoers file, which removes sudo privileges except for very specific circumstances
-# where needed
-if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
-    sudo cp config/sudoers-for-dev /etc/sudoers
-else
-    sudo cp config/sudoers /etc/sudoers
-fi
-
 # QA images are certified using the dev VotingWorks private key so root all verification with the
 # dev VotingWorks cert by writing it to the expected file path
 if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
@@ -478,10 +470,28 @@ if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
         /vx/code/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem
 fi
 
+# copy in our sudoers file, which removes sudo privileges except for very specific circumstances
+# where needed
+# NOTE: you cannot use sudo commands after this runs
+if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
+    sudo cp config/sudoers-for-dev /etc/sudoers
+else
+    sudo cp config/sudoers /etc/sudoers
+fi
+
+# NOTE AGAIN: no more sudo commands below this line. Privileges have been removed.
+
 # remove everything from this bootstrap user's home directory
 cd
 rm -rf *
 rm -rf .*
+
+# see if we can reclaim disk space from cache after home directory deletions
+/usr/bin/sync
+cd /tmp
+ls
+cd
+ls -altr
 
 echo "Machine setup is complete. Please wait for the VM to reboot."
 
