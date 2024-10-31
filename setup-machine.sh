@@ -431,6 +431,21 @@ do
   sudo chown -R ${user}:${user} ${user_home_dir}/.config
 done
 
+# We suspend pulseaudio idling via ~vx-ui/.xinitrc, but, anecdotally, it seems
+# like there is a race condition that can result in the pulseaudio config
+# still idling audio in the event of a USB error during X initialization
+# Rather than applying a work-around at the system level, we configure
+# the vx-ui user to always suspend, regardless of any USB errors during boot
+# according to pulseaudio best practices
+vx_ui_homedir=$( getent passwd vx-ui | cut -d: -f6 )
+sudo mkdir -p ${vx_ui_homedir}/.config/pulse
+cat > ${vx_ui_homedir}/.config/pulse/default.pa << 'PULSE'
+.include /etc/pulse/default.pa
+.nofail
+unload-module module-suspend-on-idle
+.fail
+PULSE
+
 echo "Successfully setup machine."
 
 # now we remove permissions, reset passwords, and ready for production.
