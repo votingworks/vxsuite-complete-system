@@ -479,7 +479,7 @@ else
     sudo cp config/sudoers /etc/sudoers
 fi
 
-# NOTE AGAIN: no more sudo commands below this line. Privilegs have been removed.
+# NOTE AGAIN: no more sudo commands below this line. Privileges have been removed.
 
 # remove everything from this bootstrap user's home directory
 cd
