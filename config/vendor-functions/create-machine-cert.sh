@@ -90,7 +90,7 @@ echo "${VX_MACHINE_TYPE}" > "${USB_DRIVE_CERTS_DIRECTORY}/machine-type"
 unmount_usb_drive
 
 if [[ "${IS_QA_IMAGE}" == 1 ]]; then
-    read -p "Because we're using a QA image, we can auto-certify this machine using the dev VotingWorks private key. You'll be prompted to select a USB drive again. Press enter to continue. "
+    read -p "Because we're using a QA image, and the production VotingWorks cert has been overwritten by the dev VotingWorks cert, we can auto-certify this machine using the dev VotingWorks private key. You'll be prompted to select a USB drive again. Press enter to continue. "
     VX_PRIVATE_KEY_PATH="${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/dev/vx-private-key.pem" \
         VX_METADATA_ROOT="${VX_METADATA_ROOT}" \
         "${VX_FUNCTIONS_ROOT}/mock-vx-certifier.sh"
@@ -114,10 +114,17 @@ match_vx_config_non_executable_file_permissions "${MACHINE_CERT_PATH}"
 rm -rf "${USB_DRIVE_CERTS_DIRECTORY}"
 unmount_usb_drive
 
-# Quick cert correctness check
+# Cert correctness check 1
 if ! openssl x509 -in "${MACHINE_CERT_PATH}" -noout -pubkey | \
     diff -q "${VX_CONFIG_ROOT}/key.pub" -; then
-    echo -e "\e[31mPublic key in cert doesn't match public key extracted from TPM\e[0m" >&2
+    echo -e "\e[31mPublic key in machine cert doesn't match public key extracted from TPM\e[0m" >&2
+    read -p "Press enter to start over. "
+    exit 1
+fi
+
+# Cert correctness check 2
+if ! openssl verify -CAfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${MACHINE_CERT_PATH}"; then
+    echo -e "\e[31mMachine cert was not signed by the correct cert authority\e[0m" >&2
     read -p "Press enter to start over. "
     exit 1
 fi

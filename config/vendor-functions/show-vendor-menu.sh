@@ -62,7 +62,7 @@ while true; do
     echo -e "Secure Boot State: \e[31mDisabled\e[0m"
     fi
   if [ "${IS_QA_IMAGE}" = "1" ]; then
-    echo -e "QA Image, sudo privileges are enabled."
+    echo -e "QA Image, sudo privileges are enabled, prod VotingWorks cert has been overwritten by dev VotingWorks cert"
   else
     echo -e "Production Image"
   fi
