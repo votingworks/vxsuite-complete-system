@@ -58,6 +58,7 @@ read -p "Is this image for QA where you want sudo privileges, terminal access vi
 
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     IS_QA_IMAGE=1
+    IS_RELEASE_IMAGE=0
     VENDOR_PASSWORD='insecure'
     echo "OK, creating a QA image with sudo privileges for the vx-vendor user and terminal access via TTY2."
     echo "Using password insecure for the vx-vendor user."
@@ -70,6 +71,8 @@ else
         IS_RELEASE_IMAGE=1
         VERSION="$(< VERSION)"
         echo "OK, will set the displayed code version to: ${VERSION}"
+    else
+        IS_RELEASE_IMAGE=0
     fi
     echo
     echo "Next, we need to set a password for the vx-vendor user."
