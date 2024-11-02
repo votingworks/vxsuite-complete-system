@@ -54,11 +54,11 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-read -p "Is this image for QA where you want sudo privileges, terminal access via TTY2, the ability to record screengrabs, etc.? [y/N] " qa_image_flag
+read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
 
+IS_RELEASE_IMAGE=0
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     IS_QA_IMAGE=1
-    IS_RELEASE_IMAGE=0
     VENDOR_PASSWORD='insecure'
     echo "OK, creating a QA image with sudo privileges for the vx-vendor user and terminal access via TTY2."
     echo "Using password insecure for the vx-vendor user."
@@ -68,11 +68,16 @@ else
     echo
     read -p "Is this additionally an official release image? [y/N] " release_image_flag
     if [[ "${release_image_flag}" == 'y' || "${release_image_flag}" == 'Y' ]]; then
-        IS_RELEASE_IMAGE=1
-        VERSION="$(< VERSION)"
-        echo "OK, will set the displayed code version to: ${VERSION}"
+        read -p "Are you sure? [y/N] " confirm_release_image_flag
+        if [[ "${confirm_release_image_flag}" == 'y' || "${confirm_release_image_flag}" == 'Y' ]]; then
+            IS_RELEASE_IMAGE=1
+            VERSION="$(< VERSION)"
+            echo "OK, will set the displayed code version to: ${VERSION}"
+        else
+            echo "OK, not an official release image."
+        fi
     else
-        IS_RELEASE_IMAGE=0
+        echo "OK, not an official release image."
     fi
     echo
     echo "Next, we need to set a password for the vx-vendor user."
