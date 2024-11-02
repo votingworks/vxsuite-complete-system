@@ -65,7 +65,7 @@ else
     IS_QA_IMAGE=0
     echo "Ok, creating a production image. No sudo privileges for anyone!"
     echo
-    read -p "Is this additionally an official release image? [y/N]" release_image_flag
+    read -p "Is this additionally an official release image? [y/N] " release_image_flag
     if [[ "${release_image_flag}" == 'y' || "${release_image_flag}" == 'Y' ]]; then
         IS_RELEASE_IMAGE=1
         VERSION="$(< VERSION)"
