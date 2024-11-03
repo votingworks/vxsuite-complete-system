@@ -461,7 +461,7 @@ done
 # according to pulseaudio best practices
 vx_ui_homedir=$( getent passwd vx-ui | cut -d: -f6 )
 sudo mkdir -p ${vx_ui_homedir}/.config/pulse
-cat > ${vx_ui_homedir}/.config/pulse/default.pa << 'PULSE'
+sudo tee ${vx_ui_homedir}/.config/pulse/default.pa > /dev/null << 'PULSE'
 .include /etc/pulse/default.pa
 .nofail
 unload-module module-suspend-on-idle
