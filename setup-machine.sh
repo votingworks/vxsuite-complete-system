@@ -328,7 +328,7 @@ if [[ "${IS_RELEASE_IMAGE}" == 1 ]]; then
     # Still keep the full code version for reference
     sudo cp /vx/code/code-version /vx/code/code-version-full
     # But use the nicely formatted version, e.g., "v4.0.0", for display
-    sudo -E sh -c 'echo "${VERSION}" > /vx/code/code-version'
+    VERSION="${VERSION}" sudo -E sh -c 'echo "${VERSION}" > /vx/code/code-version'
 fi
 
 # code tag, e.g. "m11c-rc3"
