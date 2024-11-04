@@ -24,7 +24,7 @@ function program_system_administrator_card() {
 service pcscd stop > /dev/null 2>&1
 
 while true; do
-    read -p "Connect a card reader to the machine and insert a card. Press enter to program the card. "
+    read -p "Insert a card into the card reader. Press enter to program the card. "
     if program_system_administrator_card; then # Success case
         while true; do
             read -p "Would you like to program another system administrator card? (y/n) " choice
