@@ -20,7 +20,7 @@ if [[ $1 == "noninteractive" ]]; then
   echo "$verity_result"
 else
   echo "$verity_result"
-  read -p "Press enter once you have recorded the image signature."
+  read -p "Press enter once you have recorded the image signature. "
 fi
 
 exit 0;

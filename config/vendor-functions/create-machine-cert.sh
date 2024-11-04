@@ -123,7 +123,7 @@ if ! openssl x509 -in "${MACHINE_CERT_PATH}" -noout -pubkey | \
 fi
 
 # Cert correctness check 2
-if ! openssl verify -CAfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${MACHINE_CERT_PATH}"; then
+if ! openssl verify -CAfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${MACHINE_CERT_PATH}" > /dev/null; then
     echo -e "\e[31mMachine cert was not signed by the correct cert authority\e[0m" >&2
     read -p "Press enter to start over. "
     exit 1
