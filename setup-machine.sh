@@ -468,6 +468,9 @@ unload-module module-suspend-on-idle
 .fail
 PULSE
 
+# Fix permissions so vx-ui owns the pulseaudio config
+sudo chown -R vx-ui:vx-ui ${vx_ui_homedir}/.config/pulse
+
 echo "Successfully setup machine."
 
 # now we remove permissions, reset passwords, and ready for production.
