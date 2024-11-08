@@ -117,8 +117,8 @@ while true; do
   echo "${#CHOICES[@]}. Lock the System Down"
   CHOICES+=('lockdown')
 
-  echo "${#CHOICES[@]}. Show Image Hash Signature"
-  CHOICES+=('hash-signature')
+  echo "${#CHOICES[@]}. Show System Hash"
+  CHOICES+=('show-system-hash')
 
   echo "${#CHOICES[@]}. Reboot to BIOS"
   CHOICES+=('reboot-to-bios')
