@@ -28,12 +28,8 @@ CHOICES+=('central-scan')
 MODEL_NAMES+=('VxCentralScan')
 
 echo "${#CHOICES[@]}. VxMark"
-CHOICES+=('mark')
+CHOICES+=('mark-scan') # TODO: Transition this to "mark" once we've decided what to do about VxMark(Old)
 MODEL_NAMES+=('VxMark')
-
-echo "${#CHOICES[@]}. VxMarkScan"
-CHOICES+=('mark-scan')
-MODEL_NAMES+=('VxMarkScan')
 
 echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('scan')
