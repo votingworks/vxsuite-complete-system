@@ -12,13 +12,8 @@ if [[ $(tty) = /dev/tty1 ]] && [[ -f "/home/REKEY_VIA_TPM" ]]; then
   sudo "${VX_FUNCTIONS_ROOT}/rekey-via-tpm.sh"
 fi
 
-# We do this after the rekey operation to save time. It's much faster to encrypt /var
-# before we expand it to the max available storage.
-if [[ $(tty) = /dev/tty1 ]]; then
-  sudo "${VX_FUNCTIONS_ROOT}/expand-var-filesystem.sh"
-fi
-
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
+  sudo "${VX_FUNCTIONS_ROOT}/expand-var-filesystem.sh"
   "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
   exit 0
 fi

@@ -2,14 +2,6 @@
 
 set -euo pipefail
 
-# Using a flag file to skip resize operations if already completed
-# There's not an issue running these commands again, but this saves time
-flag_file="/home/VAR_RESIZED"
-
-if [[ -f ${flag_file} ]]; then
-  exit 0
-fi
-
 # Find the mapped device for /var, need this to look up the LV later
 var_map=$( df -l /var | grep mapper | awk '{print $1}' )
 
@@ -41,7 +33,6 @@ LVM_SYSTEM_DIR=/home/.lvm pvresize $pvs_path
 # and it has no effect on systems not using encrypted /var
 if [[ $volume_to_extend != "NONE" ]]; then
   echo "insecure" | LVM_SYSTEM_DIR=/home/.lvm lvextend -r -l +100%FREE ${volume_to_extend}
-  touch ${flag_file}
 fi
 
 exit 0;
