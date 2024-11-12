@@ -252,8 +252,8 @@ while true; do
       read -s -n 1
     ;;
 
-    hash-signature)
-      sudo "${VX_FUNCTIONS_ROOT}/hash-signature.sh"
+    show-system-hash)
+      sudo "${VX_FUNCTIONS_ROOT}/show-system-hash.sh"
     ;;
     
     setup-boot-entry)
