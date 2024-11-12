@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-setfont /usr/share/consolefonts/Lat7-Terminus32x16.psf.gz 
+setfont /usr/share/consolefonts/Lat7-Terminus24x12.psf.gz
 
 set -euo pipefail
 
