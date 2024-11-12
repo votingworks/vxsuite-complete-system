@@ -10,4 +10,4 @@ CONFIG=${VX_CONFIG_ROOT:-./config}
 METADATA=${VX_METADATA_ROOT:-./}
 source ${CONFIG}/read-vx-machine-config.sh
 
-(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/mark-scan/accessible-controller run) | logger --tag votingworksapp
+(trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/mark-scan/accessible-controller run) | logger -S 4096 --tag votingworksapp
