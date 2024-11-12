@@ -108,9 +108,6 @@ while true; do
   echo "${#CHOICES[@]}. Recreate Machine Cert"
   CHOICES+=('recreate-machine-cert')
 
-  echo "${#CHOICES[@]}. Reset System Authentication Code"
-  CHOICES+=('reset-totp')
-
   echo "${#CHOICES[@]}. Setup Boot Entry"
   CHOICES+=('setup-boot-entry')
 
@@ -242,18 +239,13 @@ while true; do
       prompt-to-restart
     ;;
     
-    reset-totp)
-      "${VX_FUNCTIONS_ROOT}/reset-totp.sh"
-      read -s -n 1
-    ;;
-    
     lockdown)
       sudo "${VX_FUNCTIONS_ROOT}/lockdown.sh"
       read -s -n 1
     ;;
 
-    hash-signature)
-      sudo "${VX_FUNCTIONS_ROOT}/hash-signature.sh"
+    show-system-hash)
+      sudo "${VX_FUNCTIONS_ROOT}/show-system-hash.sh"
     ;;
     
     setup-boot-entry)
