@@ -108,9 +108,6 @@ while true; do
   echo "${#CHOICES[@]}. Recreate Machine Cert"
   CHOICES+=('recreate-machine-cert')
 
-  echo "${#CHOICES[@]}. Reset System Authentication Code"
-  CHOICES+=('reset-totp')
-
   echo "${#CHOICES[@]}. Setup Boot Entry"
   CHOICES+=('setup-boot-entry')
 
@@ -240,11 +237,6 @@ while true; do
     program-system-administrator-cards)
       sudo "${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh"
       prompt-to-restart
-    ;;
-    
-    reset-totp)
-      "${VX_FUNCTIONS_ROOT}/reset-totp.sh"
-      read -s -n 1
     ;;
     
     lockdown)
