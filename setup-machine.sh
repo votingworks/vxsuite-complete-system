@@ -397,7 +397,7 @@ sudo update-grub
 # the spinfinity-lockdown version uses a black background
 sudo cp config/logo.png /usr/share/plymouth/debian-logo.png
 sudo cp config/spinfinity-*.plymouth /usr/share/plymouth/themes/spinfinity/
-sudo cp /usr/share/plymouth/themes/spinfinity-default.plymouth /usr/share/plymouth/themes/spinfinity.plymouth
+sudo cp /usr/share/plymouth/themes/spinfinity/spinfinity-default.plymouth /usr/share/plymouth/themes/spinfinity/spinfinity.plymouth
 sudo plymouth-set-default-theme -R spinfinity
 
 # turn off network
