@@ -397,7 +397,7 @@ sudo sed -i 's|^\.include /etc/ssl/openssl\.cnf$|.include /etc/ssl/openssl.defau
     /vx/code/vxsuite/libs/auth/config/openssl.vx.cnf
 sudo ln -fs /etc/ssl/openssl.default.cnf /vx/config/openssl.cnf
 sudo ln -fs /vx/config/openssl.cnf /etc/ssl/openssl.cnf
-sudo chmod g=rwX /vx/config/openssl.cnf
+sudo chown -h vx-vendor:vx-group /vx/config/openssl.cnf
 
 # non-graphical login
 sudo systemctl set-default multi-user.target
