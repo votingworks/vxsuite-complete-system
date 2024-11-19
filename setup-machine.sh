@@ -373,12 +373,31 @@ sudo chmod -R u=rwX /var/vx/data
 sudo chmod -R go-rwX /var/vx/data
 
 # Config is writable by the vx-vendor user and readable/executable by all vx-* users, with the
-# exception of the app-flags subdirectory, which is special-cased to be writable by all vx-* users
+# exception of the app-flags subdirectory and /vx/config/openssl.cnf, which are special-cased to be
+# writable by all vx-* users
 sudo chown -R vx-vendor:vx-group /var/vx/config
 sudo chmod -R u=rwX /var/vx/config
 sudo chmod -R g=rX /var/vx/config
 sudo chmod -R g=rwX /var/vx/config/app-flags
 sudo chmod -R o-rwX /var/vx/config
+
+# Prep the symlink structure for swapping of the default OpenSSL config file in a way that doesn't
+# change the contents of the locked-down partition, for the rare circumstance where that's needed:
+#
+# /etc/ssl/openssl.cnf --> /vx/config/openssl.cnf -->
+#   EITHER /etc/ssl/openssl.default.cnf
+#   OR     /vx/code/vxsuite/libs/auth/config/openssl.vx-tpm.cnf
+# Where:
+# /vx/code/vxsuite/libs/auth/config/openssl.vx-tpm.cnf includes
+#   /vx/code/vxsuite/libs/auth/config/openssl.vx.cnf, which in turn includes
+#   /etc/ssl/openssl.default.cnf.
+#
+sudo cp /etc/ssl/openssl.cnf /etc/ssl/openssl.default.cnf
+sudo sed -i 's|^\.include /etc/ssl/openssl\.cnf$|.include /etc/ssl/openssl.default.cnf|' \
+    /vx/code/vxsuite/libs/auth/config/openssl.vx.cnf
+sudo ln -fs /etc/ssl/openssl.default.cnf /vx/config/openssl.cnf
+sudo ln -fs /vx/config/openssl.cnf /etc/ssl/openssl.cnf
+sudo chown -h vx-vendor:vx-group /vx/config/openssl.cnf
 
 # non-graphical login
 sudo systemctl set-default multi-user.target
