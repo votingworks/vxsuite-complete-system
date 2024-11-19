@@ -23,13 +23,13 @@ echo -e "\e[1mStep 2: Set Clock\e[0m"
 sudo ${VX_FUNCTIONS_ROOT}/set-clock.sh
 
 echo
-echo -e "\e[1mStep 3: Record Machine Key\e[0m"
-echo 'Check for FIPS compliance...'
+echo -e "\e[1mStep 3: Generate Machine Key\e[0m"
+echo 'Checking for FIPS compliance...'
 sudo ${VX_FUNCTIONS_ROOT}/fipsinstall.sh
-echo 'Setting up signing keys...'
+echo 'Generating machine key...'
 sudo ${VX_FUNCTIONS_ROOT}/generate-key.sh > /dev/null
 PUBLIC_KEY=$(cat "${VX_CONFIG_ROOT}/key.pub")
-echo "Signing key set up successfully."
+echo "Machine key set up successfully."
 
 echo
 echo -e "\e[1mStep 4: Create Machine Cert\e[0m"
