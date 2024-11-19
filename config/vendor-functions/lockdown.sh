@@ -78,7 +78,15 @@ if grep '^var_decrypted' /etc/crypttab > /dev/null; then
   touch /home/REKEY_VIA_TPM
 fi
 
-update-initramfs -u
+# If plymouth is installed, we can use it to update initramfs
+# If not, use the standard command
+if which plymouth-set-default-theme > /dev/null 2>&1
+then
+  cp /usr/share/plymouth/themes/spinfinity/spinfinity-lockdown.plymouth /usr/share/plymouth/themes/spinfinity/spinfinity.plymouth
+  plymouth-set-default-theme -R spinfinity
+else
+  update-initramfs -u
+fi
 
 # Remount / so it can't change while we're doing the veritysetup
 cd /tmp
