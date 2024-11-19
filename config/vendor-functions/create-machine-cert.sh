@@ -123,8 +123,12 @@ if ! openssl x509 -in "${MACHINE_CERT_PATH}" -noout -pubkey | \
 fi
 
 # Cert correctness check 2
-if ! openssl verify -CAfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${MACHINE_CERT_PATH}" > /dev/null; then
-    echo -e "\e[31mMachine cert was not signed by the correct cert authority\e[0m" >&2
+if ! openssl verify \
+    # Accept a cert that has a start time slightly in the future because the clock on VxCertifier
+    # was slightly ahead of the machine clock
+    -attime "$(date -d "+10 minutes" +%s)" \
+    -CAfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${MACHINE_CERT_PATH}" > /dev/null; then
+    echo -e "\e[31mMachine cert was not signed by the correct cert authority or is not yet valid because of a clock mismatch\e[0m" >&2
     read -p "Press enter to start over. "
     exit 1
 fi
