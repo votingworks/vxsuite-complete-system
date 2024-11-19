@@ -24,6 +24,8 @@ sudo ${VX_FUNCTIONS_ROOT}/set-clock.sh
 
 echo
 echo -e "\e[1mStep 3: Record Machine Key\e[0m"
+echo 'Check for FIPS compliance...'
+sudo ${VX_FUNCTIONS_ROOT}/fipsinstall.sh
 echo 'Setting up signing keys...'
 sudo ${VX_FUNCTIONS_ROOT}/generate-key.sh > /dev/null
 PUBLIC_KEY=$(cat "${VX_CONFIG_ROOT}/key.pub")

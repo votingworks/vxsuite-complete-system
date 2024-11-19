@@ -25,6 +25,7 @@ vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/rekey-via-tpm.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/expand-var-filesystem.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/lockdown.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/show-system-hash.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/fipsinstall.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/generate-key.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/setup-boot-entry.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/create-machine-cert.sh
