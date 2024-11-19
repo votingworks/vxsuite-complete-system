@@ -392,6 +392,11 @@ sudo systemctl daemon-reload
 sudo cp config/grub /etc/default/grub
 sudo update-grub
 
+# configure default boot theme
+sudo cp config/logo.png /usr/share/plymouth/debian-logo.png
+sudo cp config/spinfinity-default.plymouth /usr/share/plymouth/themes/spinfinity/
+sudo plymouth-set-default-theme -R spinfinity
+
 # turn off network
 sudo timedatectl set-ntp no
 
