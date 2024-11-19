@@ -444,6 +444,15 @@ if [[ "${CHOICE}" == "mark-scan" ]]; then
   done
 fi
 
+# To provide a boot experience with as few console logs as possible
+# we suppress the messages from the login command
+for user in vx-vendor vx-ui
+do
+  user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
+  sudo touch ${user_home_dir}/.hushlogin
+  sudo chown ${user}:${user} ${user_home_dir}/.hushlogin 
+done
+
 # We need to disable pulseaudio for users since it runs per user
 # We manually start the pulseaudio service within vxsuite for the vx-ui user
 # Note: Depending on future use-cases, we may need to disable pulseaudio 
