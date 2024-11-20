@@ -1,7 +1,7 @@
 export PATH=/vx/code/config/vendor-functions:${PATH}
 
 if [[ $(tty) = /dev/tty1 ]]; then
-   exec startx
+   exec startx > /tmp/vx-ui-startx.log 2>&1
 fi
 
 export PATH=$PATH:/sbin

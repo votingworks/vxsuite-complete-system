@@ -455,6 +455,15 @@ if [[ "${CHOICE}" == "mark-scan" ]]; then
   done
 fi
 
+# To provide a boot sequence with as few console logs as possible
+# we suppress the messages from the login command
+for user in vx-vendor vx-ui
+do
+  user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
+  sudo touch ${user_home_dir}/.hushlogin
+  sudo chown ${user}:${user} ${user_home_dir}/.hushlogin
+done
+
 # We need to disable pulseaudio for users since it runs per user
 # We manually start the pulseaudio service within vxsuite for the vx-ui user
 # Note: Depending on future use-cases, we may need to disable pulseaudio 
@@ -525,6 +534,10 @@ if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
         /vx/code/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem
 fi
 
+# Set up a one-time run of fstrim to reduce VM size
+sudo cp config/vm-fstrim.service /etc/systemd/system/
+sudo systemctl enable vm-fstrim.service
+
 # copy in our sudoers file, which removes sudo privileges except for very specific circumstances
 # where needed
 # NOTE: you cannot use sudo commands after this runs
@@ -540,13 +553,6 @@ fi
 cd
 rm -rf *
 rm -rf .*
-
-# see if we can reclaim disk space from cache after home directory deletions
-/usr/bin/sync
-cd /tmp
-ls
-cd
-ls -altr
 
 echo "Machine setup is complete. Please wait for the VM to reboot."
 

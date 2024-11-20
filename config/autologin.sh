@@ -10,4 +10,4 @@ else
 fi
 # For the getty service, you can't have any nested processes, thus we use exec to
 # make mingetty take over the process of this script.
-exec /sbin/mingetty --autologin $USER --noclear $1
+exec /sbin/mingetty --noissue --autologin $USER --noclear $1
