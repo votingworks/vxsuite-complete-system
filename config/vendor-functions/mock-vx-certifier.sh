@@ -28,7 +28,7 @@ if [[
     "${VX_MACHINE_TYPE}" != "mark-scan" &&
     "${VX_MACHINE_TYPE}" != "scan"
 ]]; then
-    echo "VX_MACHINE_TYPE must be one of admin, central-scan, mark, or scan" >&2
+    echo "VX_MACHINE_TYPE must be one of admin, central-scan, mark, mark-scan, or scan" >&2
     exit 1
 fi
 
@@ -40,7 +40,7 @@ if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
         -CAserial "${SERIAL_FILE}" \
         -in "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem" \
         -days 36500 \
-        -extensions v3_ca -extfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/openssl.cnf" \
+        -extensions v3_ca -extfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/config/openssl.vx.cnf" \
         -out "${USB_DRIVE_CERTS_DIRECTORY}/cert.pem"
 else
     openssl x509 -req \
