@@ -28,7 +28,7 @@ if [[
     "${VX_MACHINE_TYPE}" != "mark-scan" &&
     "${VX_MACHINE_TYPE}" != "scan"
 ]]; then
-    echo "VX_MACHINE_TYPE must be one of admin, central-scan, mark, or scan" >&2
+    echo "VX_MACHINE_TYPE must be one of admin, central-scan, mark, mark-scan, or scan" >&2
     exit 1
 fi
 

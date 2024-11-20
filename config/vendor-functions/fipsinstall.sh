@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Requires sudo
+
 set -euo pipefail
 
 if [ ! -f /usr/local/ssl/fipsmodule.cnf ]; then
