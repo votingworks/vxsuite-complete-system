@@ -7,7 +7,8 @@ if [ ! -f /usr/local/ssl/fipsmodule.cnf ]; then
   exit 0
 else
   echo "Installing and verifying FIPS configuration."
-  openssl fipsinstall -out /usr/local/ssl/fipsmodule.cnf -module /lib/x86_64-linux-gnu/ossl-modules/fips.so
+  cp /usr/local/ssl/fipsmodule.cnf /vx/config/fipsmodule.cnf
+  openssl fipsinstall -out /vx/config/fipsmodule.cnf -module /lib/x86_64-linux-gnu/ossl-modules/fips.so
 fi
 
 exit 0
