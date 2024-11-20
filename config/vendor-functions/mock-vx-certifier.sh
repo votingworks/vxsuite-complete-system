@@ -40,7 +40,7 @@ if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
         -CAserial "${SERIAL_FILE}" \
         -in "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem" \
         -days 36500 \
-        -extensions v3_ca -extfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/openssl.cnf" \
+        -extensions v3_ca -extfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/config/openssl.vx.cnf" \
         -out "${USB_DRIVE_CERTS_DIRECTORY}/cert.pem"
 else
     openssl x509 -req \
