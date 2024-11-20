@@ -1,0 +1,12 @@
+[Unit]
+Description=Run fstrim once after setup-machine reboots the system
+DefaultDependencies=no
+Before=shutdown.target reboot.target umount.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c '/sbin/fstrim -av && systemctl disable vm-fstrim.service'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=shutdown.target reboot.target
