@@ -26,7 +26,7 @@ function get_machine_jurisdiction_from_user_input() {
         if [[ "${IS_QA_IMAGE}" == 1 ]]; then
             machine_jurisdiction="vx.test"
         else
-            read -p "Enter a jurisdiction ({state-2-letter-abbreviation}.{county-or-town}, e.g. ms.warren or ca.los-angeles): " machine_jurisdiction
+            read -p "Enter a jurisdiction ({state-2-letter-abbreviation}.{county-town-etc}, e.g., ca.los-angeles or vx.test for test/demo machines): " machine_jurisdiction
         fi
         if [[ "${machine_jurisdiction}" =~ ^[a-z]{2}\.[a-z-]+$ ]]; then
             read -p "Confirm that the machine jurisdiction should be set to: ${machine_jurisdiction} (y/n) " confirm
@@ -37,7 +37,7 @@ function get_machine_jurisdiction_from_user_input() {
                 continue
             fi
         fi
-        echo -e "\e[31mExpected jurisdiction to be of the format {state-2-letter-abbreviation}.{county-or-town}\e[0m" >&2
+        echo -e "\e[31mExpected jurisdiction to be of the format {state-2-letter-abbreviation}.{county-town-etc}\e[0m" >&2
     done
     echo "${machine_jurisdiction}"
 }
