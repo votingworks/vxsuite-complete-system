@@ -418,9 +418,6 @@ sudo systemctl daemon-reload
 sudo cp config/grub /etc/default/grub
 sudo update-grub
 
-# disable grub related boot messages
-sudo sed -i -e 's/echo/#echo/' /boot/grub/grub.cfg
-
 # turn off network
 sudo timedatectl set-ntp no
 
