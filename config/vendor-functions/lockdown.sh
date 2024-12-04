@@ -99,7 +99,6 @@ if [ $surface == 0 ]; then
     objcopy \
         --add-section .osrel="/usr/lib/os-release" --change-section-vma .osrel=0x20000 \
         --add-section .cmdline="/tmp/cmdline" --change-section-vma .cmdline=0x30000 \
-        --add-section .splash="/vx/vendor/config/logo.bmp" --change-section-vma .splash=0x40000 \
         --add-section .linux="/boot/vmlinuz-${KERNEL_VERSION}" --change-section-vma .linux=0x2000000 \
         --add-section .initrd="/boot/initrd.img-${KERNEL_VERSION}" --change-section-vma .initrd=0x3000000 \
         "/usr/lib/systemd/boot/efi/linuxx64.efi.stub" "/tmp/linux.efi"
