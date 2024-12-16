@@ -295,18 +295,20 @@ sudo ln -s /vx/code/config/vendor-functions /vx/vendor/vendor-functions
 # Make sure our cmdline file is readable by vx-vendor
 sudo mkdir -p /vx/vendor/config
 sudo cp config/cmdline /vx/code/config/cmdline
-sudo cp config/logo.bmp /vx/code/config/logo.bmp
 sudo cp config/grub.cfg /vx/code/config/grub.cfg
 sudo ln -s /vx/code/config/cmdline /vx/vendor/config/cmdline
-sudo ln -s /vx/code/config/logo.bmp /vx/vendor/config/logo.bmp
 sudo ln -s /vx/code/config/grub.cfg /vx/vendor/config/grub.cfg
 
-# Set up boot logo based on machine type
+# All our logo files are 16-color BMP files. VxScan requires an 800x600 image, per
+# https://up-shop.org/up-bios-splash-service.html
 if [[ "${CHOICE}" == "mark-scan" ]]; then
-  sudo cp config/logo_vertical.jpg /vx/code/config/logo.jpg
+  sudo cp config/logo-vertical.bmp /vx/code/config/logo.bmp
+elif [[ "${CHOICE}" == "scan" ]]; then
+  sudo cp config/logo-horizontal-800x600.bmp /vx/code/config/logo.bmp
 else
-  sudo cp config/logo_horizontal.jpg /vx/code/config/logo.jpg
+  sudo cp config/logo-horizontal.bmp /vx/code/config/logo.bmp
 fi
+sudo ln -s /vx/code/config/logo.bmp /vx/vendor/config/logo.bmp
 
 # machine configuration
 sudo mkdir -p /var/vx/config
