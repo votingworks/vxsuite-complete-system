@@ -301,13 +301,6 @@ sudo ln -s /vx/code/config/cmdline /vx/vendor/config/cmdline
 sudo ln -s /vx/code/config/logo.bmp /vx/vendor/config/logo.bmp
 sudo ln -s /vx/code/config/grub.cfg /vx/vendor/config/grub.cfg
 
-# Set up boot logo based on machine type
-if [[ "${CHOICE}" == "mark-scan" ]]; then
-  sudo cp config/logo_vertical.jpg /vx/code/config/logo.jpg
-else
-  sudo cp config/logo_horizontal.jpg /vx/code/config/logo.jpg
-fi
-
 # machine configuration
 sudo mkdir -p /var/vx/config
 sudo mkdir /var/vx/config/app-flags
