@@ -135,8 +135,18 @@ else
 fi
 
 # Output the dm-verity hash
-echo "Hash: ${HASH}"
+echo "SHA256 Hash: ${HASH}"
 read -p "Press enter once you have recorded the system hash. "
+
+# If we have the necessary tools, display the base64 version of the hash
+if [[ `which xxd` && `which base64` ]]; then
+  base64_hash=$( echo -n ${HASH} | xxd -r -p | base64 )
+  echo "Base64 Hash for SHV: ${base64_hash}"
+  read -p "Press enter once you have recorded the base64 SHV hash. "
+else
+  echo "The tools required to convert the original system hash to base64 are not installed. You can still convert the original hash to the base64 version later."
+  read -p "Press enter to continue. "
+fi
 
 # Shut down the locked down system
 # We can't reboot this on the aws build machine due to encrypted /var
