@@ -1,0 +1,5 @@
+# This only allows the loopback device to be configured automatically
+
+# The loopback network interface
+auto lo
+iface lo inet loopback

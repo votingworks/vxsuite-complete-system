@@ -435,6 +435,9 @@ sudo rm -rf /lib/modules/*/kernel/drivers/net/*
 # delete any remembered existing network connections (e.g. wifi passwords)
 sudo rm -f /etc/NetworkManager/system-connections/*
 
+# replace /etc/network/interfaces to only allow loopback on future boots
+sudo cp config/interfaces /etc/network/interfaces
+
 # set up the service for the selected machine type
 sudo cp config/${CHOICE}.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/${CHOICE}.service
