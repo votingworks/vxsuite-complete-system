@@ -22,25 +22,6 @@ echo
 echo -e "\e[1mStep 2: Set Clock\e[0m"
 sudo ${VX_FUNCTIONS_ROOT}/set-clock.sh
 
-echo
-echo -e "\e[1mStep 3: Generate Machine Key\e[0m"
-echo 'Checking for FIPS compliance...'
-sudo ${VX_FUNCTIONS_ROOT}/fipsinstall.sh
-echo 'Generating machine key...'
-sudo ${VX_FUNCTIONS_ROOT}/generate-key.sh > /dev/null
-PUBLIC_KEY=$(cat "${VX_CONFIG_ROOT}/key.pub")
-echo "Machine key set up successfully."
-
-echo
-echo -e "\e[1mStep 4: Create Machine Cert\e[0m"
-sudo ${VX_FUNCTIONS_ROOT}/create-machine-cert.sh
-
-if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
-    echo
-    echo -e "\e[1mStep 5: Program System Administrator Cards\e[0m"
-    sudo ${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh
-fi
-
 if [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
     rm -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT"
 fi
