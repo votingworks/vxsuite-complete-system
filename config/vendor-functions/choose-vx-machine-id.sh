@@ -15,7 +15,8 @@ while true; do
     if [[ "${CONFIRM}" = "y" ]]; then
       mkdir -p "${VX_CONFIG_ROOT}"
       echo "${MACHINE_ID}" > "${VX_CONFIG_ROOT}/machine-id"
-      sudo sh -c 'echo "\n127.0.1.1\tVx${MACHINE_ID}" >> /etc/hosts'
+      # Update /etc/hosts safely
+      sudo sed -i.bak "/^127\.0\.1\.1/ s/.*/127.0.1.1\tVx${MACHINE_ID}/" /etc/hosts
       sudo hostnamectl set-hostname "Vx${MACHINE_ID}" 2>/dev/null
       echo "Machine ID set!"
       break
