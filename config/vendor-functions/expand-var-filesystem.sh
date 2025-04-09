@@ -29,10 +29,10 @@ growpart "/dev/${parent_partition}" 3 || true
 LVM_SYSTEM_DIR=/home/.lvm pvresize $pvs_path
 
 # This extends the logical volume to the max available space (as created by the previous
-# commands). We pass along the "insecure" passphrase for systems using encrypted /var,
+# commands). We pass along the empty passphrase for systems using encrypted /var,
 # and it has no effect on systems not using encrypted /var
 if [[ $volume_to_extend != "NONE" ]]; then
-  echo "insecure" | LVM_SYSTEM_DIR=/home/.lvm lvextend -r -l +100%FREE ${volume_to_extend}
+  echo "" | LVM_SYSTEM_DIR=/home/.lvm lvextend -r -l +100%FREE ${volume_to_extend}
 fi
 
 exit 0;
