@@ -74,7 +74,7 @@ fi
 # Only do this if the crypttab is already configured, just in case
 if grep '^var_decrypted' /etc/crypttab > /dev/null; then
   sed -i -e /^var_decrypted/d /etc/crypttab
-  echo "var_decrypted /dev/Vx-vg/var_encrypted none luks,tpm2-device=auto" >> /etc/crypttab
+  echo "var_decrypted /dev/Vx-vg/var_encrypted none try-empty-password,luks,tpm2-device=auto" >> /etc/crypttab
   touch /home/REKEY_VIA_TPM
 fi
 
