@@ -12,8 +12,15 @@ if [[ $(tty) = /dev/tty1 ]] && [[ -f "/home/REKEY_VIA_TPM" ]]; then
   sudo "${VX_FUNCTIONS_ROOT}/rekey-via-tpm.sh"
 fi
 
-if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
+# Note: EXPAND_VAR will be created as part of a vx-iso install
+# This prevents the var expansion from running in VMs while other
+# config/setup may be taking place. We only want to expand var
+# on systems installed to physical hardware.
+if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/EXPAND_VAR" ]]; then
   sudo "${VX_FUNCTIONS_ROOT}/expand-var-filesystem.sh"
+fi
+
+if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
   "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
   exit 0
 fi
