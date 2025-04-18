@@ -52,10 +52,10 @@ if [[ "${confirm}" != 'y' && "${confirm}" != 'Y' ]]; then
     exit 1
 fi
 
-# If certifying a VxAdmin, the outputted cert needs to be a cert authority (CA) cert capable of
-# issuing further certs, for smart card programming.
+# If certifying a VxAdmin or VxPollBook, the outputted cert needs to be a cert authority (CA) cert
+# capable of issuing further certs, for smart card programming.
 echo
-if openssl req -in "${CSR_PATH}" -noout -subject | grep -q '1\.3\.6\.1\.4\.1\.59817\.1 = admin'; then
+if openssl req -in "${CSR_PATH}" -noout -subject | grep -Eq '1\.3\.6\.1\.4\.1\.59817\.1 = (admin|poll-book)'; then
     echo "Creating CA cert..."
     CMD+=(
         -extfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/config/openssl.vx.cnf"
