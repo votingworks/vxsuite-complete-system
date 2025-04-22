@@ -11,7 +11,7 @@ set -euo pipefail
 : "${VX_MACHINE_ID:="$(< "${VX_CONFIG_ROOT}/machine-id")"}"
 : "${IS_QA_IMAGE:="$(< "${VX_CONFIG_ROOT}/is-qa-image")"}"
 
-if [[ "${VX_MACHINE_TYPE}" == "admin" ]]; then
+if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert-authority-cert.pem"
 else
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert.pem"
@@ -71,7 +71,7 @@ function match_vx_config_non_executable_file_permissions() {
 
 mkdir -p "${VX_CONFIG_ROOT}"
 
-if [[ "${VX_MACHINE_TYPE}" == "admin" ]]; then
+if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     machine_jurisdiction="$(get_machine_jurisdiction_from_user_input)"
 fi
 
@@ -81,7 +81,7 @@ read -p "Insert a USB drive into the machine. Press enter once you've done so. "
 echo "Writing cert signing request to USB drive..."
 rm -rf "${USB_DRIVE_CERTS_DIRECTORY}"
 mkdir "${USB_DRIVE_CERTS_DIRECTORY}"
-if [[ "${VX_MACHINE_TYPE}" == "admin" ]]; then
+if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     create_machine_cert_signing_request "${machine_jurisdiction}" > "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem"
 else
     create_machine_cert_signing_request > "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem"
