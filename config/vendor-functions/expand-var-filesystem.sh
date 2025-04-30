@@ -13,7 +13,7 @@ parent_partition=$( lsblk -ndo pkname ${pvs_path} )
 
 volume_to_extend="NONE"
 
-# Deteremine the volume to extend based on whether encrypted /var is used or not
+# Determine the volume to extend based on whether encrypted /var is used or not
 if [[ $var_map =~ "var_decrypted" ]]; then
   volume_to_extend=$( grep var_decrypted /etc/crypttab | awk '{print $2}' )
 else
@@ -33,6 +33,10 @@ LVM_SYSTEM_DIR=/home/.lvm pvresize $pvs_path
 # and it has no effect on systems not using encrypted /var
 if [[ $volume_to_extend != "NONE" ]]; then
   echo "" | LVM_SYSTEM_DIR=/home/.lvm lvextend -r -l +100%FREE ${volume_to_extend}
+fi
+
+if [[ -f "/vx/config/EXPAND_VAR" ]]; then
+  rm -f "/vx/config/EXPAND_VAR"
 fi
 
 exit 0;

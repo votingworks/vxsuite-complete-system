@@ -317,6 +317,12 @@ sudo ln -sf /var/vx/config /vx/config
 
 sudo ln -s /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-config.sh
 
+# To support new images installed via older vx-iso releases
+# explicitly set the EXPAND_VAR flag file
+# (This gets set by new vx-iso releases, so we can eventually remove
+# setting the flag here, but it doesn't hurt to leave it)
+sudo touch /vx/config/EXPAND_VAR
+
 # record the machine type in the configuration (-E keeps the environment variable around, CHOICE prefix sends it in)
 CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx/config/machine-type'
 
