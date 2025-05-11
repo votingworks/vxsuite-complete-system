@@ -107,12 +107,6 @@ then
     sudo cp config/50-wacom.conf /etc/X11/xorg.conf.d/
 fi
 
-# install kiosk-browser if it hasn't yet been installed
-if ! which kiosk-browser >/dev/null 2>&1
-then
-    make build-kiosk-browser
-fi
-
 sudo chown :lpadmin /sbin/lpinfo
 echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
 

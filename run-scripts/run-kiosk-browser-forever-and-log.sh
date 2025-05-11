@@ -33,6 +33,6 @@ if [ "${VX_MACHINE_TYPE}" = "scan" ]; then
 fi
 
 while true; do
-    echo "starting kiosk-browser"
+    echo "starting chromium"
     ./run-kiosk-browser.sh http://localhost:3000/
 done 2>&1 | logger -S 4096 --tag votingworksapp

@@ -40,9 +40,6 @@ if [[ $BRANCH == 'latest' ]]; then
 	cd vxsuite
  	git checkout main
 	git pull
-	cd ../kiosk-browser
-	git checkout main
-	git pull
 	cd ..
 elif [[ $BRANCH == 'stable' ]]; then
 	git checkout $LATEST_TAG
@@ -60,19 +57,9 @@ elif [[ $BRANCH == 'custom' ]]; then
 		read -p "Invalid Branch Name. Try again: " BRANCH_NAME
 	done
 	git checkout $BRANCH_NAME
-	cd ../kiosk-browser
-	git checkout main
-	git pull
 	cd ..
 fi
 cp /vx/config/.env.local vxsuite/.env.local
-
-# improve this by tracking commit id
-# only rebuild when it changes
-if ! which kiosk-browser >/dev/null 2>&1
-then
-	make build-kiosk-browser
-fi
 
 echo $APP_TYPE
 if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then

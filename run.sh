@@ -75,7 +75,7 @@ if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
   cd "${DIR}/build/${APP}"
   (
     trap 'kill 0' SIGINT SIGHUP; "./run-${APP}.sh" &
-    # Delay kiosk-browser to make sure the app is running first
+    # Delay chromium to make sure the app is running first
     (while ! curl -s localhost:3000; do sleep 1; done; "./run-kiosk-browser.sh"; kill 0)
   ) 2>&1 | logger -S 4096 --tag votingworksapp
 elif [[ "${APP}" = -h || "${APP}" = --help ]]; then
