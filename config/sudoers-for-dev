@@ -22,6 +22,7 @@ vx-vendor	ALL=(ALL:ALL) ALL
 
 # fine-grained sudo permissions for certain users & actions
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/set-clock.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/choose-vx-machine-id.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/rekey-via-tpm.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/expand-var-filesystem.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/lockdown.sh

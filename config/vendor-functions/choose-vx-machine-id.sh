@@ -19,8 +19,8 @@ while true; do
       # If this is a poll-book machine, we update the /etc/hosts file
       # and set the hostname
       if [[ $(cat ${VX_CONFIG_ROOT}/machine-type 2>/dev/null) == "poll-book" ]]; then
-        sudo sed -i.bak "/^127\.0\.1\.1/ s/.*/127.0.1.1\tVx${MACHINE_ID}/" /etc/hosts
-        sudo hostnamectl set-hostname "Vx${MACHINE_ID}" 2>/dev/null
+        sed -i.bak "/^127\.0\.1\.1/ s/.*/127.0.1.1\tVx${MACHINE_ID}/" /etc/hosts
+        hostnamectl set-hostname "Vx${MACHINE_ID}" 2>/dev/null
       fi
 
       echo "Machine ID set!"
