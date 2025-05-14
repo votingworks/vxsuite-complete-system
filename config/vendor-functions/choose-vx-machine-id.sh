@@ -15,6 +15,14 @@ while true; do
     if [[ "${CONFIRM}" = "y" ]]; then
       mkdir -p "${VX_CONFIG_ROOT}"
       echo "${MACHINE_ID}" > "${VX_CONFIG_ROOT}/machine-id"
+
+      # If this is a poll-book machine, we update the /etc/hosts file
+      # and set the hostname
+      if [[ $(cat ${VX_CONFIG_ROOT}/machine-type 2>/dev/null) == "poll-book" ]]; then
+        sed -i.bak "/^127\.0\.1\.1/ s/.*/127.0.1.1\tVx${MACHINE_ID}/" /etc/hosts
+        hostnamectl set-hostname "Vx${MACHINE_ID}" 2>/dev/null
+      fi
+
       echo "Machine ID set!"
       break
     fi
