@@ -5,7 +5,7 @@ set -euo pipefail
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
-if [[ "${VX_MACHINE_ID}" != "0000" ]]; then
+if [[ $(cat ${VX_CONFIG_ROOT}/machine-id 2>/dev/null) != "0000" ]]; then
     echo "Current Machine ID: ${VX_MACHINE_ID}"
 fi
 while true; do
@@ -19,7 +19,8 @@ while true; do
       # If this is a poll-book machine, we update the /etc/hosts file
       # and set the hostname
       if [[ $(cat ${VX_CONFIG_ROOT}/machine-type 2>/dev/null) == "poll-book" ]]; then
-        sed -i.bak "/^127\.0\.1\.1/ s/.*/127.0.1.1\tVx${MACHINE_ID}/" /etc/hosts
+        sed "/^127\.0\.1\.1/ s/.*/127.0.1.1\tVx${MACHINE_ID}/" /etc/hosts > /var/tmp/hosts
+        cp /var/tmp/hosts /etc/hosts
         hostnamectl set-hostname "Vx${MACHINE_ID}" 2>/dev/null
       fi
 
