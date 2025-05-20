@@ -5,7 +5,10 @@ set -euo pipefail
 : "${VX_FUNCTIONS_ROOT:="$(dirname "$0")"}"
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
-if [[ $(cat ${VX_CONFIG_ROOT}/machine-id 2>/dev/null) != "0000" ]]; then
+# since root does not source the vx machine config
+# we get the machine-id directly
+VX_MACHINE_ID=$(cat ${VX_CONFIG_ROOT}/machine-id 2>/dev/null)
+if [[ "${VX_MACHINE_ID}" != "0000" ]]; then
     echo "Current Machine ID: ${VX_MACHINE_ID}"
 fi
 while true; do
