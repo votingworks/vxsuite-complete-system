@@ -24,7 +24,9 @@ while true; do
       if [[ $(cat ${VX_CONFIG_ROOT}/machine-type 2>/dev/null) == "poll-book" ]]; then
         sed "/^127\.0\.1\.1/ s/.*/127.0.1.1\tVx${MACHINE_ID}/" /etc/hosts > /var/tmp/hosts
         cp /var/tmp/hosts /etc/hosts
-        hostnamectl set-hostname "Vx${MACHINE_ID}" 2>/dev/null
+        #hostnamectl set-hostname "Vx${MACHINE_ID}" 2>/dev/null
+        echo "Vx${MACHINE_ID}" > /etc/hostname
+        hostname -F /etc/hostname
       fi
 
       echo "Machine ID set!"
