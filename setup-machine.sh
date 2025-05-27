@@ -35,6 +35,10 @@ echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
+echo "${#CHOICES[@]}. VxPollBook"
+CHOICES+=('poll-book')
+MODEL_NAMES+=('VxPollBook')
+
 echo
 read -p "Select machine: " CHOICE_INDEX
 
@@ -256,6 +260,21 @@ then
     # let vx-services use FAI-100 controller on BMD 150
     sudo usermod -aG fai100 vx-services
     sudo cp config/55-fai100.rules /etc/udev/rules.d/
+fi
+
+if [ "${CHOICE}" == "poll-book" ]
+then
+    # create groups if they don't already exist
+    sudo getent group plugdev || sudo groupadd plugdev
+    sudo getent group dialout || sudo groupadd dialout
+
+    # let vx-services access TS100 barcode scanner as a USB device
+    sudo cp config/70-ts100-plugdev-usb.rules /etc/udev/rules.d/
+    sudo usermod -aG uinput vx-services
+
+    # let vx-services use serialport devices at /dev/ttyACM<n> for TS100 barcode scanner
+    sudo cp config/99-ts100-dialout-tty.rules /etc/udev/rules.d/
+    sudo usermod -aG dialout vx-services
 fi
 
 echo "Setting up the code"
