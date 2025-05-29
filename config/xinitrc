@@ -17,7 +17,8 @@ VSAP150="PenMount PM1415"
 
 ( sleep 4 && if xinput list | grep -i "$ELO" > /dev/null; then
   pulseaudio --start
-  # Specific amixer commands may be needed after testing
+  # Set the screen brightness (brightness is ID 10) to 70%
+  ddcutil setvcp 10 70
 elif xinput list | grep -i "$VSAP150" > /dev/null; then
   # Rotate mark-scan screen to portrait
   xrandr -o left
