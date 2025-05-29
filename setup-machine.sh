@@ -204,6 +204,9 @@ fi
 # load the i915 display module as early as possible
 sudo sh -c 'echo "i915" >> /etc/modules-load.d/modules.conf'
 
+# Automatically load the i2c-dev module needed by ddcutil to set ELO brightness
+sudo cp config/ddcutil.conf /etc/modules-load.d/
+
 # On non-vsap systems, there can be varying levels of screen flickering
 # depending on the system components. To fix it, we use an xorg config
 # that switches the acceleration method to uxa instead of sna
