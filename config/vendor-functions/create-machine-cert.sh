@@ -11,8 +11,12 @@ set -euo pipefail
 : "${VX_MACHINE_ID:="$(< "${VX_CONFIG_ROOT}/machine-id")"}"
 : "${IS_QA_IMAGE:="$(< "${VX_CONFIG_ROOT}/is-qa-image")"}"
 
+CREATE_STRONGSWAN_CERT="0"
+
 if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert-authority-cert.pem"
+    STRONGSWAN_X509_PATH="/etc/swanctl/x509/pollbook_rsa_cert.pem"
+    STRONGSWAN_CA_PATH="/etc/swanctl/x509ca/vx-cert-authority-cert.pem"
 else
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert.pem"
 fi
@@ -49,6 +53,7 @@ function create_machine_cert_signing_request() {
         VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
             VX_MACHINE_ID="${VX_MACHINE_ID}" \
             VX_MACHINE_JURISDICTION="${machine_jurisdiction}" \
+            CREATE_STRONGSWAN_CERT="${CREATE_STRONGSWAN_CERT}" \
             ./create-production-machine-cert-signing-request
     else
         VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
@@ -83,6 +88,12 @@ rm -rf "${USB_DRIVE_CERTS_DIRECTORY}"
 mkdir "${USB_DRIVE_CERTS_DIRECTORY}"
 if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     create_machine_cert_signing_request "${machine_jurisdiction}" > "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem"
+    
+    # Pollbooks need an additional cert for strongswan using a different TPM handle
+    if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+      CREATE_STRONGSWAN_CERT="1"
+      create_machine_cert_signing_request "${machine_jurisdiction}" > "${USB_DRIVE_CERTS_DIRECTORY}/pollbook_csr.pem"
+    fi
 else
     create_machine_cert_signing_request > "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem"
 fi
@@ -111,6 +122,13 @@ echo "Cert found on USB drive!"
 echo "Copying cert to ${MACHINE_CERT_PATH}..."
 cp "${USB_DRIVE_CERTS_DIRECTORY}/cert.pem" "${MACHINE_CERT_PATH}"
 match_vx_config_non_executable_file_permissions "${MACHINE_CERT_PATH}"
+
+if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+  echo "Copying strongswan cert to ${STRONGSWAN_X509_PATH}..."
+  cp "${USB_DRIVE_CERTS_DIRECTORY}/pollbook_cert.pem" "${STRONGSWAN_X509_PATH}"
+  cp "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${STRONGSWAN_CA_PATH}"
+fi
+
 rm -rf "${USB_DRIVE_CERTS_DIRECTORY}"
 unmount_usb_drive
 
