@@ -11,7 +11,7 @@ set -euo pipefail
 : "${VX_MACHINE_ID:="$(< "${VX_CONFIG_ROOT}/machine-id")"}"
 : "${IS_QA_IMAGE:="$(< "${VX_CONFIG_ROOT}/is-qa-image")"}"
 
-CREATE_STRONGSWAN_CERT="0"
+USE_STRONGSWAN_TPM_KEY="0"
 
 if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert-authority-cert.pem"
@@ -53,7 +53,7 @@ function create_machine_cert_signing_request() {
         VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
             VX_MACHINE_ID="${VX_MACHINE_ID}" \
             VX_MACHINE_JURISDICTION="${machine_jurisdiction}" \
-            CREATE_STRONGSWAN_CERT="${CREATE_STRONGSWAN_CERT}" \
+            USE_STRONGSWAN_TPM_KEY="${USE_STRONGSWAN_TPM_KEY}" \
             ./create-production-machine-cert-signing-request
     else
         VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
@@ -91,7 +91,7 @@ if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]];
     
     # Pollbooks need an additional cert for strongswan using a different TPM handle
     if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
-      CREATE_STRONGSWAN_CERT="1"
+      USE_STRONGSWAN_TPM_KEY="1"
       create_machine_cert_signing_request "${machine_jurisdiction}" > "${USB_DRIVE_CERTS_DIRECTORY}/pollbook_csr.pem"
     fi
 else
