@@ -265,7 +265,11 @@ echo "Setting up the code"
 sudo mv build/${CHOICE} /vx/code
 
 # temporary hack cause of precinct-scanner runtime issue
+#
 sudo rm /vx/code/vxsuite # it's a symlink
+# We have limited space on the root partition so don't copy over the unneeded VxDesign and
+# VxPollBook directories
+rm -r vxsuite/apps/design vxsuite/apps/pollbook
 sudo cp -rp vxsuite /vx/code/
 
 # symlink the code and run-*.sh in /vx/services
