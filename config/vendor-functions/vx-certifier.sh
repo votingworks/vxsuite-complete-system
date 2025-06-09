@@ -37,8 +37,6 @@ CMD=(
 # TODO: rethink multiple cert case, this is just a quick workaround
 # as a temporary solution for pollbook strongswan testing this is fine
 # but what if we find ourselves with > 2 certs in the future?
-# TODO: add error checking/confirmation for pollbook strongswan?
-# assuming success for now during testing
 if [[ -f "$STRONGSWAN_CSR_PATH" ]]; then
   echo
   echo "Found a pollbook strongswan cert request. Processing it first..."
