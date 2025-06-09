@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 # Requires sudo
+# TODO: With the introduction of pollbook certs, we are duplicating
+# some aspects of cert creation / validation. That's fine for now, but
+# if this pattern continues, we should consider whether to make this
+# more flexible with less duplication
 
 set -euo pipefail
 
@@ -139,6 +143,14 @@ if ! openssl x509 -in "${MACHINE_CERT_PATH}" -noout -pubkey | \
     read -p "Press enter to start over. "
     exit 1
 fi
+#
+# Cert correctness check 1 for pollbook
+if ! openssl x509 -in "${STRONGSWAN_X509_PATH}" -noout -pubkey | \
+    diff -q "${VX_CONFIG_ROOT}/pollbook_rsa.pub" -; then
+    echo -e "\e[31mPublic key in pollbook cert doesn't match the public key created by the TPM\e[0m" >&2
+    read -p "Press enter to start over. "
+    exit 1
+fi
 
 # Cert correctness check 2
 # Note: Setting an -attime in the future allows us to accept a cert that has a start time slightly
@@ -151,4 +163,13 @@ if ! openssl verify \
     exit 1
 fi
 
-echo "Machine cert saved! You can remove the USB drive."
+# Cert correctness check 2 for pollbook
+if ! openssl verify \
+    -attime "$(date -d "+10 minutes" +%s)" \
+    -CAfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${STRONGSWAN_X509_PATH}" > /dev/null; then
+    echo -e "\e[31mPollbook cert was not signed by the correct cert authority or is not yet valid because of a clock mismatch\e[0m" >&2
+    read -p "Press enter to start over. "
+    exit 1
+fi
+
+echo "Machine cert(s) saved! You can remove the USB drive."
