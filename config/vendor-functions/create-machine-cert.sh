@@ -19,13 +19,14 @@ USE_STRONGSWAN_TPM_KEY="0"
 
 if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert-authority-cert.pem"
-else
-    MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert.pem"
     if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
       STRONGSWAN_X509_PATH="/etc/swanctl/x509/vx-poll-book-strongswan-rsa-cert.pem"
       STRONGSWAN_CA_PATH="/etc/swanctl/x509ca/vx-cert-authority-cert.pem"
     fi
+else
+    MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert.pem"
 fi
+
 USB_DRIVE_CERTS_DIRECTORY="/media/vx/usb-drive/certs"
 VX_IANA_ENTERPRISE_OID="1.3.6.1.4.1.59817"
 
