@@ -46,3 +46,21 @@ tpm2_readpublic -c key.ctx -f PEM -o "${VX_CONFIG_ROOT}/key.pub"
 
 chmod +r "${VX_CONFIG_ROOT}/key.pub"
 
+# poll-book machines require the creation of endorsement and
+# attestation keys used by strongswan for tpm authentication
+machine_type=$(cat ${VX_CONFIG_ROOT}/machine-type 2>/dev/null)
+if [[ "${machine_type}" == "poll-book" ]]; then
+  ek_handle="0x81000003"
+  ak_handle="0x81010003"
+  echo "Setting up TPM keys for pollbook..."
+  # First, create a persistent RSA endorsement key
+  tpm2_evictcontrol -Q -c "${ek_handle}" &> /dev/null || true
+  tpm2_createek -G rsa -c "${ek_handle}"
+
+  # Using that key, create a persistent RSA attestation key
+  # also outputs the public portion in PEM format for later verification
+  tpm2_createak -C "${ek_handle}" -G rsa -s rsassa -c ak_rsa.ctx -f pem -u "${VX_CONFIG_ROOT}/vx-poll-book-strongswan-rsa-cert.pub"
+  tpm2_evictcontrol -Q -c "${ak_handle}" &> /dev/null || true
+  tpm2_evictcontrol -c ak_rsa.ctx "${ak_handle}"
+fi
+

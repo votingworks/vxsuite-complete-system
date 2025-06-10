@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 # Requires sudo
+# TODO: With the introduction of pollbook certs, we are duplicating
+# some aspects of cert creation / validation. That's fine for now, but
+# if this pattern continues, we should consider whether to make this
+# more flexible with less duplication
 
 set -euo pipefail
 
@@ -11,11 +15,18 @@ set -euo pipefail
 : "${VX_MACHINE_ID:="$(< "${VX_CONFIG_ROOT}/machine-id")"}"
 : "${IS_QA_IMAGE:="$(< "${VX_CONFIG_ROOT}/is-qa-image")"}"
 
+USE_STRONGSWAN_TPM_KEY="0"
+
 if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert-authority-cert.pem"
+    if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+      STRONGSWAN_X509_PATH="/etc/swanctl/x509/vx-poll-book-strongswan-rsa-cert.pem"
+      STRONGSWAN_CA_PATH="/etc/swanctl/x509ca/vx-cert-authority-cert.pem"
+    fi
 else
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert.pem"
 fi
+
 USB_DRIVE_CERTS_DIRECTORY="/media/vx/usb-drive/certs"
 VX_IANA_ENTERPRISE_OID="1.3.6.1.4.1.59817"
 
@@ -49,6 +60,7 @@ function create_machine_cert_signing_request() {
         VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
             VX_MACHINE_ID="${VX_MACHINE_ID}" \
             VX_MACHINE_JURISDICTION="${machine_jurisdiction}" \
+            USE_STRONGSWAN_TPM_KEY="${USE_STRONGSWAN_TPM_KEY}" \
             ./create-production-machine-cert-signing-request
     else
         VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
@@ -83,6 +95,12 @@ rm -rf "${USB_DRIVE_CERTS_DIRECTORY}"
 mkdir "${USB_DRIVE_CERTS_DIRECTORY}"
 if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     create_machine_cert_signing_request "${machine_jurisdiction}" > "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem"
+    
+    # Pollbooks need an additional cert for strongswan using a different TPM handle
+    if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+      USE_STRONGSWAN_TPM_KEY="1"
+      create_machine_cert_signing_request "${machine_jurisdiction}" > "${USB_DRIVE_CERTS_DIRECTORY}/vx-poll-book-strongswan-csr.pem"
+    fi
 else
     create_machine_cert_signing_request > "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem"
 fi
@@ -111,6 +129,13 @@ echo "Cert found on USB drive!"
 echo "Copying cert to ${MACHINE_CERT_PATH}..."
 cp "${USB_DRIVE_CERTS_DIRECTORY}/cert.pem" "${MACHINE_CERT_PATH}"
 match_vx_config_non_executable_file_permissions "${MACHINE_CERT_PATH}"
+
+if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+  echo "Copying strongswan cert to ${STRONGSWAN_X509_PATH}..."
+  cp "${USB_DRIVE_CERTS_DIRECTORY}/vx-poll-book-strongswan-cert.pem" "${STRONGSWAN_X509_PATH}"
+  cp "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${STRONGSWAN_CA_PATH}"
+fi
+
 rm -rf "${USB_DRIVE_CERTS_DIRECTORY}"
 unmount_usb_drive
 
@@ -120,6 +145,16 @@ if ! openssl x509 -in "${MACHINE_CERT_PATH}" -noout -pubkey | \
     echo -e "\e[31mPublic key in machine cert doesn't match public key extracted from TPM\e[0m" >&2
     read -p "Press enter to start over. "
     exit 1
+fi
+#
+# Cert correctness check 1 for pollbook
+if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+  if ! openssl x509 -in "${STRONGSWAN_X509_PATH}" -noout -pubkey | \
+      diff -q "${VX_CONFIG_ROOT}/vx-poll-book-strongswan-rsa-cert.pub" -; then
+      echo -e "\e[31mPublic key in pollbook cert doesn't match the public key created by the TPM\e[0m" >&2
+      read -p "Press enter to start over. "
+      exit 1
+  fi
 fi
 
 # Cert correctness check 2
@@ -133,4 +168,15 @@ if ! openssl verify \
     exit 1
 fi
 
-echo "Machine cert saved! You can remove the USB drive."
+# Cert correctness check 2 for pollbook
+if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+  if ! openssl verify \
+      -attime "$(date -d "+10 minutes" +%s)" \
+      -CAfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${STRONGSWAN_X509_PATH}" > /dev/null; then
+      echo -e "\e[31mPollbook cert was not signed by the correct cert authority or is not yet valid because of a clock mismatch\e[0m" >&2
+      read -p "Press enter to start over. "
+      exit 1
+  fi
+fi
+
+echo "Machine cert(s) saved! You can remove the USB drive."

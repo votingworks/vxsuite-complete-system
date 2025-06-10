@@ -16,6 +16,8 @@ set -euo pipefail
 SERIAL_FILE="/tmp/serial.txt"
 CSR_PATH="/media/vx/usb-drive/certs/csr.pem"
 CERT_PATH="/media/vx/usb-drive/certs/cert.pem"
+STRONGSWAN_CSR_PATH="/media/vx/usb-drive/certs/vx-poll-book-strongswan-csr.pem"
+STRONGSWAN_CERT_PATH="/media/vx/usb-drive/certs/vx-poll-book-strongswan-cert.pem"
 
 rm -f "${SERIAL_FILE}"
 
@@ -32,11 +34,32 @@ CMD=(
     -out "${CERT_PATH}"
 )
 
+# TODO: rethink multiple cert case, this is just a quick workaround
+# as a temporary solution for pollbook strongswan testing this is fine
+# but what if we find ourselves with > 2 certs in the future?
+if [[ -f "$STRONGSWAN_CSR_PATH" ]]; then
+  echo
+  echo "Found a pollbook strongswan cert request. Processing it first..."
+
+  openssl x509 -req \
+  -CA "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" \
+  -CAkey "${VX_PRIVATE_KEY_PATH}" \
+  -CAcreateserial \
+  -CAserial "${SERIAL_FILE}" \
+  -in "${STRONGSWAN_CSR_PATH}" \
+  -days 36500 \
+  -out "${STRONGSWAN_CERT_PATH}" 
+
+  rm "${SERIAL_FILE}"
+
+  echo "Pollbook strongswan cert created."
+fi
+
 # Generate a confirmation output of the format:
 #
 # Machine type: admin
 # Machine ID:   AD-00-000
-# Jurisdiction: vx.test # Only present if machine type is admin
+# Jurisdiction: vx.test # Only present if machine type is admin or poll-book
 # Are the above parameters correct? [y/N]
 #
 echo
