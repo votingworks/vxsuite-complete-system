@@ -59,7 +59,7 @@ if [[ "${machine_type}" == "poll-book" ]]; then
 
   # Using that key, create a persistent RSA attestation key
   # also outputs the public portion in PEM format for later verification
-  tpm2_createak -C "${ek_handle}" -G rsa -s rsassa -c ak_rsa.ctx -f pem -u "${VX_CONFIG_ROOT}/pollbook_rsa.pub"
+  tpm2_createak -C "${ek_handle}" -G rsa -s rsassa -c ak_rsa.ctx -f pem -u "${VX_CONFIG_ROOT}/vx-poll-book-strongswan-rsa-cert.pub"
   tpm2_evictcontrol -Q -c "${ak_handle}" &> /dev/null || true
   tpm2_evictcontrol -c ak_rsa.ctx "${ak_handle}"
 fi

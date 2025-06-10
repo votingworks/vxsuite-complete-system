@@ -16,8 +16,8 @@ set -euo pipefail
 SERIAL_FILE="/tmp/serial.txt"
 CSR_PATH="/media/vx/usb-drive/certs/csr.pem"
 CERT_PATH="/media/vx/usb-drive/certs/cert.pem"
-STRONGSWAN_CSR_PATH="/media/vx/usb-drive/certs/pollbook_csr.pem"
-STRONGSWAN_CERT_PATH="/media/vx/usb-drive/certs/pollbook_cert.pem"
+STRONGSWAN_CSR_PATH="/media/vx/usb-drive/certs/vx-poll-book-strongswan-csr.pem"
+STRONGSWAN_CERT_PATH="/media/vx/usb-drive/certs/vx-poll-book-strongswan-cert.pem"
 
 rm -f "${SERIAL_FILE}"
 

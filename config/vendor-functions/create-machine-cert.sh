@@ -19,10 +19,12 @@ USE_STRONGSWAN_TPM_KEY="0"
 
 if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert-authority-cert.pem"
-    STRONGSWAN_X509_PATH="/etc/swanctl/x509/pollbook_rsa_cert.pem"
-    STRONGSWAN_CA_PATH="/etc/swanctl/x509ca/vx-cert-authority-cert.pem"
 else
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert.pem"
+    if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+      STRONGSWAN_X509_PATH="/etc/swanctl/x509/vx-poll-book-strongswan-rsa-cert.pem"
+      STRONGSWAN_CA_PATH="/etc/swanctl/x509ca/vx-cert-authority-cert.pem"
+    fi
 fi
 USB_DRIVE_CERTS_DIRECTORY="/media/vx/usb-drive/certs"
 VX_IANA_ENTERPRISE_OID="1.3.6.1.4.1.59817"
@@ -96,7 +98,7 @@ if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]];
     # Pollbooks need an additional cert for strongswan using a different TPM handle
     if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
       USE_STRONGSWAN_TPM_KEY="1"
-      create_machine_cert_signing_request "${machine_jurisdiction}" > "${USB_DRIVE_CERTS_DIRECTORY}/pollbook_csr.pem"
+      create_machine_cert_signing_request "${machine_jurisdiction}" > "${USB_DRIVE_CERTS_DIRECTORY}/vx-poll-book-strongswan-csr.pem"
     fi
 else
     create_machine_cert_signing_request > "${USB_DRIVE_CERTS_DIRECTORY}/csr.pem"
@@ -129,7 +131,7 @@ match_vx_config_non_executable_file_permissions "${MACHINE_CERT_PATH}"
 
 if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
   echo "Copying strongswan cert to ${STRONGSWAN_X509_PATH}..."
-  cp "${USB_DRIVE_CERTS_DIRECTORY}/pollbook_cert.pem" "${STRONGSWAN_X509_PATH}"
+  cp "${USB_DRIVE_CERTS_DIRECTORY}/vx-poll-book-strongswan-cert.pem" "${STRONGSWAN_X509_PATH}"
   cp "${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem" "${STRONGSWAN_CA_PATH}"
 fi
 
@@ -147,7 +149,7 @@ fi
 # Cert correctness check 1 for pollbook
 if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
   if ! openssl x509 -in "${STRONGSWAN_X509_PATH}" -noout -pubkey | \
-      diff -q "${VX_CONFIG_ROOT}/pollbook_rsa.pub" -; then
+      diff -q "${VX_CONFIG_ROOT}/vx-poll-book-strongswan-rsa-cert.pub" -; then
       echo -e "\e[31mPublic key in pollbook cert doesn't match the public key created by the TPM\e[0m" >&2
       read -p "Press enter to start over. "
       exit 1
