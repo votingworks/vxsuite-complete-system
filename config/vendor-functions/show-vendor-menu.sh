@@ -26,9 +26,9 @@ if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/EXPAND_VAR" ]]; then
 
   # Note: we should improve this in the future. There's no filesystem need
   # to reboot. We're only doing so because of our autologin configuration.
-  #echo "The /var filesystem has been resized. The system will now reboot."
-  #sleep 3
-  #sudo /usr/sbin/reboot
+  echo "The /var filesystem has been resized. The system will now reboot."
+  sleep 3
+  sudo /usr/sbin/reboot
 fi
 
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
