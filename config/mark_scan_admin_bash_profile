@@ -1,4 +1,7 @@
-echo 3 | sudo /usr/bin/tee -a /sys/class/graphics/fbcon/rotate
+# Only perform fbcon-based rotation on real hardware
+if [[ $(hostnamectl chassis) != "vm" ]]; then
+  echo 3 | sudo /usr/bin/tee -a /sys/class/graphics/fbcon/rotate
+fi
 export PATH=/vx/code/config/vendor-functions:${PATH}
 
 while true; do
