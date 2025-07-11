@@ -2,6 +2,7 @@ xset -dpms
 xset s off
 xset s noblank
 xrdb ~/.Xresources
+xmodmap ~/.Xmodmap
 
 export VX_CONFIG_ROOT="/vx/config"
 export VX_METADATA_ROOT="/vx/code"

@@ -279,6 +279,7 @@ sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 # symlink appropriate vx/ui files
 sudo ln -s /vx/code/config/ui_bash_profile /vx/ui/.bash_profile
 sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
+sudo ln -s /vx/code/config/Xmodmap /vx/ui/.Xmodmap
 sudo ln -s /vx/code/config/xinitrc /vx/ui/.xinitrc
 sudo ln -s /vx/code/config/chime.wav /vx/ui/chime.wav
 
