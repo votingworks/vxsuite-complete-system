@@ -1,0 +1,11 @@
+! AudioNav 1409-34011 - Speech Rate Decrease:
+keycode 202 = comma
+
+! AudioNav 1409-34011 - Speech Rate Increase:
+keycode 201 = period
+
+! AudioNav 1409-34011 - Volume Down:
+keycode 122 = minus
+
+! AudioNav 1409-34011 - Volume Up:
+keycode 123 = equal
