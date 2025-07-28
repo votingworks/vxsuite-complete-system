@@ -1,7 +1,7 @@
 [Unit]
 Description=VotingWorks daemon that handles BMD 150 controller and PAT signal.
 StartLimitIntervalSec=300
-StartLimitBurst=10
+StartLimitBurst=30
 
 [Service]
 Restart=on-failure
