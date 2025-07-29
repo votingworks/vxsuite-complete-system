@@ -8,13 +8,13 @@ set -euo pipefail
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 : "${VX_METADATA_ROOT:="/vx/code"}"
 
-if [[ $(tty) = /dev/tty1 ]] && [[ -f "/home/REKEY_VIA_TPM" ]]; then
-  sudo "${VX_FUNCTIONS_ROOT}/rekey-via-tpm.sh"
-fi
-
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_FIPS_INSTALL" ]]; then
   sudo "${VX_FUNCTIONS_ROOT}/fipsinstall.sh"
   rm -f "${VX_CONFIG_ROOT}/RUN_FIPS_INSTALL"
+fi
+
+if [[ $(tty) = /dev/tty1 ]] && [[ -f "/home/REKEY_VIA_TPM" ]]; then
+  sudo "${VX_FUNCTIONS_ROOT}/rekey-via-tpm.sh"
 fi
 
 # Note: EXPAND_VAR will be created as part of a vx-iso install
