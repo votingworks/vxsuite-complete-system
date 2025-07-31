@@ -65,6 +65,16 @@ elif [[ $BRANCH == 'custom' ]]; then
 	git pull
 	cd ..
 fi
+
+echo
+read -p "Enable HWTA? [y/n]: " ENABLE_HWTA
+
+if [[ "${ENABLE_HWTA}" == 'y' || "${ENABLE_HWTA}" == 'Y' ]]; then
+  sudo /vx/scripts/set-hwta-env.sh yes
+else
+  sudo /vx/scripts/set-hwta-env.sh no
+fi
+
 cp /vx/config/.env.local vxsuite/.env.local
 
 # improve this by tracking commit id
