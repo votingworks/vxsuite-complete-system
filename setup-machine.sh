@@ -102,11 +102,6 @@ then
     sudo cp config/11-disable-tty.conf /etc/X11/xorg.conf.d/
 fi
 
-if [ "${CHOICE}" == "mark" ]
-then
-    sudo cp config/50-wacom.conf /etc/X11/xorg.conf.d/
-fi
-
 # install kiosk-browser if it hasn't yet been installed
 if ! which kiosk-browser >/dev/null 2>&1
 then
@@ -216,7 +211,7 @@ sudo cp config/ddcutil.conf /etc/modules-load.d/
 # and applying this change can not be used on them without causing other
 # undesireable graphical behaviors. Longer term, it would be better to 
 # detect during initial boot whether to apply this xorg config.
-if [ "${CHOICE}" != "mark" ] && [ "${CHOICE}" != "mark-scan" ]
+if [ "${CHOICE}" != "mark-scan" ]
 then
     sudo cp config/10-intel-xorg.conf /etc/X11/xorg.conf.d/10-intel.conf
 fi
@@ -312,6 +307,8 @@ if [[ "${CHOICE}" == "mark-scan" ]]; then
   sudo cp config/logo-vertical.bmp /vx/code/config/logo.bmp
 elif [[ "${CHOICE}" == "scan" ]]; then
   sudo cp config/logo-horizontal-800x600.bmp /vx/code/config/logo.bmp
+elif [[ "${CHOICE}" == "mark" ]]; then
+  sudo cp config/logo-horizontal-800x600.bmp /vx/code/config/logo.bmp
 else
   sudo cp config/logo-horizontal.bmp /vx/code/config/logo.bmp
 fi
@@ -357,13 +354,6 @@ IS_QA_IMAGE="${IS_QA_IMAGE}" sudo -E sh -c 'echo "${IS_QA_IMAGE}" > /vx/config/i
 
 # machine ID
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
-
-# app mode & speech synthesis
-if [ "${CHOICE}" = "mark" ]
-then
-    sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
-    bash setup-scripts/setup-speech-synthesis.sh
-fi
 
 # vx-ui OpenBox configuration
 sudo mkdir -p /vx/ui/.config/openbox

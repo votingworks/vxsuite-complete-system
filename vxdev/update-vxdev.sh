@@ -50,7 +50,6 @@ bash /vx/scripts/vxdev-configuration.sh
 FAVORITE_ICONS=''
 
 if [[ $CHOICE == 'VxMark' ]]; then
-	sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
 	sudo cp vxdev/run-vxmark.desktop /usr/share/applications/.
 	FAVORITE_ICONS="'run-vxmark.desktop'"
 fi

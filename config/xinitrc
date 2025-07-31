@@ -7,6 +7,8 @@ xmodmap ~/.Xmodmap
 export VX_CONFIG_ROOT="/vx/config"
 export VX_METADATA_ROOT="/vx/code"
 
+VX_MACHINE_TYPE="${VX_CONFIG_ROOT}/machine-type"
+
 # delay until X is started and configured
 # this appears to fix the issue where, sometimes, the Elo touchscreen doesn't respond
 (sleep 6 && bash /vx/code/run-kiosk-browser-forever-and-log.sh) &
@@ -20,6 +22,12 @@ VSAP150="PenMount PM1415"
   pulseaudio --start
   # Set the screen brightness (brightness is ID 10) to 70%
   ddcutil setvcp 10 70
+
+  if [[ "${VX_MACHINE_TYPE}" = "mark" ]]; then
+    # Rotate mark screen to portrait
+    xrandr -o left
+    xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+  fi
 elif xinput list | grep -i "$VSAP150" > /dev/null; then
   # Rotate mark-scan screen to portrait
   xrandr -o left
@@ -67,5 +75,3 @@ sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%) &
 sudo brightnessctl s 100%
 
 exec /usr/bin/openbox-session
-
-
