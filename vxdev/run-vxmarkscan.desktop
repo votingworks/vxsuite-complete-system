@@ -2,6 +2,6 @@
 Version=1.0
 Name=VxMarkScan
 Icon=runprogram.png
-Exec=gnome-terminal -- /bin/sh -c 'env PATH=$PATH:/sbin env MARK_SCAN_WORKSPACE=/vx/data/module-mark-scan /vx/code/vxsuite-complete-system/run.sh mark-scan'
+Exec=gnome-terminal -- /bin/sh -ic 'env PATH=$PATH:/sbin env MARK_SCAN_WORKSPACE=/vx/data/module-mark-scan /vx/code/vxsuite-complete-system/run.sh mark-scan 2>&1 | tee /tmp/vxdev.log; read -p "Press any key to continue. (Session log: /tmp/vxdev.log)" line'
 Terminal=false
 Type=Application
