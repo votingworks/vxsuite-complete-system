@@ -6,6 +6,7 @@ Type=simple
 User=vx-services
 Environment=VX_CONFIG_ROOT=/vx/config
 Environment=VX_METADATA_ROOT=/vx/code
+Environment=MARK_WORKSPACE=/vx/data/module-mark
 ExecStart=/bin/bash /vx/services/run-mark.sh
 StandardOutput=syslog
 StandardError=syslog
