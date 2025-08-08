@@ -21,11 +21,12 @@ VSAP150="PenMount PM1415"
   # Set the screen brightness (brightness is ID 10) to 70%
   ddcutil setvcp 10 70
 
-  if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
-    # Rotate mark screen to portrait
-    xrandr -o left
-    xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
-  fi
+  # [TODO] Figure out why this doesn't work/test on actual ELO model for VxMark
+  # if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
+  #   # Rotate mark screen to portrait
+  #   xrandr -o left
+  #   xinput set-prop "$ELO" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+  # fi
 elif xinput list | grep -i "$VSAP150" > /dev/null; then
   # Rotate mark-scan screen to portrait
   xrandr -o left
