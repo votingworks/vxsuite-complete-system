@@ -235,6 +235,12 @@ then
     sudo usermod -aG plugdev vx-services
 fi
 
+if [ "${CHOICE}" == "mark" ]
+then
+    sudo cp config/65-honeywell-barcode-reader.rules /etc/udev/rules.d/
+    sudo usermod -aG plugdev vx-services
+fi
+
 if [ "${CHOICE}" == "mark-scan" ]
 then
     # create groups if they don't already exist
