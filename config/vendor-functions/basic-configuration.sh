@@ -35,7 +35,7 @@ echo
 echo -e "\e[1mStep 4: Create Machine Cert\e[0m"
 sudo ${VX_FUNCTIONS_ROOT}/create-machine-cert.sh
 
-if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
     echo
     echo -e "\e[1mStep 5: Program System Administrator Cards\e[0m"
     sudo ${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh
