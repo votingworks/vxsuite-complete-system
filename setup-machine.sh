@@ -215,7 +215,7 @@ sudo cp config/ddcutil.conf /etc/modules-load.d/
 # and applying this change can not be used on them without causing other
 # undesireable graphical behaviors. Longer term, it would be better to 
 # detect during initial boot whether to apply this xorg config.
-if [ "${CHOICE}" != "mark-scan" ]
+if [ "${CHOICE}" != "mark" ] && [ "${CHOICE}" != "mark-scan" ]
 then
     sudo cp config/10-intel-xorg.conf /etc/X11/xorg.conf.d/10-intel.conf
 fi
