@@ -23,9 +23,9 @@ VSAP150="PenMount PM1415"
 
   # Rotate mark screen to portrait
   if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
-    elo_model=$( xinput list --name-only | grep "$ELO" | grep -vi mouse | awk '{print $1,$2,$3}' | uniq )
+    elo_id=$( xinput list --name-only | grep "$ELO" | grep -vi mouse | sed -E 's/.*?id=([0-9]+).*/\1/' | uniq )
     xrandr -o left
-    xinput set-prop "$elo_model" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+    xinput set-prop "$elo_id" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
   fi
 elif xinput list | grep -i "$VSAP150" > /dev/null; then
   # Rotate mark-scan screen to portrait
