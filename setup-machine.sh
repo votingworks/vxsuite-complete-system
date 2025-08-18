@@ -54,7 +54,7 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
+read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? !! This branch has an edit in place to still use the production root cert for QA images. !! [y/N] " qa_image_flag
 
 IS_RELEASE_IMAGE=0
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
@@ -553,11 +553,11 @@ sudo hostnamectl set-hostname "VotingWorks" 2>/dev/null
 
 # QA images are certified using the dev VotingWorks private key so root all verification with the
 # dev VotingWorks cert by writing it to the expected file path
-if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
-    sudo cp \
-        /vx/code/vxsuite/libs/auth/certs/dev/vx-cert-authority-cert.pem \
-        /vx/code/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem
-fi
+# if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
+#     sudo cp \
+#         /vx/code/vxsuite/libs/auth/certs/dev/vx-cert-authority-cert.pem \
+#         /vx/code/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem
+# fi
 
 # Set up a one-time run of fstrim to reduce VM size
 sudo cp config/vm-fstrim.service /etc/systemd/system/
