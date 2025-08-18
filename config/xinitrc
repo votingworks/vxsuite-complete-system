@@ -60,7 +60,7 @@ pactl unload-module module-suspend-on-idle
 # the app server, so we instead play a brief clip of pink noise here through the
 # headphones, to activate the headphone audio device.
 if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
-  sleep 5 && aplay ~/noise.mp3 && pactl set-sink-volume 0 100%
+  sleep 10 && aplay ~/noise.mp3 && pactl set-sink-volume 0 100%
 else
   sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%
 fi
