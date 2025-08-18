@@ -52,10 +52,14 @@ fi
 # prevent suspending the module, otherwise the start of chimes gets clipped
 pactl unload-module module-suspend-on-idle
 
-# we need a startup chime to activate the channel
-# delay because it appears the xrandr and xinput commands above turn off sound for a bit
-# (because of course they do)
-sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%) &
+# NOTE: On VxMark, the startup chime is played from within the app server.
+if cat $VX_CONFIG_ROOT/machine-type | grep -v "^mark$" > /dev/null; then
+  # we need a startup chime to activate the channel
+  # delay because it appears the xrandr and xinput commands above turn off sound for a bit
+  # (because of course they do)
+  sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%
+fi
+) &
 
 # look for an external display and mirror to it
 (while true; do
