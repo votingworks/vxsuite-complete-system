@@ -21,7 +21,7 @@ VSAP150="PenMount PM1415"
   # Set the screen brightness (brightness is ID 10) to 70%
   ddcutil setvcp 10 70
 
-  # Rotate mark screen to portrait
+  # [VxMark] Rotate display and touch input:
   if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
     elo_id=$( xinput list --name-only | grep "$ELO" | grep -vi mouse | sed -E 's/.*?id=([0-9]+).*/\1/' | uniq )
     xrandr -o left
@@ -60,7 +60,7 @@ pactl unload-module module-suspend-on-idle
 # the app server, so we instead play a brief clip of pink noise here through the
 # headphones, to activate the headphone audio device.
 if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
-  sleep 10 && aplay ~/noise.mp3 && pactl set-sink-volume 0 100%
+  sleep 2 && aplay ~/noise.wav && pactl set-sink-volume 0 100%
 else
   sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%
 fi
