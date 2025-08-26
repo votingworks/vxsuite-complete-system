@@ -1,0 +1,12 @@
+[Unit]
+Description=Wipe out the vx home dir
+DefaultDependencies=no
+Before=shutdown.target reboot.target umount.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c '/usr/bin/rm -rf /home/vx/* ; /usr/bin/rm -rf /home/vx/.* ; systemctl disable vx-cleanup.service'
+RemainAfterExit=no
+
+[Install]
+WantedBy=shutdown.target reboot.target
