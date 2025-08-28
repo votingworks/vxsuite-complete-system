@@ -173,9 +173,8 @@ function error_and_start_over() {
 }
 
 function check_cert_contains_correct_public_key() {
-    local cert_path="$1"
-    local public_key_path="$2"
-    local cert_identifier="$3"
+    local cert_path="${1}"
+    local public_key_path="${2}"
 
     if ! openssl x509 -in "${cert_path}" -noout -pubkey | \
         diff -q "${public_key_path}" - >/dev/null; then
@@ -184,9 +183,8 @@ function check_cert_contains_correct_public_key() {
 }
 
 function check_cert_signed_by_correct_cert_authority() {
-    local cert_path="$1"
-    local cert_authority_cert_path="$2"
-    local error_message="$3"
+    local cert_path="${1}"
+    local cert_authority_cert_path="${2}"
 
     # Note: Setting an -attime in the future allows us to accept a cert that has a start time
     # slightly in the future because the clock on VxCertifier was slightly ahead of the machine clock
