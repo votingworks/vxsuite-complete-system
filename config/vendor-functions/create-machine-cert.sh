@@ -167,7 +167,9 @@ unmount_usb_drive
 #
 
 function error_and_start_over() {
-    echo -e "\e[31m$1\e[0m" >&2
+    local message="${1}"
+
+    echo -e "\e[31m${message}\e[0m" >&2
     read -p "Press enter to start over. "
     exit 1
 }
