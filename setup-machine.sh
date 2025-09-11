@@ -27,8 +27,12 @@ echo "${#CHOICES[@]}. VxCentralScan"
 CHOICES+=('central-scan')
 MODEL_NAMES+=('VxCentralScan')
 
+echo "${#CHOICES[@]}. VxMark"
+CHOICES+=('mark') 
+MODEL_NAMES+=('VxMark')
+
 echo "${#CHOICES[@]}. VxMarkScan"
-CHOICES+=('mark-scan')
+CHOICES+=('mark-scan') 
 MODEL_NAMES+=('VxMarkScan')
 
 echo "${#CHOICES[@]}. VxScan"
@@ -50,7 +54,7 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
+read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? !! This branch has an edit in place to still use the production root cert for QA images. !! [y/N] " qa_image_flag
 
 IS_RELEASE_IMAGE=0
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
@@ -100,11 +104,6 @@ echo
 if [[ "${IS_QA_IMAGE}" == 0 ]]
 then
     sudo cp config/11-disable-tty.conf /etc/X11/xorg.conf.d/
-fi
-
-if [ "${CHOICE}" == "mark" ]
-then
-    sudo cp config/50-wacom.conf /etc/X11/xorg.conf.d/
 fi
 
 # install kiosk-browser if it hasn't yet been installed
@@ -236,6 +235,12 @@ then
     sudo usermod -aG plugdev vx-services
 fi
 
+if [ "${CHOICE}" == "mark" ]
+then
+    sudo cp config/65-honeywell-barcode-reader.rules /etc/udev/rules.d/
+    sudo usermod -aG plugdev vx-services
+fi
+
 if [ "${CHOICE}" == "mark-scan" ]
 then
     # create groups if they don't already exist
@@ -282,6 +287,7 @@ sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
 sudo ln -s /vx/code/config/Xmodmap /vx/ui/.Xmodmap
 sudo ln -s /vx/code/config/xinitrc /vx/ui/.xinitrc
 sudo ln -s /vx/code/config/chime.wav /vx/ui/chime.wav
+sudo ln -s /vx/code/config/noise.mp3 /vx/ui/noise.mp3
 
 # symlink the GTK .settings.ini
 sudo mkdir -p /vx/ui/.config/gtk-3.0
@@ -311,6 +317,8 @@ sudo ln -s /vx/code/config/grub.cfg /vx/vendor/config/grub.cfg
 if [[ "${CHOICE}" == "mark-scan" ]]; then
   sudo cp config/logo-vertical.bmp /vx/code/config/logo.bmp
 elif [[ "${CHOICE}" == "scan" ]]; then
+  sudo cp config/logo-horizontal-800x600.bmp /vx/code/config/logo.bmp
+elif [[ "${CHOICE}" == "mark" ]]; then
   sudo cp config/logo-horizontal-800x600.bmp /vx/code/config/logo.bmp
 else
   sudo cp config/logo-horizontal.bmp /vx/code/config/logo.bmp
@@ -357,13 +365,6 @@ IS_QA_IMAGE="${IS_QA_IMAGE}" sudo -E sh -c 'echo "${IS_QA_IMAGE}" > /vx/config/i
 
 # machine ID
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
-
-# app mode & speech synthesis
-if [ "${CHOICE}" = "mark" ]
-then
-    sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
-    bash setup-scripts/setup-speech-synthesis.sh
-fi
 
 # vx-ui OpenBox configuration
 sudo mkdir -p /vx/ui/.config/openbox
@@ -553,11 +554,11 @@ sudo hostnamectl set-hostname "VotingWorks" 2>/dev/null
 
 # QA images are certified using the dev VotingWorks private key so root all verification with the
 # dev VotingWorks cert by writing it to the expected file path
-if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
-    sudo cp \
-        /vx/code/vxsuite/libs/auth/certs/dev/vx-cert-authority-cert.pem \
-        /vx/code/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem
-fi
+# if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
+#     sudo cp \
+#         /vx/code/vxsuite/libs/auth/certs/dev/vx-cert-authority-cert.pem \
+#         /vx/code/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem
+# fi
 
 # Set up a one-time run of fstrim to reduce VM size
 sudo cp config/vm-fstrim.service /etc/systemd/system/

@@ -119,15 +119,16 @@ fi
 
 unmount_usb_drive
 
-if [[ "${IS_QA_IMAGE}" == 1 ]]; then
-    read -p "Because we're using a QA image, and the production VotingWorks cert has been overwritten by the dev VotingWorks cert, we can auto-certify this machine using the dev VotingWorks private key. You'll be prompted to select a USB drive again. Press enter to continue. "
-    VX_PRIVATE_KEY_PATH="${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/dev/vx-private-key.pem" \
-        VX_METADATA_ROOT="${VX_METADATA_ROOT}" \
-        "${VX_FUNCTIONS_ROOT}/vx-certifier.sh"
-    read -p "You'll be prompted to select a USB drive one last time. Press enter to continue. "
-else
-    read -p "Remove the USB drive, take it to VxCertifier, and bring it back to this machine when prompted. Press enter once you've re-inserted the USB drive. "
-fi
+# if [[ "${IS_QA_IMAGE}" == 1 ]]; then
+#     read -p "Because we're using a QA image, and the production VotingWorks cert has been overwritten by the dev VotingWorks cert, we can auto-certify this machine using the dev VotingWorks private key. You'll be prompted to select a USB drive again. Press enter to continue. "
+#     VX_PRIVATE_KEY_PATH="${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/dev/vx-private-key.pem" \
+#         VX_METADATA_ROOT="${VX_METADATA_ROOT}" \
+#         "${VX_FUNCTIONS_ROOT}/vx-certifier.sh"
+#     read -p "You'll be prompted to select a USB drive one last time. Press enter to continue. "
+# else
+#     read -p "Remove the USB drive, take it to VxCertifier, and bring it back to this machine when prompted. Press enter once you've re-inserted the USB drive. "
+# fi
+read -p "Remove the USB drive, take it to VxCertifier, and bring it back to this machine when prompted. Press enter once you've re-inserted the USB drive. "
 
 #
 # Copy cert(s) off of USB drive to appropriate locations
