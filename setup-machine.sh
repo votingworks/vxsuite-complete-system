@@ -287,7 +287,7 @@ sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
 sudo ln -s /vx/code/config/Xmodmap /vx/ui/.Xmodmap
 sudo ln -s /vx/code/config/xinitrc /vx/ui/.xinitrc
 sudo ln -s /vx/code/config/chime.wav /vx/ui/chime.wav
-sudo ln -s /vx/code/config/noise.mp3 /vx/ui/noise.mp3
+sudo ln -s /vx/code/config/chime-short.wav /vx/ui/chime-short.wav
 
 # symlink the GTK .settings.ini
 sudo mkdir -p /vx/ui/.config/gtk-3.0
