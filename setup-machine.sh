@@ -140,31 +140,8 @@ sudo ln -sf /var/vx/ui /vx/ui
 sudo ln -sf /var/vx/vendor /vx/vendor
 sudo ln -sf /var/vx/services /vx/services
 
-echo "Creating users"
-# create users, no common group, specified uids.
-id -u vx-ui &> /dev/null || sudo useradd -u 1751 -m -d /var/vx/ui -s /bin/bash vx-ui
-id -u vx-vendor &> /dev/null || sudo useradd -u 1752 -m -d /var/vx/vendor -s /bin/bash vx-vendor
-id -u vx-services &> /dev/null || sudo useradd -u 1750 -m -d /var/vx/services vx-services
-
-# a vx group for all vx users
-getent group vx-group || sudo groupadd -g 800 vx-group
-sudo usermod -aG vx-group vx-ui
-sudo usermod -aG vx-group vx-vendor
-sudo usermod -aG vx-group vx-services
-
-sudo usermod -aG video vx-ui
-
-# mark-scan requires access to the audio group
-sudo usermod -aG audio vx-ui
-sudo usermod -aG audio vx-services
-
 # remove all files created by default
 sudo rm -rf /vx/services/* /vx/ui/* /vx/vendor/*
-
-# Let all of our users read logs
-sudo usermod -aG adm vx-ui
-sudo usermod -aG adm vx-vendor
-sudo usermod -aG adm vx-services
 
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
@@ -172,9 +149,6 @@ sudo bash setup-scripts/setup-logging.sh
 # set up mount point ahead of time because read-only later
 sudo mkdir -p /media/vx/usb-drive
 sudo chown -R vx-ui:vx-group /media/vx
-
-# let vx-services manage printers
-sudo usermod -aG lpadmin vx-services
 
 ### set up CUPS to read/write all config out of /var to be compatible with read-only root filesystem
 
@@ -226,38 +200,24 @@ if [ "${CHOICE}" != "mark" ]
 then
     sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
     sudo cp config/50-custom-scanner.rules /etc/udev/rules.d/
-    sudo usermod -aG scanner vx-services
 fi
 
 if [ "${CHOICE}" == "scan" ]
 then
     sudo cp config/50-pdi-scanner.rules /etc/udev/rules.d/
     sudo cp config/60-fujitsu-printer.rules /etc/udev/rules.d/
-    sudo usermod -aG plugdev vx-services
 fi
 
 if [ "${CHOICE}" == "mark-scan" ]
 then
-    # create groups if they don't already exist
-    sudo getent group uinput || sudo groupadd uinput
-    sudo getent group gpio || sudo groupadd gpio
-    sudo getent group fai100 || sudo groupadd fai100
-
     # let vx-services use virtual uinput devices for all mark-scan BMD models
     sudo cp config/50-uinput.rules /etc/udev/rules.d/
-    sudo usermod -aG uinput vx-services
     # uinput module must be loaded explicitly
     sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
-    # let vx-services use serialport devices at /dev/ttyACM<n> for BMD 155
-    sudo usermod -aG dialout vx-services
-
-    # let vx-services use GPIO for BMD 155
-    sudo usermod -aG gpio vx-services
     sudo cp config/50-gpio.rules /etc/udev/rules.d/
 
     # let vx-services use FAI-100 controller on BMD 150
-    sudo usermod -aG fai100 vx-services
     sudo cp config/55-fai100.rules /etc/udev/rules.d/
 fi
 
