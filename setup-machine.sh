@@ -143,9 +143,6 @@ sudo ln -sf /var/vx/services /vx/services
 # remove all files created by default
 sudo rm -rf /vx/services/* /vx/ui/* /vx/vendor/*
 
-# Let all of our users read logs
-sudo usermod -aG adm vx-vendor
-
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
