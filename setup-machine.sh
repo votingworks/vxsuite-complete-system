@@ -195,30 +195,10 @@ then
     sudo cp config/10-intel-xorg.conf /etc/X11/xorg.conf.d/10-intel.conf
 fi
 
-# let vx-services scan
-if [ "${CHOICE}" != "mark" ]
-then
-    sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
-    sudo cp config/50-custom-scanner.rules /etc/udev/rules.d/
-fi
-
-if [ "${CHOICE}" == "scan" ]
-then
-    sudo cp config/50-pdi-scanner.rules /etc/udev/rules.d/
-    sudo cp config/60-fujitsu-printer.rules /etc/udev/rules.d/
-fi
-
 if [ "${CHOICE}" == "mark-scan" ]
 then
-    # let vx-services use virtual uinput devices for all mark-scan BMD models
-    sudo cp config/50-uinput.rules /etc/udev/rules.d/
     # uinput module must be loaded explicitly
     sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
-
-    sudo cp config/50-gpio.rules /etc/udev/rules.d/
-
-    # let vx-services use FAI-100 controller on BMD 150
-    sudo cp config/55-fai100.rules /etc/udev/rules.d/
 fi
 
 echo "Setting up the code"
