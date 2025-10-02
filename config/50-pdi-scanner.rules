@@ -1,1 +1,0 @@
-SUBSYSTEM=="usb", ATTR{idVendor}=="0bd7", ATTR{idProduct}=="a002", MODE="0660", GROUP="scanner"
