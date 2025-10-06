@@ -124,14 +124,14 @@ sudo cp config/logind.conf /etc/systemd/
 
 echo "Creating necessary directories"
 # directory structure
-sudo mkdir -p /vx
-sudo mkdir -p /var/vx
-sudo mkdir -p /var/vx/data/module-scan
-sudo mkdir -p /var/vx/data/module-sems-converter
-sudo mkdir -p /var/vx/data/admin-service
-sudo mkdir -p /var/vx/ui
-sudo mkdir -p /var/vx/vendor
-sudo mkdir -p /var/vx/services
+#sudo mkdir -p /vx
+#sudo mkdir -p /var/vx
+#sudo mkdir -p /var/vx/data/module-scan
+#sudo mkdir -p /var/vx/data/module-sems-converter
+#sudo mkdir -p /var/vx/data/admin-service
+#sudo mkdir -p /var/vx/ui
+#sudo mkdir -p /var/vx/vendor
+#sudo mkdir -p /var/vx/services
 
 sudo ln -sf /var/vx/data /vx/data
 
@@ -147,8 +147,8 @@ sudo rm -rf /vx/services/* /vx/ui/* /vx/vendor/*
 sudo bash setup-scripts/setup-logging.sh
 
 # set up mount point ahead of time because read-only later
-sudo mkdir -p /media/vx/usb-drive
-sudo chown -R vx-ui:vx-group /media/vx
+#sudo mkdir -p /media/vx/usb-drive
+#sudo chown -R vx-ui:vx-group /media/vx
 
 ### set up CUPS to read/write all config out of /var to be compatible with read-only root filesystem
 
@@ -258,8 +258,8 @@ fi
 sudo ln -s /vx/code/config/logo.bmp /vx/vendor/config/logo.bmp
 
 # machine configuration
-sudo mkdir -p /var/vx/config
-sudo mkdir /var/vx/config/app-flags
+#sudo mkdir -p /var/vx/config
+#sudo mkdir /var/vx/config/app-flags
 sudo ln -sf /var/vx/config /vx/config
 
 sudo ln -s /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-config.sh
