@@ -397,6 +397,9 @@ PULSE
 # Fix permissions so vx-ui owns the pulseaudio config
 sudo chown -R vx-ui:vx-ui ${vx_ui_homedir}/.config/pulse
 
+# Remove git
+sudo apt remove -y git > /dev/null 2>&1 || true
+
 echo "Successfully setup machine."
 
 # now we remove permissions, reset passwords, and ready for production.
