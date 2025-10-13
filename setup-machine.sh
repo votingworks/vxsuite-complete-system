@@ -111,14 +111,6 @@ sudo chown :lpadmin /sbin/lpinfo
 
 sudo ln -sf /var/vx/data /vx/data
 
-# mutable homedirs because we haven't figured out how to do this well yet.
-sudo ln -sf /var/vx/ui /vx/ui
-sudo ln -sf /var/vx/vendor /vx/vendor
-sudo ln -sf /var/vx/services /vx/services
-
-# remove all files created by default
-sudo rm -rf /vx/services/* /vx/ui/* /vx/vendor/*
-
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
