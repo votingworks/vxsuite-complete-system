@@ -107,48 +107,12 @@ then
     sudo cp config/50-wacom.conf /etc/X11/xorg.conf.d/
 fi
 
-# install kiosk-browser if it hasn't yet been installed
-if ! which kiosk-browser >/dev/null 2>&1
-then
-    make build-kiosk-browser
-fi
-
 sudo chown :lpadmin /sbin/lpinfo
-echo "export PATH=$PATH:/sbin" | sudo tee -a /etc/bash.bashrc
-
-# turn off automatic updates
-sudo cp config/20auto-upgrades /etc/apt/apt.conf.d/
-
-# make sure machine never shuts down on idle, and does shut down on power key (no hibernate or anything.)
-sudo cp config/logind.conf /etc/systemd/
-
-echo "Creating necessary directories"
-# directory structure
-#sudo mkdir -p /vx
-#sudo mkdir -p /var/vx
-#sudo mkdir -p /var/vx/data/module-scan
-#sudo mkdir -p /var/vx/data/module-sems-converter
-#sudo mkdir -p /var/vx/data/admin-service
-#sudo mkdir -p /var/vx/ui
-#sudo mkdir -p /var/vx/vendor
-#sudo mkdir -p /var/vx/services
 
 sudo ln -sf /var/vx/data /vx/data
 
-# mutable homedirs because we haven't figured out how to do this well yet.
-sudo ln -sf /var/vx/ui /vx/ui
-sudo ln -sf /var/vx/vendor /vx/vendor
-sudo ln -sf /var/vx/services /vx/services
-
-# remove all files created by default
-sudo rm -rf /vx/services/* /vx/ui/* /vx/vendor/*
-
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
-
-# set up mount point ahead of time because read-only later
-#sudo mkdir -p /media/vx/usb-drive
-#sudo chown -R vx-ui:vx-group /media/vx
 
 ### set up CUPS to read/write all config out of /var to be compatible with read-only root filesystem
 
@@ -174,12 +138,6 @@ if [ "${CHOICE}" == "scan" ]
 then
     sudo cp config/modprobe.d/60-fujitsu-printer.conf /etc/modprobe.d/
 fi
-
-# load the i915 display module as early as possible
-sudo sh -c 'echo "i915" >> /etc/modules-load.d/modules.conf'
-
-# Automatically load the i2c-dev module needed by ddcutil to set ELO brightness
-sudo cp config/ddcutil.conf /etc/modules-load.d/
 
 # On non-vsap systems, there can be varying levels of screen flickering
 # depending on the system components. To fix it, we use an xorg config
@@ -227,10 +185,6 @@ sudo ln -s /vx/code/config/chime.wav /vx/ui/chime.wav
 sudo mkdir -p /vx/ui/.config/gtk-3.0
 sudo ln -s /vx/code/config/gtksettings.ini /vx/ui/.config/gtk-3.0/settings.ini
 
-# Hooks for dm-verity
-sudo cp config/dmverity-root.hook /etc/initramfs-tools/hooks/dmverity-root
-sudo cp config/dmverity-root.script /etc/initramfs-tools/scripts/local-premount/dmverity-root
-
 # vendor function scripts
 if [ "${CHOICE}" = "mark-scan" ]; then
   sudo ln -s /vx/code/config/mark_scan_admin_bash_profile /vx/vendor/.bash_profile
@@ -257,9 +211,6 @@ else
 fi
 sudo ln -s /vx/code/config/logo.bmp /vx/vendor/config/logo.bmp
 
-# machine configuration
-#sudo mkdir -p /var/vx/config
-#sudo mkdir /var/vx/config/app-flags
 sudo ln -sf /var/vx/config /vx/config
 
 sudo ln -s /vx/code/config/read-vx-machine-config.sh /vx/config/read-vx-machine-config.sh
@@ -298,24 +249,10 @@ IS_QA_IMAGE="${IS_QA_IMAGE}" sudo -E sh -c 'echo "${IS_QA_IMAGE}" > /vx/config/i
 # machine ID
 sudo sh -c 'echo "0000" > /vx/config/machine-id'
 
-# app mode & speech synthesis
-if [ "${CHOICE}" = "mark" ]
-then
-    sudo sh -c 'echo "MarkAndPrint" > /vx/config/app-mode'
-    bash setup-scripts/setup-speech-synthesis.sh
-fi
-
 # vx-ui OpenBox configuration
 sudo mkdir -p /vx/ui/.config/openbox
 sudo ln -s /vx/code/config/openbox-menu.xml /vx/ui/.config/openbox/menu.xml
 sudo ln -s /vx/code/config/openbox-rc.xml /vx/ui/.config/openbox/rc.xml
-
-# If surface go, set proper resolution (1x not 2x)
-PRODUCT_NAME=`sudo dmidecode -s system-product-name`
-if [ "$PRODUCT_NAME" == "Surface Go" ]
-then
-    sudo ln -s /vx/code/config/surface-go-monitors.xml /vx/ui/.config/monitors.xml
-fi
 
 # permissions on directories
 sudo chown -R vx-ui:vx-ui /var/vx/ui
@@ -360,14 +297,6 @@ sudo sed -i 's|^\.include /etc/ssl/openssl\.cnf$|.include /etc/ssl/openssl.defau
 sudo ln -fs /etc/ssl/openssl.default.cnf /vx/config/openssl.cnf
 sudo ln -fs /vx/config/openssl.cnf /etc/ssl/openssl.cnf
 sudo chown -h vx-vendor:vx-group /vx/config/openssl.cnf
-
-# non-graphical login
-sudo systemctl set-default multi-user.target
-
-# setup auto login
-sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
-sudo cp config/override.conf /etc/systemd/system/getty@tty1.service.d/override.conf
-sudo systemctl daemon-reload
 
 # turn off grub
 sudo cp config/grub /etc/default/grub
@@ -460,19 +389,14 @@ PULSE
 # Fix permissions so vx-ui owns the pulseaudio config
 sudo chown -R vx-ui:vx-ui ${vx_ui_homedir}/.config/pulse
 
+# Remove git
+sudo apt remove -y git > /dev/null 2>&1 || true
+
 echo "Successfully setup machine."
 
 # now we remove permissions, reset passwords, and ready for production.
 
 USER=$(whoami)
-
-# cleanup
-sudo apt remove -y git firefox snapd > /dev/null 2>&1 || true
-sudo apt autoremove -y > /dev/null 2>&1 || true
-sudo rm -f /var/cache/apt/archives/*.deb
-sudo rm -rf /var/tmp/code 
-sudo rm -rf /var/tmp/downloads
-sudo rm -rf /var/tmp/rust*
 
 # set password for vx-vendor
 (echo $VENDOR_PASSWORD; echo $VENDOR_PASSWORD) | sudo passwd vx-vendor
