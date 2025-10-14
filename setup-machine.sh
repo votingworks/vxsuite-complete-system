@@ -111,9 +111,6 @@ sudo chown :lpadmin /sbin/lpinfo
 
 sudo ln -sf /var/vx/data /vx/data
 
-# Set up log config
-sudo bash setup-scripts/setup-logging.sh
-
 ### set up CUPS to read/write all config out of /var to be compatible with read-only root filesystem
 
 # copy existing cups config structure to new /var location
