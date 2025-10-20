@@ -437,6 +437,11 @@ else
     sudo cp config/sudoers /etc/sudoers
 fi
 
+# copy in user specific sudo configs
+sudo cp config/vx-services.sudoers /etc/sudoers.d/vx-services
+sudo cp config/vx-ui.sudoers /etc/sudoers.d/vx-ui
+sudo cp config/vx-vendor.sudoers /etc/sudoers.d/vx-vendor
+
 # NOTE AGAIN: no more sudo commands below this line. Privileges have been removed.
 
 echo "Machine setup is complete. Please wait for the VM to reboot."
