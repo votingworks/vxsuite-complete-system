@@ -428,20 +428,15 @@ sudo systemctl enable vm-fstrim.service
 sudo cp config/vx-cleanup.service /etc/systemd/system/
 sudo systemctl enable vx-cleanup.service
 
-# copy in our sudoers file and individual user configs
+# copy in our sudoers file 
 # NOTE: you cannot use sudo commands after this section runs
-sudo cp config/vx-services.sudoers /etc/sudoers.d/vx-services
-sudo cp config/vx-ui.sudoers /etc/sudoers.d/vx-ui
-sudo cp config/vx-vendor.sudoers /etc/sudoers.d/vx-vendor
 if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
     sudo cp config/sudoers-for-dev /etc/sudoers
 else
     sudo cp config/sudoers /etc/sudoers
 fi
 
-
 # NOTE AGAIN: no more sudo commands below this line. Privileges have been removed.
-
 echo "Machine setup is complete. Please wait for the VM to reboot."
 
 #-- Just to prevent an active prompt
