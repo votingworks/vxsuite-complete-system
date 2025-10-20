@@ -21,7 +21,7 @@ root	ALL=(ALL:ALL) ALL
 vx-vendor	ALL=(ALL:ALL) ALL
 
 # Defaults for all users per command
-# !log_allowed disables logging successful commands but logs failures
+# !log_allowed disables logging allowed commands but logs failures
 # !pam_session disables a pam session for the command
 Defaults!/vx/code/app-scripts/pactl.sh !log_allowed, !pam_session
 Defaults!/usr/bin/pactl !log_allowed, !pam_session
