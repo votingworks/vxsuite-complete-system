@@ -136,7 +136,7 @@ while true; do
   # Keep conditional choices at the end so that the numbering of the other choices is consistent
   # across machines
 
-  if [ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "poll-book" ]; then
+  if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
     echo "${#CHOICES[@]}. Program System Administrator Cards"
     CHOICES+=('program-system-administrator-cards')
   fi
