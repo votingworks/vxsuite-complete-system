@@ -13,10 +13,6 @@ if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_FIPS_INSTALL" ]]; th
   rm -f "${VX_CONFIG_ROOT}/RUN_FIPS_INSTALL"
 fi
 
-#if [[ $(tty) = /dev/tty1 ]] && [[ -f "/home/REKEY_VIA_TPM" ]]; then
-  #sudo "${VX_FUNCTIONS_ROOT}/rekey-via-tpm.sh"
-#fi
-
 # Note: EXPAND_VAR will be created as part of a vx-iso install
 # This prevents the var expansion from running in VMs while other
 # config/setup may be taking place. We only want to expand var

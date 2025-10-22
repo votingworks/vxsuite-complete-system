@@ -4,15 +4,6 @@ set -euo pipefail
 
 # TODO?: support passing multiple partitions
 
-#rekey_flag='/home/REKEY_VIA_TPM'
-
-# check for flag file created by lockdown.sh only run if exists
-#if [ ! -f ${rekey_flag} ]; then
-  #echo "NOTE: No flag file exists to encrypt via the TPM. Skipping this step."
-  #sleep 5
-  #exit 0
-#fi
-
 # check for tpm2 only run if exists
 if [ ! -f /sys/class/tpm/tpm0/tpm_version_major ]; then
   echo "No TPM chip was detected. Skipping TPM disk encryption."
@@ -98,8 +89,6 @@ cryptsetup luksRemoveKey --key-file ${random_key} ${encrypted_dev_path}
 echo "Removing all keyfiles from disk..."
 shred -uvz ${insecure_key}
 shred -uvz ${random_key}
-
-#rm -f ${rekey_flag}
 
 echo "${partition_path} encryption key has been stored in the TPM."
 
