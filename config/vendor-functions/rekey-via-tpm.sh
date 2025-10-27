@@ -2,6 +2,15 @@
 
 set -euo pipefail
 
+# Since this script excecutes well before the entirety of systemd
+# is available, we have to effectively recreate what:
+# systemctl reboot --firmware-setup
+# accomplishes. We do that by setting the necessary reboot_to_firmware
+# flag in the OsIndications file, followed by a forced, immediate reboot
+# to the BIOS
+# We can't use regular reboot commands because systemd services will
+# continue to execute, setting "completed" flag files that we don't
+# want set if this script fails
 function firmware_reboot () {
   os_indications_path='/sys/firmware/efi/efivars/OsIndications-8be*'
   os_indications_path=$(ls -1 $os_indications_path | tail -1)
@@ -14,13 +23,18 @@ function firmware_reboot () {
   else
     echo "ERROR: OsIndications not found"
   fi
-  nohup /sbin/reboot -f > /dev/null 2>&1 &
+
+  # force immediate reboot
+  echo b > /proc/sysrq-trigger
+
+  # execution should never get here, but included for completeness
   exit 1
 }
 
 # TODO?: support passing multiple partitions
 
 # check for tpm2 only run if exists
+# Should the exit status be 0?
 if [ ! -f /sys/class/tpm/tpm0/tpm_version_major ]; then
   echo "No TPM chip was detected. Skipping TPM disk encryption."
   sleep 5
@@ -34,6 +48,7 @@ else
 fi
 
 # check for crypttab entry only run if present and configured for tpm
+# Should the exit status be 0?
 if ! grep '^var_decrypted' /etc/crypttab > /dev/null; then
   echo "There is no crypttab entry. Skipping TPM disk encryption."
   sleep 5
@@ -47,6 +62,7 @@ else
 fi
 
 # check for tpm2-tools installed only run if found; otherwise, you can break boot
+# Should the exit status be 0?
 # NOTE: If we get here, the machine will only be bootable by manually entering
 #       the insecure passphrase on every boot
 if ! tpm2_selftest -v > /dev/null 2>&1; then
