@@ -2,18 +2,34 @@
 
 set -euo pipefail
 
+function firmware_reboot () {
+  os_indications_path='/sys/firmware/efi/efivars/OsIndications-8be*'
+  os_indications_path=$(ls -1 $os_indications_path | tail -1)
+  reboot_to_firmware='\x07\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+
+  echo "Path: $os_indications_path"
+
+  if [ -w $os_indications_path ]; then
+    printf "$reboot_to_firmware" > "$os_indications_path"
+  else
+    echo "ERROR: OsIndications not found"
+  fi
+  nohup /sbin/reboot -f > /dev/null 2>&1 &
+  exit 1
+}
+
 # TODO?: support passing multiple partitions
 
 # check for tpm2 only run if exists
 if [ ! -f /sys/class/tpm/tpm0/tpm_version_major ]; then
   echo "No TPM chip was detected. Skipping TPM disk encryption."
   sleep 5
-  exit 0
+  exit 1
 else
   if ! grep '^2' /sys/class/tpm/tpm0/tpm_version_major > /dev/null; then
     echo "TPM is not version 2. Skipping TPM disk encryption."
     sleep 5
-    exit 0
+    exit 1
   fi
 fi
 
@@ -21,12 +37,12 @@ fi
 if ! grep '^var_decrypted' /etc/crypttab > /dev/null; then
   echo "There is no crypttab entry. Skipping TPM disk encryption."
   sleep 5
-  exit 0
+  exit 1
 else
   if ! grep 'luks,tpm2-device=auto' /etc/crypttab > /dev/null; then
     echo "The crypttab entry is not configured to use TPM. Skipping TPM disk encryption."
     sleep 5
-    exit 0
+    exit 1
   fi
 fi
 
@@ -36,7 +52,7 @@ fi
 if ! tpm2_selftest -v > /dev/null 2>&1; then
   echo "The necessary tpm2 tools are not installed. Skipping TPM disk encryption."
   sleep 5
-  exit 0
+  exit 1
 fi
 
 # check that Secure Boot is enabled
@@ -46,7 +62,7 @@ if [[ $secure_boot_state != "enabled" ]]; then
   echo "(VxMarkScan may only require a reboot since the BIOS is limited.)"
   echo "Rebooting to BIOS in 10 seconds..."
   sleep 10
-  systemctl reboot --firmware
+  firmware_reboot
 fi
 
 # check for VotingWorks signed PK
@@ -57,7 +73,7 @@ if [[ ! ${secure_boot_signer,,} =~ "votingworks" ]]; then
   echo "Please configure the BIOS to Secure Boot Setup Mode and install the required keys."
   echo "Rebooting to BIOS in 10 seconds..."
   sleep 10
-  systemctl reboot --firmware
+  firmware_reboot
 fi
 
 # TODO: add a check via luksDump to see if TPM is already in use
