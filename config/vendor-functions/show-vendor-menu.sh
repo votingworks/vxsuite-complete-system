@@ -13,20 +13,6 @@ if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_FIPS_INSTALL" ]]; th
   rm -f "${VX_CONFIG_ROOT}/RUN_FIPS_INSTALL"
 fi
 
-# Note: EXPAND_VAR will be created as part of a vx-iso install
-# This prevents the var expansion from running in VMs while other
-# config/setup may be taking place. We only want to expand var
-# on systems installed to physical hardware.
-if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/EXPAND_VAR" ]]; then
-  sudo "${VX_FUNCTIONS_ROOT}/expand-var-filesystem.sh"
-
-  # Note: we should improve this in the future. There's no filesystem need
-  # to reboot. We're only doing so because of our autologin configuration.
-  echo "The /var filesystem has been resized. The system will now reboot."
-  sleep 3
-  sudo /usr/sbin/reboot
-fi
-
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
   "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
   exit 0
