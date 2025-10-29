@@ -420,15 +420,16 @@ if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
         /vx/code/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem
 fi
 
+# Set up a one-time run to wipe the vx user directory
+sudo cp config/vx-cleanup.service /etc/systemd/system/
+sudo cp config/vx-cleanup.sh /var/opt/vx-cleanup.sh
+sudo systemctl daemon-reload
+sudo systemctl enable vx-cleanup.service
+
 # Set up a one-time run of fstrim to reduce VM size
 sudo cp config/vm-fstrim.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable vm-fstrim.service
-
-# Set up a one-time run to wipe the vx user directory
-sudo cp config/vx-cleanup.service /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable vx-cleanup.service
 
 # copy in our sudoers file 
 # NOTE: you cannot use sudo commands after this section runs
