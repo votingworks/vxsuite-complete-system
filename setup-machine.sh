@@ -422,10 +422,12 @@ fi
 
 # Set up a one-time run of fstrim to reduce VM size
 sudo cp config/vm-fstrim.service /etc/systemd/system/
+sudo systemctl daemon-reload
 sudo systemctl enable vm-fstrim.service
 
 # Set up a one-time run to wipe the vx user directory
 sudo cp config/vx-cleanup.service /etc/systemd/system/
+sudo systemctl daemon-reload
 sudo systemctl enable vx-cleanup.service
 
 # copy in our sudoers file 
