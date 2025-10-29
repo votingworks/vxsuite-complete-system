@@ -1,5 +1,5 @@
 [Unit]
-Description=Wipe out the vx home dir
+Description=Clean up build and log files
 DefaultDependencies=no
 Before=shutdown.target reboot.target umount.target
 ConditionVirtualization=yes
