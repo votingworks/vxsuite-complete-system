@@ -6,6 +6,6 @@
 /usr/bin/rm -f /var/log/*.log
 /usr/bin/rm -f /var/log/syslog
 /usr/bin/rm -f /var/log/votingworks/*
-usr/bin/systemctl disable vx-cleanup.service
+/usr/bin/systemctl disable vx-cleanup.service
 
 exit 0
