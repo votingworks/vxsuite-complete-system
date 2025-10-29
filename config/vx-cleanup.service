@@ -5,7 +5,7 @@ Before=shutdown.target reboot.target umount.target
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c '/usr/bin/rm -rf /home/vx/* ; /usr/bin/rm -rf /home/vx/.* ; systemctl disable vx-cleanup.service'
+ExecStart=/bin/sh -c '/usr/bin/rm -rf /home/vx/* ; /usr/bin/rm -rf /home/vx/.* ; /usr/bin/rm -f /var/log/*.log; /usr/bin/rm -f /var/log/syslog; /usr/bin/rm -f /var/log/votingworks/*; systemctl disable vx-cleanup.service'
 RemainAfterExit=no
 
 [Install]

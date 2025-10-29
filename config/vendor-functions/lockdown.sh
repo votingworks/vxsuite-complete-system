@@ -148,6 +148,10 @@ else
   read -p "Press enter to continue. "
 fi
 
+# enable the vx-cleanup service one more time to clear out
+# any logs generated during the lockdown phase
+systemctl enable vx-cleanup.service
+
 # Shut down the locked down system
 # We can't reboot this on the aws build machine due to encrypted /var
 echo "Shutting down in 5s"
