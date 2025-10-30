@@ -8,11 +8,6 @@ set -euo pipefail
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 : "${VX_METADATA_ROOT:="/vx/code"}"
 
-if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_FIPS_INSTALL" ]]; then
-  sudo "${VX_FUNCTIONS_ROOT}/fipsinstall.sh"
-  rm -f "${VX_CONFIG_ROOT}/RUN_FIPS_INSTALL"
-fi
-
 if [[ $(tty) = /dev/tty1 ]] && [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then
   "${VX_FUNCTIONS_ROOT}/basic-configuration.sh"
   exit 0
