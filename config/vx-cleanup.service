@@ -1,11 +1,12 @@
 [Unit]
-Description=Wipe out the vx home dir
+Description=Clean up build and log files
 DefaultDependencies=no
 Before=shutdown.target reboot.target umount.target
+ConditionVirtualization=yes
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c '/usr/bin/rm -rf /home/vx/* ; /usr/bin/rm -rf /home/vx/.* ; systemctl disable vx-cleanup.service'
+ExecStart=/var/opt/vx-cleanup.sh
 RemainAfterExit=no
 
 [Install]
