@@ -114,7 +114,7 @@ sudo ln -sf /var/vx/data /vx/data
 ### set up CUPS to read/write all config out of /var to be compatible with read-only root filesystem
 
 # copy existing cups config structure to new /var location
-sudo mkdir /var/etc
+sudo mkdir -p /var/etc
 sudo cp -rp /etc/cups /var/etc/
 sudo rm -rf /etc/cups
 
@@ -157,7 +157,7 @@ then
 fi
 
 echo "Setting up the code"
-sudo mv build/${CHOICE} /vx/code
+sudo rsync -avz build/${CHOICE}/ /vx/code/
 
 # temporary hack cause of precinct-scanner runtime issue
 #
