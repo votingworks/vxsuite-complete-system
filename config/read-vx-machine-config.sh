@@ -48,10 +48,6 @@ export VX_CODE_VERSION="$(< "${VX_METADATA_ROOT}/code-version")"
 export VX_CODE_TAG="$(< "${VX_METADATA_ROOT}/code-tag")"
 export IS_QA_IMAGE="$(< "${VX_CONFIG_ROOT}/is-qa-image")"
 
-if [ -f "${VX_CONFIG_ROOT}/app-mode" ]; then
-  export VX_APP_MODE="$(< "${VX_CONFIG_ROOT}/app-mode")"
-fi
-
 if [ -f "${VX_CONFIG_ROOT}/machine-jurisdiction" ]; then
   export VX_MACHINE_JURISDICTION="$(< "${VX_CONFIG_ROOT}/machine-jurisdiction")"
 fi

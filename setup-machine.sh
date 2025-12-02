@@ -27,6 +27,10 @@ echo "${#CHOICES[@]}. VxCentralScan"
 CHOICES+=('central-scan')
 MODEL_NAMES+=('VxCentralScan')
 
+echo "${#CHOICES[@]}. VxMark"
+CHOICES+=('mark')
+MODEL_NAMES+=('VxMark')
+
 echo "${#CHOICES[@]}. VxMarkScan"
 CHOICES+=('mark-scan')
 MODEL_NAMES+=('VxMarkScan')
@@ -102,11 +106,6 @@ then
     sudo cp config/11-disable-tty.conf /etc/X11/xorg.conf.d/
 fi
 
-if [ "${CHOICE}" == "mark" ]
-then
-    sudo cp config/50-wacom.conf /etc/X11/xorg.conf.d/
-fi
-
 sudo chown :lpadmin /sbin/lpinfo
 
 sudo ln -sf /var/vx/data /vx/data
@@ -156,6 +155,11 @@ then
     sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 fi
 
+if [ "${CHOICE}" == "mark" ]
+then
+    sudo cp config/65-honeywell-barcode-reader.rules /etc/udev/rules.d/
+fi
+
 echo "Setting up the code"
 sudo rsync -avz build/${CHOICE}/ /vx/code/
 
@@ -177,6 +181,7 @@ sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
 sudo ln -s /vx/code/config/Xmodmap /vx/ui/.Xmodmap
 sudo ln -s /vx/code/config/xinitrc /vx/ui/.xinitrc
 sudo ln -s /vx/code/config/chime.wav /vx/ui/chime.wav
+sudo ln -s /vx/code/config/chime-short.wav /vx/ui/chime-short.wav
 
 # symlink the GTK .settings.ini
 sudo mkdir -p /vx/ui/.config/gtk-3.0
@@ -201,6 +206,8 @@ sudo ln -s /vx/code/config/grub.cfg /vx/vendor/config/grub.cfg
 # https://up-shop.org/up-bios-splash-service.html
 if [[ "${CHOICE}" == "mark-scan" ]]; then
   sudo cp config/logo-vertical.bmp /vx/code/config/logo.bmp
+elif [[ "${CHOICE}" == "mark" ]]; then
+  sudo cp config/logo-horizontal-800x600.bmp /vx/code/config/logo.bmp
 elif [[ "${CHOICE}" == "scan" ]]; then
   sudo cp config/logo-horizontal-800x600.bmp /vx/code/config/logo.bmp
 else
