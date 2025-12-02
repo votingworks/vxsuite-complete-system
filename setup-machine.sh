@@ -207,7 +207,7 @@ sudo ln -s /vx/code/config/grub.cfg /vx/vendor/config/grub.cfg
 if [[ "${CHOICE}" == "mark-scan" ]]; then
   sudo cp config/logo-vertical.bmp /vx/code/config/logo.bmp
 elif [[ "${CHOICE}" == "mark" ]]; then
-  sudo cp config/logo-horizontal-800x600.bmp /vx/code/config/logo.bmp
+  sudo cp config/logo-vertical.bmp /vx/code/config/logo.bmp
 elif [[ "${CHOICE}" == "scan" ]]; then
   sudo cp config/logo-horizontal-800x600.bmp /vx/code/config/logo.bmp
 else
