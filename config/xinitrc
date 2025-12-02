@@ -20,6 +20,13 @@ VSAP150="PenMount PM1415"
   pulseaudio --start
   # Set the screen brightness (brightness is ID 10) to 70%
   ddcutil setvcp 10 70
+
+  # [VxMark] Rotate display and touch input:
+  if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
+    elo_id=$( xinput list --name-only | grep "$ELO" | grep -vi mouse | sed -E 's/.*?id=([0-9]+).*/\1/' | uniq )
+    xrandr -o left
+    xinput set-prop "$elo_id" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+  fi
 elif xinput list | grep -i "$VSAP150" > /dev/null; then
   # Rotate mark-scan screen to portrait
   xrandr -o left
@@ -48,7 +55,16 @@ pactl unload-module module-suspend-on-idle
 # we need a startup chime to activate the channel
 # delay because it appears the xrandr and xinput commands above turn off sound for a bit
 # (because of course they do)
-sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%) &
+#
+# NOTE: On VxMark, the startup chime is played through the speakers from within
+# the app server, so we instead play a shortned version here through the
+# headphones, to activate the headphone audio device.
+if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
+  sleep 2 && aplay ~/chime-short.wav && pactl set-sink-volume 0 100%
+else
+  sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%
+fi
+) &
 
 # look for an external display and mirror to it
 (while true; do
@@ -67,5 +83,3 @@ sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%) &
 sudo brightnessctl s 100%
 
 exec /usr/bin/openbox-session
-
-
