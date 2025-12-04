@@ -21,6 +21,9 @@ CHOICES+=('VxMark')
 echo "${#CHOICES[@]}. VxMarkScan"
 CHOICES+=('VxMarkScan')
 
+echo "${#CHOICES[@]}. VxPrint"
+CHOICES+=('VxPrint')
+
 echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('VxScan')
 
@@ -49,18 +52,6 @@ bash /vx/scripts/vxdev-configuration.sh
 
 FAVORITE_ICONS=''
 
-if [[ $CHOICE == 'VxMark' ]]; then
-	sudo cp vxdev/run-vxmark.desktop /usr/share/applications/.
-	FAVORITE_ICONS="'run-vxmark.desktop'"
-fi
-if [[ $CHOICE == 'VxMarkScan' ]]; then
-	sudo cp vxdev/run-vxmarkscan.desktop /usr/share/applications/.
-	FAVORITE_ICONS="'run-vxmarkscan.desktop'"
-fi
-if [[ $CHOICE == 'VxScan' ]]; then
-	sudo cp vxdev/run-vxscan.desktop /usr/share/applications/.
-	FAVORITE_ICONS="'run-vxscan.desktop'"
-fi
 if [[ $CHOICE == 'VxAdmin' ]]; then
 	sudo cp vxdev/run-vxadmin.desktop /usr/share/applications/.
 	FAVORITE_ICONS="'run-vxadmin.desktop'"
@@ -73,6 +64,22 @@ if [[ $CHOICE == 'VxAdminCentralScan' ]]; then
 	sudo cp vxdev/run-vxcentralscan.desktop /usr/share/applications/.
 	sudo cp vxdev/run-vxadmin.desktop /usr/share/applications/.
 	FAVORITE_ICONS="'run-vxadmin.desktop', 'run-vxcentralscan.desktop'"
+fi
+if [[ $CHOICE == 'VxMark' ]]; then
+	sudo cp vxdev/run-vxmark.desktop /usr/share/applications/.
+	FAVORITE_ICONS="'run-vxmark.desktop'"
+fi
+if [[ $CHOICE == 'VxMarkScan' ]]; then
+	sudo cp vxdev/run-vxmarkscan.desktop /usr/share/applications/.
+	FAVORITE_ICONS="'run-vxmarkscan.desktop'"
+fi
+if [[ $CHOICE == 'VxPrint' ]]; then
+	sudo cp vxdev/run-vxprint.desktop /usr/share/applications/.
+	FAVORITE_ICONS="'run-vxprint.desktop'"
+fi
+if [[ $CHOICE == 'VxScan' ]]; then
+	sudo cp vxdev/run-vxscan.desktop /usr/share/applications/.
+	FAVORITE_ICONS="'run-vxscan.desktop'"
 fi
 
 # Set desktop icons as favorites so they appear in the doc

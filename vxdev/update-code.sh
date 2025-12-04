@@ -85,29 +85,23 @@ then
 fi
 
 echo $APP_TYPE
-if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/central-scan/backend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/central-scan/frontend/.env.local
-	./prepare_build.sh central-scan
-	./build.sh central-scan
-fi
 if [[ $APP_TYPE == 'VxAdmin' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/admin/frontend/.env.local
 	cp /vx/config/.env.local vxsuite/apps/admin/backend/.env.local
 	./prepare_build.sh admin
 	./build.sh admin
 fi
+if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
+	cp /vx/config/.env.local vxsuite/apps/central-scan/backend/.env.local
+	cp /vx/config/.env.local vxsuite/apps/central-scan/frontend/.env.local
+	./prepare_build.sh central-scan
+	./build.sh central-scan
+fi
 if [[ $APP_TYPE == 'VxMark' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/mark/frontend/.env.local
 	cp /vx/config/.env.local vxsuite/apps/mark/backend/.env.local
 	./prepare_build.sh mark
 	./build.sh mark
-fi
-if [[ $APP_TYPE == 'VxScan' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/scan/backend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/scan/frontend/.env.local
-	./prepare_build.sh scan
-	./build.sh scan
 fi
 if [[ $APP_TYPE == 'VxMarkScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/mark-scan/backend/.env.local
@@ -122,6 +116,18 @@ if [[ $APP_TYPE == 'VxMarkScan' ]]; then
 	  sudo ln -sf /vx/code/run-mark-scan-${vx_daemon}-daemon.sh /vx/services/run-mark-scan-${vx_daemon}-daemon.sh
 	  sudo systemctl daemon-reload
 	done
+fi
+if [[ $APP_TYPE == 'VxPrint' ]]; then
+	cp /vx/config/.env.local vxsuite/apps/print/backend/.env.local
+	cp /vx/config/.env.local vxsuite/apps/print/frontend/.env.local
+	./prepare_build.sh print
+	./build.sh print
+fi
+if [[ $APP_TYPE == 'VxScan' ]]; then
+	cp /vx/config/.env.local vxsuite/apps/scan/backend/.env.local
+	cp /vx/config/.env.local vxsuite/apps/scan/frontend/.env.local
+	./prepare_build.sh scan
+	./build.sh scan
 fi
 
 echo "Done! Closing in 3 seconds."
