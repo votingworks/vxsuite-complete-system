@@ -36,9 +36,6 @@ while true; do
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
-  if [ "${VX_MACHINE_TYPE}" = "mark" ]; then
-    echo -e "Machine App Mode: \e[32m${VX_APP_MODE}\e[0m"
-  fi
   # TODO: do we want to try to also display secure boot status? 
   if [[ $(lsblk | grep "vroot") ]]; then
     echo -e "Lockdown State: \e[32mLocked Down\e[0m"
@@ -118,11 +115,6 @@ while true; do
     CHOICES+=('program-system-administrator-cards')
   fi
 
-  if [ "${VX_MACHINE_TYPE}" = "mark" ]; then
-    echo "${#CHOICES[@]}. Set App Mode"
-    CHOICES+=('set-app-mode')
-  fi
-
   if [ "${IS_QA_IMAGE}" = "1" ]; then
     echo "${#CHOICES[@]}. Start Screen Recording"
     CHOICES+=('start-recording')
@@ -168,13 +160,6 @@ while true; do
     set-machine-model-name)
       "${VX_FUNCTIONS_ROOT}/choose-vx-machine-model-name.sh"
       prompt-to-restart
-    ;;
-
-    set-app-mode)
-      if [ "${VX_MACHINE_TYPE}" = "mark" ]; then
-        "${VX_FUNCTIONS_ROOT}/choose-vx-mark-app-mode.sh"
-        prompt-to-restart
-      fi
     ;;
 
     copy-system-logs)
