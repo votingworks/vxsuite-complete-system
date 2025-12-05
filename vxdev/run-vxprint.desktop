@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Name=VxPrint
+Icon=runprogram.png
+Exec=gnome-terminal -- /bin/sh -ic 'env PATH=$PATH:/sbin env PRINT_WORKSPACE=/vx/data/module-print /vx/code/vxsuite-complete-system/run.sh print 2>&1 | tee /tmp/vxdev.log; read -p "Press any key to continue. (Session log: /tmp/vxdev.log)" line'
+Terminal=false
+Type=Application

@@ -27,13 +27,21 @@ echo "${#CHOICES[@]}. VxCentralScan"
 CHOICES+=('central-scan')
 MODEL_NAMES+=('VxCentralScan')
 
-echo "${#CHOICES[@]}. VxMark"
-CHOICES+=('mark')
-MODEL_NAMES+=('VxMark')
+if [[ "${1:-}" == "--include-new-machines" ]]; then
+    echo "${#CHOICES[@]}. VxMark"
+    CHOICES+=('mark')
+    MODEL_NAMES+=('VxMark')
+fi
 
 echo "${#CHOICES[@]}. VxMarkScan"
 CHOICES+=('mark-scan')
 MODEL_NAMES+=('VxMarkScan')
+
+if [[ "${1:-}" == "--include-new-machines" ]]; then
+    echo "${#CHOICES[@]}. VxPrint"
+    CHOICES+=('print')
+    MODEL_NAMES+=('VxPrint')
+fi
 
 echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('scan')

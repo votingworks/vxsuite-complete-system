@@ -1,0 +1,16 @@
+[Unit]
+Description=VxPrint Backend
+
+[Service]
+Type=simple
+User=vx-services
+Environment=VX_CONFIG_ROOT=/vx/config
+Environment=VX_METADATA_ROOT=/vx/code
+Environment=PRINT_WORKSPACE=/vx/data/module-print
+ExecStart=/bin/bash /vx/services/run-print.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=votingworksapp
+
+[Install]
+WantedBy=multi-user.target
