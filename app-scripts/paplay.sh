@@ -13,4 +13,4 @@ fi
 
 vx_ui_id=$( id -u vx-ui )
 
-sudo -u vx-ui XDG_RUNTIME_DIR=/run/user/${vx_ui_id} paplay "$@"
+sudo -u vx-ui XDG_RUNTIME_DIR=/run/user/"${vx_ui_id}" paplay "$@"

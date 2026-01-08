@@ -15,26 +15,26 @@ echo "System clock is currently set to: $(date)"
 echo "Let's set the date"
 while true; do
     while true; do
-        read -p "Enter the month (e.g. 3): " MONTH
+        read -r -p "Enter the month (e.g. 3): " MONTH
         [[ "${MONTH}" =~ ^0?[1-9]|11|12$ ]] && break
         echo -e "\e[31mInvalid month, try again\e[0m" >&2
     done
 
     while true; do
-        read -p "Enter the day (e.g. 7): " DAY
+        read -r -p "Enter the day (e.g. 7): " DAY
         [[ "${DAY}" =~ ^[0-3]?[0-9]$ ]] && break
         echo -e "\e[31mInvalid day, try again\e[0m" >&2
     done
 
     while true; do
-        read -p "Enter the year (e.g. 2020): " YEAR
+        read -r -p "Enter the year (e.g. 2020): " YEAR
         [[ "${YEAR}" =~ ^[0-9]{4}$ ]] && break
         echo -e "\e[31mInvalid year, try again\e[0m" >&2
     done
     
     DATE="${MONTH}/${DAY}/${YEAR}"
     if date -d "${DATE}" > /dev/null 2>&1; then
-        read -p "Confirm that date should be set to ${DATE}? (y/n) " CONFIRM
+        read -r -p "Confirm that date should be set to ${DATE}? (y/n) " CONFIRM
         [[ "${CONFIRM}" = "y" ]] && break
     else
         echo -e "\e[31mInvalid year/month/day combination, try again\e[0m" >&2
@@ -44,18 +44,18 @@ done
 echo "Let's set the time"
 while true; do
     while true; do
-	    read -p "Pick a timezone - (p)acific, (ms) mountain-standard (mst year-round), (m)ountain (has mdt), (c)entral, (e)astern, (a) alaska, (h) hawaii: " TZ
+	    read -r -p "Pick a timezone - (p)acific, (ms) mountain-standard (mst year-round), (m)ountain (has mdt), (c)entral, (e)astern, (a) alaska, (h) hawaii: " TZ
         [[ "${TZ}" =~ ^p|ms|m|c|e|a|h$ ]] && break
         echo -e "\e[31mInvalid timezone, try again\e[0m" >&2
     done
 
     while true; do
-        read -p "Enter the time (e.g. 12:15pm): " TIME
+        read -r -p "Enter the time (e.g. 12:15pm): " TIME
         date -d "${TIME}" > /dev/null  2>&1 && break
         echo -e "\e[31mInvalid time, try again\e[0m" >&2
     done
 
-    read -p "Confirm that the time should be set to ${TIME}? (y/n) " CONFIRM
+    read -r -p "Confirm that the time should be set to ${TIME}? (y/n) " CONFIRM
     [[ "${CONFIRM}" = "y" ]] && break
 done
 

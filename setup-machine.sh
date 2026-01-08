@@ -48,7 +48,7 @@ CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
 echo
-read -p "Select machine: " CHOICE_INDEX
+read -r -p "Select machine: " CHOICE_INDEX
 
 if [ "${CHOICE_INDEX}" -ge "${#CHOICES[@]}" ] || [ "${CHOICE_INDEX}" -lt 1 ]
 then
@@ -62,7 +62,7 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
+read -r -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
 
 IS_RELEASE_IMAGE=0
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
@@ -74,9 +74,9 @@ else
     IS_QA_IMAGE=0
     echo "Ok, creating a production image. No sudo privileges for anyone!"
     echo
-    read -p "Is this additionally an official release image? [y/N] " release_image_flag
+    read -r -p "Is this additionally an official release image? [y/N] " release_image_flag
     if [[ "${release_image_flag}" == 'y' || "${release_image_flag}" == 'Y' ]]; then
-        read -p "Are you sure? [y/N] " confirm_release_image_flag
+        read -r -p "Are you sure? [y/N] " confirm_release_image_flag
         if [[ "${confirm_release_image_flag}" == 'y' || "${confirm_release_image_flag}" == 'Y' ]]; then
             IS_RELEASE_IMAGE=1
             VERSION="$(< VERSION)"
@@ -90,9 +90,9 @@ else
     echo
     echo "Next, we need to set a password for the vx-vendor user."
     while true; do
-        read -s -p "Set vx-vendor password: " VENDOR_PASSWORD
+        read -r -s -p "Set vx-vendor password: " VENDOR_PASSWORD
         echo
-        read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
+        read -r -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
         echo
         if [[ "${VENDOR_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
         then
@@ -169,7 +169,7 @@ then
 fi
 
 echo "Setting up the code"
-sudo rsync -avz build/${CHOICE}/ /vx/code/
+sudo rsync -avz build/"${CHOICE}"/ /vx/code/
 
 # temporary hack cause of precinct-scanner runtime issue
 #
@@ -181,7 +181,7 @@ sudo cp -rp vxsuite /vx/code/
 
 # symlink the code and run-*.sh in /vx/services
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
-sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
+sudo ln -s /vx/code/run-"${CHOICE}".sh /vx/services/run-"${CHOICE}".sh
 
 # symlink appropriate vx/ui files
 sudo ln -s /vx/code/config/ui_bash_profile /vx/ui/.bash_profile
@@ -333,10 +333,10 @@ sudo rm -f /etc/NetworkManager/system-connections/*
 sudo cp config/interfaces /etc/network/interfaces
 
 # set up the service for the selected machine type
-sudo cp config/${CHOICE}.service /etc/systemd/system/
-sudo chmod 644 /etc/systemd/system/${CHOICE}.service
-sudo systemctl enable ${CHOICE}.service
-sudo systemctl start ${CHOICE}.service
+sudo cp config/"${CHOICE}".service /etc/systemd/system/
+sudo chmod 644 /etc/systemd/system/"${CHOICE}".service
+sudo systemctl enable "${CHOICE}".service
+sudo systemctl start "${CHOICE}".service
 
 # mark-scan requires additional service daemons
 if [[ "${CHOICE}" == "mark-scan" ]]; then
@@ -352,12 +352,12 @@ if [[ "${CHOICE}" == "mark-scan" ]]; then
 
   for vx_daemon in ${vx_daemons}
   do
-    sudo cp config/mark-scan-${vx_daemon}-daemon.service /etc/systemd/system/
-    sudo cp run-scripts/run-mark-scan-${vx_daemon}-daemon.sh /vx/code/
-    sudo chmod 644 /etc/systemd/system/mark-scan-${vx_daemon}-daemon.service
-    sudo ln -s /vx/code/run-mark-scan-${vx_daemon}-daemon.sh /vx/services/run-mark-scan-${vx_daemon}-daemon.sh
-    sudo systemctl enable mark-scan-${vx_daemon}-daemon.service
-    sudo systemctl start mark-scan-${vx_daemon}-daemon.service
+    sudo cp config/mark-scan-"${vx_daemon}"-daemon.service /etc/systemd/system/
+    sudo cp run-scripts/run-mark-scan-"${vx_daemon}"-daemon.sh /vx/code/
+    sudo chmod 644 /etc/systemd/system/mark-scan-"${vx_daemon}"-daemon.service
+    sudo ln -s /vx/code/run-mark-scan-"${vx_daemon}"-daemon.sh /vx/services/run-mark-scan-"${vx_daemon}"-daemon.sh
+    sudo systemctl enable mark-scan-"${vx_daemon}"-daemon.service
+    sudo systemctl start mark-scan-"${vx_daemon}"-daemon.service
   done
 fi
 
@@ -366,8 +366,8 @@ fi
 for user in vx-vendor vx-ui
 do
   user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
-  sudo touch ${user_home_dir}/.hushlogin
-  sudo chown ${user}:${user} ${user_home_dir}/.hushlogin
+  sudo touch "${user_home_dir}"/.hushlogin
+  sudo chown ${user}:${user} "${user_home_dir}"/.hushlogin
 done
 
 # We need to disable pulseaudio for users since it runs per user
@@ -377,10 +377,10 @@ done
 for user in vx-vendor vx-ui
 do
   user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
-  sudo mkdir -p ${user_home_dir}/.config/systemd/user
-  sudo ln -s /dev/null ${user_home_dir}/.config/systemd/user/pulseaudio.service
-  sudo ln -s /dev/null ${user_home_dir}/.config/systemd/user/pulseaudio.socket
-  sudo chown -R ${user}:${user} ${user_home_dir}/.config
+  sudo mkdir -p "${user_home_dir}"/.config/systemd/user
+  sudo ln -s /dev/null "${user_home_dir}"/.config/systemd/user/pulseaudio.service
+  sudo ln -s /dev/null "${user_home_dir}"/.config/systemd/user/pulseaudio.socket
+  sudo chown -R ${user}:${user} "${user_home_dir}"/.config
 done
 
 # We suspend pulseaudio idling via ~vx-ui/.xinitrc, but, anecdotally, it seems
@@ -390,8 +390,8 @@ done
 # the vx-ui user to always suspend, regardless of any USB errors during boot
 # according to pulseaudio best practices
 vx_ui_homedir=$( getent passwd vx-ui | cut -d: -f6 )
-sudo mkdir -p ${vx_ui_homedir}/.config/pulse
-sudo tee ${vx_ui_homedir}/.config/pulse/default.pa > /dev/null << 'PULSE'
+sudo mkdir -p "${vx_ui_homedir}"/.config/pulse
+sudo tee "${vx_ui_homedir}"/.config/pulse/default.pa > /dev/null << 'PULSE'
 .include /etc/pulse/default.pa
 .nofail
 unload-module module-suspend-on-idle
@@ -399,7 +399,7 @@ unload-module module-suspend-on-idle
 PULSE
 
 # Fix permissions so vx-ui owns the pulseaudio config
-sudo chown -R vx-ui:vx-ui ${vx_ui_homedir}/.config/pulse
+sudo chown -R vx-ui:vx-ui "${vx_ui_homedir}"/.config/pulse
 
 # Remove git
 sudo apt remove -y git > /dev/null 2>&1 || true
@@ -411,7 +411,7 @@ echo "Successfully setup machine."
 USER=$(whoami)
 
 # set password for vx-vendor
-(echo $VENDOR_PASSWORD; echo $VENDOR_PASSWORD) | sudo passwd vx-vendor
+(echo "$VENDOR_PASSWORD"; echo "$VENDOR_PASSWORD") | sudo passwd vx-vendor
 
 # We need to schedule a reboot since the vx user will no longer have sudo privileges. 
 # One minute is the shortest option, and that's plenty of time for final steps.
@@ -419,7 +419,7 @@ sudo shutdown --no-wall -r +1
 
 # disable all passwords
 sudo passwd -l root
-sudo passwd -l ${USER}
+sudo passwd -l "${USER}"
 sudo passwd -l vx-ui
 sudo passwd -l vx-services
 

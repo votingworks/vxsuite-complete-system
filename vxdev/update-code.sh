@@ -5,13 +5,13 @@
 : "${VX_METADATA_ROOT:="/vx/code"}"
 APP_TYPE=$(sudo cat "$VX_CONFIG_ROOT/machine-type")
 
-cd /vx/code/vxsuite-complete-system
+cd /vx/code/vxsuite-complete-system || exit
 git checkout main > /dev/null 2>&1
 git pull > /dev/null
 git fetch --tags > /dev/null
 sudo git clean -xfd > /dev/null
 git submodule foreach --recursive sudo git clean -xfd > /dev/null
-LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+LATEST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)")
 
 CHOICES=('')
 echo "What code version would you like to update to?"
@@ -26,7 +26,7 @@ echo "3. Custom Branch"
 CHOICES+=('custom')
 
 echo
-read -p "Select Option: " CHOICE_INDEX
+read -r -p "Select Option: " CHOICE_INDEX
 
 if [ "${CHOICE_INDEX}" -ge "${#CHOICES[@]}" ] || [ "${CHOICE_INDEX}" -lt 1 ]
 then
@@ -37,37 +37,37 @@ fi
 BRANCH=${CHOICES[$CHOICE_INDEX]}
 
 if [[ $BRANCH == 'latest' ]]; then
-	cd vxsuite
+	cd vxsuite || exit
  	git checkout main
 	git pull
-	cd ../kiosk-browser
+	cd ../kiosk-browser || exit
 	git checkout main
 	git pull
 	cd ..
 elif [[ $BRANCH == 'stable' ]]; then
-	git checkout $LATEST_TAG
+	git checkout "$LATEST_TAG"
 	git submodule foreach --recursive sudo git clean -xfd
 	git submodule update --init --recursive
-	cd vxsuite
+	cd vxsuite || exit
 	cd ..
 elif [[ $BRANCH == 'custom' ]]; then
-	read -p "Enter the branch name: " BRANCH_NAME
-	cd vxsuite
+	read -r -p "Enter the branch name: " BRANCH_NAME
+	cd vxsuite || exit
 	git checkout main
 	git pull
-	while [ !`git branch -r --list origin/$BRANCH_NAME` ]
+	while [ ! "$(git branch -r --list origin/"$BRANCH_NAME")" ]
 	do
-		read -p "Invalid Branch Name. Try again: " BRANCH_NAME
+		read -r -p "Invalid Branch Name. Try again: " BRANCH_NAME
 	done
-	git checkout $BRANCH_NAME
-	cd ../kiosk-browser
+	git checkout "$BRANCH_NAME"
+	cd ../kiosk-browser || exit
 	git checkout main
 	git pull
 	cd ..
 fi
 
 echo
-read -p "Enable HWTA? [y/n]: " ENABLE_HWTA
+read -r -p "Enable HWTA? [y/n]: " ENABLE_HWTA
 
 if [[ "${ENABLE_HWTA}" == 'y' || "${ENABLE_HWTA}" == 'Y' ]]; then
   sudo /vx/scripts/set-hwta-env.sh yes
@@ -84,7 +84,7 @@ then
 	make build-kiosk-browser
 fi
 
-echo $APP_TYPE
+echo "$APP_TYPE"
 if [[ $APP_TYPE == 'VxAdmin' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
 	cp /vx/config/.env.local vxsuite/apps/admin/frontend/.env.local
 	cp /vx/config/.env.local vxsuite/apps/admin/backend/.env.local

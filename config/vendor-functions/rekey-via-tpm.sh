@@ -12,8 +12,11 @@ set -euo pipefail
 # continue to execute, setting "completed" flag files that we don't
 # want set if this script fails
 function firmware_reboot () {
-  os_indications_path='/sys/firmware/efi/efivars/OsIndications-8be*'
-  os_indications_path=$(ls -1 $os_indications_path | tail -1)
+  # Use glob to find the OsIndications file, take the last one if multiple exist
+  shopt -s nullglob
+  os_indications_files=(/sys/firmware/efi/efivars/OsIndications-8be*)
+  shopt -u nullglob
+  os_indications_path="${os_indications_files[-1]}"
   reboot_to_firmware='\x07\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
   #                   └───────┬──────┘└───────────────┬──────────────┘
   #                     4 bytes attrs (0x00000007)     8 bytes value (0x0000000000000001)
@@ -21,8 +24,8 @@ function firmware_reboot () {
 
   echo "Path: $os_indications_path"
 
-  if [ -w $os_indications_path ]; then
-    printf "$reboot_to_firmware" > "$os_indications_path"
+  if [ -w "$os_indications_path" ]; then
+    printf %b "$reboot_to_firmware" > "$os_indications_path"
   else
     echo "ERROR: OsIndications not found"
   fi

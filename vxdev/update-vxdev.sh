@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# shellcheck disable=SC2034
 APP_TYPE='VxMark'
+# shellcheck disable=SC2034
 BRANCH='latest'
 
 echo "Welcome to VxDev, which app would you like to configure this machine for?"
@@ -28,7 +30,7 @@ echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('VxScan')
 
 echo
-read -p "Select Application: " CHOICE_INDEX
+read -r -p "Select Application: " CHOICE_INDEX
 
 if [ "${CHOICE_INDEX}" -ge "${#CHOICES[@]}" ] || [ "${CHOICE_INDEX}" -lt 1 ]
 then
@@ -39,7 +41,7 @@ fi
 CHOICE=${CHOICES[$CHOICE_INDEX]}
 
 
-cd /vx/code/vxsuite-complete-system
+cd /vx/code/vxsuite-complete-system || exit
 
 # Fetch the latest code
 git checkout main > /dev/null 2>&1

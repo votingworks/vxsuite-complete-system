@@ -1,0 +1,33 @@
+version: 2.1
+
+executors:
+  debian:
+    docker:
+      - image: votingworks/cimg-debian12:4.2.0
+        auth:
+          username: $VX_DOCKER_USERNAME
+          password: $VX_DOCKER_PASSWORD
+
+jobs:
+  shellcheck:
+    executor: debian
+    resource_class: medium
+    steps:
+      - checkout
+      - run:
+          name: Install shellcheck
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y shellcheck
+      - run:
+          name: Run shellcheck on all shell scripts
+          command: |
+            # Find all .sh files and run shellcheck on them
+            # Using xargs to handle argument list length limits
+            # -x enables following of sourced files
+            find . -name "*.sh" -type f -print0 | xargs -0 shellcheck -x
+
+workflows:
+  test:
+    jobs:
+      - shellcheck

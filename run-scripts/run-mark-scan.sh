@@ -7,8 +7,10 @@ cd "$(dirname "$0")"
 
 # configuration information
 CONFIG=${VX_CONFIG_ROOT:-./config}
+# shellcheck disable=SC2034
 METADATA=${VX_METADATA_ROOT:-./}
-source ${CONFIG}/read-vx-machine-config.sh
+# shellcheck source=config/read-vx-machine-config.sh
+source "${CONFIG}"/read-vx-machine-config.sh
 
 export PIPENV_VENV_IN_PROJECT=1
 export NODE_ENV=production

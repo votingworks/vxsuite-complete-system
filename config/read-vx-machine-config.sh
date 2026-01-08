@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148,SC2155
 # This file only makes sense as a `source` target, so it isn't executable.
 
 : "${VX_CONFIG_ROOT:="/vx/config"}"

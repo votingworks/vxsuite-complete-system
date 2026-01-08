@@ -1,3 +1,4 @@
+#!/bin/bash
 set -euo pipefail
 
 export PATH="${PATH}:/sbin/"

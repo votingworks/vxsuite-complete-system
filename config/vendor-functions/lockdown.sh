@@ -41,7 +41,7 @@ umount /mnt
 # You would just add modules to the var, e.g. modules_to_sign="i915 mod2 mod3"
 modules_to_sign=""
 if [[ -n $modules_to_sign ]]; then
-  read -s -p "Please enter the passphrase for the secure boot key: " KBUILD_SIGN_PIN
+  read -r -s -p "Please enter the passphrase for the secure boot key: " KBUILD_SIGN_PIN
 
   export KBUILD_SIGN_PIN
 
@@ -51,8 +51,8 @@ if [[ -n $modules_to_sign ]]; then
 
   for module in ${modules_to_sign}
   do
-    if modinfo -n ${module} 2>&1 > /dev/null; then
-      /usr/src/linux-kbuild-6.1/scripts/sign-file sha256 /mnt/DB.key /mnt/DB.crt $(modinfo -n ${module})
+    if modinfo -n "${module}" > /dev/null 2>&1; then
+      /usr/src/linux-kbuild-6.1/scripts/sign-file sha256 /mnt/DB.key /mnt/DB.crt "$(modinfo -n "${module}")"
     fi
   done
 fi
@@ -84,7 +84,7 @@ veritysetup format /dev/mapper/Vx--vg-root /dev/mapper/Vx--vg-hashes| tee "/tmp/
 HASH="$(awk '/Root hash:/ { print $3 }' "/tmp/verity.log")"
 echo "$(cat /vx/vendor/config/cmdline)${HASH}" > /tmp/cmdline
 
-KERNEL_VERSION=`uname -r`
+KERNEL_VERSION=$(uname -r)
 
 
 # Now package up our kernel, cmdline, etc...
@@ -109,16 +109,16 @@ bash "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
 
 # Output the dm-verity hash
 echo "SHA256 Hash: ${HASH}"
-read -p "Press enter once you have recorded the system hash. "
+read -r -p "Press enter once you have recorded the system hash. "
 
 # If we have the necessary tools, display the base64 version of the hash
-if [[ `which xxd` && `which base64` ]]; then
-  base64_hash=$( echo -n ${HASH} | xxd -r -p | base64 )
+if [[ $(which xxd) && $(which base64) ]]; then
+  base64_hash=$( echo -n "${HASH}" | xxd -r -p | base64 )
   echo "Base64 Hash for SHV: ${base64_hash}"
-  read -p "Press enter once you have recorded the base64 SHV hash. "
+  read -r -p "Press enter once you have recorded the base64 SHV hash. "
 else
   echo "The tools required to convert the original system hash to base64 are not installed. You can still convert the original hash to the base64 version later."
-  read -p "Press enter to continue. "
+  read -r -p "Press enter to continue. "
 fi
 
 # Shut down the locked down system

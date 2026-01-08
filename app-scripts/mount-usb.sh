@@ -11,7 +11,9 @@ if ! [[ $# -eq 1 ]]; then
     usage
 fi
 
+# shellcheck disable=SC2125
 USB_DRIVE_DEVICE_REGEX=^/dev/sd[a-z][0-9]$
+# shellcheck disable=SC2125
 LOOP_DEVICE_REGEX=^/dev/loop[0-9]p[0-9]$
 
 if ! [[ $1 =~ $USB_DRIVE_DEVICE_REGEX || $1 =~ $LOOP_DEVICE_REGEX ]]; then
@@ -26,4 +28,4 @@ MOUNTPOINT=/media/vx/usb-drive
 if ! [[ -e $MOUNTPOINT ]]; then
     mkdir -p $MOUNTPOINT 
 fi
-mount -w -o umask=000,nosuid,nodev,noexec $DEVICE $MOUNTPOINT
+mount -w -o umask=000,nosuid,nodev,noexec "$DEVICE" $MOUNTPOINT

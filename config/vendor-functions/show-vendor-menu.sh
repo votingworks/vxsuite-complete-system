@@ -20,13 +20,14 @@ if [[ -f "${VX_CONFIG_ROOT}/app-flags/REBOOT_TO_VENDOR_MENU" ]]; then
 fi
 
 prompt-to-restart() {
-  read -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? (y/n) "
+  read -r -s -e -n 1 -p "Success! You must reboot for this change to take effect. Reboot now? (y/n) "
   if [[ ${REPLY} = "" || ${REPLY} = Y || ${REPLY} = y ]]; then
     sudo /usr/sbin/reboot
   fi
 }
 
 while true; do
+# shellcheck source=config/read-vx-machine-config.sh
   source "${VX_FUNCTIONS_ROOT}/../read-vx-machine-config.sh"
   clear
 
@@ -36,14 +37,14 @@ while true; do
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
-  # TODO: do we want to try to also display secure boot status? 
-  if [[ $(lsblk | grep "vroot") ]]; then
+  # TODO: do we want to try to also display secure boot status?
+  if lsblk | grep -q "vroot"; then
     echo -e "Lockdown State: \e[32mLocked Down\e[0m"
   else
     echo -e "Lockdown State: \e[31mNot Locked Down\e[0m"
   fi
 
-  if [[ $(mokutil --sb-state | grep "enabled") ]]; then
+  if mokutil --sb-state | grep -q "enabled"; then
     echo -e "Secure Boot State: \e[32mEnabled\e[0m"
   else
     echo -e "Secure Boot State: \e[31mDisabled\e[0m"
@@ -125,7 +126,7 @@ while true; do
 
   echo "0. Reboot"
   echo
-  read -p "Select menu item: " CHOICE_INDEX
+  read -r -p "Select menu item: " CHOICE_INDEX
 
   CHOICE=${CHOICES[$CHOICE_INDEX]}
   case "${CHOICE}" in
@@ -176,7 +177,7 @@ while true; do
 
     generate-key)
       sudo "${VX_FUNCTIONS_ROOT}/generate-key.sh"
-      read -s -n 1
+      read -r -s -n 1
       echo
       echo "Generating a new machine private key necessitates recreating the machine cert"
       sudo "${VX_FUNCTIONS_ROOT}/create-machine-cert.sh"
@@ -193,7 +194,7 @@ while true; do
 
     show-key)
       "${VX_FUNCTIONS_ROOT}/show-key.sh"
-      read -s -n 1
+      read -r -s -n 1
     ;;
 
     recreate-machine-cert)
@@ -216,7 +217,7 @@ while true; do
     
     lockdown)
       sudo "${VX_FUNCTIONS_ROOT}/lockdown.sh"
-      read -s -n 1
+      read -r -s -n 1
     ;;
 
     show-system-hash)
@@ -225,17 +226,17 @@ while true; do
     
     setup-boot-entry)
       sudo "${VX_FUNCTIONS_ROOT}/setup-boot-entry.sh"
-      read -s -n 1
+      read -r -s -n 1
     ;;
 
     start-recording)
       sudo "${VX_FUNCTIONS_ROOT}/start-screen-recording.sh"
-      read -s -n 1
+      read -r -s -n 1
     ;;
 
     copy-recordings)
       sudo "${VX_FUNCTIONS_ROOT}/copy-recordings.sh"
-      read -s -n 1
+      read -r -s -n 1
     ;;
     
     reboot-to-bios)
@@ -244,7 +245,7 @@ while true; do
 
     *)
       echo -e "\e[31mUnknown menu item: ${CHOICE_INDEX}\e[0m" >&2
-      read -s -n 1
+      read -r -s -n 1
     ;;
 
   esac

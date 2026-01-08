@@ -26,7 +26,7 @@ service pcscd stop > /dev/null 2>&1
 # We don't need a sys admin card per VxPollBook so give the user a chance to skip
 if [[ "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
     while true; do
-        read -p "Would you like to program a system administrator card? (y/n) " choice
+        read -r -p "Would you like to program a system administrator card? (y/n) " choice
         if [[ "${choice}" = "y" || "${choice}" = "n" ]]; then
             break
         fi
@@ -37,10 +37,10 @@ if [[ "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
 fi
 
 while true; do
-    read -p "Insert a card into the card reader. Press enter to program the card. "
+    read -r -p "Insert a card into the card reader. Press enter to program the card. "
     if program_system_administrator_card; then # Success case
         while true; do
-            read -p "Would you like to program another system administrator card? (y/n) " choice
+            read -r -p "Would you like to program another system administrator card? (y/n) " choice
             if [[ "${choice}" = "y" || "${choice}" = "n" ]]; then
                 break
             fi

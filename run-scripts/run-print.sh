@@ -7,8 +7,10 @@ cd "$(dirname "$0")"
 
 # configuration information
 CONFIG=${VX_CONFIG_ROOT:-./config}
+# shellcheck disable=SC2034
 METADATA=${VX_METADATA_ROOT:-./}
-source ${CONFIG}/read-vx-machine-config.sh
+# shellcheck source=config/read-vx-machine-config.sh
+source "${CONFIG}"/read-vx-machine-config.sh
 
 if [ -z "${PRINT_WORKSPACE:-}" ]; then
   echo "error: please set PRINT_WORKSPACE and try again" >&2

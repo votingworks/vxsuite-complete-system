@@ -14,7 +14,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ALL_APPS=()
 
-for app in ${DIR}/vxsuite/apps/*; do
+for app in "${DIR}"/vxsuite/apps/*; do
   if [ -d "${app}" ]; then
     ALL_APPS+=("$(basename "${app}")")
   fi
@@ -33,6 +33,7 @@ if [ $# = 0 ]; then
 fi
 
 APP="$1"
+# shellcheck disable=SC2199,SC2076
 if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
   if [ ! -d "${DIR}/build/${APP}" ]; then
     echo "⁉️ ${APP} is not yet built, building…"
@@ -68,7 +69,7 @@ if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
 
     for vx_daemon in ${vx_daemons}
     do
-      sudo systemctl restart mark-scan-${vx_daemon}-daemon.service
+      sudo systemctl restart mark-scan-"${vx_daemon}"-daemon.service
     done
   fi
   export DISPLAY=${DISPLAY:-:0}
