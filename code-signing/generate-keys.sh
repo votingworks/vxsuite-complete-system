@@ -53,7 +53,7 @@ echo -e "\nsigning DB with KEK"
 sign-efi-sig-list -t "$(date --date='1 second' +'%Y-%m-%d %H:%M:%S')" \
                   -k KEK.key -c KEK.crt db DB.esl DB.auth
 
-chmod 0600 *.key
+chmod 0600 ./*.key
 
 echo ""
 echo ""
