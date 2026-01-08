@@ -4,4 +4,5 @@ set -euo pipefail
 
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 
-cat "${VX_CONFIG_ROOT}/key.pub" | qrencode -t ANSI -o -
+qrencode -t ANSI -o - <"${VX_CONFIG_ROOT}/key.pub"
+
