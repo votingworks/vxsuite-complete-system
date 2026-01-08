@@ -98,13 +98,12 @@ build() {
     cd "${BUILD_ROOT}"
     rm -rf vxsuite # this is the built version
     ln -s ../../vxsuite ./vxsuite
-  )
-  if [[ $? = 0 ]]; then
+  ) && {
     echo -e "\e[32m✅${APP} built\e[0m"
-  else
+  } || {
     echo -e "\e[31m✘ ${APP} build failed! check the logs above\e[0m" >&2
     exit 1
-  fi
+  }
   set -e
 }
 

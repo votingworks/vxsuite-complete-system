@@ -85,13 +85,12 @@ build() {
     cd "${DIR}/vxsuite/apps/${APP}/frontend"
 
     pnpm install --frozen-lockfile
-  )
-  if [[ $? = 0 ]]; then
+  ) && {
     echo -e "\e[32m✅${APP} ready for building\e[0m"
-  else
+  } || {
     echo -e "\e[31m✘ ${APP} build prep failed! check the logs above\e[0m" >&2
     exit 1
-  fi
+  }
   set -e
 }
 
