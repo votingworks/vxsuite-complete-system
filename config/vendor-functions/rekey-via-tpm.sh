@@ -22,7 +22,7 @@ function firmware_reboot () {
   echo "Path: $os_indications_path"
 
   if [ -w "$os_indications_path" ]; then
-    printf "$reboot_to_firmware" > "$os_indications_path"
+    printf '%s' "$reboot_to_firmware" > "$os_indications_path"
   else
     echo "ERROR: OsIndications not found"
   fi
