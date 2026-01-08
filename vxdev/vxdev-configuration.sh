@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # Sets up the main configuration for VxDev. This file is automatically updated and re-run
 # when the VxDev "Update and Configure VxDev" program is run. Any updates to make to live VxDev
 # systems should be added to this file. This script should be able to be rerun multiple times safely.
