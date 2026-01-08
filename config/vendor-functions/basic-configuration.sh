@@ -16,29 +16,29 @@ echo "You're going to do great"
 
 echo
 echo -e "\e[1mStep 1: Set Machine ID\e[0m"
-sudo ${VX_FUNCTIONS_ROOT}/choose-vx-machine-id.sh
+sudo "${VX_FUNCTIONS_ROOT}"/choose-vx-machine-id.sh
 
 echo
 echo -e "\e[1mStep 2: Set Clock\e[0m"
-sudo ${VX_FUNCTIONS_ROOT}/set-clock.sh
+sudo "${VX_FUNCTIONS_ROOT}"/set-clock.sh
 
 echo
 echo -e "\e[1mStep 3: Generate Machine Key\e[0m"
 echo 'Checking for FIPS compliance...'
-sudo ${VX_FUNCTIONS_ROOT}/fipsinstall.sh
+sudo "${VX_FUNCTIONS_ROOT}"/fipsinstall.sh
 echo 'Generating machine key...'
-sudo ${VX_FUNCTIONS_ROOT}/generate-key.sh > /dev/null
+sudo "${VX_FUNCTIONS_ROOT}"/generate-key.sh > /dev/null
 PUBLIC_KEY=$(cat "${VX_CONFIG_ROOT}/key.pub")
 echo "Machine key set up successfully."
 
 echo
 echo -e "\e[1mStep 4: Create Machine Cert\e[0m"
-sudo ${VX_FUNCTIONS_ROOT}/create-machine-cert.sh
+sudo "${VX_FUNCTIONS_ROOT}"/create-machine-cert.sh
 
 if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
     echo
     echo -e "\e[1mStep 5: Program System Administrator Cards\e[0m"
-    sudo ${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh
+    sudo "${VX_FUNCTIONS_ROOT}"/program-system-administrator-cards.sh
 fi
 
 if [[ -f "${VX_CONFIG_ROOT}/RUN_BASIC_CONFIGURATION_ON_NEXT_BOOT" ]]; then

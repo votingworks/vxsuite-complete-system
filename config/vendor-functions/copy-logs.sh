@@ -15,12 +15,12 @@ then
 fi
 
 # mount if needed
-MOUNTPOINT=$( lsblk -n ${DEVICES} | awk '{ print $7 }' )
+MOUNTPOINT=$( lsblk -n "${DEVICES}" | awk '{ print $7 }' )
 if [ -z "$MOUNTPOINT" ]
 then
     echo "USB drive not mounted, mounting now..."
     MOUNTPOINT="/media/vx/usb-drive"
-    sudo /vx/code/app-scripts/mount-usb.sh $DEVICES
+    sudo /vx/code/app-scripts/mount-usb.sh "$DEVICES"
 fi
 
 # create a directory
@@ -34,7 +34,7 @@ cp -r /var/log/votingworks/vx-logs.log* "$DIRECTORY"
 
 # unmount the USB stick to make sure it's all written to disk
 echo "Saving logs to USB drive..."
-sync $MOUNTPOINT
+sync "$MOUNTPOINT"
 sudo /vx/code/app-scripts/unmount-usb.sh
 
 echo "All done. You may remove the USB drive."

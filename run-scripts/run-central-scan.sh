@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 # configuration information
 CONFIG=${VX_CONFIG_ROOT:-./config}
 METADATA=${VX_METADATA_ROOT:-./}
-source ${CONFIG}/read-vx-machine-config.sh
+source "${CONFIG}"/read-vx-machine-config.sh
 
 if [ -z "${SCAN_WORKSPACE:-}" ]; then
   echo "error: please set SCAN_WORKSPACE and try again" >&2

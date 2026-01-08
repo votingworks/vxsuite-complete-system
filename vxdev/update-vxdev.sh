@@ -39,7 +39,7 @@ fi
 CHOICE=${CHOICES[$CHOICE_INDEX]}
 
 
-cd /vx/code/vxsuite-complete-system
+cd /vx/code/vxsuite-complete-system || exit
 
 # Fetch the latest code
 git checkout main > /dev/null 2>&1

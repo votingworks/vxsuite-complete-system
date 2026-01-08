@@ -26,4 +26,4 @@ MOUNTPOINT=/media/vx/usb-drive
 if ! [[ -e $MOUNTPOINT ]]; then
     mkdir -p $MOUNTPOINT 
 fi
-mount -w -o umask=000,nosuid,nodev,noexec $DEVICE $MOUNTPOINT
+mount -w -o umask=000,nosuid,nodev,noexec "$DEVICE" $MOUNTPOINT

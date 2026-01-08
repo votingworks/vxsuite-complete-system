@@ -48,7 +48,7 @@ chmod +r "${VX_CONFIG_ROOT}/key.pub"
 
 # poll-book machines require the creation of endorsement and
 # attestation keys used by strongswan for tpm authentication
-machine_type=$(cat ${VX_CONFIG_ROOT}/machine-type 2>/dev/null)
+machine_type=$(cat "${VX_CONFIG_ROOT}"/machine-type 2>/dev/null)
 if [[ "${machine_type}" == "poll-book" ]]; then
   ek_handle="0x81000003"
   ak_handle="0x81010003"

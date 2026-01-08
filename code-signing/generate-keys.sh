@@ -28,12 +28,12 @@ openssl x509 -in PK.crt -out PK.cer -outform DER
 openssl x509 -in KEK.crt -out KEK.cer -outform DER
 openssl x509 -in DB.crt -out DB.cer -outform DER
 
-GUID=`python3 -c 'import uuid; print(str(uuid.uuid1()))'`
-echo $GUID > myGUID.txt
+GUID=$(python3 -c 'import uuid; print(str(uuid.uuid1()))')
+echo "$GUID" > myGUID.txt
 
-cert-to-efi-sig-list -g $GUID PK.crt PK.esl
-cert-to-efi-sig-list -g $GUID KEK.crt KEK.esl
-cert-to-efi-sig-list -g $GUID DB.crt DB.esl
+cert-to-efi-sig-list -g "$GUID" PK.crt PK.esl
+cert-to-efi-sig-list -g "$GUID" KEK.crt KEK.esl
+cert-to-efi-sig-list -g "$GUID" DB.crt DB.esl
 rm -f noPK.esl
 touch noPK.esl
 

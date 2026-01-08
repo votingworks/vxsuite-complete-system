@@ -68,7 +68,7 @@ if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
 
     for vx_daemon in ${vx_daemons}
     do
-      sudo systemctl restart mark-scan-${vx_daemon}-daemon.service
+      sudo systemctl restart mark-scan-"${vx_daemon}"-daemon.service
     done
   fi
   export DISPLAY=${DISPLAY:-:0}

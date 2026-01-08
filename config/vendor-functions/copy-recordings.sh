@@ -15,12 +15,12 @@ then
 fi
 
 # mount if needed
-MOUNTPOINT=$( lsblk -n ${DEVICES} | awk '{ print $7 }' )
+MOUNTPOINT=$( lsblk -n "${DEVICES}" | awk '{ print $7 }' )
 if [ -z "$MOUNTPOINT" ]
 then
     echo "USB drive not mounted, mounting now..."
     MOUNTPOINT="/media/vx/usb-drive"
-    sudo /vx/code/app-scripts/mount-usb.sh $DEVICES
+    sudo /vx/code/app-scripts/mount-usb.sh "$DEVICES"
 fi
 
 # create a directory
@@ -32,7 +32,7 @@ sudo sh -c "cp /var/vx/ui/screen-recordings/*.mp4 $DIRECTORY"
 
 # unmount the USB stick to make sure it's all written to disk
 echo "Saving to USB drive and unmounting..."
-sync $MOUNTPOINT
+sync "$MOUNTPOINT"
 sudo /vx/code/app-scripts/unmount-usb.sh
 
 echo "All done. You may remove the USB drive."

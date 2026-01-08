@@ -20,7 +20,7 @@
 
 set -euo pipefail
 
-local_user=`logname`
+local_user=$(logname)
 local_user_home_dir=$( getent passwd "${local_user}" | cut -d: -f6 )
 
 # Make sure PATH includes cargo and /sbin
@@ -95,7 +95,7 @@ build() {
       "${BUILD_ROOT}"
 
     # temporary hack because the symlink works but somehow the copy doesn't for precinct-scanner
-    cd ${BUILD_ROOT}
+    cd "${BUILD_ROOT}"
     rm -rf vxsuite # this is the built version
     ln -s ../../vxsuite ./vxsuite
   )
@@ -125,7 +125,7 @@ for app in "${APPS_TO_BUILD[@]}"; do
     vxsuite_env_file="${DIR}/vxsuite/.env"
 
     # check for the 150 env var to build the 150 daemon instead
-    if grep REACT_APP_VX_MARK_SCAN_USE_BMD_150 $vxsuite_env_file | grep -i true > /dev/null 2>&1
+    if grep REACT_APP_VX_MARK_SCAN_USE_BMD_150 "$vxsuite_env_file" | grep -i true > /dev/null 2>&1
     then
       vx_daemons="fai-100-controller"
     fi
