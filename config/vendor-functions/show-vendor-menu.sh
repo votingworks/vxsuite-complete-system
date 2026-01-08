@@ -27,6 +27,7 @@ prompt-to-restart() {
 }
 
 while true; do
+# shellcheck source=config/read-vx-machine-config.sh
   source "${VX_FUNCTIONS_ROOT}/../read-vx-machine-config.sh"
   clear
 

@@ -8,6 +8,7 @@ cd "$(dirname "$0")"
 # configuration information
 CONFIG=${VX_CONFIG_ROOT:-./config}
 METADATA=${VX_METADATA_ROOT:-./}
+# shellcheck source=config/read-vx-machine-config.sh
 source "${CONFIG}"/read-vx-machine-config.sh
 
 if [ -z "${ADMIN_WORKSPACE:-}" ]; then
