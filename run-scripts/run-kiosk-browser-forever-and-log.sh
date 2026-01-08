@@ -12,6 +12,7 @@ sudo /sbin/logrotate --force /etc/vx-logs.logrotate || true
 
 # configuration information
 CONFIG=${VX_CONFIG_ROOT:-./config}
+# shellcheck disable=SC2034
 METADATA=${VX_METADATA_ROOT:-./}
 # shellcheck source=config/read-vx-machine-config.sh
 source "${CONFIG}"/read-vx-machine-config.sh

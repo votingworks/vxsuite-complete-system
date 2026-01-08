@@ -30,10 +30,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Define vxsuite apps that can be built, along with the expected path prefix
 ALL_APPS=(admin central-scan mark mark-scan print scan)
+# shellcheck disable=SC2034
 APPS_PATH_PREFIX="${DIR}/vxsuite/apps"
 
 # Define vxsuite services that can be built, along with the expected path prefix
+# shellcheck disable=SC2034
 ALL_SERVICES=(converter-ms-sems)
+# shellcheck disable=SC2034
 SERVICES_PATH_PREFIX="${DIR}/vxsuite/services"
 
 usage() {
@@ -46,14 +49,20 @@ APPS_TO_BUILD=()
 
 # Determine which apps to build
 if [ $# = 0 ]; then
+  # shellcheck disable=SC2206
   APPS_TO_BUILD+=(${ALL_APPS[@]})
 else
+  # shellcheck disable=SC2068
   for arg in $@; do
+    # shellcheck disable=SC2199,SC2076
     if [[ " ${ALL_APPS[@]} " =~ " ${arg} " ]]; then
+      # shellcheck disable=SC2199,SC2076
       if [[ ! " ${APPS_TO_BUILD[@]} " =~ " ${arg} " ]]; then
+        # shellcheck disable=SC2206
         APPS_TO_BUILD+=($arg)
       fi
     elif [[ "${arg}" = all ]]; then
+      # shellcheck disable=SC2206
       APPS_TO_BUILD=(${ALL_APPS[@]})
     elif [[ "${arg}" = -h || "${arg}" = --help ]]; then
       usage
@@ -79,6 +88,7 @@ build() {
   # In order to get the subshell exit code without exiting the whole script, we
   # need to temporarily set +e
   set +e
+  # shellcheck disable=SC2015
   (
     set -euo pipefail
 
@@ -103,6 +113,7 @@ then
   make -C kiosk-browser install
 fi
 
+# shellcheck disable=SC2145
 echo "Preparing ${#APPS_TO_BUILD[@]} app(s): ${APPS_TO_BUILD[@]}"
 
 for app in "${APPS_TO_BUILD[@]}"; do

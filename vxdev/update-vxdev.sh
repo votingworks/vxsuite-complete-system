@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# shellcheck disable=SC2034
 APP_TYPE='VxMark'
+# shellcheck disable=SC2034
 BRANCH='latest'
 
 echo "Welcome to VxDev, which app would you like to configure this machine for?"

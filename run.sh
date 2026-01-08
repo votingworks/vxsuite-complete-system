@@ -33,6 +33,7 @@ if [ $# = 0 ]; then
 fi
 
 APP="$1"
+# shellcheck disable=SC2199,SC2076
 if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
   if [ ! -d "${DIR}/build/${APP}" ]; then
     echo "⁉️ ${APP} is not yet built, building…"

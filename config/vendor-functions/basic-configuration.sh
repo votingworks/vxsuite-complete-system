@@ -29,6 +29,7 @@ echo 'Checking for FIPS compliance...'
 sudo "${VX_FUNCTIONS_ROOT}"/fipsinstall.sh
 echo 'Generating machine key...'
 sudo "${VX_FUNCTIONS_ROOT}"/generate-key.sh >/dev/null
+# shellcheck disable=SC2034
 PUBLIC_KEY=$(cat "${VX_CONFIG_ROOT}/key.pub")
 echo "Machine key set up successfully."
 
