@@ -36,14 +36,14 @@ while true; do
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
-  # TODO: do we want to try to also display secure boot status? 
-  if [[ $(lsblk | grep "vroot") ]]; then
+  # TODO: do we want to try to also display secure boot status?
+  if lsblk | grep -q "vroot"; then
     echo -e "Lockdown State: \e[32mLocked Down\e[0m"
   else
     echo -e "Lockdown State: \e[31mNot Locked Down\e[0m"
   fi
 
-  if [[ $(mokutil --sb-state | grep "enabled") ]]; then
+  if mokutil --sb-state | grep -q "enabled"; then
     echo -e "Secure Boot State: \e[32mEnabled\e[0m"
   else
     echo -e "Secure Boot State: \e[31mDisabled\e[0m"
