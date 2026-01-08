@@ -17,9 +17,9 @@ fi
 echo
 echo "Welcome to VxDev, we need to set the admin password for this machine."
 while true; do
-    read -s -p "Set vx-vendor password: " VENDOR_PASSWORD
+    read -r -s -p "Set vx-vendor password: " VENDOR_PASSWORD
     echo
-    read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
+    read -r -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
     echo
     if [[ "${VENDOR_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
     then

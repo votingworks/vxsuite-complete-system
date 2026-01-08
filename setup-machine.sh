@@ -48,7 +48,7 @@ CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
 echo
-read -p "Select machine: " CHOICE_INDEX
+read -r -p "Select machine: " CHOICE_INDEX
 
 if [ "${CHOICE_INDEX}" -ge "${#CHOICES[@]}" ] || [ "${CHOICE_INDEX}" -lt 1 ]
 then
@@ -62,7 +62,7 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
+read -r -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
 
 IS_RELEASE_IMAGE=0
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
@@ -74,9 +74,9 @@ else
     IS_QA_IMAGE=0
     echo "Ok, creating a production image. No sudo privileges for anyone!"
     echo
-    read -p "Is this additionally an official release image? [y/N] " release_image_flag
+    read -r -p "Is this additionally an official release image? [y/N] " release_image_flag
     if [[ "${release_image_flag}" == 'y' || "${release_image_flag}" == 'Y' ]]; then
-        read -p "Are you sure? [y/N] " confirm_release_image_flag
+        read -r -p "Are you sure? [y/N] " confirm_release_image_flag
         if [[ "${confirm_release_image_flag}" == 'y' || "${confirm_release_image_flag}" == 'Y' ]]; then
             IS_RELEASE_IMAGE=1
             VERSION="$(< VERSION)"
@@ -90,9 +90,9 @@ else
     echo
     echo "Next, we need to set a password for the vx-vendor user."
     while true; do
-        read -s -p "Set vx-vendor password: " VENDOR_PASSWORD
+        read -r -s -p "Set vx-vendor password: " VENDOR_PASSWORD
         echo
-        read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
+        read -r -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
         echo
         if [[ "${VENDOR_PASSWORD}" = "${CONFIRM_PASSWORD}" ]]
         then

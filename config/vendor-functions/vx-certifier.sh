@@ -51,7 +51,7 @@ for CSR_PATH in "${CERTS_DIRECTORY}"/*csr*.pem; do
             -e 's/1\.3\.6\.1\.4\.1\.59817\.1 = /Machine type: /' \
             -e 's/1\.3\.6\.1\.4\.1\.59817\.6 = /Machine ID:   /' \
             -e 's/1\.3\.6\.1\.4\.1\.59817\.2 = /Jurisdiction: /'
-    read -p "Are the above parameters correct? [y/N] " confirm
+    read -r -p "Are the above parameters correct? [y/N] " confirm
     if [[ "${confirm}" != 'y' && "${confirm}" != 'Y' ]]; then
         echo "Skipping without certifying"
         continue

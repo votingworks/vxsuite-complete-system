@@ -39,4 +39,4 @@ sudo /vx/code/app-scripts/unmount-usb.sh
 
 echo "All done. You may remove the USB drive."
 echo "Type Enter to continue."
-read
+read -r

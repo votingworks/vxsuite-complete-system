@@ -47,5 +47,5 @@ fi
 
 echo
 echo -e "\e[1mBasic Configuration Complete\e[0m"
-read -p "You must reboot for these changes to take effect. Reboot now? (y/n) " CONFIRM
+read -r -p "You must reboot for these changes to take effect. Reboot now? (y/n) " CONFIRM
 [[ "${CONFIRM}" = "y" ]] && sudo /usr/sbin/reboot

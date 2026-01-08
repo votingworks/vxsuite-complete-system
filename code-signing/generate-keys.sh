@@ -9,7 +9,7 @@
 set -euo pipefail
 
 echo -n "Enter a Common Name to embed in the keys: "
-read NAME
+read -r NAME
 
 echo -e "\nGenerating PK, you will be prompted for a passphrase:"
 openssl req -new -x509 -newkey rsa:2048 -subj "/CN=$NAME PK/" -keyout PK.key \

@@ -60,10 +60,10 @@ function get_machine_jurisdiction_from_user_input() {
         if [[ "${IS_QA_IMAGE}" == 1 ]]; then
             machine_jurisdiction="vx.test"
         else
-            read -p "Enter a jurisdiction ({state-2-letter-abbreviation}.{county-town-etc}, e.g., ca.los-angeles or vx.test for test/demo machines): " machine_jurisdiction
+            read -r -p "Enter a jurisdiction ({state-2-letter-abbreviation}.{county-town-etc}, e.g., ca.los-angeles or vx.test for test/demo machines): " machine_jurisdiction
         fi
         if [[ "${machine_jurisdiction}" =~ ^[a-z]{2}\.[a-z-]+$ ]]; then
-            read -p "Confirm that the machine jurisdiction should be set to: ${machine_jurisdiction} (y/n) " confirm
+            read -r -p "Confirm that the machine jurisdiction should be set to: ${machine_jurisdiction} (y/n) " confirm
             if [[ "${confirm}" = "y" ]]; then
                 echo "${machine_jurisdiction}" > "${VX_CONFIG_ROOT}/machine-jurisdiction"
                 break
@@ -99,7 +99,7 @@ if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]];
     MACHINE_JURISDICTION="$(get_machine_jurisdiction_from_user_input)"
 fi
 
-read -p "Insert a USB drive into the machine. Press enter once you've done so. "
+read -r -p "Insert a USB drive into the machine. Press enter once you've done so. "
 select_usb_drive_and_mount
 clean_up_usb_drive
 
@@ -120,13 +120,13 @@ fi
 unmount_usb_drive
 
 if [[ "${IS_QA_IMAGE}" == 1 ]]; then
-    read -p "Because we're using a QA image, and the production VotingWorks cert has been overwritten by the dev VotingWorks cert, we can auto-certify this machine using the dev VotingWorks private key. You'll be prompted to select a USB drive again. Press enter to continue. "
+    read -r -p "Because we're using a QA image, and the production VotingWorks cert has been overwritten by the dev VotingWorks cert, we can auto-certify this machine using the dev VotingWorks private key. You'll be prompted to select a USB drive again. Press enter to continue. "
     VX_PRIVATE_KEY_PATH="${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/dev/vx-private-key.pem" \
         VX_METADATA_ROOT="${VX_METADATA_ROOT}" \
         "${VX_FUNCTIONS_ROOT}/vx-certifier.sh"
-    read -p "You'll be prompted to select a USB drive one last time. Press enter to continue. "
+    read -r -p "You'll be prompted to select a USB drive one last time. Press enter to continue. "
 else
-    read -p "Remove the USB drive, take it to VxCertifier, and bring it back to this machine when prompted. Press enter once you've re-inserted the USB drive. "
+    read -r -p "Remove the USB drive, take it to VxCertifier, and bring it back to this machine when prompted. Press enter once you've re-inserted the USB drive. "
 fi
 
 #
@@ -145,7 +145,7 @@ while true; do
     if [[ -f "${USB_DRIVE_CERT_PATH}" ]]; then
         break
     fi
-    read -p "Cert not found on USB drive. Double check that you've inserted the right USB drive and given it time to mount. Press enter to try again. "
+    read -r -p "Cert not found on USB drive. Double check that you've inserted the right USB drive and given it time to mount. Press enter to try again. "
 done
 echo "Cert found on USB drive!"
 
@@ -170,7 +170,7 @@ function error_and_start_over() {
     local message="${1}"
 
     echo -e "\e[31m${message}\e[0m" >&2
-    read -p "Press enter to start over. "
+    read -r -p "Press enter to start over. "
     exit 1
 }
 

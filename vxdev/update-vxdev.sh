@@ -28,7 +28,7 @@ echo "${#CHOICES[@]}. VxScan"
 CHOICES+=('VxScan')
 
 echo
-read -p "Select Application: " CHOICE_INDEX
+read -r -p "Select Application: " CHOICE_INDEX
 
 if [ "${CHOICE_INDEX}" -ge "${#CHOICES[@]}" ] || [ "${CHOICE_INDEX}" -lt 1 ]
 then

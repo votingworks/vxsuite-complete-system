@@ -26,7 +26,7 @@ echo "3. Custom Branch"
 CHOICES+=('custom')
 
 echo
-read -p "Select Option: " CHOICE_INDEX
+read -r -p "Select Option: " CHOICE_INDEX
 
 if [ "${CHOICE_INDEX}" -ge "${#CHOICES[@]}" ] || [ "${CHOICE_INDEX}" -lt 1 ]
 then
@@ -51,13 +51,13 @@ elif [[ $BRANCH == 'stable' ]]; then
 	cd vxsuite || exit
 	cd ..
 elif [[ $BRANCH == 'custom' ]]; then
-	read -p "Enter the branch name: " BRANCH_NAME
+	read -r -p "Enter the branch name: " BRANCH_NAME
 	cd vxsuite || exit
 	git checkout main
 	git pull
 	while [ ! "$(git branch -r --list origin/"$BRANCH_NAME")" ]
 	do
-		read -p "Invalid Branch Name. Try again: " BRANCH_NAME
+		read -r -p "Invalid Branch Name. Try again: " BRANCH_NAME
 	done
 	git checkout "$BRANCH_NAME"
 	cd ../kiosk-browser || exit
@@ -67,7 +67,7 @@ elif [[ $BRANCH == 'custom' ]]; then
 fi
 
 echo
-read -p "Enable HWTA? [y/n]: " ENABLE_HWTA
+read -r -p "Enable HWTA? [y/n]: " ENABLE_HWTA
 
 if [[ "${ENABLE_HWTA}" == 'y' || "${ENABLE_HWTA}" == 'Y' ]]; then
   sudo /vx/scripts/set-hwta-env.sh yes
