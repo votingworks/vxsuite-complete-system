@@ -5,7 +5,7 @@ set -euo pipefail
 echo "Let's copy the screen recordings to a USB stick."
 
 # check for USB stick
-DEVICES=$( readlink -f $( ls /dev/disk/by-id/usb*part* 2>/dev/null || echo "") 2>/dev/null || echo "")
+DEVICES=$( readlink -f "$( ls /dev/disk/by-id/usb*part* 2>/dev/null || echo "")" 2>/dev/null || echo "")
 
 # If no devices
 if [ -z "$DEVICES" ]

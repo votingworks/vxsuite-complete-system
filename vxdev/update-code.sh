@@ -11,7 +11,7 @@ git pull > /dev/null
 git fetch --tags > /dev/null
 sudo git clean -xfd > /dev/null
 git submodule foreach --recursive sudo git clean -xfd > /dev/null
-LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+LATEST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)")
 
 CHOICES=('')
 echo "What code version would you like to update to?"
@@ -55,7 +55,7 @@ elif [[ $BRANCH == 'custom' ]]; then
 	cd vxsuite || exit
 	git checkout main
 	git pull
-	while [ !$(git branch -r --list origin/"$BRANCH_NAME") ]
+	while [ ! "$(git branch -r --list origin/"$BRANCH_NAME")" ]
 	do
 		read -p "Invalid Branch Name. Try again: " BRANCH_NAME
 	done

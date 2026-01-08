@@ -51,8 +51,8 @@ if [[ -n $modules_to_sign ]]; then
 
   for module in ${modules_to_sign}
   do
-    if modinfo -n "${module}" 2>&1 > /dev/null; then
-      /usr/src/linux-kbuild-6.1/scripts/sign-file sha256 /mnt/DB.key /mnt/DB.crt $(modinfo -n "${module}")
+    if modinfo -n "${module}" > /dev/null 2>&1; then
+      /usr/src/linux-kbuild-6.1/scripts/sign-file sha256 /mnt/DB.key /mnt/DB.crt "$(modinfo -n "${module}")"
     fi
   done
 fi

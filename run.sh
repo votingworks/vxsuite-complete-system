@@ -14,7 +14,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ALL_APPS=()
 
-for app in ${DIR}/vxsuite/apps/*; do
+for app in "${DIR}"/vxsuite/apps/*; do
   if [ -d "${app}" ]; then
     ALL_APPS+=("$(basename "${app}")")
   fi
