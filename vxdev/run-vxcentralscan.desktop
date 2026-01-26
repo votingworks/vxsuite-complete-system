@@ -2,6 +2,6 @@
 Version=1.0
 Name=VxCentralScan
 Icon=runprogram.png
-Exec=gnome-terminal -- /bin/sh -ic 'env SCAN_WORKSPACE=/vx/data/module-scan env PATH=$PATH:/sbin /vx/code/vxsuite-complete-system/run.sh central-scan 2>&1 | tee /tmp/vxdev.log; read -p "Press any key to continue. (Session log: /tmp/vxdev.log)" line'
+Exec=gnome-terminal -- /bin/sh -ic 'env SCAN_WORKSPACE=/vx/data/module-scan env PATH=$PATH:/sbin /home/vx/code/vxsuite-complete-system/run.sh central-scan 2>&1 | tee /tmp/vxdev.log; read -p "Press any key to continue. (Session log: /tmp/vxdev.log)" line'
 Terminal=false
 Type=Application

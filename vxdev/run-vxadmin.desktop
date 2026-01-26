@@ -2,6 +2,6 @@
 Version=1.0
 Name=VxAdmin
 Icon=runprogram.png
-Exec=gnome-terminal -- /bin/sh -ic 'env PATH=$PATH:/sbin env ADMIN_WORKSPACE=/vx/data/admin-service /vx/code/vxsuite-complete-system/run.sh admin 2>&1 | tee /tmp/vxdev.log; read -p "Press any key to continue. (Session log: /tmp/vxdev.log)" line'
+Exec=gnome-terminal -- /bin/sh -ic 'env PATH=$PATH:/sbin env ADMIN_WORKSPACE=/vx/data/admin-service /home/vx/code/vxsuite-complete-system/run.sh admin 2>&1 | tee /tmp/vxdev.log; read -p "Press any key to continue. (Session log: /tmp/vxdev.log)" line'
 Terminal=false
 Type=Application
