@@ -5,7 +5,7 @@
 : "${VX_METADATA_ROOT:="/vx/code"}"
 APP_TYPE=$(sudo cat "$VX_CONFIG_ROOT/machine-type")
 
-cd /vx/code/vxsuite-complete-system
+cd /home/vx/code/vxsuite-complete-system
 git checkout main > /dev/null 2>&1
 git pull > /dev/null
 git fetch --tags > /dev/null
