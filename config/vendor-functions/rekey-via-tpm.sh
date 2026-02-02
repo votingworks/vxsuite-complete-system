@@ -12,19 +12,18 @@ set -euo pipefail
 # continue to execute, setting "completed" flag files that we don't
 # want set if this script fails
 function firmware_reboot () {
-  os_indications_path='/sys/firmware/efi/efivars/OsIndications-8be*'
-  os_indications_path=$(ls -1 $os_indications_path | tail -1)
+  os_indications_supported_path='/sys/firmware/efi/efivars/OsIndicationsSupported-8be4df61-93ca-11d2-aa0d-00e098032b8c'
+  os_indications_path='/sys/firmware/efi/efivars/OsIndications-8be4df61-93ca-11d2-aa0d-00e098032b8c'
   reboot_to_firmware='\x07\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
   #                   └───────┬──────┘└───────────────┬──────────────┘
   #                     4 bytes attrs (0x00000007)     8 bytes value (0x0000000000000001)
   #                     = NV + BootSvc + Runtime       = BOOT_TO_FW_UI bit set
 
-  echo "Path: $os_indications_path"
-
-  if [ -w $os_indications_path ]; then
+  if [ -f $os_indications_supported_path ]; then
     printf "$reboot_to_firmware" > "$os_indications_path"
   else
-    echo "ERROR: OsIndications not found"
+    echo "ERROR: Rebooting to firmware via OsIndications is not supported."
+    exit 1
   fi
 
   # force immediate reboot
