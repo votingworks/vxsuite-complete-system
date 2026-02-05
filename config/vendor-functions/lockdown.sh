@@ -71,6 +71,11 @@ fi
 systemctl daemon-reload
 systemctl enable vx-cleanup.service
 
+# To prevent harmless error messages related to mounting the root filesystem
+# the "ro" option needs to be explicitly added to /etc/fstab even though
+# dmverity ensures it's read-only
+sed -i '/\/dev\/mapper\/Vx--vg-root/s/errors=remount-ro/ro,errors=remount-ro/' /etc/fstab
+
 update-initramfs -u
 
 # Remount / so it can't change while we're doing the veritysetup
