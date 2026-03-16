@@ -311,7 +311,7 @@ sudo cp config/grub /etc/default/grub
 sudo update-grub
 
 # turn off network
-sudo timedatectl set-ntp no
+#sudo timedatectl set-ntp no
 
 # set up symlinked timezone files to prepare for read-only filesystem
 sudo rm -f /etc/localtime
@@ -319,11 +319,11 @@ sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
 sudo ln -sf /vx/config/localtime /etc/localtime
 
 # remove all network drivers. Buh bye.
-sudo apt purge -y network-manager > /dev/null 2>&1 || true
-sudo rm -rf /lib/modules/*/kernel/drivers/net/*
+#sudo apt purge -y network-manager > /dev/null 2>&1 || true
+#sudo rm -rf /lib/modules/*/kernel/drivers/net/*
 
 # delete any remembered existing network connections (e.g. wifi passwords)
-sudo rm -f /etc/NetworkManager/system-connections/*
+#sudo rm -f /etc/NetworkManager/system-connections/*
 
 # replace /etc/network/interfaces to only allow loopback on future boots
 sudo cp config/interfaces /etc/network/interfaces
