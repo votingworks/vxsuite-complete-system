@@ -310,8 +310,8 @@ sudo chown -h vx-vendor:vx-group /vx/config/openssl.cnf
 sudo cp config/grub /etc/default/grub
 sudo update-grub
 
-# turn off network
-#sudo timedatectl set-ntp no
+# turn off network time updates
+sudo timedatectl set-ntp no
 
 # set up symlinked timezone files to prepare for read-only filesystem
 sudo rm -f /etc/localtime
