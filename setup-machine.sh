@@ -324,11 +324,6 @@ if [[ "${CHOICE}" == "admin" ]]; then
   sudo mkdir -p /vx/config/etc
   sudo mv /etc/swanctl/ /vx/config/etc/
   sudo ln -fs /vx/config/etc/swanctl /etc/swanctl
-
-  # NOTE: Temporary to enable ethernet by default
-  # Before release, disable by default
-  sudo systemctl enable --now systemd-networkd.socket
-  sudo systemctl enable --now systemd-networkd
 else
   # remove network packages
   sudo apt purge -y network-manager iw > /dev/null 2>&1 || true
@@ -346,6 +341,7 @@ else
   sudo rm -f /etc/NetworkManager/system-connections/*
 
   # disabled by default in build system, but explicitly do it again
+  sudo systemctl disable --now oneshot-local-ethernet
   sudo systemctl disable --now systemd-networkd.socket
   sudo systemctl disable --now systemd-networkd
 fi
