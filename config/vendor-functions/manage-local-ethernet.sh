@@ -6,24 +6,44 @@
 
 set -euo pipefail
 
-service_action=$1
+state_file="/vx/config/local-ethernet-state"
+default_state="disable"
+cmd_line_override=${1:-disable}
+service_action="disable"
 
-if [[ -z ${service_action} ]]; then
-  echo "Usage: $0 action"
-  echo "Valid actions: enable, disable"
-  exit 1
+if [[ $# -eq 1 ]]; then
+  if [[ ${cmd_line_override} == "enable" ]]; then
+    service_action="enable"
+  elif [[ ${cmd_line_override} == "disable" ]]; then
+    service_action="disable"
+  else
+    echo "Error: ${cmd_line_override} is not a valid option"
+    echo "Valid actions: enable, disable"
+    exit 1
+  fi
+else
+  echo "Using state file"
+  if [[ -f ${state_file} ]]; then
+    state_file_content=$(head -c 8 -- "${state_file}")
+    case "${state_file_content}" in
+      enable|disable) service_action="${state_file_content}" ;;
+      *) service_action="${default_state}" ;;
+    esac
+  else
+    service_action="${default_state}"
+  fi
 fi
 
 if [[ ${service_action} == "enable" ]]; then
-  systemctl enable --now systemd-networkd.socket
-  systemctl enable --now systemd-networkd
+  systemctl enable --runtime --now systemd-networkd.socket systemd-networkd
+  echo "enable" > "${state_file}"
 elif [[ ${service_action} == "disable" ]]; then
-  systemctl disable --now systemd-networkd.socket
-  systemctl disable --now systemd-networkd
+  systemctl disable --runtime --now systemd-networkd.socket systemd-networkd
+  echo "disable" > "${state_file}"
 else
-  echo "Error: ${service_action} is not a valid option"
-  echo "Valid actions: enable, disable"
-  exit 1
+    echo "Error: ${service_action} is not a valid option"
+    echo "Valid actions: enable, disable"
+    exit 1
 fi
 
 exit 0
