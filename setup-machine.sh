@@ -318,12 +318,37 @@ sudo rm -f /etc/localtime
 sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
 sudo ln -sf /vx/config/localtime /etc/localtime
 
-# remove all network drivers. Buh bye.
-#sudo apt purge -y network-manager > /dev/null 2>&1 || true
-#sudo rm -rf /lib/modules/*/kernel/drivers/net/*
+# admin types now have support for limited local ethernet
+# set up various paths for config persistence and secure boot
+if [[ "${CHOICE}" == "admin" ]]; then
+  sudo mkdir -p /vx/config/etc
+  sudo mv /etc/swanctl/ /vx/config/etc/
+  sudo ln -fs /vx/config/etc/swanctl /etc/swanctl
 
-# delete any remembered existing network connections (e.g. wifi passwords)
-#sudo rm -f /etc/NetworkManager/system-connections/*
+  # NOTE: Temporary to enable ethernet by default
+  # Before release, disable by default
+  sudo systemctl enable --now systemd-networkd.socket
+  sudo systemctl enable --now systemd-networkd
+else
+  # remove network packages
+  sudo apt purge -y network-manager iw > /dev/null 2>&1 || true
+
+  # remove avahi packages
+  sudo apt purge -y avahi-daemon avahi-utils avahi-autoipd > /dev/null 2>&1 || true
+
+  # remove strongswan packages
+  sudo apt purge -y strongswan-ctl libstrongswan-extra-plugins libstrongswan-standard-plugins charon-systemd strongswan-pki > /dev/null 2>&1 || true
+
+  # remove network modules
+  sudo rm -rf /lib/modules/*/kernel/drivers/net/*
+
+  # delete any remembered existing network connections (e.g. wifi passwords)
+  sudo rm -f /etc/NetworkManager/system-connections/*
+
+  # disabled by default in build system, but explicitly do it again
+  sudo systemctl disable --now systemd-networkd.socket
+  sudo systemctl disable --now systemd-networkd
+fi
 
 # replace /etc/network/interfaces to only allow loopback on future boots
 sudo cp config/interfaces /etc/network/interfaces

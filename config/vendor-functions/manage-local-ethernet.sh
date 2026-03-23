@@ -15,8 +15,10 @@ if [[ -z ${service_action} ]]; then
 fi
 
 if [[ ${service_action} == "enable" ]]; then
+  systemctl enable --now systemd-networkd.socket
   systemctl enable --now systemd-networkd
 elif [[ ${service_action} == "disable" ]]; then
+  systemctl disable --now systemd-networkd.socket
   systemctl disable --now systemd-networkd
 else
   echo "Error: ${service_action} is not a valid option"
