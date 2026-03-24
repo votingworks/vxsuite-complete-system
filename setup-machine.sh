@@ -324,6 +324,11 @@ if [[ "${CHOICE}" == "admin" ]]; then
   sudo mkdir -p /vx/config/etc
   sudo mv /etc/swanctl/ /vx/config/etc/
   sudo ln -fs /vx/config/etc/swanctl /etc/swanctl
+
+  # Note: this does not enable local ethernet connections
+  # This enables a service that can manage the connection state
+  # depending on the choice made during basic configuration
+  sudo systemctl enable --now oneshot-local-ethernet
 else
   # remove network packages
   sudo apt purge -y network-manager iw > /dev/null 2>&1 || true
