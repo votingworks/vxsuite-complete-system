@@ -45,7 +45,7 @@ if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
     echo
     echo -e "\e[1mStep 6: Network Configuration\e[0m"
     read -p "Should local networking be enabled? (y/n) " NETWORK_ENABLED
-    if [[ "${NETWORK_ENABLED}" = "y" ]];; then
+    if [[ "${NETWORK_ENABLED}" = "y" ]]; then
       sudo ${VX_FUNCTIONS_ROOT}/manage-local-ethernet.sh enable
     else
       sudo ${VX_FUNCTIONS_ROOT}/manage-local-ethernet.sh disable
