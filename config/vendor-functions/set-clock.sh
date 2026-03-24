@@ -27,7 +27,7 @@ while true; do
     done
 
     while true; do
-        read -p "Enter the year (e.g. 2020): " YEAR
+        read -p "Enter the year (e.g. 2026): " YEAR
         [[ "${YEAR}" =~ ^[0-9]{4}$ ]] && break
         echo -e "\e[31mInvalid year, try again\e[0m" >&2
     done
