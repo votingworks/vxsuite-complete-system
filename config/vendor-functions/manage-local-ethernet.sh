@@ -22,7 +22,6 @@ if [[ $# -eq 1 ]]; then
     exit 1
   fi
 else
-  echo "Using state file"
   if [[ -f ${state_file} ]]; then
     state_file_content=$(head -c 8 -- "${state_file}")
     case "${state_file_content}" in
