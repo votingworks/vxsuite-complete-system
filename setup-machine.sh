@@ -328,6 +328,7 @@ if [[ "${CHOICE}" == "admin" ]]; then
   sudo mkdir -p /vx/config/etc
   sudo mv /etc/swanctl/ /vx/config/etc/
   sudo ln -fs /vx/config/etc/swanctl /etc/swanctl
+  sudo cp config/apparmor.d/usr.sbin.swanctl /etc/apparmor.d/
 
   # Note: this does not enable local ethernet connections
   # This enables a service that can manage the connection state

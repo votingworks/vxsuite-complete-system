@@ -1,0 +1,42 @@
+#include <tunables/global>
+
+/usr/sbin/swanctl flags=(attach_disconnected) {
+  #include <abstractions/base>
+
+  # Allow /etc/swanctl/x509ca/ files to symlink to system-wide ca-certificates
+  #include <abstractions/ssl_certs>
+
+  # CAP_DAC_OVERRIDE is needed for optional charon.user/charon.group
+  # configuration
+  capability dac_override,
+
+  # Allow reading strongswan.conf configuration files
+  /etc/strongswan.conf          r,
+  /etc/strongswan.d/            r,
+  /etc/strongswan.d/**          r,
+
+  # All reading configuration, certificate, and key files beneath /etc/swanctl/
+  /etc/swanctl/**               r,
+
+  # For secure boot, we store the real config here and make /etc/swanctl a link
+  # so this path also needs read access
+  /var/vx/config/etc/swanctl/**               r,
+
+  # Allow communication with VICI plugin UNIX domain socket
+  /run/charon.vici              rw,
+
+  # Allow reading own binary
+  /usr/sbin/swanctl             r,
+
+  # for af-alg plugin
+  network alg seqpacket,
+
+  # As of 5.5.2, swanctl unnecessarily loads plugins by default, even though no
+  # plugins are actually used by swanctl.  The following can be removed if
+  # plugin loading is disabled.
+  #include <abstractions/nameservice>
+  #include <abstractions/openssl>
+
+  # Site-specific additions and overrides. See local/README for details.
+  #include <local/usr.sbin.swanctl>
+}
