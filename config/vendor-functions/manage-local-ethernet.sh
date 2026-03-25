@@ -38,6 +38,10 @@ if [[ ${service_action} == "enable" ]]; then
   echo "enable" > "${state_file}"
 elif [[ ${service_action} == "disable" ]]; then
   systemctl disable --runtime --now systemd-networkd.socket systemd-networkd
+  for interface in $(networkctl list --no-legend | awk '$3 == "ether" && $5 == "unmanaged" { print $2 }')
+  do
+    ip link set "${interface}" down
+  done
   echo "disable" > "${state_file}"
 else
     echo "Error: ${service_action} is not a valid option"
