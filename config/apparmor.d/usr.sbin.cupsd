@@ -136,7 +136,6 @@
 
   # FIXME: no policy ATM for hplip and Brother drivers
   /usr/bin/hpijs Cx -> third_party,
-  /usr/Brother/** Cx -> third_party,
 
   # Kerberos authentication
   /etc/krb5.conf r,
