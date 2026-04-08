@@ -6,7 +6,6 @@ LVM_DEVICE_PATH="/dev/Vx-vg/vxbuild"
 # Various files and directories to clean up during
 # VM shutdown in the build process
 /usr/bin/find "$(realpath /home/vx)" -mindepth 1 -delete
-/usr/bin/rm -rf /var/opt/code
 /usr/bin/rm -f /var/log/*.log
 /usr/bin/rm -f /var/log/syslog
 /usr/bin/rm -f /var/log/votingworks/*
