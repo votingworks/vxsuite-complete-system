@@ -196,11 +196,7 @@ sudo mkdir -p /vx/ui/.config/gtk-3.0
 sudo ln -s /vx/code/config/gtksettings.ini /vx/ui/.config/gtk-3.0/settings.ini
 
 # vendor function scripts
-if [ "${CHOICE}" = "mark-scan" ]; then
-  sudo ln -s /vx/code/config/mark_scan_admin_bash_profile /vx/vendor/.bash_profile
-else
-  sudo ln -s /vx/code/config/admin_bash_profile /vx/vendor/.bash_profile
-fi
+sudo ln -s /vx/code/config/admin_bash_profile /vx/vendor/.bash_profile
 sudo ln -s /vx/code/config/vendor-functions /vx/vendor/vendor-functions
 
 # Make sure our cmdline file is readable by vx-vendor
