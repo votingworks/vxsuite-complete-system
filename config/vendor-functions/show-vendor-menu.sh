@@ -127,7 +127,13 @@ while true; do
   echo
   read -p "Select menu item: " CHOICE_INDEX
 
-  CHOICE=${CHOICES[$CHOICE_INDEX]}
+  # Protect from malicious input, only accept 0-99 as input
+  if ! [[ "$CHOICE_INDEX" =~ ^[0-9]{1,2}$ ]]; then
+    CHOICE="invalid"
+  else
+    CHOICE=${CHOICES[$CHOICE_INDEX]}
+  fi
+
   case "${CHOICE}" in
     reboot)
       sudo /usr/sbin/reboot
