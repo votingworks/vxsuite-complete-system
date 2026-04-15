@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Requires sudo
+trap '' SIGINT SIGTSTP SIGQUIT
 
 set -euo pipefail
 

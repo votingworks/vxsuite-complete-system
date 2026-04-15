@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+trap '' SIGINT SIGTSTP SIGQUIT
+
 set -euo pipefail
 declare -A TIMEZONES
 TIMEZONES["p"]="America/Los_Angeles"

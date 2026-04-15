@@ -1,5 +1,7 @@
 #!/bin/bash
 
+trap '' SIGINT SIGTSTP SIGQUIT
+
 set -euo pipefail
 
 # Find the mapped device for /var, need this to look up the LV later

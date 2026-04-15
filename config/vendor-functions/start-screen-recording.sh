@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+trap '' SIGINT SIGTSTP SIGQUIT
+
 set -euo pipefail
 
 USER="vx-ui" # Since we want to record the tty1 screen we have to act as the vx-ui user
