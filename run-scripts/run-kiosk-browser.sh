@@ -1,5 +1,7 @@
 #!/bin/bash
 
+trap '' SIGINT SIGTSTP SIGQUIT
+
 set -euo pipefail
 
 URL=${1:-http://localhost:3000}
