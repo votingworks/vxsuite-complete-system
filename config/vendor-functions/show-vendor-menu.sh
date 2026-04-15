@@ -130,6 +130,9 @@ while true; do
   # Protect from malicious input, only accept 0-99 as input
   if ! [[ "$CHOICE_INDEX" =~ ^[0-9]{1,2}$ ]]; then
     CHOICE="invalid"
+  # Add a range check to be thorough
+  elif (( $CHOICE_INDEX >= ${#CHOICES[@]} )); then
+    CHOICE="invalid"
   else
     CHOICE=${CHOICES[$CHOICE_INDEX]}
   fi
