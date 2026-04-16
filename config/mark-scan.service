@@ -7,7 +7,7 @@ User=vx-services
 Environment=VX_CONFIG_ROOT=/vx/config
 Environment=VX_METADATA_ROOT=/vx/code
 Environment=MARK_SCAN_WORKSPACE=/vx/data/module-mark-scan
-ExecStart=/bin/bash /vx/services/run-mark-scan.sh
+ExecStart=/bin/bash /vx/code/run-mark-scan.sh
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=votingworksapp
