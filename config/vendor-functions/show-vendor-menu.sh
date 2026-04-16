@@ -251,7 +251,11 @@ while true; do
     ;;
 
     console-session)
-      sh -c "/bin/bash"
+      if [[ $( cat "${VX_CONFIG_ROOT}/is-qa-image" 2>/dev/null || echo "0") = "1" ]]; then
+        sh -c "/bin/bash"
+      else
+        read -s -n 1
+      fi
     ;;
     
     reboot-to-bios)
