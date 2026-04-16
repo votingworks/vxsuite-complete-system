@@ -121,6 +121,9 @@ while true; do
 
     echo "${#CHOICES[@]}. Copy all Screen Recordings to USB"
     CHOICES+=('copy-recordings')
+
+    echo "${#CHOICES[@]}. Console Session"
+    CHOICES+=('console-session')
   fi
 
   echo "0. Reboot"
@@ -245,6 +248,14 @@ while true; do
     copy-recordings)
       sudo "${VX_FUNCTIONS_ROOT}/copy-recordings.sh"
       read -s -n 1
+    ;;
+
+    console-session)
+      if [[ $( cat "${VX_CONFIG_ROOT}/is-qa-image" 2>/dev/null || echo "0") = "1" ]]; then
+        sh -c "/bin/bash"
+      else
+        read -s -n 1
+      fi
     ;;
     
     reboot-to-bios)
