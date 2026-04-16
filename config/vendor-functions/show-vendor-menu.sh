@@ -251,7 +251,7 @@ while true; do
     ;;
 
     console-session)
-      exit 0;
+      sh -c "/bin/bash"
     ;;
     
     reboot-to-bios)
