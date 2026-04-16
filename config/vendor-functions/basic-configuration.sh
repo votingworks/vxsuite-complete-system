@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+trap '' SIGINT SIGTSTP SIGQUIT
+
 setfont /usr/share/consolefonts/Lat7-Terminus32x16.psf.gz 
 
 set -euo pipefail

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+trap '' SIGINT SIGTSTP SIGQUIT
+
 set -euo pipefail
 
 # Since this script excecutes well before the entirety of systemd

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+trap '' SIGINT SIGTSTP SIGQUIT
+
 set -euo pipefail
 
 sudo tpm2-totp clean 2>/dev/null || true

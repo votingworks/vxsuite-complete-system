@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+trap '' SIGINT SIGTSTP SIGQUIT
+
 set -euo pipefail
 
 : "${VX_CONFIG_ROOT:="/vx/config"}"
