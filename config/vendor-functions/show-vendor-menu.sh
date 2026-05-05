@@ -246,8 +246,10 @@ while true; do
     toggle-local-network-state)
       if [[ "${NETWORK_STATE}" = "disable" ]]; then
         sudo ${VX_FUNCTIONS_ROOT}/manage-local-ethernet.sh enable
+        prompt-to-restart
       elif [[ "${NETWORK_STATE}" = "enable" ]]; then
         sudo ${VX_FUNCTIONS_ROOT}/manage-local-ethernet.sh disable
+        prompt-to-restart
       else
 	echo
       fi
