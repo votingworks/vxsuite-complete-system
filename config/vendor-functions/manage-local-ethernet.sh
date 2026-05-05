@@ -4,6 +4,8 @@
 # It only supports specific command line arguments rather than granting
 # less restrictive actions
 
+trap '' SIGINT SIGTSTP SIGQUIT
+
 set -euo pipefail
 
 state_file="/vx/config/local-ethernet-state"
