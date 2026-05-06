@@ -23,10 +23,10 @@ else
     MACHINE_CERT_PATH="${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-cert.pem"
 fi
 
-if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     USB_DRIVE_STRONGSWAN_CSR_PATH="${USB_DRIVE_CERTS_DIRECTORY}/csr-${VX_MACHINE_ID}-strongswan.pem"
     USB_DRIVE_STRONGSWAN_CERT_PATH="${USB_DRIVE_CERTS_DIRECTORY}/cert-${VX_MACHINE_ID}-strongswan.pem"
-    MACHINE_STRONGSWAN_CERT_PATH="/etc/swanctl/x509/vx-poll-book-strongswan-rsa-cert.pem"
+    MACHINE_STRONGSWAN_CERT_PATH="/etc/swanctl/x509/vx-${VX_MACHINE_TYPE}-strongswan-rsa-cert.pem"
 fi
 
 USE_STRONGSWAN_TPM_KEY="0"
@@ -44,7 +44,7 @@ function unmount_usb_drive() {
 function clean_up_usb_drive() {
     mkdir -p "${USB_DRIVE_CERTS_DIRECTORY}"
     rm -rf "${USB_DRIVE_CSR_PATH}" "${USB_DRIVE_CERT_PATH}"
-    if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+    if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
         rm -rf "${USB_DRIVE_STRONGSWAN_CSR_PATH}" "${USB_DRIVE_STRONGSWAN_CERT_PATH}"
     fi
 }
@@ -111,8 +111,8 @@ else
     create_machine_cert_signing_request > "${USB_DRIVE_CSR_PATH}"
 fi
 
-# VxPollBooks need an additional cert for strongSwan using a different TPM handle
-if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+# VxAdmin and VxPollBooks need an additional cert for strongSwan using a different TPM handle
+if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     USE_STRONGSWAN_TPM_KEY="1"
     create_machine_cert_signing_request "${MACHINE_JURISDICTION}" > "${USB_DRIVE_STRONGSWAN_CSR_PATH}"
 fi
@@ -153,7 +153,7 @@ echo "Copying cert to ${MACHINE_CERT_PATH}..."
 cp "${USB_DRIVE_CERT_PATH}" "${MACHINE_CERT_PATH}"
 match_vx_config_non_executable_file_permissions "${MACHINE_CERT_PATH}"
 
-if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
   echo "Copying strongSwan cert to ${MACHINE_STRONGSWAN_CERT_PATH}..."
   cp "${USB_DRIVE_STRONGSWAN_CERT_PATH}" "${MACHINE_STRONGSWAN_CERT_PATH}"
   cp "${ROOT_VX_CERT_AUTHORITY_CERT_PATH}" /etc/swanctl/x509ca/vx-cert-authority-cert.pem
@@ -205,10 +205,10 @@ check_cert_signed_by_correct_cert_authority \
     "${MACHINE_CERT_PATH}" \
     "${ROOT_VX_CERT_AUTHORITY_CERT_PATH}"
 
-if [[ "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
+if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" == "poll-book" ]]; then
     check_cert_contains_correct_public_key \
         "${MACHINE_STRONGSWAN_CERT_PATH}" \
-        "${VX_CONFIG_ROOT}/vx-poll-book-strongswan-rsa-cert.pub"
+        "${VX_CONFIG_ROOT}/vx-${VX_MACHINE_TYPE}-strongswan-rsa-cert.pub"
 
     check_cert_signed_by_correct_cert_authority \
         "${MACHINE_STRONGSWAN_CERT_PATH}" \

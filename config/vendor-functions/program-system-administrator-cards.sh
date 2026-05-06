@@ -23,8 +23,8 @@ function program_system_administrator_card() {
 # Close any existing connections to the card reader, e.g. from the VxAdmin app
 service pcscd stop > /dev/null 2>&1
 
-# We don't need a sys admin card per VxPollBook so give the user a chance to skip
-if [[ "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
+# We don't explicitly need a sys admin card so give the user a chance to skip
+if [[ "${VX_MACHINE_TYPE}" == "admin" || "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
     while true; do
         read -p "Would you like to program a system administrator card? (y/n) " choice
         if [[ "${choice}" = "y" || "${choice}" = "n" ]]; then

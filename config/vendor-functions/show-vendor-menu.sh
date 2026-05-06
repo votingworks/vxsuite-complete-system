@@ -49,7 +49,17 @@ while true; do
     echo -e "Secure Boot State: \e[32mEnabled\e[0m"
   else
     echo -e "Secure Boot State: \e[31mDisabled\e[0m"
+  fi
+
+  if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+    NETWORK_STATE=$(cat ${VX_CONFIG_ROOT}/local-ethernet-state 2>/dev/null || echo disable)
+    if [[ "${NETWORK_STATE}" = "enable" ]]; then
+      echo -e "Local Network State: \e[32mEnabled\e[0m"
+    else
+      echo -e "Local Network State: \e[31mDisabled\e[0m"
     fi
+  fi
+
   if [ "${IS_QA_IMAGE}" = "1" ]; then
     echo -e "QA Image, sudo privileges are enabled, prod VotingWorks cert has been overwritten by dev VotingWorks cert"
   else
@@ -115,6 +125,11 @@ while true; do
   if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
     echo "${#CHOICES[@]}. Program System Administrator Cards"
     CHOICES+=('program-system-administrator-cards')
+  fi
+
+  if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+    echo "${#CHOICES[@]}. Toggle Local Network State"
+    CHOICES+=('toggle-local-network-state')
   fi
 
   if [ "${IS_QA_IMAGE}" = "1" ]; then
@@ -228,6 +243,18 @@ while true; do
       prompt-to-restart
     ;;
     
+    toggle-local-network-state)
+      if [[ "${NETWORK_STATE}" = "disable" ]]; then
+        sudo ${VX_FUNCTIONS_ROOT}/manage-local-ethernet.sh enable
+        prompt-to-restart
+      elif [[ "${NETWORK_STATE}" = "enable" ]]; then
+        sudo ${VX_FUNCTIONS_ROOT}/manage-local-ethernet.sh disable
+        prompt-to-restart
+      else
+	echo
+      fi
+    ;;
+
     lockdown)
       sudo "${VX_FUNCTIONS_ROOT}/lockdown.sh"
       read -s -n 1

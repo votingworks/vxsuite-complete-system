@@ -37,6 +37,7 @@ vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/generate-key.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/setup-boot-entry.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/create-machine-cert.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/program-system-administrator-cards.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/vendor/vendor-functions/manage-local-ethernet.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /usr/local/bin/tpm2-totp
 vx-vendor ALL=(root:ALL) NOPASSWD: /usr/sbin/reboot
 vx-vendor ALL=(root:ALL) NOPASSWD: /usr/bin/tee

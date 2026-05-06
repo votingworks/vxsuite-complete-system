@@ -310,7 +310,7 @@ sudo chown -h vx-vendor:vx-group /vx/config/openssl.cnf
 sudo cp config/grub /etc/default/grub
 sudo update-grub
 
-# turn off network
+# turn off network time updates
 sudo timedatectl set-ntp no
 
 # set up symlinked timezone files to prepare for read-only filesystem
@@ -318,12 +318,39 @@ sudo rm -f /etc/localtime
 sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
 sudo ln -sf /vx/config/localtime /etc/localtime
 
-# remove all network drivers. Buh bye.
-sudo apt purge -y network-manager > /dev/null 2>&1 || true
-sudo rm -rf /lib/modules/*/kernel/drivers/net/*
+# admin types now have support for limited local ethernet
+# set up various paths for config persistence and secure boot
+if [[ "${CHOICE}" == "admin" ]]; then
+  sudo mkdir -p /vx/config/etc
+  sudo mv /etc/swanctl/ /vx/config/etc/
+  sudo ln -fs /vx/config/etc/swanctl /etc/swanctl
+  sudo cp config/apparmor.d/usr.sbin.swanctl /etc/apparmor.d/
 
-# delete any remembered existing network connections (e.g. wifi passwords)
-sudo rm -f /etc/NetworkManager/system-connections/*
+  # Note: this does not enable local ethernet connections
+  # This enables a service that can manage the connection state
+  # depending on the choice made during basic configuration
+  sudo systemctl enable --now oneshot-local-ethernet
+else
+  # remove network packages
+  sudo apt purge -y network-manager iw > /dev/null 2>&1 || true
+
+  # remove avahi packages
+  sudo apt purge -y avahi-daemon avahi-utils avahi-autoipd > /dev/null 2>&1 || true
+
+  # remove strongswan packages
+  sudo apt purge -y strongswan-ctl libstrongswan-extra-plugins libstrongswan-standard-plugins charon-systemd strongswan-pki > /dev/null 2>&1 || true
+
+  # remove network modules
+  sudo rm -rf /lib/modules/*/kernel/drivers/net/*
+
+  # delete any remembered existing network connections (e.g. wifi passwords)
+  sudo rm -f /etc/NetworkManager/system-connections/*
+
+  # disabled by default in build system, but explicitly do it again
+  sudo systemctl disable --now oneshot-local-ethernet
+  sudo systemctl disable --now systemd-networkd.socket
+  sudo systemctl disable --now systemd-networkd
+fi
 
 # replace /etc/network/interfaces to only allow loopback on future boots
 sudo cp config/interfaces /etc/network/interfaces
