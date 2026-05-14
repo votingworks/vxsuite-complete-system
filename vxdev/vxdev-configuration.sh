@@ -15,7 +15,7 @@ sudo cp vxdev/votingworks-desktop.png /vx/.
 # Copy scripts and desktop files into the appropriate places
 sudo cp vxdev/set-hwta-env.sh /vx/scripts/.
 sudo cp vxdev/update-code.sh /vx/scripts/.
-sudo cp vxdev/update-vxdev.sh /vx/scripts/.
+#sudo cp vxdev/update-vxdev.sh /vx/scripts/.
 sudo cp vxdev/update-code.desktop /usr/share/applications/.
 sudo cp vxdev/update-vxdev.desktop /usr/share/applications/.
 
