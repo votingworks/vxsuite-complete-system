@@ -11,6 +11,14 @@ if [[ $# -eq 0 ]]; then
   usage
 fi
 
-vx_ui_id=$( id -u vx-ui )
+if id vx-ui > /dev/null 2>&1; then
+  user=vx-ui
+elif id vx > /dev/null 2>&1; then
+  user=vx
+else
+  user=$( whoami )
+fi
 
-sudo -u vx-ui XDG_RUNTIME_DIR=/run/user/${vx_ui_id} pactl "$@"
+userid=$( id -u ${user} )
+
+sudo -u $user XDG_RUNTIME_DIR=/run/user/${userid} pactl "$@"
