@@ -111,6 +111,10 @@ sudo usermod -aG adm vx
 # Set up log config
 sudo bash setup-scripts/setup-logging.sh
 
+# honeywall barcode reader
+# TODO: move to build-system with the production update
+sudo cp config/65-honeywell-barcode-reader.rules /etc/udev/rules.d/
+
 # let vx manage printers
 sudo cp config/60-fujitsu-printer.rules /etc/udev/rules.d/
 sudo usermod -aG lpadmin vx
