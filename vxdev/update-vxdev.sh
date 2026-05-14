@@ -39,7 +39,7 @@ fi
 CHOICE=${CHOICES[$CHOICE_INDEX]}
 
 # Update Rust and Node to latest vxdev inventory versions
-cd /vx/code/vxsuite-build-system
+cd /home/vx/code/vxsuite-build-system
 git checkout main > /dev/null 2>&1
 git pull > /dev/null
 source .virtualenv/ansible/bin/activate
