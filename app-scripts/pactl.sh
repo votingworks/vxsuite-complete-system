@@ -11,9 +11,9 @@ if [[ $# -eq 0 ]]; then
   usage
 fi
 
-if id vx-ui 2>/dev/null; then
+if id vx-ui > /dev/null 2>&1; then
   user=vx-ui
-elif id vx 2>/dev/null; then
+elif id vx > /dev/null 2>&1; then
   user=vx
 else
   user=$( whoami )
