@@ -71,8 +71,15 @@ read -p "Enable HWTA? [y/n]: " ENABLE_HWTA
 
 if [[ "${ENABLE_HWTA}" == 'y' || "${ENABLE_HWTA}" == 'Y' ]]; then
   sudo /vx/scripts/set-hwta-env.sh yes
+  sudo /vx/scripts/set-dev-dock-env.sh no
 else
   sudo /vx/scripts/set-hwta-env.sh no
+  read -p "Enable Dev Dock? [y/n]: " ENABLE_DEV_DOCK
+  if [[ "${ENABLE_DEV_DOCK}" == 'y' || "${ENABLE_DEV_DOCK}" == 'Y' ]]; then
+    sudo /vx/scripts/set-dev-dock-env.sh yes
+  else
+    sudo /vx/scripts/set-dev-dock-env.sh no
+  fi
 fi
 
 cp /vx/config/.env.local vxsuite/.env.local
