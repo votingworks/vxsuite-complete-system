@@ -96,7 +96,4 @@ CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx/config/machine-type'
 # vxdev daemons need this now, unlike setup_machine.sh, we use the CHOICE var
 MODEL_NAME="${CHOICE}" sudo -E sh -c 'echo "${MODEL_NAME}" > /vx/config/machine-model-name'
 
-# Update yourself as the very last step to avoid exec context issues
-sudo cp vxdev/update-vxdev.sh /vx/scripts/.
-
 echo "Done, this window will close in 3 seconds"
