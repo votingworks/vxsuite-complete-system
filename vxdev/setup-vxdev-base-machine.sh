@@ -112,13 +112,9 @@ sudo usermod -aG adm vx
 sudo bash setup-scripts/setup-logging.sh
 
 # let vx manage printers
-sudo cp config/60-fujitsu-printer.rules /etc/udev/rules.d/
 sudo usermod -aG lpadmin vx
 
 # let vx scan
-sudo cp config/49-sane-missing-scanner.rules /etc/udev/rules.d/
-sudo cp config/50-pdi-scanner.rules /etc/udev/rules.d/
-sudo cp config/50-custom-scanner.rules /etc/udev/rules.d/
 sudo usermod -aG scanner vx
 sudo usermod -aG plugdev vx
 
@@ -126,7 +122,6 @@ sudo usermod -aG plugdev vx
 sudo getent group uinput || sudo groupadd uinput
 sudo getent group gpio || sudo groupadd gpio
 
-sudo cp config/50-uinput.rules /etc/udev/rules.d/
 sudo usermod -aG uinput vx-services
 
 sudo usermod -aG audio vx
@@ -135,7 +130,6 @@ sudo usermod -aG dialout vx-services
 sudo usermod -aG gpio vx-services
 sudo usermod -aG scanner vx-services
 sudo usermod -aG plugdev vx-services
-sudo cp config/50-gpio.rules /etc/udev/rules.d/
 
 sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
