@@ -140,8 +140,7 @@ sudo cp config/50-gpio.rules /etc/udev/rules.d/
 sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
 # admin function scripts
-sudo ln -sf /vx/code/config/admin_bash_profile /vx/vendor/.bash_profile
-sudo ln -sf /vx/code/config/vendor-functions /vx/vendor/vendor-functions
+sudo cp config/admin_bash_profile /vx/vendor/.bash_profile
 
 # machine manufacturer
 sudo sh -c 'echo "VotingWorks" > /vx/config/machine-manufacturer'

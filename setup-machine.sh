@@ -195,9 +195,8 @@ sudo ln -s /vx/code/config/chime-short.wav /vx/ui/chime-short.wav
 sudo mkdir -p /vx/ui/.config/gtk-3.0
 sudo ln -s /vx/code/config/gtksettings.ini /vx/ui/.config/gtk-3.0/settings.ini
 
-# vendor function scripts
-sudo ln -s /vx/code/config/admin_bash_profile /vx/vendor/.bash_profile
-sudo ln -s /vx/code/config/vendor-functions /vx/vendor/vendor-functions
+# vendor bash profile
+sudo cp config/admin_bash_profile /vx/vendor/.bash_profile
 
 # Make sure our cmdline file is readable by vx-vendor
 sudo mkdir -p /vx/vendor/config
