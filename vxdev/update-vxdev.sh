@@ -38,6 +38,13 @@ fi
 
 CHOICE=${CHOICES[$CHOICE_INDEX]}
 
+# Update Rust and Node to latest vxdev inventory versions
+cd /home/vx/code/vxsuite-build-system
+git checkout main > /dev/null 2>&1
+git pull > /dev/null
+source .virtualenv/ansible/bin/activate
+ansible-playbook -i inventories/vxdev-stable playbooks/trusted_build/node.yaml
+ansible-playbook -i inventories/vxdev-stable playbooks/trusted_build/rust.yaml
 
 cd /vx/code/vxsuite-complete-system
 
@@ -48,7 +55,6 @@ git pull > /dev/null
 # Update the configuration script and run it to fetch and apply any new updates to VxDev
 sudo cp vxdev/vxdev-configuration.sh /vx/scripts/.
 bash /vx/scripts/vxdev-configuration.sh
-
 
 FAVORITE_ICONS=''
 
@@ -89,6 +95,5 @@ CHOICE="${CHOICE}" sudo -E sh -c 'echo "${CHOICE}" > /vx/config/machine-type'
 
 # vxdev daemons need this now, unlike setup_machine.sh, we use the CHOICE var
 MODEL_NAME="${CHOICE}" sudo -E sh -c 'echo "${MODEL_NAME}" > /vx/config/machine-model-name'
-
 
 echo "Done, this window will close in 3 seconds"
