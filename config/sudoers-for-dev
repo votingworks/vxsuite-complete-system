@@ -54,4 +54,4 @@ vx-services ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/paplay.sh
 vx-services ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/set-usb-port-status.sh
 vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/config/vendor-functions/timedatectl
 vx-ui ALL=(root:ALL) NOPASSWD: /usr/bin/brightnessctl
-vx-ui ALL=(root:ALL) NOPASSWD: /sbin/logrotate
+vx-ui ALL=(root:ALL) NOPASSWD: /vx/code/config/vendor-functions/rotate-logs.sh
