@@ -278,13 +278,11 @@ sudo chown -R vx-services:vx-services /var/vx/data
 sudo chmod -R u=rwX /var/vx/data
 sudo chmod -R go-rwX /var/vx/data
 
-# Config is writable by the vx-vendor user and readable/executable by all vx-* users, with the
-# exception of the app-flags subdirectory and /vx/config/openssl.cnf, which are special-cased to be
-# writable by all vx-* users
+# Config is writable by the vx-vendor user and readable/executable by all vx-* users. Other users
+# can also write config as root via scripts made accessible via sudoers.
 sudo chown -R vx-vendor:vx-group /var/vx/config
 sudo chmod -R u=rwX /var/vx/config
 sudo chmod -R g=rX /var/vx/config
-sudo chmod -R g=rwX /var/vx/config/app-flags
 sudo chmod -R o-rwX /var/vx/config
 
 # Prep the symlink structure for swapping of the default OpenSSL config file in a way that doesn't
