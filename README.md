@@ -13,7 +13,11 @@ Those two submodules are:
 
 The entry point for creating a production machine, after all dependencies have been installed and source code has been built, is the `setup-machine.sh` script. This script is irreversible and should not be run on your development machine.
 
-## VxSuite Development
+## Development
+
+View our contribution guidelines [here](https://github.com/votingworks/contribution-guidelines).
+
+### VxSuite Development
 
 If you are developing in [vxsuite](https://github.com/votingworks/vxsuite), it's often helpful to run via [kiosk-browser](https://github.com/votingworks/kiosk-browser) to mimic production.
 
@@ -30,8 +34,6 @@ KIOSK_BROWSER_ALLOW_DEVTOOLS=true ./run-scripts/run-kiosk-browser.sh
 ```
 
 When kiosk-browser is running, you can type `Ctrl+Shift+I` in order to open developer tools, and `Ctrl+W` to close the window. You can also `Alt+Tab` to navigate back to the terminal and `Ctrl+C` to quit kiosk-browser.
-
-View our contribution guidelines [here](https://github.com/votingworks/contribution-guidelines).
 
 ## License
 
