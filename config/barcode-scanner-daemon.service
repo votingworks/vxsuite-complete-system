@@ -1,0 +1,19 @@
+[Unit]
+Description=VotingWorks daemon to support a barcode scanner
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+[Service]
+Restart=on-failure
+RestartSec=10
+Type=simple
+User=vx-services
+Environment=VX_CONFIG_ROOT=/vx/config
+Environment=VX_METADATA_ROOT=/vx/code
+ExecStart=/bin/bash /vx/services/run-barcode-scanner-daemon.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=votingworksapp
+
+[Install]
+WantedBy=multi-user.target

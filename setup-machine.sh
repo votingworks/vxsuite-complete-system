@@ -168,6 +168,12 @@ then
     sudo cp config/65-honeywell-barcode-reader.rules /etc/udev/rules.d/
 fi
 
+if [ "${CHOICE}" == "print" ]
+then
+    sudo cp config/70-cino-s680-plugdev-usb.rules /etc/udev/rules.d/
+    sudo cp config/99-cino-s680-dialout-tty.rules /etc/udev/rules.d/
+fi
+
 echo "Setting up the code"
 sudo rsync -avz build/${CHOICE}/ /vx/code/
 
@@ -357,6 +363,16 @@ sudo cp config/${CHOICE}.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/${CHOICE}.service
 sudo systemctl enable ${CHOICE}.service
 sudo systemctl start ${CHOICE}.service
+
+# print requires a barcode scanner daemon
+if [[ "${CHOICE}" == "print" ]]; then
+  sudo cp config/barcode-scanner-daemon.service /etc/systemd/system/
+  sudo cp run-scripts/run-barcode-scanner-daemon.sh /vx/code/
+  sudo chmod 644 /etc/systemd/system/barcode-scanner-daemon.service
+  sudo ln -s /vx/code/run-barcode-scanner-daemon.sh /vx/services/run-barcode-scanner-daemon.sh
+  sudo systemctl enable barcode-scanner-daemon.service
+  sudo systemctl start barcode-scanner-daemon.service
+fi
 
 # mark-scan requires additional service daemons
 if [[ "${CHOICE}" == "mark-scan" ]]; then
