@@ -115,12 +115,19 @@ sudo bash setup-scripts/setup-logging.sh
 # TODO: move to build-system with the production update
 sudo cp config/65-honeywell-barcode-reader.rules /etc/udev/rules.d/
 
+# cino barcode scanner
+sudo cp config/70-cino-s680-plugdev-usb.rules /etc/udev/rules.d/
+sudo cp config/99-cino-s680-dialout-tty.rules /etc/udev/rules.d/
+
 # let vx manage printers
 sudo usermod -aG lpadmin vx
 
 # let vx scan
 sudo usermod -aG scanner vx
+
+# let vx use serial devices
 sudo usermod -aG plugdev vx
+sudo usermod -aG dialout vx
 
 # mark-scan groups and permissions
 sudo getent group uinput || sudo groupadd uinput
