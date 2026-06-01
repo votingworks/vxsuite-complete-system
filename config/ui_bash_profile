@@ -1,3 +1,5 @@
+trap '' SIGINT SIGTSTP SIGQUIT
+
 export PATH=/vx/code/config/vendor-functions:${PATH}
 
 if [[ $(tty) = /dev/tty1 ]]; then
