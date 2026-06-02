@@ -1,4 +1,4 @@
-trap '' SIGINT SIGTSTP SIGQUIT
+trap 'logout' SIGINT SIGTSTP SIGQUIT EXIT
 
 export PATH=/vx/code/config/vendor-functions:${PATH}
 
@@ -7,3 +7,5 @@ if [[ $(tty) = /dev/tty1 ]]; then
 fi
 
 export PATH=$PATH:/sbin
+
+logout

@@ -1,8 +1,9 @@
-trap '' SIGINT SIGTSTP SIGQUIT
+trap 'logout' SIGINT SIGTSTP SIGQUIT EXIT
 
 export PATH=/vx/code/config/vendor-functions:${PATH}
 
 while true; do
-    bash /vx/code/config/vendor-functions/show-vendor-menu.sh
+    exec /vx/code/config/vendor-functions/show-vendor-menu.sh
 done
 
+logout
