@@ -1,4 +1,5 @@
 trap 'logout' SIGINT SIGTSTP SIGQUIT EXIT
+stty -isig
 
 export PATH=/vx/code/config/vendor-functions:${PATH}
 
