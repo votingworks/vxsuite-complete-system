@@ -287,10 +287,11 @@ sudo chmod -R go-rwX /var/vx/data
 # Custom login shells for vx-ui and vx-vendor users
 for user in vx-ui vx-vendor
 do
-  sudo cp config/${user}-shell ~${user}/
-  sudo chown ${user}:${user} ~${user}/${user}-shell
-  sudo chmod 700 ~${user}/${user}-shell
-  sudo chsh -s ~${user}/${user}-shell
+  user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
+  sudo cp config/${user}-shell ${user_home_dir}/.
+  sudo chown ${user}:${user} ${user_home_dir}/${user}-shell
+  sudo chmod 700 ${user_home_dir}/${user}-shell
+  sudo chsh -s ${user_home_dir}/${user}-shell ${user}
 done
 
 # Config is writable by the vx-vendor user and readable/executable by all vx-* users. Other users
