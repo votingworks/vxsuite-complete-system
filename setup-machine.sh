@@ -284,6 +284,15 @@ sudo chown -R vx-services:vx-services /var/vx/data
 sudo chmod -R u=rwX /var/vx/data
 sudo chmod -R go-rwX /var/vx/data
 
+# Custom login shells for vx-ui and vx-vendor users
+for user in vx-ui vx-vendor
+do
+  sudo cp config/${user}-shell ~${user}/
+  sudo chown ${user}:${user} ~${user}/${user}-shell
+  sudo chmod 700 ~${user}/${user}-shell
+  sudo chsh -s ~${user}/${user}-shell
+done
+
 # Config is writable by the vx-vendor user and readable/executable by all vx-* users. Other users
 # can also write config as root via scripts made accessible via sudoers.
 sudo chown -R vx-vendor:vx-group /var/vx/config
