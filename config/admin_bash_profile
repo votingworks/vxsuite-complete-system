@@ -3,8 +3,6 @@ stty -isig
 
 export PATH=/vx/code/config/vendor-functions:${PATH}
 
-while true; do
-    exec /vx/code/config/vendor-functions/show-vendor-menu.sh
-done
+exec /vx/code/config/vendor-functions/show-vendor-menu.sh
 
 logout
