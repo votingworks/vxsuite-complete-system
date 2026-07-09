@@ -12,4 +12,5 @@ if ! [[ $# -eq 0 ]]; then
 fi
 
 MOUNTPOINT=/media/vx/usb-drive
+sync $MOUNTPOINT
 umount $MOUNTPOINT
