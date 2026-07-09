@@ -35,7 +35,9 @@ cp -r /var/log/votingworks/vx-logs.log* "$DIRECTORY"
 # unmount the USB stick to make sure it's all written to disk
 echo "Saving logs to USB drive..."
 sync $MOUNTPOINT
-sudo /vx/code/app-scripts/unmount-usb.sh
+if [[ $MOUNTPOINT == "/media/vx/usb-drive" ]]; then
+    sudo /vx/code/app-scripts/unmount-usb.sh
+fi
 
 echo "All done. You may remove the USB drive."
 echo "Type Enter to continue."
