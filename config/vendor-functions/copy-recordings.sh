@@ -32,7 +32,7 @@ sudo sh -c "cp /var/vx/ui/screen-recordings/*.mp4 $DIRECTORY"
 
 # unmount the USB stick to make sure it's all written to disk
 echo "Saving to USB drive and unmounting..."
-sync $MOUNTPOINT
+sync
 sudo /vx/code/app-scripts/unmount-usb.sh
 
 echo "All done. You may remove the USB drive."
