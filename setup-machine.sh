@@ -134,9 +134,9 @@ sudo cp config/apparmor.d/usr.sbin.cupsd /etc/apparmor.d/
 # copy any modprobe configs we might use
 sudo cp config/modprobe.d/10-i915.conf /etc/modprobe.d/
 sudo cp config/modprobe.d/50-bluetooth.conf /etc/modprobe.d/
-if [ "${CHOICE}" == "scan" ]
+if [ "${CHOICE}" != "mark-scan" ] # Likely safe for VxMarkScan but I don't have hardware to test
 then
-    sudo cp config/modprobe.d/60-fujitsu-printer.conf /etc/modprobe.d/
+    sudo cp config/modprobe.d/60-usblp.conf /etc/modprobe.d/
 fi
 
 # On non-vsap systems, there can be varying levels of screen flickering
