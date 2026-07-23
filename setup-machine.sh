@@ -477,6 +477,17 @@ if [[ "${IS_QA_IMAGE}" == 1 ]] ; then
         /vx/code/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem
 fi
 
+# pnpm v9 and 10 default to managing the package manager version at runtime
+# If there is a difference in what is defined in package.json, it attempts 
+# to add the global version. Since we have no network during the offline phase,
+# it's possible to have libraries / apps with a different version. 
+# The install and build are still succcessful, but the application will not 
+# start because of this attempt to add an already existing pnpm version.
+# This option bypasses the new default behavior since we already use locked down
+# versions of pnpm and do not have any external network connectivity.
+# NOTE: This behavior changes in v11 and will require another update
+grep 'manage-package-manager-versions=false' /vx/code/vxsuite/.npmrc > /dev/null 2>&1 || echo 'manage-package-manager-versions=false' >> /vx/code/vxsuite/.npmrc
+
 # Set up a one-time run to wipe the vx user directory
 sudo cp config/vx-cleanup.service /etc/systemd/system/
 sudo cp config/vx-cleanup.sh /var/opt/vx-cleanup.sh
