@@ -242,12 +242,12 @@ MODEL_NAME="${MODEL_NAME}" sudo -E sh -c 'echo "${MODEL_NAME}" > /vx/config/mach
 # code version, e.g. "2021.03.29-d34db33fcd"
 GIT_HASH=$(git rev-parse HEAD | cut -c -10) sudo -E sh -c 'echo "$(date +%Y.%m.%d)-${GIT_HASH}" > /vx/code/code-version'
 
-if [[ "${IS_RELEASE_IMAGE}" == 1 ]]; then
-    # Still keep the full code version for reference
-    sudo cp /vx/code/code-version /vx/code/code-version-full
-    # But use the nicely formatted version, e.g., "v4.0.0", for display
-    VERSION="${VERSION}" sudo -E sh -c 'echo "${VERSION}" > /vx/code/code-version'
-fi
+# if [[ "${IS_RELEASE_IMAGE}" == 1 ]]; then
+# Still keep the full code version for reference
+sudo cp /vx/code/code-version /vx/code/code-version-full
+# But use the nicely formatted version, e.g., "v4.0.0", for display
+VERSION="${VERSION}" sudo -E sh -c 'echo "${VERSION}" > /vx/code/code-version'
+# fi
 
 # code tag, e.g. "m11c-rc3"
 GIT_TAG=$(git tag --points-at HEAD) sudo -E sh -c 'echo "${GIT_TAG}" > /vx/code/code-tag'
