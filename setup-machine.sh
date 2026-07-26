@@ -61,6 +61,7 @@ echo
 read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
 
 IS_RELEASE_IMAGE=0
+VERSION="$(< VERSION)"
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
     IS_QA_IMAGE=1
     VENDOR_PASSWORD='insecure'
@@ -75,7 +76,6 @@ else
         read -p "Are you sure? [y/N] " confirm_release_image_flag
         if [[ "${confirm_release_image_flag}" == 'y' || "${confirm_release_image_flag}" == 'Y' ]]; then
             IS_RELEASE_IMAGE=1
-            VERSION="$(< VERSION)"
             echo "OK, will set the displayed code version to: ${VERSION}"
         else
             echo "OK, not an official release image."
