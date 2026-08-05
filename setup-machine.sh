@@ -485,7 +485,12 @@ USER=$(whoami)
 
 # We need to schedule a reboot since the vx user will no longer have sudo privileges. 
 # One minute is the shortest option, and that's plenty of time for final steps.
-sudo shutdown --no-wall -r +1
+# Automated builds set VX_SKIP_SCHEDULED_REBOOT and manage shutdown themselves
+# (the scheduled reboot can otherwise fire before an automation wrapper's
+# post-setup-machine steps finish).
+if [[ -z "${VX_SKIP_SCHEDULED_REBOOT:-}" ]]; then
+    sudo shutdown --no-wall -r +1
+fi
 
 # disable all passwords
 sudo passwd -l root
