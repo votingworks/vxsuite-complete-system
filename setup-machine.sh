@@ -44,7 +44,20 @@ CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
 echo
-read -p "Select machine: " CHOICE_INDEX
+# Each prompt below can be answered non-interactively via an environment
+# variable (VX_MACHINE_TYPE, VX_IS_QA_IMAGE, VX_IS_RELEASE_IMAGE,
+# VX_VENDOR_PASSWORD) to support automated builds.
+if [[ -n "${VX_MACHINE_TYPE:-}" ]]; then
+    CHOICE_INDEX=0
+    for i in "${!CHOICES[@]}"; do
+        if [[ "${CHOICES[$i]}" == "${VX_MACHINE_TYPE}" ]]; then
+            CHOICE_INDEX=$i
+        fi
+    done
+    echo "Machine type set via VX_MACHINE_TYPE: ${VX_MACHINE_TYPE}"
+else
+    read -p "Select machine: " CHOICE_INDEX
+fi
 
 if [ "${CHOICE_INDEX}" -ge "${#CHOICES[@]}" ] || [ "${CHOICE_INDEX}" -lt 1 ]
 then
@@ -58,7 +71,12 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
+if [[ -n "${VX_IS_QA_IMAGE:-}" ]]; then
+    qa_image_flag="${VX_IS_QA_IMAGE}"
+    echo "QA image flag set via VX_IS_QA_IMAGE: ${VX_IS_QA_IMAGE}"
+else
+    read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
+fi
 
 IS_RELEASE_IMAGE=0
 if [[ $qa_image_flag == 'y' || $qa_image_flag == 'Y' ]]; then
@@ -70,9 +88,15 @@ else
     IS_QA_IMAGE=0
     echo "Ok, creating a production image. No sudo privileges for anyone!"
     echo
-    read -p "Is this additionally an official release image? [y/N] " release_image_flag
+    if [[ -n "${VX_IS_RELEASE_IMAGE:-}" ]]; then
+        release_image_flag="${VX_IS_RELEASE_IMAGE}"
+        confirm_release_image_flag="${VX_IS_RELEASE_IMAGE}"
+        echo "Release image flag set via VX_IS_RELEASE_IMAGE: ${VX_IS_RELEASE_IMAGE}"
+    else
+        read -p "Is this additionally an official release image? [y/N] " release_image_flag
+    fi
     if [[ "${release_image_flag}" == 'y' || "${release_image_flag}" == 'Y' ]]; then
-        read -p "Are you sure? [y/N] " confirm_release_image_flag
+        [[ -n "${VX_IS_RELEASE_IMAGE:-}" ]] || read -p "Are you sure? [y/N] " confirm_release_image_flag
         if [[ "${confirm_release_image_flag}" == 'y' || "${confirm_release_image_flag}" == 'Y' ]]; then
             IS_RELEASE_IMAGE=1
             VERSION="$(< VERSION)"
@@ -85,7 +109,11 @@ else
     fi
     echo
     echo "Next, we need to set a password for the vx-vendor user."
-    while true; do
+    if [[ -n "${VX_VENDOR_PASSWORD:-}" ]]; then
+        VENDOR_PASSWORD="${VX_VENDOR_PASSWORD}"
+        echo "vx-vendor password set via VX_VENDOR_PASSWORD."
+    fi
+    while [[ -z "${VX_VENDOR_PASSWORD:-}" ]]; do
         read -s -p "Set vx-vendor password: " VENDOR_PASSWORD
         echo
         read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
