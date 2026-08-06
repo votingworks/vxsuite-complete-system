@@ -16,6 +16,12 @@ LVM_DEVICE_PATH="/dev/Vx-vg/vxbuild"
 # but removed here so the file never reaches a built image at all.)
 /usr/bin/rm -f /etc/sudoers.d/99-vxbuild
 
+# Artifacts of an automated build (build-vx-image.sh): the marker that lets
+# its in-VM finalize script confirm it is running in a build VM, and a shim
+# that makes `logname` work for build scripts run outside a login session.
+/usr/bin/rm -f /etc/vx-build-vm
+/usr/bin/rm -rf /usr/local/lib/vxbuild-shim
+
 # fstrim the build volume. It must be mounted or space won't
 # be reclaimed
 # unmount the LVM build volume
