@@ -11,6 +11,30 @@ set -euo pipefail
 
 export PATH=${PATH}:/sbin/
 
+# Non-interactive support: each interactive prompt below can be answered via
+# a command line argument instead, for automated builds.
+VX_MACHINE_TYPE=""
+VX_IS_QA_IMAGE=""
+VX_IS_RELEASE_IMAGE=""
+VX_VENDOR_PASSWORD=""
+VX_SKIP_SCHEDULED_REBOOT=0
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --machine-type)          VX_MACHINE_TYPE="$2"; shift 2 ;;
+        --qa-image)              VX_IS_QA_IMAGE="y"; shift ;;
+        --prod-image)            VX_IS_QA_IMAGE="n"; shift ;;
+        --release-image)         VX_IS_RELEASE_IMAGE="y"; shift ;;
+        --vendor-password)       VX_VENDOR_PASSWORD="$2"; shift 2 ;;
+        --skip-scheduled-reboot) VX_SKIP_SCHEDULED_REBOOT=1; shift ;;
+        *) echo "Unknown option: $1" >&2; exit 1 ;;
+    esac
+done
+# A scripted prod image (--prod-image) that didn't pass --release-image
+# defaults to non-release; interactive runs still get the prompt.
+if [[ "${VX_IS_QA_IMAGE}" == "n" && -z "${VX_IS_RELEASE_IMAGE}" ]]; then
+    VX_IS_RELEASE_IMAGE="n"
+fi
+
 # which kind of machine are we setting up?
 echo "Welcome to VxSuite. THIS IS A DESTRUCTIVE SCRIPT. Ctrl-C right now if you don't know for sure what you're doing."
 echo "Which machine are we building today?"
@@ -44,17 +68,14 @@ CHOICES+=('scan')
 MODEL_NAMES+=('VxScan')
 
 echo
-# Each prompt below can be answered non-interactively via an environment
-# variable (VX_MACHINE_TYPE, VX_IS_QA_IMAGE, VX_IS_RELEASE_IMAGE,
-# VX_VENDOR_PASSWORD) to support automated builds.
-if [[ -n "${VX_MACHINE_TYPE:-}" ]]; then
+if [[ -n "${VX_MACHINE_TYPE}" ]]; then
     CHOICE_INDEX=0
     for i in "${!CHOICES[@]}"; do
         if [[ "${CHOICES[$i]}" == "${VX_MACHINE_TYPE}" ]]; then
             CHOICE_INDEX=$i
         fi
     done
-    echo "Machine type set via VX_MACHINE_TYPE: ${VX_MACHINE_TYPE}"
+    echo "Machine type set via --machine-type: ${VX_MACHINE_TYPE}"
 else
     read -p "Select machine: " CHOICE_INDEX
 fi
@@ -71,9 +92,9 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 echo "Excellent, let's set up ${CHOICE}."
 
 echo
-if [[ -n "${VX_IS_QA_IMAGE:-}" ]]; then
+if [[ -n "${VX_IS_QA_IMAGE}" ]]; then
     qa_image_flag="${VX_IS_QA_IMAGE}"
-    echo "QA image flag set via VX_IS_QA_IMAGE: ${VX_IS_QA_IMAGE}"
+    echo "QA image flag set via --qa-image/--prod-image: ${VX_IS_QA_IMAGE}"
 else
     read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
 fi
@@ -88,15 +109,15 @@ else
     IS_QA_IMAGE=0
     echo "Ok, creating a production image. No sudo privileges for anyone!"
     echo
-    if [[ -n "${VX_IS_RELEASE_IMAGE:-}" ]]; then
+    if [[ -n "${VX_IS_RELEASE_IMAGE}" ]]; then
         release_image_flag="${VX_IS_RELEASE_IMAGE}"
         confirm_release_image_flag="${VX_IS_RELEASE_IMAGE}"
-        echo "Release image flag set via VX_IS_RELEASE_IMAGE: ${VX_IS_RELEASE_IMAGE}"
+        echo "Release image flag set via --release-image: ${VX_IS_RELEASE_IMAGE}"
     else
         read -p "Is this additionally an official release image? [y/N] " release_image_flag
     fi
     if [[ "${release_image_flag}" == 'y' || "${release_image_flag}" == 'Y' ]]; then
-        [[ -n "${VX_IS_RELEASE_IMAGE:-}" ]] || read -p "Are you sure? [y/N] " confirm_release_image_flag
+        [[ -n "${VX_IS_RELEASE_IMAGE}" ]] || read -p "Are you sure? [y/N] " confirm_release_image_flag
         if [[ "${confirm_release_image_flag}" == 'y' || "${confirm_release_image_flag}" == 'Y' ]]; then
             IS_RELEASE_IMAGE=1
             VERSION="$(< VERSION)"
@@ -109,11 +130,11 @@ else
     fi
     echo
     echo "Next, we need to set a password for the vx-vendor user."
-    if [[ -n "${VX_VENDOR_PASSWORD:-}" ]]; then
+    if [[ -n "${VX_VENDOR_PASSWORD}" ]]; then
         VENDOR_PASSWORD="${VX_VENDOR_PASSWORD}"
-        echo "vx-vendor password set via VX_VENDOR_PASSWORD."
+        echo "vx-vendor password set via --vendor-password."
     fi
-    while [[ -z "${VX_VENDOR_PASSWORD:-}" ]]; do
+    while [[ -z "${VX_VENDOR_PASSWORD}" ]]; do
         read -s -p "Set vx-vendor password: " VENDOR_PASSWORD
         echo
         read -s -p "Confirm vx-vendor password: " CONFIRM_PASSWORD
@@ -485,10 +506,10 @@ USER=$(whoami)
 
 # We need to schedule a reboot since the vx user will no longer have sudo privileges. 
 # One minute is the shortest option, and that's plenty of time for final steps.
-# Automated builds set VX_SKIP_SCHEDULED_REBOOT and manage shutdown themselves
+# Automated builds pass --skip-scheduled-reboot and manage shutdown themselves
 # (the scheduled reboot can otherwise fire before an automation wrapper's
 # post-setup-machine steps finish).
-if [[ -z "${VX_SKIP_SCHEDULED_REBOOT:-}" ]]; then
+if [[ "${VX_SKIP_SCHEDULED_REBOOT}" != "1" ]]; then
     sudo shutdown --no-wall -r +1
 fi
 
