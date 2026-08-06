@@ -495,6 +495,12 @@ sudo chown -R vx-ui:vx-ui ${vx_ui_homedir}/.config/pulse
 # Remove git
 sudo apt remove -y git > /dev/null 2>&1 || true
 
+# Base debian images include openssh-server so that image builds can be
+# driven over ssh; it must never ship in a machine image. Purging here (with
+# a live system, before the lockdown below) covers manual and automated
+# builds alike. No-op if the base image did not include it.
+sudo apt-get -y purge openssh-server openssh-sftp-server > /dev/null
+
 echo "Successfully setup machine."
 
 # now we remove permissions, reset passwords, and ready for production.
