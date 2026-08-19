@@ -144,8 +144,12 @@ sudo usermod -aG plugdev vx-services
 
 sudo sh -c 'echo "uinput" >> /etc/modules-load.d/modules.conf'
 
-# admin function scripts
-sudo cp config/admin_bash_profile /vx/vendor/.bash_profile
+# custom login shell for the vx-vendor user, which launches the vendor menu
+vx_vendor_home_dir=$( getent passwd vx-vendor | cut -d: -f6 )
+sudo cp config/vx-vendor-shell ${vx_vendor_home_dir}/.
+sudo chown vx-vendor:vx-vendor ${vx_vendor_home_dir}/vx-vendor-shell
+sudo chmod 700 ${vx_vendor_home_dir}/vx-vendor-shell
+sudo chsh -s ${vx_vendor_home_dir}/vx-vendor-shell vx-vendor
 
 # machine manufacturer
 sudo sh -c 'echo "VotingWorks" > /vx/config/machine-manufacturer'
