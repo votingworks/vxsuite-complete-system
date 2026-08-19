@@ -186,7 +186,6 @@ sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
 sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 
 # symlink appropriate vx/ui files
-sudo ln -s /vx/code/config/ui_bash_profile /vx/ui/.bash_profile
 sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
 sudo ln -s /vx/code/config/Xmodmap /vx/ui/.Xmodmap
 sudo ln -s /vx/code/config/xinitrc /vx/ui/.xinitrc
@@ -196,9 +195,6 @@ sudo ln -s /vx/code/config/chime-short.wav /vx/ui/chime-short.wav
 # symlink the GTK .settings.ini
 sudo mkdir -p /vx/ui/.config/gtk-3.0
 sudo ln -s /vx/code/config/gtksettings.ini /vx/ui/.config/gtk-3.0/settings.ini
-
-# vendor bash profile
-sudo cp config/admin_bash_profile /vx/vendor/.bash_profile
 
 # Make sure our cmdline file is readable by vx-vendor
 sudo mkdir -p /vx/vendor/config

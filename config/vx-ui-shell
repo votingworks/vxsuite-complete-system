@@ -3,7 +3,9 @@
 trap 'logout' SIGINT SIGTSTP SIGQUIT EXIT
 stty -isig
 
-export PATH=/vx/code/config/vendor-functions:${PATH}
+# kiosk-browser needs /usr/sbin and /sbin in its PATH to run commands like
+# reboot without specifying their full path
+export PATH=/vx/code/config/vendor-functions:/usr/sbin:/sbin:${PATH}
 
 if [[ $(tty) = /dev/tty1 ]]; then
    exec startx > /tmp/vx-ui-startx.log 2>&1
