@@ -487,6 +487,15 @@ fi
 #
 grep 'manage-package-manager-versions=false' /vx/code/vxsuite/.npmrc > /dev/null 2>&1 || echo 'manage-package-manager-versions=false' >> /vx/code/vxsuite/.npmrc
 
+# pnpm 10 also verifies node_modules against the lockfile before running any
+# script and attempts a `pnpm install` when they differ. /vx/code is read-only
+# at runtime and there is no network, so the install fails with EACCES and the
+# app does not start. This setting lives in pnpm-workspace.yaml, which takes
+# precedence over .npmrc in pnpm 10, so it has to be patched there.
+if grep -q '^verifyDepsBeforeRun:' /vx/code/vxsuite/pnpm-workspace.yaml 2>/dev/null; then
+    sudo sed -i 's/^verifyDepsBeforeRun:.*/verifyDepsBeforeRun: false/' /vx/code/vxsuite/pnpm-workspace.yaml
+fi
+
 # Set up a one-time run to wipe the vx user directory
 sudo cp config/vx-cleanup.service /etc/systemd/system/
 sudo cp config/vx-cleanup.sh /var/opt/vx-cleanup.sh
