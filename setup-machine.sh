@@ -185,6 +185,14 @@ sudo cp -rp vxsuite /vx/code/
 sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
 sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 
+# Copy and symlink Playwright Chromium to the path that Playwright will expect when run as
+# vx-services
+sudo cp -rp ~/.cache/ms-playwright /vx/code/
+sudo cp -rp ~/.cache/vx-playwright-deps /vx/code/
+sudo mkdir -p /vx/services/.cache
+sudo ln -s /vx/code/ms-playwright /vx/services/.cache/ms-playwright
+sudo ln -s /vx/code/vx-playwright-deps /vx/services/.cache/vx-playwright-deps
+
 # symlink appropriate vx/ui files
 sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
 sudo ln -s /vx/code/config/Xmodmap /vx/ui/.Xmodmap
