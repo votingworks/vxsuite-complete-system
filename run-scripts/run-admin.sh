@@ -16,6 +16,7 @@ if [ -z "${ADMIN_WORKSPACE:-}" ]; then
   exit 1
 fi
 
-export PIPENV_VENV_IN_PROJECT=1
 export NODE_ENV=production
+export PIPENV_VENV_IN_PROJECT=1
+export PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1
 (trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/admin/backend run & make -C vxsuite/services/converter-ms-sems run & make -C vxsuite/apps/admin/frontend run) | logger -S 4096 --tag votingworksapp
