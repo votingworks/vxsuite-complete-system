@@ -59,10 +59,12 @@ pactl unload-module module-suspend-on-idle
 # (because of course they do)
 #
 # NOTE: On VxMark, the startup chime is played through the speakers from within
-# the app server, so we instead play a shortned version here through the
+# the app server, so we instead play a shortened version here through the
 # headphones, to activate the headphone audio device.
 if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
-  sleep 2 && aplay ~/chime-short.wav && pactl set-sink-volume 0 100%
+  # On VxMark, the app server owns volume setting so don't set anything here
+  # that might conflict
+  sleep 2 && aplay ~/chime-short.wav
 else
   sleep 5 && aplay ~/chime.wav && pactl set-sink-volume 0 100%
 fi
