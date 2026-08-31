@@ -1,13 +1,6 @@
 # VxSuite Complete System
 
-VxSuite is the VotingWorks paper-ballot voting system. This repo links compatible versions of its two key submodules and includes the scripts necessary to create a production machine.
-
-## Submodules
-
-Those two submodules are:
-
-- [vxsuite](https://github.com/votingworks/vxsuite) — Contains the bulk of the voting system source code
-- [kiosk-browser](https://github.com/votingworks/kiosk-browser) — A generic Electron-based kiosk-mode browser that runs our app frontends in production
+VxSuite is the VotingWorks paper-ballot voting system. This repo contains the scripts necessary to create a production machine. The bulk of the voting system source code lives in the separate [vxsuite](https://github.com/votingworks/vxsuite) repo.
 
 ## Production Machines
 
@@ -21,15 +14,13 @@ View our contribution guidelines [here](https://github.com/votingworks/contribut
 
 If you are developing in [vxsuite](https://github.com/votingworks/vxsuite), it's often helpful to run via [kiosk-browser](https://github.com/votingworks/kiosk-browser) to mimic production.
 
-It's recommended that you clone [vxsuite](https://github.com/votingworks/vxsuite) separately rather than using the submodule in this repo. In one terminal, run the relevant VxSuite app per instructions in [vxsuite](https://github.com/votingworks/vxsuite).
+First, build and install kiosk-browser per instructions in [kiosk-browser](https://github.com/votingworks/kiosk-browser).
 
-Then in another terminal, run kiosk-browser:
+Then, in one terminal, run the relevant VxSuite app per instructions in [vxsuite](https://github.com/votingworks/vxsuite).
+
+And in another terminal, run in this repo:
 
 ```sh
-# Only needed once or whenever kiosk-browser is updated
-make checkout
-make build-kiosk-browser
-
 KIOSK_BROWSER_ALLOW_DEVTOOLS=true ./run-scripts/run-kiosk-browser.sh
 ```
 
