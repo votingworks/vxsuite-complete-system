@@ -349,8 +349,12 @@ else
   # remove network packages
   sudo apt purge -y network-manager iw > /dev/null 2>&1 || true
 
-  # remove avahi packages
-  sudo apt purge -y avahi-daemon avahi-utils avahi-autoipd > /dev/null 2>&1 || true
+  # remove most avahi packages
+  # Note: the avahi-daemon package remains because it is a dependency for
+  # ipp-usb. As a result, we explicitly disable related services
+  sudo apt purge -y avahi-utils avahi-autoipd > /dev/null 2>&1 || true
+  sudo systemctl disable --now avahi-daemon.service avahi-daemon.socket
+  sudo systemctl mask avahi-daemon.service avahi-daemon.socket
 
   # remove strongswan packages
   sudo apt purge -y strongswan-ctl libstrongswan-extra-plugins libstrongswan-standard-plugins charon-systemd strongswan-pki > /dev/null 2>&1 || true
