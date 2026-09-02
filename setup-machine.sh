@@ -325,14 +325,6 @@ sudo chown -h vx-vendor:vx-group /vx/config/openssl.cnf
 sudo cp config/grub /etc/default/grub
 sudo update-grub
 
-# turn off network time updates
-sudo timedatectl set-ntp no
-
-# set up symlinked timezone files to prepare for read-only filesystem
-sudo rm -f /etc/localtime
-sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
-sudo ln -sf /vx/config/localtime /etc/localtime
-
 # admin types now have support for limited local ethernet
 # set up various paths for config persistence and secure boot
 if [[ "${CHOICE}" == "admin" ]]; then
