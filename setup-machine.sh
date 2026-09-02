@@ -333,12 +333,16 @@ sudo rm -f /etc/localtime
 sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
 sudo ln -sf /vx/config/localtime /etc/localtime
 
-# admin types now have support for limited local ethernet
+# admin and central-scan types have support for limited local ethernet
 # set up various paths for config persistence and secure boot
-if [[ "${CHOICE}" == "admin" ]]; then
+if [[ "${CHOICE}" == "admin" || "${CHOICE}" == "central-scan" ]]; then
   sudo mkdir -p /vx/config/etc
   sudo mv /etc/swanctl/ /vx/config/etc/
   sudo ln -fs /vx/config/etc/swanctl /etc/swanctl
+
+  # the build-system ships one strongswan config for every machine type; point
+  # it at the strongswan cert this machine type creates (see create-machine-cert.sh)
+  sudo sed -i "s/@VX_MACHINE_TYPE@/${CHOICE}/g" /etc/swanctl/conf.d/vxswan.conf
   sudo cp config/apparmor.d/usr.sbin.swanctl /etc/apparmor.d/
 
   # Note: this does not enable local ethernet connections
