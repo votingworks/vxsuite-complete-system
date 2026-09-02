@@ -43,7 +43,7 @@ if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "poll-book" ]]; t
     sudo ${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh
 fi
 
-if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "central-scan" ]]; then
     echo
     echo -e "\e[1mStep 6: Network Configuration\e[0m"
     read -p "Should local networking be enabled? (y/n) " NETWORK_ENABLED

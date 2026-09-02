@@ -51,7 +51,7 @@ while true; do
     echo -e "Secure Boot State: \e[31mDisabled\e[0m"
   fi
 
-  if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+  if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "central-scan" ]]; then
     NETWORK_STATE=$(cat ${VX_CONFIG_ROOT}/local-ethernet-state 2>/dev/null || echo disable)
     if [[ "${NETWORK_STATE}" = "enable" ]]; then
       echo -e "Local Network State: \e[32mEnabled\e[0m"
@@ -127,7 +127,7 @@ while true; do
     CHOICES+=('program-system-administrator-cards')
   fi
 
-  if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+  if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "central-scan" ]]; then
     echo "${#CHOICES[@]}. Toggle Local Network State"
     CHOICES+=('toggle-local-network-state')
   fi
