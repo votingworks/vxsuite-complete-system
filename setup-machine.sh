@@ -402,37 +402,6 @@ if [[ "${CHOICE}" == "mark-scan" ]]; then
   done
 fi
 
-# We need to disable pulseaudio for users since it runs per user
-# We manually start the pulseaudio service within vxsuite for the vx-ui user
-# Note: Depending on future use-cases, we may need to disable pulseaudio 
-# for the vx-services user. It is not currently necessary though.
-for user in vx-vendor vx-ui
-do
-  user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
-  sudo mkdir -p ${user_home_dir}/.config/systemd/user
-  sudo ln -s /dev/null ${user_home_dir}/.config/systemd/user/pulseaudio.service
-  sudo ln -s /dev/null ${user_home_dir}/.config/systemd/user/pulseaudio.socket
-  sudo chown -R ${user}:${user} ${user_home_dir}/.config
-done
-
-# We suspend pulseaudio idling via ~vx-ui/.xinitrc, but, anecdotally, it seems
-# like there is a race condition that can result in the pulseaudio config
-# still idling audio in the event of a USB error during X initialization
-# Rather than applying a work-around at the system level, we configure
-# the vx-ui user to always suspend, regardless of any USB errors during boot
-# according to pulseaudio best practices
-vx_ui_homedir=$( getent passwd vx-ui | cut -d: -f6 )
-sudo mkdir -p ${vx_ui_homedir}/.config/pulse
-sudo tee ${vx_ui_homedir}/.config/pulse/default.pa > /dev/null << 'PULSE'
-.include /etc/pulse/default.pa
-.nofail
-unload-module module-suspend-on-idle
-.fail
-PULSE
-
-# Fix permissions so vx-ui owns the pulseaudio config
-sudo chown -R vx-ui:vx-ui ${vx_ui_homedir}/.config/pulse
-
 # Remove git
 sudo apt remove -y git > /dev/null 2>&1 || true
 
