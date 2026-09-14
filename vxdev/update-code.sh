@@ -17,6 +17,7 @@ pushd ${build_system_dir}
 git checkout main > /dev/null 2>&1
 git pull > /dev/null 2>&1
 git fetch --tags > /dev/null 2>&1
+sudo git clean -dfx > /dev/null 2>&1
 LATEST_STABLE=$( git describe --tags `git rev-list --tags --max-count=1` )
 popd
 
@@ -47,6 +48,7 @@ if [[ $BRANCH == 'latest' ]]; then
 	for dir in ${complete_system_dir} ${vxsuite_dir} ${kiosk_browser_dir}
 	do
 	  pushd ${dir}
+	  sudo git clean -dfx
  	  git checkout main
 	  git pull
 	  popd
@@ -61,6 +63,7 @@ elif [[ $BRANCH == 'stable' ]]; then
           version=$(yq -r ".repos.\"${repo}\".version" "${main_yaml}")
 	  echo "Repo: $repo --> Version: $version"
 	  pushd ${code_dir}/${repo}
+	  sudo git clean -dfx
           git checkout main
 	  git pull
 	  git checkout ${version}
@@ -72,6 +75,7 @@ elif [[ $BRANCH == 'custom' ]]; then
 	do
 	  read -p "Enter the ${repo} branch name: " BRANCH_NAME
 	  pushd ${code_dir}/${repo}
+	  sudo git clean -dfx
 	  git checkout main
 	  git pull
 	  while [ !`git branch -r --list origin/$BRANCH_NAME` ]
