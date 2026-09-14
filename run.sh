@@ -11,10 +11,14 @@
 set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+local_user=`logname`
+local_user_home_dir=$( getent passwd "${local_user}" | cut -d: -f6 )
+build_system_dir="${local_user_home_dir}/code/vxsuite-build-system"
+vxsuite_dir="${local_user_home_dir}/code/vxsuite-build-system"
 
 ALL_APPS=()
 
-for app in ${DIR}/vxsuite/apps/*; do
+for app in ${vxsuite_dir}/apps/*; do
   if [ -d "${app}" ]; then
     ALL_APPS+=("$(basename "${app}")")
   fi
@@ -34,10 +38,12 @@ fi
 
 APP="$1"
 if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
-  if [ ! -d "${DIR}/build/${APP}" ]; then
+  if [ ! -d "${vxsuite_dir}/build/${APP}" ]; then
     echo "⁉️ ${APP} is not yet built, building…"
-    "${DIR}/prepare_build.sh" "${APP}"
-    "${DIR}/build.sh" "${APP}"
+    pushd ${build_system_dir}
+    "./scripts/tb-prepare-build.sh" "${APP}"
+    "./scripts/tb-build.sh" "${APP}"
+    popd
   fi
 
   # set up config
