@@ -14,7 +14,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 local_user=`logname`
 local_user_home_dir=$( getent passwd "${local_user}" | cut -d: -f6 )
 build_system_dir="${local_user_home_dir}/code/vxsuite-build-system"
-vxsuite_dir="${local_user_home_dir}/code/vxsuite-build-system"
+vxsuite_dir="${local_user_home_dir}/code/vxsuite"
 
 ALL_APPS=()
 
