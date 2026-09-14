@@ -5,13 +5,20 @@
 : "${VX_METADATA_ROOT:="/vx/code"}"
 APP_TYPE=$(sudo cat "$VX_CONFIG_ROOT/machine-type")
 
-cd /home/vx/code/vxsuite-complete-system
+local_user=`logname`
+local_user_home_dir=$( getent passwd "${local_user}" | cut -d: -f6 )
+code_dir="${local_user_home_dir}/code"
+kiosk_browser_dir="${local_user_home_dir}/code/kiosk-browser"
+complete_system_dir="${local_user_home_dir}/code/vxsuite-complete-system"
+vxsuite_dir="${local_user_home_dir}/code/vxsuite"
+build_system_dir="${local_user_home_dir}/code/vxsuite-build-system"
+
+pushd ${build_system_dir}
 git checkout main > /dev/null 2>&1
-git pull > /dev/null
-git fetch --tags > /dev/null
-sudo git clean -xfd > /dev/null
-git submodule foreach --recursive sudo git clean -xfd > /dev/null
-LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+git pull > /dev/null 2>&1
+git fetch --tags > /dev/null 2>&1
+LATEST_STABLE=$( git describe --tags `git rev-list --tags --max-count=1` )
+popd
 
 CHOICES=('')
 echo "What code version would you like to update to?"
@@ -19,10 +26,10 @@ echo "What code version would you like to update to?"
 echo "${#CHOICES[@]}. Latest Code"
 CHOICES+=('latest')
 
-echo "2. Latest Stable Release ($LATEST_TAG)"
+echo "2. Latest Stable Release ($LATEST_STABLE)"
 CHOICES+=('stable')
 
-echo "3. Custom Branch"
+echo "3. Custom Branches"
 CHOICES+=('custom')
 
 echo
@@ -37,33 +44,43 @@ fi
 BRANCH=${CHOICES[$CHOICE_INDEX]}
 
 if [[ $BRANCH == 'latest' ]]; then
-	cd vxsuite
- 	git checkout main
-	git pull
-	cd ../kiosk-browser
-	git checkout main
-	git pull
-	cd ..
-elif [[ $BRANCH == 'stable' ]]; then
-	git checkout $LATEST_TAG
-	git submodule foreach --recursive sudo git clean -xfd
-	git submodule update --init --recursive
-	cd vxsuite
-	cd ..
-elif [[ $BRANCH == 'custom' ]]; then
-	read -p "Enter the branch name: " BRANCH_NAME
-	cd vxsuite
-	git checkout main
-	git pull
-	while [ !`git branch -r --list origin/$BRANCH_NAME` ]
+	for dir in ${complete_system_dir} ${vxsuite_dir} ${kiosk_browser_dir}
 	do
-		read -p "Invalid Branch Name. Try again: " BRANCH_NAME
+	  pushd ${dir}
+ 	  git checkout main
+	  git pull
+	  popd
+        done
+elif [[ $BRANCH == 'stable' ]]; then
+	pushd ${build_system_dir}
+	git checkout ${LATEST_STABLE}
+	main_yaml="inventories/stable/group_vars/all/main.yaml"
+	repos=$(yq -r '.repos | keys | .[]' "${main_yaml}")
+	for repo in ${repos}
+	do
+          version=$(yq -r ".repos.\"${repo}\".version" "${main_yaml}")
+	  echo "Repo: $repo --> Version: $version"
+	  pushd ${code_dir}/${repo}
+          git checkout main
+	  git pull
+	  git checkout ${version}
+	  popd
 	done
-	git checkout $BRANCH_NAME
-	cd ../kiosk-browser
-	git checkout main
-	git pull
-	cd ..
+	popd
+elif [[ $BRANCH == 'custom' ]]; then
+	for repo in vxsuite vxsuite-complete-system kiosk-browser
+	do
+	  read -p "Enter the ${repo} branch name: " BRANCH_NAME
+	  pushd ${code_dir}/${repo}
+	  git checkout main
+	  git pull
+	  while [ !`git branch -r --list origin/$BRANCH_NAME` ]
+	  do
+	    read -p "Invalid Branch Name. Try again: " BRANCH_NAME
+	  done
+	  git checkout $BRANCH_NAME
+	  popd
+	done
 fi
 
 echo
@@ -82,7 +99,7 @@ else
   fi
 fi
 
-cp /vx/config/.env.local vxsuite/.env.local
+cp /vx/config/.env.local ${vxsuite_dir}/.env.local
 
 # improve this by tracking commit id
 # only rebuild when it changes
@@ -92,49 +109,53 @@ then
 fi
 
 echo $APP_TYPE
+pushd ${build_system_dir}
 if [[ $APP_TYPE == 'VxAdmin' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/admin/frontend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/admin/backend/.env.local
-	./prepare_build.sh admin
-	./build.sh admin
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/admin/frontend/.env.local
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/admin/backend/.env.local
+	./scripts/tb-prepare-build.sh admin
+	./scripts/tb-build.sh admin
 fi
 if [[ $APP_TYPE == 'VxCentralScan' ]] || [[ $APP_TYPE == 'VxAdminCentralScan' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/central-scan/backend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/central-scan/frontend/.env.local
-	./prepare_build.sh central-scan
-	./build.sh central-scan
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/central-scan/backend/.env.local
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/central-scan/frontend/.env.local
+	./scripts/tb-prepare-build.sh central-scan
+	./scripts/tb-build.sh central-scan
 fi
 if [[ $APP_TYPE == 'VxMark' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/mark/frontend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/mark/backend/.env.local
-	./prepare_build.sh mark
-	./build.sh mark
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/mark/frontend/.env.local
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/mark/backend/.env.local
+	./scripts/tb-prepare-build.sh mark
+	./scripts/tb-build.sh mark
 fi
 if [[ $APP_TYPE == 'VxMarkScan' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/mark-scan/backend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/mark-scan/frontend/.env.local
-	./prepare_build.sh mark-scan
-	./build.sh mark-scan
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/mark-scan/backend/.env.local
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/mark-scan/frontend/.env.local
+	./scripts/tb-prepare-build.sh mark-scan
+	./scripts/tb-build.sh mark-scan
 	for vx_daemon in controller pat
 	do
+	  pushd ${complete_system_dir}
 	  sudo cp config/mark-scan-${vx_daemon}-daemon.service /etc/systemd/system/
 	  sudo cp run-scripts/run-mark-scan-${vx_daemon}-daemon.sh /vx/code/
 	  sudo chmod 644 /etc/systemd/system/mark-scan-${vx_daemon}-daemon.service
 	  sudo ln -sf /vx/code/run-mark-scan-${vx_daemon}-daemon.sh /vx/services/run-mark-scan-${vx_daemon}-daemon.sh
 	  sudo systemctl daemon-reload
+	  popd
 	done
 fi
 if [[ $APP_TYPE == 'VxPrint' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/print/backend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/print/frontend/.env.local
-	./prepare_build.sh print
-	./build.sh print
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/print/backend/.env.local
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/print/frontend/.env.local
+	./scripts/tb-prepare-build.sh print
+	./scripts/tb-build.sh print
 fi
 if [[ $APP_TYPE == 'VxScan' ]]; then
-	cp /vx/config/.env.local vxsuite/apps/scan/backend/.env.local
-	cp /vx/config/.env.local vxsuite/apps/scan/frontend/.env.local
-	./prepare_build.sh scan
-	./build.sh scan
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/scan/backend/.env.local
+	cp /vx/config/.env.local ${vxsuite_dir}/apps/scan/frontend/.env.local
+	./scripts/tb-prepare-build.sh scan
+	./scripts/tb-build.sh scan
 fi
+popd
 
 echo "Done! Closing in 3 seconds."
