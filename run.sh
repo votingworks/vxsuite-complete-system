@@ -78,7 +78,7 @@ if [[ " ${ALL_APPS[@]} " =~ " ${APP} " ]]; then
     done
   fi
   export DISPLAY=${DISPLAY:-:0}
-  cd "${DIR}/build/${APP}"
+  cd "${vxsuite_dir}/build/${APP}"
   (
     trap 'kill 0' SIGINT SIGHUP; "./run-${APP}.sh" &
     # Delay kiosk-browser to make sure the app is running first
