@@ -55,6 +55,7 @@ if [[ $BRANCH == 'latest' ]]; then
         done
 elif [[ $BRANCH == 'stable' ]]; then
 	pushd ${build_system_dir}
+        sudo git clean -dfx
 	git checkout ${LATEST_STABLE}
 	main_yaml="inventories/stable/group_vars/all/main.yaml"
 	repos=$(yq -r '.repos | keys | .[]' "${main_yaml}")
@@ -62,11 +63,11 @@ elif [[ $BRANCH == 'stable' ]]; then
 	do
           version=$(yq -r ".repos.\"${repo}\".version" "${main_yaml}")
 	  echo "Repo: $repo --> Version: $version"
-	  pushd ${code_dir}/${repo}
-	  sudo git clean -dfx
+          pushd ${code_dir}/${repo}
+          sudo git clean -dfx
           git checkout main
-	  git pull
-	  git checkout ${version}
+          git pull
+          git checkout ${version}
 	  popd
 	done
 	popd
