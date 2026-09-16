@@ -48,10 +48,6 @@ ansible-playbook -i inventories/vxdev-latest playbooks/trusted_build/rust.yaml
 
 cd /vx/code/vxsuite-complete-system
 
-# Fetch the latest code
-#git checkout main > /dev/null 2>&1
-#git pull > /dev/null
-
 # Update the configuration script and run it to fetch and apply any new updates to VxDev
 sudo cp vxdev/vxdev-configuration.sh /vx/scripts/.
 bash /vx/scripts/vxdev-configuration.sh
