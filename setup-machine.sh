@@ -325,15 +325,7 @@ sudo chown -h vx-vendor:vx-group /vx/config/openssl.cnf
 sudo cp config/grub /etc/default/grub
 sudo update-grub
 
-# turn off network time updates
-sudo timedatectl set-ntp no
-
-# set up symlinked timezone files to prepare for read-only filesystem
-sudo rm -f /etc/localtime
-sudo ln -sf /usr/share/zoneinfo/America/Chicago /vx/config/localtime
-sudo ln -sf /vx/config/localtime /etc/localtime
-
-# admin and central-scan types have support for limited local ethernet
+# admin types now have support for limited local ethernet
 # set up various paths for config persistence and secure boot
 if [[ "${CHOICE}" == "admin" || "${CHOICE}" == "central-scan" ]]; then
   sudo mkdir -p /vx/config/etc
@@ -375,9 +367,6 @@ else
   sudo systemctl disable --now systemd-networkd
 fi
 
-# replace /etc/network/interfaces to only allow loopback on future boots
-sudo cp config/interfaces /etc/network/interfaces
-
 # set up the service for the selected machine type
 sudo cp config/${CHOICE}.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/${CHOICE}.service
@@ -416,46 +405,6 @@ if [[ "${CHOICE}" == "mark-scan" ]]; then
     sudo systemctl start mark-scan-${vx_daemon}-daemon.service
   done
 fi
-
-# To provide a boot sequence with as few console logs as possible
-# we suppress the messages from the login command
-for user in vx-vendor vx-ui
-do
-  user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
-  sudo touch ${user_home_dir}/.hushlogin
-  sudo chown ${user}:${user} ${user_home_dir}/.hushlogin
-done
-
-# We need to disable pulseaudio for users since it runs per user
-# We manually start the pulseaudio service within vxsuite for the vx-ui user
-# Note: Depending on future use-cases, we may need to disable pulseaudio 
-# for the vx-services user. It is not currently necessary though.
-for user in vx-vendor vx-ui
-do
-  user_home_dir=$( getent passwd "${user}" | cut -d: -f6 )
-  sudo mkdir -p ${user_home_dir}/.config/systemd/user
-  sudo ln -s /dev/null ${user_home_dir}/.config/systemd/user/pulseaudio.service
-  sudo ln -s /dev/null ${user_home_dir}/.config/systemd/user/pulseaudio.socket
-  sudo chown -R ${user}:${user} ${user_home_dir}/.config
-done
-
-# We suspend pulseaudio idling via ~vx-ui/.xinitrc, but, anecdotally, it seems
-# like there is a race condition that can result in the pulseaudio config
-# still idling audio in the event of a USB error during X initialization
-# Rather than applying a work-around at the system level, we configure
-# the vx-ui user to always suspend, regardless of any USB errors during boot
-# according to pulseaudio best practices
-vx_ui_homedir=$( getent passwd vx-ui | cut -d: -f6 )
-sudo mkdir -p ${vx_ui_homedir}/.config/pulse
-sudo tee ${vx_ui_homedir}/.config/pulse/default.pa > /dev/null << 'PULSE'
-.include /etc/pulse/default.pa
-.nofail
-unload-module module-suspend-on-idle
-.fail
-PULSE
-
-# Fix permissions so vx-ui owns the pulseaudio config
-sudo chown -R vx-ui:vx-ui ${vx_ui_homedir}/.config/pulse
 
 # Remove git
 sudo apt remove -y git > /dev/null 2>&1 || true
