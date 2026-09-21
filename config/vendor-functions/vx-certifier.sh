@@ -17,12 +17,15 @@ USB_DRIVE_CERTS_DIRECTORY="/media/vx/usb-drive/certs"
 
 : "${CERTS_DIRECTORY:="${USB_DRIVE_CERTS_DIRECTORY}"}"
 : "${VX_FUNCTIONS_ROOT:="$(dirname "${0}")"}"
-# We typically set this to /vx/code, but here we optimize for use in a vxsuite-complete-system dev
-# env, as that's where this is most often used. For auto-certification on QA images, we reset this
-# to /vx/code.
-: "${VX_METADATA_ROOT:="${VX_FUNCTIONS_ROOT}/../.."}"
 
-ROOT_VX_CERT_AUTHORITY_CERT_PATH="${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem"
+# We typically set VX_METADATA_ROOT to /vx/code, but here we optimize for use in a
+# local vxsuite-complete-system env, as that's where this is most often used. For auto-certification
+# on QA images, we reset VX_METADATA_ROOT to /vx/code and VXSUITE_ROOT to /vx/code/vxsuite.
+#
+: "${VX_METADATA_ROOT:="${VX_FUNCTIONS_ROOT}/../.."}"
+: "${VXSUITE_ROOT:="${VX_METADATA_ROOT}/../vxsuite"}"
+
+ROOT_VX_CERT_AUTHORITY_CERT_PATH="${VXSUITE_ROOT}/libs/auth/certs/prod/vx-cert-authority-cert.pem"
 SERIAL_FILE="/tmp/serial.txt"
 
 rm -f "${SERIAL_FILE}"
@@ -74,7 +77,7 @@ for CSR_PATH in "${CERTS_DIRECTORY}"/*csr*.pem; do
     if openssl req -in "${CSR_PATH}" -noout -subject | grep -Eq '1\.3\.6\.1\.4\.1\.59817\.1 = (admin|poll-book)'; then
         echo "Creating CA cert..."
         CMD+=(
-            -extfile "${VX_METADATA_ROOT}/vxsuite/libs/auth/config/openssl.vx.cnf"
+            -extfile "${VXSUITE_ROOT}/libs/auth/config/openssl.vx.cnf"
             -extensions v3_ca
         )
     else
