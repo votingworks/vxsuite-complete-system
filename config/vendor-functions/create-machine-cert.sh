@@ -7,11 +7,12 @@ set -euo pipefail
 : "${VX_CONFIG_ROOT:="/vx/config"}"
 : "${VX_FUNCTIONS_ROOT:="$(dirname "${0}")"}"
 : "${VX_METADATA_ROOT:="/vx/code"}"
+: "${VXSUITE_ROOT:="${VX_METADATA_ROOT}/vxsuite"}"
 : "${VX_MACHINE_TYPE:="$(< "${VX_CONFIG_ROOT}/machine-type")"}"
 : "${VX_MACHINE_ID:="$(< "${VX_CONFIG_ROOT}/machine-id")"}"
 : "${IS_QA_IMAGE:="$(< "${VX_CONFIG_ROOT}/is-qa-image")"}"
 
-ROOT_VX_CERT_AUTHORITY_CERT_PATH="${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/prod/vx-cert-authority-cert.pem"
+ROOT_VX_CERT_AUTHORITY_CERT_PATH="${VXSUITE_ROOT}/libs/auth/certs/prod/vx-cert-authority-cert.pem"
 
 USB_DRIVE_CERTS_DIRECTORY="/media/vx/usb-drive/certs"
 USB_DRIVE_CSR_PATH="${USB_DRIVE_CERTS_DIRECTORY}/csr-${VX_MACHINE_ID}.pem"
@@ -77,7 +78,7 @@ function get_machine_jurisdiction_from_user_input() {
 }
 
 function create_machine_cert_signing_request() {
-    pushd "${VX_METADATA_ROOT}/vxsuite/libs/auth/scripts" > /dev/null
+    pushd "${VXSUITE_ROOT}/libs/auth/scripts" > /dev/null
     local machine_jurisdiction="${1:-}"
     if [[ -n "${machine_jurisdiction}" ]]; then
         VX_MACHINE_TYPE="${VX_MACHINE_TYPE}" \
@@ -121,8 +122,9 @@ unmount_usb_drive
 
 if [[ "${IS_QA_IMAGE}" == 1 ]]; then
     read -p "Because we're using a QA image, and the production VotingWorks cert has been overwritten by the dev VotingWorks cert, we can auto-certify this machine using the dev VotingWorks private key. You'll be prompted to select a USB drive again. Press enter to continue. "
-    VX_PRIVATE_KEY_PATH="${VX_METADATA_ROOT}/vxsuite/libs/auth/certs/dev/vx-private-key.pem" \
+    VX_PRIVATE_KEY_PATH="${VXSUITE_ROOT}/libs/auth/certs/dev/vx-private-key.pem" \
         VX_METADATA_ROOT="${VX_METADATA_ROOT}" \
+        VXSUITE_ROOT="${VXSUITE_ROOT}" \
         "${VX_FUNCTIONS_ROOT}/vx-certifier.sh"
     read -p "You'll be prompted to select a USB drive one last time. Press enter to continue. "
 else
