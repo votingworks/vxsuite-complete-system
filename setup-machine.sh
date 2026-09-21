@@ -153,6 +153,16 @@ then
     sudo cp config/10-intel-xorg.conf /etc/X11/xorg.conf.d/10-intel.conf
 fi
 
+# VxMark screen is rotated 90 degrees via .xinitrc
+# This requires changing the coordinate transformation matrix so touch events
+# are accurately mapped to the rotated screen
+# To survive ESD events, that transformation is now handled via an xorg config
+# rather than the .xinitrc config (which is only sourced at boot / X restart)
+if [ "${CHOICE}" == "mark" ]
+then
+    sudo cp config/10-vxmark-transform-matrix.conf /etc/X11/xorg.conf.d/10-vxmark-transform-matrix.conf
+fi
+
 if [ "${CHOICE}" == "mark-scan" ]
 then
     # uinput module must be loaded explicitly

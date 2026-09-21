@@ -23,11 +23,10 @@ VSAP150="PenMount PM1415"
   # Set the screen brightness (brightness is ID 10) to 70%
   ddcutil setvcp 10 70
 
-  # [VxMark] Rotate display and touch input:
+  # [VxMark] Rotate display
+  # The coordinate transformation matrix is now in /etc/X11/xorg.conf.d/10-vxmark-transform-matrix.conf
   if cat $VX_CONFIG_ROOT/machine-type | grep "^mark$" > /dev/null; then
-    elo_id=$( xinput list --name-only | grep "$ELO" | grep -vi mouse | sed -E 's/.*?id=([0-9]+).*/\1/' | uniq )
     xrandr -o left
-    xinput set-prop "$elo_id" 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
   fi
 elif xinput list | grep -i "$VSAP150" > /dev/null; then
   # Rotate mark-scan screen to portrait
