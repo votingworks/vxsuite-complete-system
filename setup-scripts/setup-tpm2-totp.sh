@@ -10,7 +10,7 @@ fi
 (
     cd tpm2-software/tpm2-tss
     ./bootstrap
-    ./configure
+    ./configure CFLAGS="-Wno-error=calloc-transposed-args"
     make  -j
     sudo make install
 )
@@ -18,7 +18,7 @@ fi
 (
     cd tpm2-software/tpm2-totp
     ./bootstrap
-    ./configure
+    ./configure CFLAGS="-Wno-error=calloc-transposed-args"
     make
     sudo make install
 )
