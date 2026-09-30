@@ -303,6 +303,7 @@ do
   sudo cp config/${user}-shell ${user_home_dir}/.
   sudo chown ${user}:${user} ${user_home_dir}/${user}-shell
   sudo chmod 700 ${user_home_dir}/${user}-shell
+  sudo echo "${user_home_dir}/${user}-shell" >> /etc/shells
   sudo chsh -s ${user_home_dir}/${user}-shell ${user}
 done
 
