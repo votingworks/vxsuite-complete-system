@@ -359,6 +359,7 @@ else
   # Note: the avahi-daemon package remains because it is a dependency for
   # ipp-usb. As a result, we explicitly disable related services
   sudo apt purge -y avahi-utils avahi-autoipd > /dev/null 2>&1 || true
+  sudo systemctl stop avahi-daemon.service avahi-daemon.socket
   sudo systemctl disable --now avahi-daemon.service avahi-daemon.socket
   sudo systemctl mask avahi-daemon.service avahi-daemon.socket
 
