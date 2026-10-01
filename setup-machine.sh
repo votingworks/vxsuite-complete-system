@@ -363,7 +363,7 @@ else
   sudo systemctl mask avahi-daemon.service avahi-daemon.socket
 
   # remove strongswan packages
-  sudo apt purge -y strongswan-ctl libstrongswan-extra-plugins libstrongswan-standard-plugins charon-systemd strongswan-pki > /dev/null 2>&1 || true
+  sudo apt purge -y strongswan-swanctl libstrongswan-extra-plugins libstrongswan-standard-plugins charon-systemd strongswan-pki libcharon-extra-plugins strongswan-libcharon libstrongswan > /dev/null 2>&1 || true
 
   # remove network modules
   sudo rm -rf /lib/modules/*/kernel/drivers/net/*
