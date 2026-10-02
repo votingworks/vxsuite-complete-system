@@ -12,6 +12,7 @@ METADATA=${VX_METADATA_ROOT:-./}
 source ${CONFIG}/read-vx-machine-config.sh
 
 export NODE_ENV=production
+source "${METADATA}/config/enable-node-fips.sh"
 export PIPENV_VENV_IN_PROJECT=1
 export PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1
 (trap 'kill 0' SIGINT SIGHUP; make -C vxsuite/apps/mark-scan/backend run & make -C vxsuite/apps/mark-scan/frontend run) | logger -S 4096 --tag votingworksapp
