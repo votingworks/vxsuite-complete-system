@@ -71,10 +71,19 @@ for CSR_PATH in "${CERTS_DIRECTORY}"/*csr*.pem; do
         -out "${CERT_PATH}"
     )
 
-    # If certifying a VxAdmin or VxPollBook, the outputted cert needs to be a cert authority (CA) cert
-    # capable of issuing further certs, for smart card programming.
+    # The strongSwan cert only identifies the machine during IKE, so it is always an end-entity
+    # cert. Otherwise, if certifying a VxAdmin, VxPollBook, or VxCentralScan, the outputted cert
+    # needs to be a cert authority (CA) cert capable of issuing further certs: for smart card
+    # programming (VxAdmin and VxPollBook) and for signing the machine's own peer TLS leaf certs
+    # (all three).
     echo
-    if openssl req -in "${CSR_PATH}" -noout -subject | grep -Eq '1\.3\.6\.1\.4\.1\.59817\.1 = (admin|poll-book)'; then
+    if [[ "${CSR_PATH}" == *-strongswan* ]]; then
+        echo "Creating strongSwan end-entity cert..."
+        CMD+=(
+            -extfile "${VXSUITE_ROOT}/libs/auth/config/openssl.vx.cnf"
+            -extensions v3_ipsec_end_entity
+        )
+    elif openssl req -in "${CSR_PATH}" -noout -subject | grep -Eq '1\.3\.6\.1\.4\.1\.59817\.1 = (admin|poll-book|central-scan)'; then
         echo "Creating CA cert..."
         CMD+=(
             -extfile "${VXSUITE_ROOT}/libs/auth/config/openssl.vx.cnf"
