@@ -189,7 +189,7 @@ sudo rsync -avz build/${CHOICE}/ /vx/code/
 sudo rm /vx/code/vxsuite # it's a symlink
 # We have limited space on the root partition so don't copy over the unneeded VxDesign and
 # VxPollBook directories
-rm -r apps/design apps/pollbook
+rm -r apps/hub apps/pollbook
 sudo cp -rp . /vx/code/vxsuite
 popd
 
