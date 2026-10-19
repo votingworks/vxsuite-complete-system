@@ -187,7 +187,7 @@ sudo rsync -avz build/${CHOICE}/ /vx/code/
 # temporary hack cause of precinct-scanner runtime issue
 #
 sudo rm /vx/code/vxsuite # it's a symlink
-# We have limited space on the root partition so don't copy over the unneeded VxDesign and
+# We have limited space on the root partition so don't copy over the unneeded VxHub and
 # VxPollBook directories
 rm -r apps/hub apps/pollbook
 sudo cp -rp . /vx/code/vxsuite
