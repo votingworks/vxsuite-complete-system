@@ -1,5 +1,8 @@
 [Unit]
 Description=VotingWorks Ballot Scanner
+Requires=firewalld.service
+After=firewalld.service
+BindsTo=firewalld.service
 
 [Service]
 Type=simple
