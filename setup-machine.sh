@@ -207,7 +207,6 @@ sudo ln -s /vx/code/vx-playwright-deps /vx/services/.cache/vx-playwright-deps
 
 # symlink appropriate vx/ui files
 sudo ln -s /vx/code/config/Xresources /vx/ui/.Xresources
-sudo ln -s /vx/code/config/Xmodmap /vx/ui/.Xmodmap
 sudo ln -s /vx/code/config/xinitrc /vx/ui/.xinitrc
 sudo ln -s /vx/code/config/chime.wav /vx/ui/chime.wav
 sudo ln -s /vx/code/config/chime-short.wav /vx/ui/chime-short.wav
