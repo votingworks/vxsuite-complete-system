@@ -81,7 +81,7 @@ fi
      fi
  done) &
 
-# brightness all the way
-sudo brightnessctl s 100%
+# brightness all the way (-n: fail rather than wait on a password prompt)
+sudo -n brightnessctl s 100%
 
 exec /usr/bin/openbox-session
