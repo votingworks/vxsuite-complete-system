@@ -7,10 +7,10 @@ set -euo pipefail
 # go to directory where this file is located
 cd "$(dirname "$0")"
 
-# rotate vx-logs.log if necessary
-# always return true on failure since logs dont always need rotating
-# but logrotate throws an error code
-sudo /vx/code/config/vendor-functions/rotate-logs.sh || true
+# Rotate vx-logs.log. A failure here mustn't stop the kiosk from starting, so
+# ignore it. -n makes sudo fail rather than prompt for a password, which would
+# stop this background script before it starts the kiosk.
+sudo -n /vx/code/config/vendor-functions/rotate-logs.sh || true
 
 # configuration information
 CONFIG=${VX_CONFIG_ROOT:-./config}
