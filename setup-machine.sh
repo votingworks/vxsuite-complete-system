@@ -198,8 +198,11 @@ sudo ln -s /vx/code/vxsuite /vx/services/vxsuite
 sudo ln -s /vx/code/run-${CHOICE}.sh /vx/services/run-${CHOICE}.sh
 
 # Copy and symlink Playwright Chromium to the path that Playwright will expect when run as
-# vx-services
-sudo cp -rp ~/.cache/ms-playwright /vx/code/
+# vx-services. The apps only launch Chromium headless, which Playwright runs from
+# chromium_headless_shell-*, so leave out the full Chromium and ffmpeg (~600M) to save
+# space on the root partition.
+sudo mkdir -p /vx/code/ms-playwright
+sudo cp -rp ~/.cache/ms-playwright/chromium_headless_shell-* /vx/code/ms-playwright/
 sudo cp -rp ~/.cache/vx-playwright-deps /vx/code/
 sudo mkdir -p /vx/services/.cache
 sudo ln -s /vx/code/ms-playwright /vx/services/.cache/ms-playwright
