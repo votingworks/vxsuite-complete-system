@@ -60,6 +60,15 @@ while true; do
     fi
   fi
 
+  if [[ "${VX_MACHINE_TYPE}" = "mark" ]]; then
+    USB_AUDIO_STATE=$(cat ${VX_CONFIG_ROOT}/usb-audio-state 2>/dev/null || echo disable)
+    if [[ "${USB_AUDIO_STATE}" = "enable" ]]; then
+      echo -e "USB Audio State: \e[32mEnabled\e[0m"
+    else
+      echo -e "USB Audio State: \e[31mDisabled\e[0m"
+    fi
+  fi
+
   if [ "${IS_QA_IMAGE}" = "1" ]; then
     echo -e "QA Image, sudo privileges are enabled, prod VotingWorks cert has been overwritten by dev VotingWorks cert"
   else
@@ -130,6 +139,11 @@ while true; do
   if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "central-scan" ]]; then
     echo "${#CHOICES[@]}. Toggle Local Network State"
     CHOICES+=('toggle-local-network-state')
+  fi
+
+  if [[ "${VX_MACHINE_TYPE}" = "mark" ]]; then
+    echo "${#CHOICES[@]}. Toggle USB Audio"
+    CHOICES+=('toggle-usb-audio-state')
   fi
 
   if [ "${IS_QA_IMAGE}" = "1" ]; then
@@ -252,6 +266,18 @@ while true; do
         prompt-to-restart
       else
 	echo
+      fi
+    ;;
+    
+    toggle-usb-audio-state)
+      if [[ "${USB_AUDIO_STATE}" = "disable" ]]; then
+        sudo ${VX_FUNCTIONS_ROOT}/manage-usb-audio.sh enable
+        prompt-to-restart
+      elif [[ "${USB_AUDIO_STATE}" = "enable" ]]; then
+        sudo ${VX_FUNCTIONS_ROOT}/manage-usb-audio.sh disable
+        prompt-to-restart
+      else
+        echo
       fi
     ;;
 

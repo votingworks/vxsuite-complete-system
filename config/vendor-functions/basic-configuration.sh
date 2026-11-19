@@ -37,6 +37,17 @@ echo
 echo -e "\e[1mStep 4: Create Machine Cert\e[0m"
 sudo ${VX_FUNCTIONS_ROOT}/create-machine-cert.sh
 
+if [[ "${VX_MACHINE_TYPE}" = "mark" ]]; then
+    echo
+    echo -e "\e[1mStep 5: Audio Configuration\e[0m"
+    read -p "Will the tactile controller be used for headphone audio? (y/n) " USB_AUDIO_STATE
+    if [[ "${USB_AUDIO_STATE}" = "y" ]]; then
+      sudo ${VX_FUNCTIONS_ROOT}/manage-usb-audio.sh enable
+    else
+      sudo ${VX_FUNCTIONS_ROOT}/manage-usb-audio.sh disable
+    fi
+fi
+
 if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
     echo
     echo -e "\e[1mStep 5: Program System Administrator Cards\e[0m"

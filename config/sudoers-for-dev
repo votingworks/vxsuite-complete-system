@@ -39,6 +39,7 @@ vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/config/vendor-functions/setup-boot-e
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/config/vendor-functions/create-machine-cert.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/config/vendor-functions/program-system-administrator-cards.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/config/vendor-functions/manage-local-ethernet.sh
+vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/config/vendor-functions/manage-usb-audio.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /usr/sbin/reboot
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/mount-usb.sh
 vx-vendor ALL=(root:ALL) NOPASSWD: /vx/code/app-scripts/unmount-usb.sh
