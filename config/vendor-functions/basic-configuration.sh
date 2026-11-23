@@ -37,15 +37,21 @@ echo
 echo -e "\e[1mStep 4: Create Machine Cert\e[0m"
 sudo ${VX_FUNCTIONS_ROOT}/create-machine-cert.sh
 
+if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+    echo
+    echo -e "\e[1mStep 5: Set Machine State\e[0m"
+    ${VX_FUNCTIONS_ROOT}/choose-vx-machine-state.sh
+fi
+
 if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "poll-book" ]]; then
     echo
-    echo -e "\e[1mStep 5: Program System Administrator Cards\e[0m"
+    echo -e "\e[1mStep 6: Program System Administrator Cards\e[0m"
     sudo ${VX_FUNCTIONS_ROOT}/program-system-administrator-cards.sh
 fi
 
 if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "central-scan" ]]; then
     echo
-    echo -e "\e[1mStep 6: Network Configuration\e[0m"
+    echo -e "\e[1mStep 7: Network Configuration\e[0m"
     read -p "Should local networking be enabled? (y/n) " NETWORK_ENABLED
     if [[ "${NETWORK_ENABLED}" = "y" ]]; then
       sudo ${VX_FUNCTIONS_ROOT}/manage-local-ethernet.sh enable
