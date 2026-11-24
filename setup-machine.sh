@@ -57,6 +57,15 @@ MODEL_NAME=${MODEL_NAMES[$CHOICE_INDEX]}
 
 echo "Excellent, let's set up ${CHOICE}."
 
+# The build system either stages the private DeskPro driver or marks it disabled.
+deskpro_driver_tarball=/opt/deskpro-driver.tar.gz
+deskpro_driver_disabled_marker=/opt/deskpro-driver.disabled
+if [ ! -f "${deskpro_driver_tarball}" ] && [ ! -f "${deskpro_driver_disabled_marker}" ]
+then
+    echo "ERROR: Neither ${deskpro_driver_tarball} nor ${deskpro_driver_disabled_marker} exists; the build must configure DeskPro support."
+    exit 1
+fi
+
 echo
 read -p "Is this image for QA, where you want sudo privileges, terminal access via TTY2, and the ability to record screengrabs? [y/N] " qa_image_flag
 
@@ -180,24 +189,17 @@ then
     sudo cp config/99-cino-s680-dialout-tty.rules /etc/udev/rules.d/
 fi
 
-# The build system stages the private DeskPro driver; only VxCentralScan installs it.
 # The driver reads its config from this hardcoded path.
-deskpro_driver_tarball=/opt/deskpro-driver.tar.gz
 deskpro_driver_dir=/opt/inotec/scamaxusb3
-if [ "${CHOICE}" == "central-scan" ]
+if [ "${CHOICE}" == "central-scan" ] && [ -f "${deskpro_driver_tarball}" ]
 then
-    if [ -f "${deskpro_driver_tarball}" ]
-    then
-        sudo mkdir -p "${deskpro_driver_dir}/lib" "${deskpro_driver_dir}/conf"
-        sudo tar -xzf "${deskpro_driver_tarball}" -C "${deskpro_driver_dir}/lib" --no-same-owner libinoapi.so libinousb.so
-        sudo chmod 0644 "${deskpro_driver_dir}/lib/"*.so
-        sudo cp config/deskpro/config.ini "${deskpro_driver_dir}/conf/"
-        sudo cp config/98-deskpro.rules /etc/udev/rules.d/
-    else
-        echo "WARNING: ${deskpro_driver_tarball} not found; DeskPro scanners will not work."
-    fi
+    sudo mkdir -p "${deskpro_driver_dir}/lib" "${deskpro_driver_dir}/conf"
+    sudo tar -xzf "${deskpro_driver_tarball}" -C "${deskpro_driver_dir}/lib" --no-same-owner libinoapi.so libinousb.so
+    sudo chmod 0644 "${deskpro_driver_dir}/lib/"*.so
+    sudo cp config/deskpro/config.ini "${deskpro_driver_dir}/conf/"
+    sudo cp config/98-deskpro.rules /etc/udev/rules.d/
 fi
-sudo rm -f "${deskpro_driver_tarball}"
+sudo rm -f "${deskpro_driver_tarball}" "${deskpro_driver_disabled_marker}"
 
 echo "Setting up the code"
 pushd /home/vx/code/vxsuite
