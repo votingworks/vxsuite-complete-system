@@ -386,8 +386,8 @@ if [[ "${CHOICE}" == "central-scan" ]]; then
   sudo umount /dev/sda || true
   sudo mount /dev/sda /mnt || true
   if [[ -f "${deskpro_tarball}" ]]; then
-    sudo mkdir -p "${deskpro_driver_dir}/{lib,conf}"
-    sudo tar -xfz "${deskpro_tarball}" -C "${deskpro_driver_dir}/lib" --no-same-owner libinoapi.so libinousb.so
+    sudo mkdir -p "${deskpro_driver_dir}"/{lib,conf}
+    sudo tar -xf "${deskpro_tarball}" -C "${deskpro_driver_dir}/lib" --no-same-owner libinoapi.so libinousb.so
     sudo chmod 0644 "${deskpro_driver_dir}/lib/"*.so
     sudo cp config/deskpro.ini "${deskpro_driver_dir}/conf/config.ini"
     sudo cp config/98-deskpro.rules /etc/udev/rules.d/
