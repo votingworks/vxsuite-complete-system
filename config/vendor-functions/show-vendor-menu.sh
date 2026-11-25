@@ -38,6 +38,9 @@ while true; do
   echo -e "Machine Type: \e[32m${VX_MACHINE_TYPE}\e[0m"
   echo -e "Machine Manufacturer: \e[32m${VX_MACHINE_MANUFACTURER}\e[0m"
   echo -e "Machine Model Name: \e[32m${VX_MACHINE_MODEL_NAME}\e[0m"
+  if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+    echo -e "Machine State: \e[32m${VX_MACHINE_STATE:-Not Set}\e[0m"
+  fi
   # TODO: do we want to try to also display secure boot status? 
   if [[ $(lsblk | grep "vroot") ]]; then
     echo -e "Lockdown State: \e[32mLocked Down\e[0m"
@@ -130,6 +133,11 @@ while true; do
   if [[ "${VX_MACHINE_TYPE}" = "admin" || "${VX_MACHINE_TYPE}" = "central-scan" ]]; then
     echo "${#CHOICES[@]}. Toggle Local Network State"
     CHOICES+=('toggle-local-network-state')
+  fi
+
+  if [[ "${VX_MACHINE_TYPE}" = "admin" ]]; then
+    echo "${#CHOICES[@]}. Set Machine State"
+    CHOICES+=('set-machine-state')
   fi
 
   if [ "${IS_QA_IMAGE}" = "1" ]; then
@@ -243,6 +251,11 @@ while true; do
       prompt-to-restart
     ;;
     
+    set-machine-state)
+      "${VX_FUNCTIONS_ROOT}/choose-vx-machine-state.sh"
+      prompt-to-restart
+    ;;
+
     toggle-local-network-state)
       if [[ "${NETWORK_STATE}" = "disable" ]]; then
         sudo ${VX_FUNCTIONS_ROOT}/manage-local-ethernet.sh enable

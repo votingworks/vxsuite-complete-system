@@ -52,6 +52,10 @@ if [ -f "${VX_CONFIG_ROOT}/machine-jurisdiction" ]; then
   export VX_MACHINE_JURISDICTION="$(< "${VX_CONFIG_ROOT}/machine-jurisdiction")"
 fi
 
+if [ -f "${VX_CONFIG_ROOT}/machine-state" ]; then
+  export VX_MACHINE_STATE="$(< "${VX_CONFIG_ROOT}/machine-state")"
+fi
+
 if [ -f "${VX_CONFIG_ROOT}/machine-private-key-password" ]; then
   export VX_MACHINE_PRIVATE_KEY_PASSWORD="$(< "${VX_CONFIG_ROOT}/machine-private-key-password")"
 fi
