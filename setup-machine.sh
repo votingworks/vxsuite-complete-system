@@ -379,6 +379,22 @@ else
   sudo systemctl disable --now systemd-networkd
 fi
 
+# DeskPro setup, if available
+if [[ "${CHOICE}" == "central-scan" ]]; then
+  deskpro_tarball="/mnt/install_scamaxusb3.tar.gz"
+  deskpro_driver_dir="/opt/inotec/scamaxusb3"
+  umount /dev/sda || true
+  mount /dev/sda /mnt || true
+  if [[ -f "${deskpro_tarball}" ]]; then
+    sudo mkdir -p "${deskpro_driver_dir}/{lib,conf}"
+    sudo tar -xfz "${deskpro_tarball}" -C "${deskpro_driver_dir}/lib" --no-same-owner libinoapi.so libinousb.so
+    sudo chmod 0644 "${deskpro_driver_dir}/lib/"*.so
+    sudo cp config/deskpro.ini "${deskpro_driver_dir}/conf/config.ini"
+    sudo cp config/98-deskpro.rules /etc/udev/rules.d/
+    umount /mnt
+  fi
+fi
+
 # set up the service for the selected machine type
 sudo cp config/${CHOICE}.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/${CHOICE}.service
